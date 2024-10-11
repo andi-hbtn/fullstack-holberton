@@ -16,6 +16,7 @@ import { BookModule } from './books/books.module';
       database: 'holberton-fullstack',
       entities: [CategoryEntity, BookEntity],
       synchronize: true,
+      autoLoadEntities: true
     })
     , BookModule, CategoryModule],
   controllers: [],

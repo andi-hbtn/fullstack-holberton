@@ -28,6 +28,7 @@ exports.AppModule = AppModule = __decorate([
                 database: 'holberton-fullstack',
                 entities: [category_entity_1.CategoryEntity, books_enity_1.BookEntity],
                 synchronize: true,
+                autoLoadEntities: true
             }),
             books_module_1.BookModule, category_module_1.CategoryModule
         ],

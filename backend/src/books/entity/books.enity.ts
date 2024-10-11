@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { CategoryEntity } from "src/category/entity/category.entity";
 
 @Entity('books')
 export class BookEntity {
@@ -15,5 +16,9 @@ export class BookEntity {
 	price: number;
 
 	@Column()
-	is_active: boolean
+	is_active: boolean;
+
+	@ManyToOne(() => CategoryEntity, (category) => category.books, { cascade: true })
+	@JoinColumn({ name: 'category_id' })
+	category: CategoryEntity
 }
