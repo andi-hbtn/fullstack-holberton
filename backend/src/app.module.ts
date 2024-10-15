@@ -4,6 +4,8 @@ import { CategoryModule } from './category/category.module';
 import { CategoryEntity } from './category/entity/category.entity';
 import { BookEntity } from './books/entity/books.enity';
 import { BookModule } from './books/books.module';
+import { AuthorModule } from './author/author.module';
+import { AuthorEntity } from './author/entity/author.entity';
 
 @Module({
   imports: [
@@ -14,11 +16,11 @@ import { BookModule } from './books/books.module';
       username: 'root',
       password: 'Andi1990+',
       database: 'holberton-fullstack',
-      entities: [CategoryEntity, BookEntity],
+      entities: [CategoryEntity, BookEntity, AuthorEntity],
       synchronize: true,
       autoLoadEntities: true
     })
-    , BookModule, CategoryModule],
+    , BookModule, CategoryModule, AuthorModule],
   controllers: [],
   providers: [],
 })

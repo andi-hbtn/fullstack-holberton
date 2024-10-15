@@ -13,6 +13,8 @@ const category_module_1 = require("./category/category.module");
 const category_entity_1 = require("./category/entity/category.entity");
 const books_enity_1 = require("./books/entity/books.enity");
 const books_module_1 = require("./books/books.module");
+const author_module_1 = require("./author/author.module");
+const author_entity_1 = require("./author/entity/author.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -26,11 +28,11 @@ exports.AppModule = AppModule = __decorate([
                 username: 'root',
                 password: 'Andi1990+',
                 database: 'holberton-fullstack',
-                entities: [category_entity_1.CategoryEntity, books_enity_1.BookEntity],
+                entities: [category_entity_1.CategoryEntity, books_enity_1.BookEntity, author_entity_1.AuthorEntity],
                 synchronize: true,
                 autoLoadEntities: true
             }),
-            books_module_1.BookModule, category_module_1.CategoryModule
+            books_module_1.BookModule, category_module_1.CategoryModule, author_module_1.AuthorModule
         ],
         controllers: [],
         providers: [],
