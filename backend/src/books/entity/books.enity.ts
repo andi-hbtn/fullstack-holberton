@@ -16,7 +16,7 @@ export class BookEntity {
 	@Column()
 	price: number;
 
-	@Column()
+	@Column({ default: true })
 	is_active: boolean;
 
 	@ManyToOne(() => CategoryEntity, (category) => category.books, { cascade: true })

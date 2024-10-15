@@ -17,15 +17,63 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const books_enity_1 = require("./entity/books.enity");
 const typeorm_2 = require("typeorm");
+const service_error_1 = require("../errorHandler/service.error");
 let BookService = class BookService {
     constructor(bookEntity) {
         this.bookEntity = bookEntity;
     }
     async getAllBooks() {
-        return await this.bookEntity.find();
+        try {
+            const result = await this.bookEntity.find();
+            return result;
+        }
+        catch (error) {
+            throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    async createBook(data) {
-        return await this.bookEntity.save(data);
+    async createBooks(data) {
+        try {
+            const result = await this.bookEntity.save(data);
+            return result;
+        }
+        catch (error) {
+            throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    async updateBooks(data, id) {
+        try {
+            const category = await this.bookEntity.findOne({ where: { id } });
+            if (!category) {
+                throw new service_error_1.ServiceHandler("This is category does not longer Exist", common_1.HttpStatus.NOT_FOUND);
+            }
+            await this.bookEntity.update(id, data);
+            const updatedCategory = await this.bookEntity.findOne({ where: { id } });
+            return updatedCategory;
+        }
+        catch (error) {
+            throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    async getBookById(id) {
+        try {
+            const result = this.bookEntity.findOne({ where: { id } });
+            if (!result) {
+                throw new service_error_1.ServiceHandler("this category does not exist", common_1.HttpStatus.NOT_FOUND);
+            }
+            return result;
+        }
+        catch (error) {
+            throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.NOT_FOUND);
+        }
+    }
+    async deleteBook(id) {
+        try {
+            const result = await this.bookEntity.delete(id);
+            return result;
+        }
+        catch (error) {
+            throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.NOT_FOUND);
+        }
     }
 };
 exports.BookService = BookService;

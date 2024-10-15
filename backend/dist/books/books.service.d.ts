@@ -1,8 +1,12 @@
 import { BookEntity } from './entity/books.enity';
 import { Repository } from 'typeorm';
+import { BookDto } from "./dto/book.dto";
 export declare class BookService {
     private readonly bookEntity;
     constructor(bookEntity: Repository<BookEntity>);
     getAllBooks(): Promise<BookEntity[]>;
-    createBook(data: any): Promise<any>;
+    createBooks(data: BookDto): Promise<BookDto>;
+    updateBooks(data: BookDto, id: number): Promise<BookEntity>;
+    getBookById(id: number): Promise<BookEntity>;
+    deleteBook(id: number): Promise<any>;
 }

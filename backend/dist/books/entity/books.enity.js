@@ -33,7 +33,7 @@ __decorate([
     __metadata("design:type", Number)
 ], BookEntity.prototype, "price", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], BookEntity.prototype, "is_active", void 0);
 __decorate([

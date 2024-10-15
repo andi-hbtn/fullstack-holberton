@@ -1,7 +1,12 @@
 import { BookService } from './books.service';
+import { BookEntity } from './entity/books.enity';
+import { BookDto } from './dto/book.dto';
 export declare class BookController {
     private readonly bookService;
     constructor(bookService: BookService);
-    getAll(): Promise<import("./entity/books.enity").BookEntity[]>;
-    cretePost(param: any): Promise<any>;
+    getAll(): Promise<BookEntity[]>;
+    cretePost(param: any): Promise<BookDto>;
+    update(bodyParam: BookDto, id: number): Promise<BookEntity>;
+    getById(id: number): Promise<BookEntity>;
+    deleteCategory(id: number): Promise<any>;
 }

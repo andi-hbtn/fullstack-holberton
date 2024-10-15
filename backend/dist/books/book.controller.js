@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookController = void 0;
 const common_1 = require("@nestjs/common");
 const books_service_1 = require("./books.service");
+const book_dto_1 = require("./dto/book.dto");
 let BookController = class BookController {
     constructor(bookService) {
         this.bookService = bookService;
@@ -23,7 +24,16 @@ let BookController = class BookController {
         return await this.bookService.getAllBooks();
     }
     async cretePost(param) {
-        return await this.bookService.createBook(param);
+        return await this.bookService.createBooks(param);
+    }
+    async update(bodyParam, id) {
+        return await this.bookService.updateBooks(bodyParam, id);
+    }
+    async getById(id) {
+        return await this.bookService.getBookById(id);
+    }
+    async deleteCategory(id) {
+        return await this.bookService.deleteBook(id);
     }
 };
 exports.BookController = BookController;
@@ -40,6 +50,28 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "cretePost", null);
+__decorate([
+    (0, common_1.Put)('update/:id'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [book_dto_1.BookDto, Number]),
+    __metadata("design:returntype", Promise)
+], BookController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)('get/:id'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], BookController.prototype, "getById", null);
+__decorate([
+    (0, common_1.Delete)('id'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], BookController.prototype, "deleteCategory", null);
 exports.BookController = BookController = __decorate([
     (0, common_1.Controller)('book'),
     __metadata("design:paramtypes", [books_service_1.BookService])
