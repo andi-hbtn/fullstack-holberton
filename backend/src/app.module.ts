@@ -6,6 +6,7 @@ import { BookEntity } from './books/entity/books.enity';
 import { BookModule } from './books/books.module';
 import { AuthorModule } from './author/author.module';
 import { AuthorEntity } from './author/entity/author.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { AuthorEntity } from './author/entity/author.entity';
       synchronize: true,
       autoLoadEntities: true
     })
-    , BookModule, CategoryModule, AuthorModule],
+    , BookModule, CategoryModule, AuthorModule, UserModule],
   controllers: [],
   providers: [],
 })

@@ -15,6 +15,7 @@ const books_enity_1 = require("./books/entity/books.enity");
 const books_module_1 = require("./books/books.module");
 const author_module_1 = require("./author/author.module");
 const author_entity_1 = require("./author/entity/author.entity");
+const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,7 +33,7 @@ exports.AppModule = AppModule = __decorate([
                 synchronize: true,
                 autoLoadEntities: true
             }),
-            books_module_1.BookModule, category_module_1.CategoryModule, author_module_1.AuthorModule
+            books_module_1.BookModule, category_module_1.CategoryModule, author_module_1.AuthorModule, user_module_1.UserModule
         ],
         controllers: [],
         providers: [],

@@ -28,3 +28,7 @@ export class BookEntity {
 	author: AuthorEntity;
 
 }
+
+
+
+
