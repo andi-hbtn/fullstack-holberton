@@ -24,6 +24,14 @@ __decorate([
     __metadata("design:type", String)
 ], CategoryEntity.prototype, "name", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], CategoryEntity.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp', default: () => { return 'CURRENT_TIMESTAMP'; } }),
+    __metadata("design:type", Date)
+], CategoryEntity.prototype, "created", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => books_enity_1.BookEntity, book => book.category),
     __metadata("design:type", Array)
 ], CategoryEntity.prototype, "books", void 0);

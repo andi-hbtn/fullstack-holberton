@@ -16,10 +16,16 @@ class CategoryDto {
 exports.CategoryDto = CategoryDto;
 __decorate([
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CategoryDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CategoryDto.prototype, "description", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Date)
+], CategoryDto.prototype, "createdAt", void 0);
 //# sourceMappingURL=category.dto.js.map
