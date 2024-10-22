@@ -66,7 +66,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthorController.prototype, "getById", null);
 __decorate([
-    (0, common_1.Delete)('id'),
+    (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

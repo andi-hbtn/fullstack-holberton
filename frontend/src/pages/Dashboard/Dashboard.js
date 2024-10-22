@@ -8,8 +8,6 @@ import "./index.css";
 
 const Dashboard = () => {
 
-
-
 	return (
 
 		< Router >

@@ -27,7 +27,7 @@ export class AuthorController {
 		return await this.authorService.getAuthorById(id);
 	}
 
-	@Delete('id')
+	@Delete('delete/:id')
 	public async deleteCategory(@Param() id: number): Promise<any> {
 		return await this.authorService.deleteAuthor(id);
 	}

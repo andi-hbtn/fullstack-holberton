@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { get_category_service, update_category_service } from "../services/category";
+import { create_category_service, get_category_service, update_category_service, delete_category_service } from "../services/category";
 
 const CategoryContext = createContext({});
 
@@ -9,6 +9,18 @@ const CategoryProvider = (props) => {
 	useEffect(() => {
 		getCategories();
 	}, []);
+
+	const createCategories = async (data) => {
+		try {
+			const result = await create_category_service(data);
+			if (result.status === 201) {
+				await getCategories();
+			}
+		} catch (error) {
+			console.log("error--in post method--", error);
+			return error
+		}
+	}
 
 	const getCategories = async () => {
 		try {
@@ -34,7 +46,19 @@ const CategoryProvider = (props) => {
 		}
 	}
 
-	const values = { categories, updateCategory };
+	const deleteCategorie = async (id) => {
+		try {
+			const result = await delete_category_service(id);
+			if (result.status === 200) {
+				await getCategories();
+			}
+		} catch (error) {
+			console.log("error--in delete method--", error);
+			return error
+		}
+	}
+
+	const values = { categories, updateCategory, createCategories, deleteCategorie };
 	return (
 		<CategoryContext.Provider value={values}>
 			{props.children}

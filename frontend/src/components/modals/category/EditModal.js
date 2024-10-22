@@ -1,28 +1,32 @@
+import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useCategoryContext } from "../../context/CategoryContext";
-const EditModal = ({ open, handleShow, handleClose, category, handleChage }) => {
+import { useCategoryContext } from "../../../context/CategoryContext";
+import AlertMessage from "../alert/AlertMessage";
+const EditModal = ({ open, close, category, handleChage }) => {
 
 	const { updateCategory } = useCategoryContext();
-
+	const [show, setShow] = useState(false);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		await updateCategory(category);
+		setShow(!show);
 	}
 
 	return (
 		<>
 			<Modal
 				show={open}
-				onHide={handleClose}
+				onHide={close}
 				backdrop="static"
 				keyboard={false}
 			>
-				<Modal.Header closeButton>
-					<Modal.Title>Edit Category</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<Form onSubmit={handleSubmit}>
+				<Form onSubmit={handleSubmit}>
+					<Modal.Header closeButton>
+						<Modal.Title>Edit Category</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+
 						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 							<Form.Label>Category name</Form.Label>
 							<Form.Control
@@ -41,15 +45,17 @@ const EditModal = ({ open, handleShow, handleClose, category, handleChage }) => 
 							<Form.Label>Category Description</Form.Label>
 							<Form.Control as="textarea" rows={3} name="description" onChange={handleChage} value={category.description} />
 						</Form.Group>
-					</Form>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="primary" type="submit">Edit</Button>
-				</Modal.Footer>
-			</Modal>
+
+					</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={close}>
+							Close
+						</Button>
+						<Button variant="primary" type="submit">Edit</Button>
+					</Modal.Footer>
+				</Form>
+				{show && <AlertMessage message="category has been updated successfully" close={setShow} />}
+			</Modal >
 		</>
 	);
 }
