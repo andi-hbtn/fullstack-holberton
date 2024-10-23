@@ -9,7 +9,7 @@ const EditModal = ({ open, handleClose, authors, handleChage }) => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		await updateAuthor(category);
+		await updateAuthor(authors);
 		setShow(!show);
 	}
 
@@ -45,11 +45,11 @@ const EditModal = ({ open, handleClose, authors, handleChage }) => {
 							<Form.Label>Author Lastname</Form.Label>
 							<Form.Control
 								type="text"
-								name="name"
+								name="lastname"
 								placeholder="insert name...."
 								autoFocus
 								onChange={handleChage}
-								value={authors.name}
+								value={authors.lastname}
 							/>
 						</Form.Group>
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { BookService } from './books.service';
 import { BookEntity } from './entity/books.enity';
 import { BookDto } from './dto/book.dto';
@@ -18,17 +18,17 @@ export class BookController {
 	}
 
 	@Put('update/:id')
-	public async update(@Body() bodyParam: BookDto, @Param() id: number): Promise<BookEntity> {
+	public async update(@Body() bodyParam: BookDto, @Param('id', ParseIntPipe) id: number): Promise<BookEntity> {
 		return await this.bookService.updateBooks(bodyParam, id);
 	}
 
 	@Get('get/:id')
-	public async getById(@Param() id: number): Promise<BookEntity> {
+	public async getById(@Param('id', ParseIntPipe) id: number): Promise<BookEntity> {
 		return await this.bookService.getBookById(id);
 	}
 
 	@Delete('id')
-	public async deleteCategory(@Param() id: number): Promise<any> {
+	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
 		return await this.bookService.deleteBook(id);
 	}
 }

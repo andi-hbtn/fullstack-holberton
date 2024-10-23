@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { AuthorEntity } from './entity/author.entity';
 import { AuthorDto } from './dto/author.dto';
@@ -18,17 +18,17 @@ export class AuthorController {
 	}
 
 	@Put('update/:id')
-	public async update(@Body() bodyParam: AuthorDto, @Param() id: number): Promise<AuthorEntity> {
+	public async update(@Body() bodyParam: AuthorDto, @Param('id', ParseIntPipe) id: number): Promise<AuthorEntity> {
 		return await this.authorService.updateAuthor(bodyParam, id);
 	}
 
 	@Get('get/:id')
-	public async getById(@Param() id: number): Promise<AuthorEntity> {
+	public async getById(@Param('id', ParseIntPipe) id: number): Promise<AuthorEntity> {
 		return await this.authorService.getAuthorById(id);
 	}
 
 	@Delete('delete/:id')
-	public async deleteCategory(@Param() id: number): Promise<any> {
+	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
 		return await this.authorService.deleteAuthor(id);
 	}
 }

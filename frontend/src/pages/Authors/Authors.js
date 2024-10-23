@@ -5,7 +5,7 @@ import CreateModal from "../../components/modals/author/CreateModal";
 import { useAuthorContext } from "../../context/AuthorContext";
 
 const Authors = () => {
-	const { authors } = useAuthorContext();
+	const { authors, deleteAuthor } = useAuthorContext();
 	const [openEdit, setOpenEdit] = useState(false);
 	const [openCreate, setOpeCreate] = useState(false);
 	const [author, setAuthor] = useState(useState({ id: 0, name: "", lastname: "" }));
@@ -27,6 +27,10 @@ const Authors = () => {
 
 	const handleCreate = () => {
 		setOpeCreate(!openCreate);
+	}
+
+	const handleDelete = async (id) => {
+		await deleteAuthor(id);
 	}
 
 	return (
@@ -60,7 +64,7 @@ const Authors = () => {
 												<Button variant="primary" onClick={() => { handleShow(el) }}>Edit</Button>
 											</td>
 											<td>
-												<Button variant="danger">Delete</Button>
+												<Button variant="danger" onClick={() => { handleDelete(el.id) }}>Delete</Button>
 											</td>
 										</tr>
 									)

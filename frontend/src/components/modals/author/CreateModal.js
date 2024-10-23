@@ -40,7 +40,6 @@ const CreateModal = ({ open, close }) => {
 								type="text"
 								name="name"
 								placeholder="insert name...."
-								autoFocus
 								onChange={handleChage}
 								value={author.name}
 							/>
@@ -54,7 +53,6 @@ const CreateModal = ({ open, close }) => {
 								type="text"
 								name="lastname"
 								placeholder="insert name...."
-								autoFocus
 								onChange={handleChage}
 								value={author.lastname}
 							/>

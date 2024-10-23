@@ -54,11 +54,11 @@ export class AuthorService {
 
 	public async deleteAuthor(id: number): Promise<any> {
 		try {
-			const result = this.authorRepository.findOne({ where: { id } });
+			const result = await this.authorRepository.findOne({ where: { id } });
 			if (!result) {
 				throw new ServiceHandler("this author does not exist", HttpStatus.NOT_FOUND);
 			}
-			return result;
+			await this.authorRepository.delete(id);
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

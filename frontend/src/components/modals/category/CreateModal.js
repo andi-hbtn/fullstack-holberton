@@ -39,7 +39,6 @@ const CreateModal = ({ open, close }) => {
 								type="text"
 								name="name"
 								placeholder="insert name...."
-								autoFocus
 								onChange={handleChage}
 								value={category.name}
 							/>

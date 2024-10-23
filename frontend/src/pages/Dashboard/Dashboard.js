@@ -9,7 +9,6 @@ import "./index.css";
 const Dashboard = () => {
 
 	return (
-
 		< Router >
 			<div>
 				<Navbar bg="primary" variant="dark" expand="lg">
@@ -25,14 +24,14 @@ const Dashboard = () => {
 				</Navbar>
 				<Container fluid>
 					<Row>
-						<Col md={1} className="bg-light sidebar">
+						<Col md={2} className="bg-light sidebar">
 							<h4 className="p-3">Navigation</h4>
 							<Nav defaultActiveKey="/home" className="flex-column">
 								<Nav.Link as={Link} to="/reports">Reports</Nav.Link>
 								<Nav.Link as={Link} to="/settings">Settings</Nav.Link>
 							</Nav>
 						</Col>
-						<Col md={11} className="p-4">
+						<Col md={10} className="p-4">
 							<Routes>
 								<Route path="/authors" element={<Authors />} />
 								<Route path="/category" element={<Categories />} />

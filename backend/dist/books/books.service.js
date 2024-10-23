@@ -68,7 +68,11 @@ let BookService = class BookService {
     }
     async deleteBook(id) {
         try {
-            const result = await this.bookEntity.delete(id);
+            const result = this.bookEntity.findOne({ where: { id } });
+            if (!result) {
+                throw new service_error_1.ServiceHandler("this category does not exist", common_1.HttpStatus.NOT_FOUND);
+            }
+            await this.bookEntity.delete(id);
             return result;
         }
         catch (error) {

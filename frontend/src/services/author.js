@@ -18,7 +18,7 @@ const update_author_service = async (data) => {
 }
 
 const delete_author_service = async (id) => {
-	const result = await axios.put(`${url}/delete/${id}`);
+	const result = await axios.delete(`${url}/delete/${id}`);
 	return result;
 }
 

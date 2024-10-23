@@ -53,21 +53,21 @@ __decorate([
 __decorate([
     (0, common_1.Put)('update/:id'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [author_dto_1.AuthorDto, Number]),
     __metadata("design:returntype", Promise)
 ], AuthorController.prototype, "update", null);
 __decorate([
     (0, common_1.Get)('get/:id'),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], AuthorController.prototype, "getById", null);
 __decorate([
     (0, common_1.Delete)('delete/:id'),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)

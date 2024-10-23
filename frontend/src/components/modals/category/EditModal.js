@@ -45,7 +45,6 @@ const EditModal = ({ open, close, category, handleChage }) => {
 							<Form.Label>Category Description</Form.Label>
 							<Form.Control as="textarea" rows={3} name="description" onChange={handleChage} value={category.description} />
 						</Form.Group>
-
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={close}>

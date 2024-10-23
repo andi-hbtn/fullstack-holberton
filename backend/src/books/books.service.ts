@@ -55,11 +55,11 @@ export class BookService {
 
 	public async deleteBook(id: number): Promise<any> {
 		try {
-			// const result = this.bookEntity.findOne({ where: { id } });
-			// if (!result) {
-			// 	throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
-			// }
-			const result = await this.bookEntity.delete(id);
+			const result = this.bookEntity.findOne({ where: { id } });
+			if (!result) {
+				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
+			}
+			await this.bookEntity.delete(id);
 			return result;
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
