@@ -66,7 +66,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "getById", null);
 __decorate([
-    (0, common_1.Delete)('id'),
+    (0, common_1.Delete)('book/:id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

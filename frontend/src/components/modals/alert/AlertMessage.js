@@ -1,10 +1,10 @@
-import { Alert, Button } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
+import "./AlertMessage.css";
 
-const AlertMessage = ({ message, close }) => {
+const AlertMessage = ({ message }) => {
 	return (
-		<Alert variant="info">
-			<Alert.Heading>{message}</Alert.Heading>
-			<Button onClick={() => close(false)}>clear message</Button>
+		<Alert variant="info" className='alert-container'>
+			<Alert.Heading className='alert-message'>{message}</Alert.Heading>
 		</Alert>
 	)
 }

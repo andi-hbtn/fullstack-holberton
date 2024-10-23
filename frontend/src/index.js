@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { CategoryProvider } from "./context/CategoryContext";
 import { AuthorProvider } from "./context/AuthorContext";
+import { BookProvider } from './context/BookContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 axios.defaults.withCredentials = true;
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthorProvider>
     <CategoryProvider>
-      <Dashboard />
+      <BookProvider>
+        <Dashboard />
+      </BookProvider>
     </CategoryProvider>
   </AuthorProvider>
 );

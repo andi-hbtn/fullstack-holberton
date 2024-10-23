@@ -27,7 +27,7 @@ export class BookController {
 		return await this.bookService.getBookById(id);
 	}
 
-	@Delete('id')
+	@Delete('book/:id')
 	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
 		return await this.bookService.deleteBook(id);
 	}

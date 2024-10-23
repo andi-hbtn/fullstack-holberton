@@ -61,7 +61,7 @@ const EditModal = ({ open, handleClose, authors, handleChage }) => {
 						<Button variant="primary" type="submit">Edit</Button>
 					</Modal.Footer>
 				</Form>
-				{show && <AlertMessage message="category has been updated successfully" close={setShow} />}
+				{show && <AlertMessage message="category has been updated successfully" />}
 			</Modal >
 		</>
 	);
