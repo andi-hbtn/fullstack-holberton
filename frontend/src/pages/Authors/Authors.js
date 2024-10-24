@@ -1,32 +1,26 @@
 import { useState } from "react";
 import { Row, Col, Table, Button } from "react-bootstrap";
-import EditModal from "../../components/modals/author/EditModal";
-import CreateModal from "../../components/modals/author/CreateModal";
+import ModalManager from "../../components/modals/ModalManager";
 import { useAuthorContext } from "../../context/AuthorContext";
+import { fields } from "./fields";
 
 const Authors = () => {
-	const { authors, deleteAuthor } = useAuthorContext();
-	const [openEdit, setOpenEdit] = useState(false);
-	const [openCreate, setOpeCreate] = useState(false);
-	const [author, setAuthor] = useState(useState({ id: 0, name: "", lastname: "" }));
+	const { authors, createAuthor, deleteAuthor, updateAuthor } = useAuthorContext();
+	const [open, setOpen] = useState(false);
+	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
+	const [dataId, setDataId] = useState({});
 
-	const handleShow = (data) => {
-		setAuthor({ id: data.id, name: data.name, lastname: data.lastname })
-		setOpenEdit(!openEdit);
-	}
-
-	const handleChage = (event) => {
-		const { name, value } = event.target;
-		setAuthor((prev) => {
-			return { ...prev, [name]: value }
-		})
-	}
-
-	const handleClose = () => setOpenEdit(!openEdit);
-	const closeCreate = () => setOpeCreate(!openCreate);
+	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
-		setOpeCreate(!openCreate);
+		setCaseModal({ title: "Create Author", create: true, button: "Create" });
+		setOpen(!open);
+	}
+
+	const handleEdit = (id) => {
+		setDataId(id);
+		setCaseModal({ title: "Edit Author", create: false, button: "Update" })
+		setOpen(!open);
 	}
 
 	const handleDelete = async (id) => {
@@ -61,7 +55,7 @@ const Authors = () => {
 											<td>{el.lastname}</td>
 											<td>{el?.created}</td>
 											<td>
-												<Button variant="primary" onClick={() => { handleShow(el) }}>Edit</Button>
+												<Button variant="primary" onClick={() => { handleEdit(el.id) }}>Edit</Button>
 											</td>
 											<td>
 												<Button variant="danger" onClick={() => { handleDelete(el.id) }}>Delete</Button>
@@ -72,14 +66,16 @@ const Authors = () => {
 						</tbody>
 					</Table>
 				</Col>
-
 			</Row>
-
 			{
-				openEdit && <EditModal open={openEdit} handleClose={handleClose} authors={author} handleChage={handleChage} />
-			}
-			{
-				openCreate && <CreateModal open={openCreate} close={closeCreate} />
+				open && <ModalManager
+					open={open}
+					close={close}
+					fields={fields}
+					case_modal={caseModal}
+					id={dataId}
+					create={createAuthor}
+					update={updateAuthor} />
 			}
 		</>
 	)

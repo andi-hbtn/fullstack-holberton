@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Row, Col, Table, Button } from "react-bootstrap";
-import EditModal from "../../components/modals/category/EditModal";
-import CreateModal from "../../components/modals/category/CreateModal";
 import { useCategoryContext } from "../../context/CategoryContext";
 
 const Categories = () => {
@@ -74,12 +72,6 @@ const Categories = () => {
 					</Table>
 				</Col>
 			</Row>
-			{
-				openEdit && <EditModal open={openEdit} handleShow={handleShow} close={closeEdit} category={category} handleChage={handleChage} />
-			}
-			{
-				openCreate && <CreateModal open={openCreate} close={closeCreate} />
-			}
 		</>
 	)
 }

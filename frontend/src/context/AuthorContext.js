@@ -34,9 +34,9 @@ const AuthorProvider = (props) => {
 		}
 	}
 
-	const updateAuthor = async (data) => {
+	const updateAuthor = async (id, data) => {
 		try {
-			const result = await update_author_service(data);
+			const result = await update_author_service(id, data);
 			if (result.status === 200) {
 				await getAuthor()
 			}
