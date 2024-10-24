@@ -15,7 +15,7 @@ import { UserModule } from './user/user.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'Andi1990+',
+      password: 'andi',
       database: 'holberton-fullstack',
       entities: [CategoryEntity, BookEntity, AuthorEntity],
       synchronize: true,

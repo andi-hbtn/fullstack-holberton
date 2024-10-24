@@ -1,35 +1,29 @@
 import { useState } from "react";
 import { Row, Col, Table, Button } from "react-bootstrap";
 import { useCategoryContext } from "../../context/CategoryContext";
-
+import ModalManager from "../../components/modals/ModalManager";
+import { fields } from "./fields";
 const Categories = () => {
-	const { categories, deleteCategorie } = useCategoryContext();
-	const [openEdit, setOpenEdit] = useState(false);
-	const [openCreate, setOpeCreate] = useState(false);
-	const [category, setCategory] = useState(useState({ id: 0, name: "", description: "" }));
+	const { categories, createCategories, updateCategory, deleteCategorie } = useCategoryContext();
+	const [open, setOpen] = useState(false);
+	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
+	const [dataId, setDataId] = useState({});
 
-	const handleShow = (data) => {
-		setCategory({ id: data.id, name: data.name, description: data.description })
-		setOpenEdit(!openEdit);
+	const close = () => setOpen(!open);
+
+	const handleCreate = () => {
+		setCaseModal({ title: "Create Book", create: true, button: "Create" });
+		setOpen(!open);
 	}
 
-	const handleChage = (event) => {
-		const { name, value } = event.target;
-		setCategory((prev) => {
-			return { ...prev, [name]: value }
-		})
+	const handleEdit = (id) => {
+		setDataId(id);
+		setCaseModal({ title: "Edit Book", create: false, button: "Update" })
+		setOpen(!open);
 	}
-
-	const closeEdit = () => setOpenEdit(!openEdit);
-	const closeCreate = () => setOpeCreate(!openCreate);
-
 
 	const handleDelete = async (id) => {
 		await deleteCategorie(id);
-	}
-
-	const handleCreate = () => {
-		setOpeCreate(!openCreate);
 	}
 
 	return (
@@ -60,7 +54,7 @@ const Categories = () => {
 											<td>{category.description}</td>
 											<td>{category?.created}</td>
 											<td>
-												<Button variant="primary" onClick={() => { handleShow(category) }}>Edit</Button>
+												<Button variant="primary" onClick={() => { handleEdit(category.id) }}>Edit</Button>
 											</td>
 											<td>
 												<Button variant="danger" onClick={() => { handleDelete(category.id) }}>Delete</Button>
@@ -72,6 +66,16 @@ const Categories = () => {
 					</Table>
 				</Col>
 			</Row>
+			{
+				open && <ModalManager
+					open={open}
+					close={close}
+					fields={fields}
+					case_modal={caseModal}
+					id={dataId}
+					create={createCategories}
+					update={updateCategory} />
+			}
 		</>
 	)
 }

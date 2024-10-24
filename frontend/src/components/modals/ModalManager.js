@@ -18,7 +18,6 @@ const ModalManager = ({ open, close, case_modal, id, fields, create, update }) =
 		if (case_modal.create) {
 			await create(formData);
 		} else {
-			//console.log("-----", id, formData);
 			await update(id, formData)
 		}
 		setShow(!show);
@@ -37,18 +36,22 @@ const ModalManager = ({ open, close, case_modal, id, fields, create, update }) =
 						<Modal.Title>{case_modal.title}</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						{fields.map((field, index) => (
-							<Form.Group key={index} className="mb-3" controlId="exampleForm.ControlInput1">
-								<Form.Label>{field.label}</Form.Label>
-								<Form.Control
-									type={field.type || 'text'}
-									name={field.name}
-									placeholder={field.placeholder}
-									onChange={handleChange}
-									value={formData[field.name] || ''}
-								/>
-							</Form.Group>
-						))}
+						{
+							fields.map((field, index) => {
+								return (
+									<Form.Group key={index} className="mb-3" controlId="exampleForm.ControlInput1">
+										<Form.Label>{field.label}</Form.Label>
+										<Form.Control
+											type={field.type || 'text'}
+											name={field.name}
+											placeholder={field.placeholder}
+											onChange={handleChange}
+											value={formData[field.name] || ''}
+										/>
+									</Form.Group>
+								)
+							}
+							)}
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={close}>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Table, Button } from "react-bootstrap";
-import ModalManager from "../../components/modals/ModalManager";
 import { useAuthorContext } from "../../context/AuthorContext";
+import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
 
 const Authors = () => {

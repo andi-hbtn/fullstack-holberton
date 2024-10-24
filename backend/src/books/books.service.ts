@@ -11,7 +11,9 @@ export class BookService {
 
 	public async getAllBooks(): Promise<BookEntity[]> {
 		try {
-			const result = await this.bookEntity.find();
+			const result = await this.bookEntity.find({
+				relations:['category','author']
+			});
 			return result;
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

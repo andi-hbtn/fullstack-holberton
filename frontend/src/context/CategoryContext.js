@@ -34,9 +34,9 @@ const CategoryProvider = (props) => {
 		}
 	}
 
-	const updateCategory = async (data) => {
+	const updateCategory = async (id,data) => {
 		try {
-			const result = await update_category_service(data);
+			const result = await update_category_service(id,data);
 			if (result.status === 200) {
 				await getCategories()
 			}

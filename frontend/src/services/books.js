@@ -11,14 +11,14 @@ const get_books_service = async () => {
 	return result;
 }
 
-const update_book_service = async (data) => {
-	const result = await axios.put(`${url}/update/${data.id}`, data);
+const update_book_service = async (id, data) => {
+	const result = await axios.put(`${url}/update/${id}`, data);
 	return result;
 }
 
-const delete_book__service = async (id) => {
+const delete_book_service = async (id) => {
 	const result = await axios.delete(`${url}/delete/${id}`);
 	return result;
 }
 
-export { get_books_service, create_book_service, update_book_service, delete_book__service }
+export { get_books_service, create_book_service, update_book_service, delete_book_service }

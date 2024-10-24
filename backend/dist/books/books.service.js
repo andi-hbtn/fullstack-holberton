@@ -24,7 +24,9 @@ let BookService = class BookService {
     }
     async getAllBooks() {
         try {
-            const result = await this.bookEntity.find();
+            const result = await this.bookEntity.find({
+                relations: ['category', 'author']
+            });
             return result;
         }
         catch (error) {

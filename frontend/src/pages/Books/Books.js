@@ -1,36 +1,29 @@
 import { useState } from "react";
 import { Row, Col, Table, Button } from "react-bootstrap";
 import { useBookContext } from "../../context/BookContext";
-
+import ModalManager from "../../components/modals/ModalManager";
+import { fields } from "./fields";
 const Books = () => {
-	const { books, deleteBook } = useBookContext();
-	console.log('books-->', books)
-	const [openEdit, setOpenEdit] = useState(false);
-	const [openCreate, setOpeCreate] = useState(false);
-	const [book, setBook] = useState(useState({ id: 0, title: "", description: "" }));
+	const { books, createBook, updateBook, deleteBook } = useBookContext();
+	const [open, setOpen] = useState(false);
+	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
+	const [dataId, setDataId] = useState({});
 
-	const handleShow = (data) => {
-		setBook({ id: data.id, title: data.title, description: data.description })
-		setOpenEdit(!openEdit);
+	const close = () => setOpen(!open);
+
+	const handleCreate = () => {
+		setCaseModal({ title: "Create Book", create: true, button: "Create" });
+		setOpen(!open);
 	}
 
-	const handleChage = (event) => {
-		const { name, value } = event.target;
-		setBook((prev) => {
-			return { ...prev, [name]: value }
-		})
+	const handleEdit = (id) => {
+		setDataId(id);
+		setCaseModal({ title: "Edit Book", create: false, button: "Update" })
+		setOpen(!open);
 	}
-
-	const closeEdit = () => setOpenEdit(!openEdit);
-	const closeCreate = () => setOpeCreate(!openCreate);
-
 
 	const handleDelete = async (id) => {
 		await deleteBook(id);
-	}
-
-	const handleCreate = () => {
-		setOpeCreate(!openCreate);
 	}
 
 	return (
@@ -61,7 +54,7 @@ const Books = () => {
 											<td>{book.description}</td>
 											<td>${book?.price}</td>
 											<td>
-												<Button variant="primary" onClick={() => { handleShow(book) }}>Edit</Button>
+												<Button variant="primary" onClick={() => { handleEdit(book.id) }}>Edit</Button>
 											</td>
 											<td>
 												<Button variant="danger" onClick={() => { handleDelete(book.id) }}>Delete</Button>
@@ -73,6 +66,16 @@ const Books = () => {
 					</Table>
 				</Col>
 			</Row>
+			{
+				open && <ModalManager
+					open={open}
+					close={close}
+					fields={fields}
+					case_modal={caseModal}
+					id={dataId}
+					create={createBook}
+					update={updateBook} />
+			}
 		</>
 	)
 }
