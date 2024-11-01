@@ -7,9 +7,9 @@ const ModalManager = ({ open,categories,authors, close, case_modal, id, fields, 
 	const [show, setShow] = useState(false);
 
 	const handleChange = (event) => {
-		const { name, value } = event.target;
+		const { name, value, type, checked } = event.target;
 		setFormData((prev) => {
-			return { ...prev, [name]: value };
+			return { ...prev,  [name]: type === "checkbox" ? checked : value, };
 		});
 	}
 
@@ -38,18 +38,18 @@ const ModalManager = ({ open,categories,authors, close, case_modal, id, fields, 
 					<Modal.Body>
 						{
 							fields.map((field, index) => {
-								// console.log("field----",field.type.options);
+								//console.log("field----",field.name);
 								return (
 									<>
 									{
 										field.name === "category_id" ?
 										(
 											<Form.Group key={index} className="mb-3" controlId="type-select">
-												<Form.Select onChange={handleChange} aria-label="Default select example">
+												<Form.Select name={field.name} onChange={handleChange} aria-label="Default select example">
 													{
 														categories.map((category,i)=>{
 															return(
-																<option key={i} value={category.name}>{category.name}</option>
+																<option key={i} value={parseInt(category.id)}>{category.name}</option>
 															)
 														})
 													}
@@ -60,27 +60,37 @@ const ModalManager = ({ open,categories,authors, close, case_modal, id, fields, 
 										: field.name === "author_id" ?
 										(
 											<Form.Group key={index} className="mb-3" controlId="type-select">
-												<Form.Select aria-label="Default select example">
+												<Form.Select name={field.name} onChange={handleChange} aria-label="Default select example">
 												{
-														authors.map((category,i)=>{
+														authors.map((author,i)=>{
 															return(
-																<option key={i} value={category.name}>{category.name}</option>
+																<option key={i} value={parseInt(author.id)}>{author.name}</option>
 															)
 														})
 													}
 												</Form.Select>
 											</Form.Group>
 										)
+										:field.name === "is_active"?
+										<Form.Group key={index} className="mb-3" controlId="type-select">
+											 <Form.Check
+												name={field.name}
+												type={field.type}
+												label={field.label}
+												checked={formData[field.name]}
+												onChange={handleChange}
+											/>
+										</Form.Group>
 										:
 										(
 											<Form.Group key={index} className="mb-3" controlId="type-text">
 												<Form.Label>{field.label}</Form.Label>
 												<Form.Control
-													type={field.type || 'text'}
+													type={field.type}
 													name={field.name}
 													placeholder={field.placeholder}
 													onChange={handleChange}
-													value={formData[field.name] || ''}
+													value={formData[field.name]}
 												/>
 											</Form.Group>
 										)

@@ -20,7 +20,7 @@ export class BookService {
 		}
 	}
 
-	public async createBooks(data: BookDto): Promise<BookDto> {
+	public async createBooks(data: BookDto): Promise<any> {
 		try {
 			const result = await this.bookEntity.save(data);
 			return result;

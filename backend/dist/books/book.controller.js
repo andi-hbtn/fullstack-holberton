@@ -24,7 +24,8 @@ let BookController = class BookController {
         return await this.bookService.getAllBooks();
     }
     async cretePost(param) {
-        return await this.bookService.createBooks(param);
+        console.log("data-----", param);
+        return null;
     }
     async update(bodyParam, id) {
         return await this.bookService.updateBooks(bodyParam, id);
@@ -47,7 +48,7 @@ __decorate([
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [book_dto_1.BookDto]),
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "cretePost", null);
 __decorate([

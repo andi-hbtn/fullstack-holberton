@@ -39,6 +39,8 @@ const Books = () => {
 								<th>Id</th>
 								<th>Title</th>
 								<th>Description</th>
+								<th>Category</th>
+								<th>Author</th>
 								<th>Price</th>
 								<th>Edit</th>
 								<th>Delete</th>
@@ -47,11 +49,16 @@ const Books = () => {
 						<tbody>
 							{
 								books.map((book, index) => {
+									//console.log("book----",book);
 									return (
 										<tr key={index}>
 											<td>{book.id}</td>
 											<td>{book.title}</td>
 											<td>{book.description}</td>
+
+											<td>{book.category}</td>
+											<td>{book.author}</td>
+
 											<td>${book?.price}</td>
 											<td>
 												<Button variant="primary" onClick={() => { handleEdit(book.id) }}>Edit</Button>

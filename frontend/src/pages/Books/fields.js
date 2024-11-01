@@ -26,6 +26,11 @@ const fields = [
         type: "options",
         name: "author_id",
         label: "Author",
+    },
+    {
+        type: "switch",
+        name: "is_active",
+        label: "Check this switch",
     }
 ];
 

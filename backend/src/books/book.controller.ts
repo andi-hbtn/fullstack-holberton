@@ -13,8 +13,19 @@ export class BookController {
 	}
 
 	@Post('create')
-	public async cretePost(@Body() param: any) {
-		return await this.bookService.createBooks(param);
+	public async cretePost(@Body() param: BookDto) {
+
+
+		console.log("data-----", param);
+		// 	const book = {
+		// 		title: param.title,
+		// 		description: param.description,
+		// 		price: param.price,
+		// 		category_id: param.category_id,
+		// 		author_id: param.author_id 
+		// 	};
+		return null;
+		//return await this.bookService.createBooks(param);
 	}
 
 	@Put('update/:id')
