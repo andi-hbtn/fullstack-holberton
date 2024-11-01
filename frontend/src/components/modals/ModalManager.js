@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import AlertMessage from "../alert/AlertMessage";
 
-const ModalManager = ({ open, close, case_modal, id, fields, create, update }) => {
+const ModalManager = ({ open,categories,authors, close, case_modal, id, fields, create, update }) => {
 	const [formData, setFormData] = useState({});
 	const [show, setShow] = useState(false);
 
@@ -38,17 +38,54 @@ const ModalManager = ({ open, close, case_modal, id, fields, create, update }) =
 					<Modal.Body>
 						{
 							fields.map((field, index) => {
+								// console.log("field----",field.type.options);
 								return (
-									<Form.Group key={index} className="mb-3" controlId="exampleForm.ControlInput1">
-										<Form.Label>{field.label}</Form.Label>
-										<Form.Control
-											type={field.type || 'text'}
-											name={field.name}
-											placeholder={field.placeholder}
-											onChange={handleChange}
-											value={formData[field.name] || ''}
-										/>
-									</Form.Group>
+									<>
+									{
+										field.name === "category_id" ?
+										(
+											<Form.Group key={index} className="mb-3" controlId="type-select">
+												<Form.Select onChange={handleChange} aria-label="Default select example">
+													{
+														categories.map((category,i)=>{
+															return(
+																<option key={i} value={category.name}>{category.name}</option>
+															)
+														})
+													}
+												</Form.Select>
+											</Form.Group>
+										)
+										
+										: field.name === "author_id" ?
+										(
+											<Form.Group key={index} className="mb-3" controlId="type-select">
+												<Form.Select aria-label="Default select example">
+												{
+														authors.map((category,i)=>{
+															return(
+																<option key={i} value={category.name}>{category.name}</option>
+															)
+														})
+													}
+												</Form.Select>
+											</Form.Group>
+										)
+										:
+										(
+											<Form.Group key={index} className="mb-3" controlId="type-text">
+												<Form.Label>{field.label}</Form.Label>
+												<Form.Control
+													type={field.type || 'text'}
+													name={field.name}
+													placeholder={field.placeholder}
+													onChange={handleChange}
+													value={formData[field.name] || ''}
+												/>
+											</Form.Group>
+										)
+									}
+									</>
 								)
 							}
 							)}

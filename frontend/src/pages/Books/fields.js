@@ -21,8 +21,7 @@ const fields = [
         type: "options",
         name: "category_id",
         label: "Category",
-    }
-    ,
+    },
     {
         type: "options",
         name: "author_id",

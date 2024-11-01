@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { BookEntity } from "src/books/entity/books.enity";
-import { timestamp } from "rxjs";
+
 
 @Entity('category')
 export class CategoryEntity {

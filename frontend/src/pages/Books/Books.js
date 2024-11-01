@@ -4,7 +4,7 @@ import { useBookContext } from "../../context/BookContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
 const Books = () => {
-	const { books, createBook, updateBook, deleteBook } = useBookContext();
+	const { books,categories,authors, createBook, updateBook, deleteBook } = useBookContext();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
 	const [dataId, setDataId] = useState({});
@@ -74,7 +74,9 @@ const Books = () => {
 					case_modal={caseModal}
 					id={dataId}
 					create={createBook}
-					update={updateBook} />
+					update={updateBook}
+					categories={categories}
+					authors={authors} />
 			}
 		</>
 	)

@@ -1,10 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { create_book_service, get_books_service, update_book_service, delete_book_service } from "../services/books";
-
+import {get_category_service} from "../services/category";
+import {get_author_service} from "../services/author";
 const BookContext = createContext({});
 
 const BookProvider = (props) => {
 	const [books, setBooks] = useState([]);
+	const [categories,setCategories]=useState([]);
+	const [authors,setAuthors]=useState([]);
 
 	useEffect(() => {
 		getBooks();
@@ -24,9 +27,13 @@ const BookProvider = (props) => {
 
 	const getBooks = async () => {
 		try {
-			const result = await get_books_service();
-			if (result.status === 200) {
-				setBooks(result.data);
+			const books = await get_books_service();
+			const category = await get_category_service();
+			const author = await get_author_service();
+			if (books.status === 200) {
+				setBooks(books.data);
+				setCategories(category.data);
+				setAuthors(author.data);
 			}
 		} catch (error) {
 			console.log("error--in get method--", error);
@@ -58,7 +65,7 @@ const BookProvider = (props) => {
 		}
 	}
 
-	const values = { books, createBook, updateBook, deleteBook };
+	const values = { books,categories,authors,createBook, updateBook, deleteBook };
 	return (
 		<BookContext.Provider value={values}>
 			{props.children}
