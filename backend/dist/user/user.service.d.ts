@@ -1,9 +1,9 @@
 import { UserEntity } from './entity/user.entity';
 import { Repository } from 'typeorm';
+import { UserDto } from './dto/user.dto';
 export declare class UserService {
     private readonly userService;
     constructor(userService: Repository<UserEntity>);
-    register(): Promise<void>;
-    login(): Promise<void>;
-    logout(): Promise<void>;
+    findByEmail(email: string): Promise<UserEntity>;
+    registerUser(data: UserDto): Promise<UserEntity>;
 }

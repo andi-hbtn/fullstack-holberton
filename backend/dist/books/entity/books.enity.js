@@ -46,6 +46,14 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'author_id' }),
     __metadata("design:type", author_entity_1.AuthorEntity)
 ], BookEntity.prototype, "author", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'author_id', nullable: false }),
+    __metadata("design:type", Number)
+], BookEntity.prototype, "author_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'category_id', nullable: false }),
+    __metadata("design:type", Number)
+], BookEntity.prototype, "category_id", void 0);
 exports.BookEntity = BookEntity = __decorate([
     (0, typeorm_1.Entity)('books')
 ], BookEntity);

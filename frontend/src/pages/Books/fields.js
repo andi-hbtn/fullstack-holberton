@@ -30,7 +30,7 @@ const fields = [
     {
         type: "switch",
         name: "is_active",
-        label: "Check this switch",
+        label: "Book availability",
     }
 ];
 

@@ -8,4 +8,6 @@ export declare class BookEntity {
     is_active: boolean;
     category: CategoryEntity;
     author: AuthorEntity;
+    author_id: number;
+    category_id: number;
 }

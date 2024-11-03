@@ -16,6 +16,8 @@ const books_module_1 = require("./books/books.module");
 const author_module_1 = require("./author/author.module");
 const author_entity_1 = require("./author/entity/author.entity");
 const user_module_1 = require("./user/user.module");
+const user_entity_1 = require("./user/entity/user.entity");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -26,14 +28,14 @@ exports.AppModule = AppModule = __decorate([
                 type: 'mysql',
                 host: 'localhost',
                 port: 3306,
-                username: 'admin',
-                password: 'root',
+                username: 'Andi',
+                password: 'andi',
                 database: 'holberton-fullstack',
-                entities: [category_entity_1.CategoryEntity, books_enity_1.BookEntity, author_entity_1.AuthorEntity],
+                entities: [category_entity_1.CategoryEntity, books_enity_1.BookEntity, author_entity_1.AuthorEntity, user_entity_1.UserEntity],
                 synchronize: true,
                 autoLoadEntities: true
             }),
-            books_module_1.BookModule, category_module_1.CategoryModule, author_module_1.AuthorModule, user_module_1.UserModule
+            books_module_1.BookModule, category_module_1.CategoryModule, author_module_1.AuthorModule, user_module_1.UserModule, auth_module_1.AuthModule
         ],
         controllers: [],
         providers: [],

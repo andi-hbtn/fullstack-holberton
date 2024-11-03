@@ -25,19 +25,13 @@ __decorate([
     __metadata("design:type", String)
 ], UserDto.prototype, "lastname", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], UserDto.prototype, "email", void 0);
 __decorate([
-    (0, class_validator_1.IsBoolean)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Boolean)
-], UserDto.prototype, "is_admin", void 0);
-__decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], UserDto.prototype, "passsword", void 0);
+], UserDto.prototype, "password", void 0);
 //# sourceMappingURL=user.dto.js.map

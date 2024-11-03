@@ -2,7 +2,17 @@ import axios from "axios";
 const url = "http://localhost:3000/api/book";
 
 const create_book_service = async (data) => {
-	const result = await axios.post(`${url}/create`, data);
+
+	const book = {
+		author_id: parseInt(data.author_id),
+		category_id: parseInt(data.category_id),
+		description: data.description,
+		is_active: data.is_active,
+		price: parseInt(data.price),
+		title: data.title
+	}
+
+	const result = await axios.post(`${url}/create`, book);
 	return result;
 }
 
@@ -12,7 +22,16 @@ const get_books_service = async () => {
 }
 
 const update_book_service = async (id, data) => {
-	const result = await axios.put(`${url}/update/${id}`, data);
+
+	const book = {
+		author_id: parseInt(data.author_id),
+		category_id: parseInt(data.category_id),
+		description: data.description,
+		is_active: data.is_active,
+		price: parseInt(data.price),
+		title: data.title
+	}
+	const result = await axios.put(`${url}/update/${id}`, book);
 	return result;
 }
 

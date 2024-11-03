@@ -23,9 +23,8 @@ let BookController = class BookController {
     async getAll() {
         return await this.bookService.getAllBooks();
     }
-    async cretePost(param) {
-        console.log("data-----", param);
-        return null;
+    async cretePost(bodyParam) {
+        return await this.bookService.createBooks(bodyParam);
     }
     async update(bodyParam, id) {
         return await this.bookService.updateBooks(bodyParam, id);

@@ -9,17 +9,12 @@ export class UserDto {
 	@IsNotEmpty()
 	lastname: string;
 
-	@IsString()
 	@IsNotEmpty()
 	@IsEmail()
 	email: string;
 
-	@IsBoolean()
-	@IsNotEmpty()
-	is_admin?: boolean;
-
 	@IsString()
 	@IsNotEmpty()
-	passsword: string;
+	password: string;
 
 }

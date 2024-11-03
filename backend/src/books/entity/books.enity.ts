@@ -27,6 +27,12 @@ export class BookEntity {
 	@JoinColumn({ name: 'author_id' })
 	author: AuthorEntity;
 
+	@Column({ name: 'author_id', nullable: false })
+	author_id: number;
+
+	@Column({ name: 'category_id', nullable: false })
+	category_id: number;
+
 }
 
 

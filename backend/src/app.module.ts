@@ -7,6 +7,8 @@ import { BookModule } from './books/books.module';
 import { AuthorModule } from './author/author.module';
 import { AuthorEntity } from './author/entity/author.entity';
 import { UserModule } from './user/user.module';
+import { UserEntity } from './user/entity/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,14 +16,14 @@ import { UserModule } from './user/user.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'admin',
-      password: 'root',
+      username: 'Andi',
+      password: 'andi',
       database: 'holberton-fullstack',
-      entities: [CategoryEntity, BookEntity, AuthorEntity],
+      entities: [CategoryEntity, BookEntity, AuthorEntity, UserEntity],
       synchronize: true,
       autoLoadEntities: true
     })
-    , BookModule, CategoryModule, AuthorModule, UserModule],
+    , BookModule, CategoryModule, AuthorModule, UserModule, AuthModule],
   controllers: [],
   providers: [],
 })

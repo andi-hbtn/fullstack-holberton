@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
+import { UseGuards, Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/guards/auth.guards';
 import { AuthorService } from './author.service';
 import { AuthorEntity } from './entity/author.entity';
 import { AuthorDto } from './dto/author.dto';
 
+@UseGuards(AuthGuard)
 @Controller('author')
 export class AuthorController {
 	constructor(private readonly authorService: AuthorService) { }
