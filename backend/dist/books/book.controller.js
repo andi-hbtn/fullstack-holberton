@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookController = void 0;
 const common_1 = require("@nestjs/common");
+const auth_guards_1 = require("../auth/guards/auth.guards");
 const books_service_1 = require("./books.service");
 const book_dto_1 = require("./dto/book.dto");
 let BookController = class BookController {
@@ -73,6 +74,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "deleteCategory", null);
 exports.BookController = BookController = __decorate([
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     (0, common_1.Controller)('book'),
     __metadata("design:paramtypes", [books_service_1.BookService])
 ], BookController);

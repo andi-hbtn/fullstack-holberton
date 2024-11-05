@@ -16,4 +16,9 @@ export class UserService {
 		const result = await this.userService.save(data);
 		return result;
 	}
+
+	public async findById(id: number): Promise<UserEntity[]> {
+		const result = await this.userService.findBy({id});
+		return result;
+	}
 }

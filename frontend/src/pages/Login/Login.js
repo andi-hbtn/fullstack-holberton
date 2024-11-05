@@ -1,29 +1,38 @@
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Form, InputGroup, Row, Container } from 'react-bootstrap';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
+import Alert from 'react-bootstrap/Alert';
 import "./Login.css";
 
 const Login = () => {
     const { login } = useAuthenticateContext();
-    const [validated, setValidated] = useState(false);
+    const navigate = useNavigate();
+    const [loginError,setLoginError]=useState({error:false,message:"",status:0});
     const [values, setValues] = useState({ email: "", password: "" });
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        if (validateValues(values)) {
-            await login(values);
-            setValidated(true);
-        } else {
-            setValidated(false);
-        }
+            try {
+                const result =  await login(values);
+                if(result.status === 201){
+                    navigate("/authors");
+                }else{
+                    throw new Error(result.response.data.statusCode);
+                }
+            } catch (error) {
+                if(error.message === "404"){
+                    setLoginError(
+                        {
+                            error:true,
+                            message:"User with this email was not found",
+                            status:404
+                        }
+                    );
+                }
+                return;
+            }
     }
-
-    const validateValues = (values) => {
-        const { email, password } = values;
-        return (email && email.length > 0) || (password && password.length > 0);
-    };
-
     const handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -37,12 +46,19 @@ const Login = () => {
         <Container>
             <Row>
                 <Col xs={8} className='form-container'>
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
                         <Row className="mb-3">
                             <h4 className="mb-5">Login</h4>
+                            {
+                                loginError.error ? 
+                                <Alert variant="danger">
+                                    We have not found user with this email
+                                </Alert>
+                                : ""  
+                            }
                             <Form.Group as={Col} md="10" controlId="email">
                                 <Form.Label>Email</Form.Label>
-                                <InputGroup hasValidation>
+                                <InputGroup>
                                     <Form.Control
                                         type="email"
                                         placeholder="Email"
@@ -59,7 +75,7 @@ const Login = () => {
                             </Form.Group>
                             <Form.Group as={Col} md="10" controlId="validationCustomUsername">
                                 <Form.Label>Password</Form.Label>
-                                <InputGroup hasValidation>
+                                <InputGroup>
                                     <Form.Control
                                         type="password"
                                         placeholder="Password"

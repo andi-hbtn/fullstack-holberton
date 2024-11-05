@@ -24,15 +24,12 @@ root.render(
       <CategoryProvider>
         <BookProvider>
           <BrowserRouter>
-
             <Routes>
-
-              <Route path="/login" element={<Login />} />
-              <Route path="/authors" element={<Authors />} />
-              <Route path="/category" element={<Categories />} />
-              <Route path="/books" element={<Books />} />
+              <Route path="/login"     element={<Login />} />
+              <Route path="/authors"   element={<Authors />} />
+              <Route path="/category"  element={<Categories />} />
+              <Route path="/books"     element={<Books />} />
             </Routes>
-
           </BrowserRouter>
         </BookProvider>
       </CategoryProvider>

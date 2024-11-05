@@ -1,12 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useAuthorContext } from "../../context/AuthorContext";
+import { useAuthenticateContext } from "../../context/AuthenticateContext";
+
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
+import "./Authors.css";
 
 const Authors = () => {
 	const { authors, createAuthor, deleteAuthor, updateAuthor } = useAuthorContext();
+	const{ authUser,logout } = useAuthenticateContext();
+	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
 	const [dataId, setDataId] = useState({});
@@ -28,6 +34,11 @@ const Authors = () => {
 		await deleteAuthor(id);
 	}
 
+	const handleLogout = async() =>{
+		await logout();
+		navigate("/login");
+	}
+
 	return (
 		<>
 			<Navbar bg="primary" variant="dark" expand="lg">
@@ -38,6 +49,25 @@ const Authors = () => {
 						<Nav.Link as={Link} to="/authors">Authors</Nav.Link>
 						<Nav.Link as={Link} to="/category">Categories</Nav.Link>
 						<Nav.Link as={Link} to="/books">Books</Nav.Link>
+					</Nav>
+					<Nav className="d-flex">
+						{
+							authUser ?
+							<>
+							<Nav>
+							<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
+							</Nav>
+							<div className="user-auth">
+								<span>
+									{
+										authUser.name?.charAt(0) +""+ authUser.lastname?.charAt(0) 
+									}
+								</span>
+							</div>
+							</>
+							:   
+							""
+						}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>

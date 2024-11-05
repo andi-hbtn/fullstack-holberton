@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, Get,UseGuards, Req } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
+import { AuthService } from './auth.service';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { LoginDto } from "./dto/login.dto";
 import { UserDto } from '../user/dto/user.dto';
@@ -8,12 +9,14 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 import { Response, Request } from 'express';
 import { ServiceHandler } from "../errorHandler/service.error";
+import { AuthGuard } from './guards/auth.guards';
 
 @Controller('auth')
 export class AuthController {
 
     constructor(
         private readonly userService: UserService,
+        private authService:AuthService,
         private jwtService: JwtService,
     ) { }
 
@@ -57,7 +60,7 @@ export class AuthController {
             response.cookie('jwt', jwt, { httpOnly: true });
             return user;
         } catch (error) {
-            throw new ServiceHandler(error.response, error.status)
+            throw new ServiceHandler(error.response, error.status);
         }
     }
 
@@ -66,6 +69,13 @@ export class AuthController {
     public logout(@Res({ passthrough: true }) response: Response) {
         response.clearCookie('jwt');
         return { "message": "success", "status": 200 }
+    }
+
+    @Get('checkUser')
+    @UseGuards(AuthGuard)
+    public async checkAuthUser(@Req() request :Request):Promise<UserEntity[]>{
+        const id = await this.authService.authUserId(request)
+        return await this.userService.findById(id);
     }
 
 }

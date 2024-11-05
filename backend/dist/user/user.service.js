@@ -29,6 +29,10 @@ let UserService = class UserService {
         const result = await this.userService.save(data);
         return result;
     }
+    async findById(id) {
+        const result = await this.userService.findBy({ id });
+        return result;
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
