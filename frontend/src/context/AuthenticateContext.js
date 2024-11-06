@@ -38,7 +38,6 @@ const AuthenticateProvider = (props) => {
 	const logout = async (id, data) => {
 		try {
 			const result = await logout_user_service();
-			console.log("result----",result);
 			if (result.status === 200) {
 				setAuthUser([]);
 			}

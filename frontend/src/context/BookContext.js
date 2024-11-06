@@ -1,17 +1,19 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { create_book_service, get_books_service, update_book_service, delete_book_service } from "../services/books";
+import { useAuthenticateContext } from './AuthenticateContext';
 import {get_category_service} from "../services/category";
 import {get_author_service} from "../services/author";
 const BookContext = createContext({});
 
 const BookProvider = (props) => {
+	const {authUser} = useAuthenticateContext();
 	const [books, setBooks] = useState([]);
 	const [categories,setCategories]=useState([]);
 	const [authors,setAuthors]=useState([]);
 
 	useEffect(() => {
 		getBooks();
-	}, []);
+	}, [authUser]);
 
 	const createBook = async (data) => {
 		try {

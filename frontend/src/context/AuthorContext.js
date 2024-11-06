@@ -1,14 +1,16 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { create_author_service, get_author_service, update_author_service, delete_author_service } from "../services/author";
+import { useAuthenticateContext } from './AuthenticateContext';
 
 const AuthorContext = createContext({});
 
 const AuthorProvider = (props) => {
+	const {authUser} = useAuthenticateContext();
 	const [authors, setAuthor] = useState([]);
 
 	useEffect(() => {
 		getAuthor();
-	}, []);
+	}, [authUser]);
 
 	const createAuthor = async (data) => {
 		try {

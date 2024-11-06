@@ -1,14 +1,16 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { create_category_service, get_category_service, update_category_service, delete_category_service } from "../services/category";
+import { useAuthenticateContext } from './AuthenticateContext';
 
 const CategoryContext = createContext({});
 
 const CategoryProvider = (props) => {
+	const {authUser} = useAuthenticateContext();
 	const [categories, setCategoris] = useState([]);
 
 	useEffect(() => {
 		getCategories();
-	}, []);
+	}, [authUser]);
 
 	const createCategories = async (data) => {
 		try {
