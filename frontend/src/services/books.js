@@ -4,15 +4,21 @@ const url = "http://localhost:3000/api/book";
 const create_book_service = async (data) => {
 
 	const book = {
-		author_id: parseInt(data.author_id),
-		category_id: parseInt(data.category_id),
+		title: data.title,
 		description: data.description,
-		is_active: data.is_active,
 		price: parseInt(data.price),
-		title: data.title
+		category_id: parseInt(data.category_id),
+		author_id: parseInt(data.author_id),
+		is_active: data.is_active,
+		image:data.image
 	}
-
-	const result = await axios.post(`${url}/create`, book);
+	console.log("book-----",book);
+	
+	const result = await axios.post(`${url}/create`,book,{
+			headers:{
+					"Content-Type":"multipart/form-data"
+				}
+		});
 	return result;
 }
 
@@ -29,7 +35,8 @@ const update_book_service = async (id, data) => {
 		description: data.description,
 		is_active: data.is_active,
 		price: parseInt(data.price),
-		title: data.title
+		title: data.title,
+		image:data.image
 	}
 	const result = await axios.put(`${url}/update/${id}`, book);
 	return result;

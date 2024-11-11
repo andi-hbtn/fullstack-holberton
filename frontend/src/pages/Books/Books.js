@@ -92,6 +92,7 @@ const Books = () => {
 										<th>Author</th>
 										<th>Price</th>
 										<th>Status</th>
+										<th>Image</th>
 										<th>Edit</th>
 										<th>Delete</th>
 									</tr>
@@ -110,6 +111,9 @@ const Books = () => {
 
 													<td>${book?.price}</td>
 													<td>{book.is_active ? "Is available" : "Not available"}</td>
+													<td>
+														<img src={`http://localhost:3000/api/book/uploads/${book.image}`} alt="book alt"/>
+													</td>
 													<td>
 														<Button variant="primary" onClick={() => { handleEdit(book.id) }}>Edit</Button>
 													</td>

@@ -20,11 +20,21 @@ export class BookService {
 		}
 	}
 
-	public async createBooks(data: BookDto): Promise<any> {
+	public async createBooks(data: BookDto,file:string): Promise<any> {
 		try {
-			const result = await this.bookEntity.save(data);
+			const book={
+				title:data.title,
+				description:data.description,
+				price:data.price,
+				category_id:data.category_id,
+				author_id:data.author_id,
+				is_active:data.is_active,
+				image:file
+			};
+			const result = await this.bookEntity.save(book);
 			return result;
 		} catch (error) {
+			console.log("error-----",error);
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -18,6 +18,7 @@ const BookProvider = (props) => {
 	const createBook = async (data) => {
 		try {
 			const result = await create_book_service(data);
+			// console.log("result context----",result);
 			if (result.status === 201) {
 				await getBooks();
 			}

@@ -9,7 +9,10 @@ const ModalManager = ({ open, categories, authors, close, case_modal, id, fields
 	const handleChange = (event) => {
 		const { name, value, type, checked } = event.target;
 		setFormData((prev) => {
-			return { ...prev, [name]: type === "checkbox" ? checked : value, };
+			return { 
+				...prev, 
+				[name]: type === "checkbox" ? checked : type === "file" ? event.target.files[0] : value
+			};
 		});
 	}
 
@@ -31,7 +34,7 @@ const ModalManager = ({ open, categories, authors, close, case_modal, id, fields
 				backdrop="static"
 				keyboard={false}
 			>
-				<Form onSubmit={onSubmit}>
+				<Form onSubmit={onSubmit} encType="multipart/form-data">
 					<Modal.Header closeButton>
 						<Modal.Title>{case_modal.title}</Modal.Title>
 					</Modal.Header>
@@ -59,41 +62,53 @@ const ModalManager = ({ open, categories, authors, close, case_modal, id, fields
 
 												: field.name === "author_id" ?
 													(
-														<Form.Group key={index} className="mb-3">
-															<Form.Select name={field.name} onChange={handleChange} aria-label="Default select example">
-																{
-																	authors.map((author, i) => {
-																		return (
-																			<option key={i} value={author.id}>{author.name}</option>
-																		)
-																	})
-																}
-															</Form.Select>
-														</Form.Group>
+													<Form.Group key={index} className="mb-3">
+														<Form.Select name={field.name} onChange={handleChange} aria-label="Default select example">
+															{
+																authors.map((author, i) => {
+																	return (
+																		<option key={i} value={author.id}>{author.name}</option>
+																	)
+																})
+															}
+														</Form.Select>
+													</Form.Group>
 													)
-													: field.name === "is_active" ?
+													: field.name === "image" ?
+													(
 														<Form.Group key={index} className="mb-3">
-															<Form.Check
-																name={field.name}
+															<Form.Label>{field.label}</Form.Label>
+															<Form.Control
 																type={field.type}
-																label={field.label}
-																checked={formData[field.name]}
+																name={field.name}
 																onChange={handleChange}
 															/>
 														</Form.Group>
-														:
-														(
-															<Form.Group key={index} className="mb-3">
-																<Form.Label>{field.label}</Form.Label>
-																<Form.Control
-																	type={field.type}
-																	name={field.name}
-																	placeholder={field.placeholder}
-																	onChange={handleChange}
-																	value={formData[field.name]}
-																/>
-															</Form.Group>
-														)
+													)
+													
+												:field.name === "is_active" ?
+													<Form.Group key={index} className="mb-3">
+														<Form.Check
+															name={field.name}
+															type={field.type}
+															label={field.label}
+															checked={formData[field.name]}
+															onChange={handleChange}
+														/>
+													</Form.Group>
+												:
+													(
+														<Form.Group key={index} className="mb-3">
+															<Form.Label>{field.label}</Form.Label>
+															<Form.Control
+																type={field.type}
+																name={field.name}
+																placeholder={field.placeholder}
+																onChange={handleChange}
+																value={formData[field.name]}
+															/>
+														</Form.Group>
+													)
 										}
 									</>
 								)

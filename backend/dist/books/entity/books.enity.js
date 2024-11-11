@@ -54,6 +54,10 @@ __decorate([
     (0, typeorm_1.Column)({ name: 'category_id', nullable: false }),
     __metadata("design:type", Number)
 ], BookEntity.prototype, "category_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], BookEntity.prototype, "image", void 0);
 exports.BookEntity = BookEntity = __decorate([
     (0, typeorm_1.Entity)('books')
 ], BookEntity);

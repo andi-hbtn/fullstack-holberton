@@ -10,4 +10,5 @@ export declare class BookEntity {
     author: AuthorEntity;
     author_id: number;
     category_id: number;
+    image: string;
 }

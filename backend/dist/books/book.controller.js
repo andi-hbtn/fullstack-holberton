@@ -17,6 +17,9 @@ const common_1 = require("@nestjs/common");
 const auth_guards_1 = require("../auth/guards/auth.guards");
 const books_service_1 = require("./books.service");
 const book_dto_1 = require("./dto/book.dto");
+const multer_1 = require("multer");
+const imageName_helper_1 = require("../helpers/imageName.helper");
+const platform_express_1 = require("@nestjs/platform-express");
 let BookController = class BookController {
     constructor(bookService) {
         this.bookService = bookService;
@@ -24,8 +27,9 @@ let BookController = class BookController {
     async getAll() {
         return await this.bookService.getAllBooks();
     }
-    async cretePost(bodyParam) {
-        return await this.bookService.createBooks(bodyParam);
+    async cretePost(bodyParam, file) {
+        console.log("bodyParam----", bodyParam);
+        return await this.bookService.createBooks(bodyParam, file.filename);
     }
     async update(bodyParam, id) {
         return await this.bookService.updateBooks(bodyParam, id);
@@ -35,6 +39,9 @@ let BookController = class BookController {
     }
     async deleteCategory(id) {
         return await this.bookService.deleteBook(id);
+    }
+    getImage(path, res) {
+        res.sendFile(path.path, { root: 'uploads' });
     }
 };
 exports.BookController = BookController;
@@ -46,9 +53,19 @@ __decorate([
 ], BookController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Post)('create'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', {
+        storage: (0, multer_1.diskStorage)({
+            destination: './uploads',
+            filename: (req, image, cb) => {
+                const imageName = new imageName_helper_1.ImageNameHelper(image.originalname).getImageName();
+                cb(null, imageName);
+            }
+        }),
+    })),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [book_dto_1.BookDto]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "cretePost", null);
 __decorate([
@@ -73,6 +90,15 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "deleteCategory", null);
+__decorate([
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
+    (0, common_1.Get)('uploads/:path'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], BookController.prototype, "getImage", null);
 exports.BookController = BookController = __decorate([
     (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     (0, common_1.Controller)('book'),

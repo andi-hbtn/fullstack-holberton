@@ -33,12 +33,22 @@ let BookService = class BookService {
             throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async createBooks(data) {
+    async createBooks(data, file) {
         try {
-            const result = await this.bookEntity.save(data);
+            const book = {
+                title: data.title,
+                description: data.description,
+                price: data.price,
+                category_id: data.category_id,
+                author_id: data.author_id,
+                is_active: data.is_active,
+                image: file
+            };
+            const result = await this.bookEntity.save(book);
             return result;
         }
         catch (error) {
+            console.log("error-----", error);
             throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

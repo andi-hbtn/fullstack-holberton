@@ -31,6 +31,11 @@ const fields = [
         type: "switch",
         name: "is_active",
         label: "Book availability",
+    },
+    {
+        type:"file",
+        name:"image",
+        label:"Upload Image"
     }
 ];
 

@@ -25,5 +25,4 @@ export class BookDto {
 	@IsNotEmpty()
 	@IsNumber()
 	author_id: number;
-
 }
