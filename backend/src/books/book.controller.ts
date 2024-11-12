@@ -29,8 +29,8 @@ export class BookController {
             }
         }),
     }))
-	public async cretePost(@Body() bodyParam: any, @UploadedFile() file: Express.Multer.File) {
-		console.log("bodyParam----",bodyParam);
+	public async cretePost(@Body() bodyParam: BookDto, @UploadedFile() file: Express.Multer.File) {
+		//console.log("bodyParam----",bodyParam);
 		return await this.bookService.createBooks(bodyParam,file.filename);
 	}
 

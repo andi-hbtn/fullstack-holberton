@@ -6,6 +6,7 @@ import { useBookContext } from "../../context/BookContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
+import "./Books.css";
 const Books = () => {
 	const { books, categories, authors, createBook, updateBook, deleteBook } = useBookContext();
 	const{ authUser,logout } = useAuthenticateContext();
@@ -112,7 +113,7 @@ const Books = () => {
 													<td>${book?.price}</td>
 													<td>{book.is_active ? "Is available" : "Not available"}</td>
 													<td>
-														<img src={`http://localhost:3000/api/book/uploads/${book.image}`} alt="book alt"/>
+														<img className="small-img" src={`http://localhost:3000/api/book/uploads/${book.image}`} alt="book alt"/>
 													</td>
 													<td>
 														<Button variant="primary" onClick={() => { handleEdit(book.id) }}>Edit</Button>

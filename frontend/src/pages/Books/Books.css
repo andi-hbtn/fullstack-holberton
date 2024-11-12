@@ -36,3 +36,8 @@
 	width: 40%;
 	display: inline-block;
 }
+
+.small-img{
+	width: 60px;
+	height: 60px;
+}

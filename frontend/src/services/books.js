@@ -12,14 +12,39 @@ const create_book_service = async (data) => {
 		is_active: data.is_active,
 		image:data.image
 	}
-	console.log("book-----",book);
-	
 	const result = await axios.post(`${url}/create`,book,{
 			headers:{
 					"Content-Type":"multipart/form-data"
 				}
 		});
 	return result;
+
+
+
+
+
+
+	// const formData = new FormData();
+
+	// // Append the regular fields
+	// formData.append('title', data.title);
+	// formData.append('description', data.description);
+	// formData.append('price', data.price);
+	// formData.append('category_id', data.category_id);
+	// formData.append('author_id', data.author_id);
+	// formData.append('is_active', data.is_active);
+  
+	// // Append the image file
+	// formData.append('image', data.image);
+  
+	// const response = await axios.post(`${url}/create`, formData, {
+	//   headers: {
+	// 	'Content-Type': 'multipart/form-data',
+	//   },
+	// });
+  
+	// return response.data;
+
 }
 
 const get_books_service = async () => {

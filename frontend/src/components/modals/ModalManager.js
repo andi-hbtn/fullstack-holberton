@@ -10,7 +10,7 @@ const ModalManager = ({ open, categories, authors, close, case_modal, id, fields
 		const { name, value, type, checked } = event.target;
 		setFormData((prev) => {
 			return { 
-				...prev, 
+				...prev,
 				[name]: type === "checkbox" ? checked : type === "file" ? event.target.files[0] : value
 			};
 		});
