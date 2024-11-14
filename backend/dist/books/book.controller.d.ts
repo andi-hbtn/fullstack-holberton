@@ -7,7 +7,7 @@ export declare class BookController {
     constructor(bookService: BookService);
     getAll(): Promise<BookEntity[]>;
     cretePost(bodyParam: BookDto, file: Express.Multer.File): Promise<any>;
-    update(bodyParam: BookDto, id: number): Promise<BookEntity>;
+    update(bodyParam: BookDto, id: number, file: Express.Multer.File): Promise<any>;
     getById(id: number): Promise<BookEntity>;
     deleteCategory(id: number): Promise<any>;
     getImage(path: any, res: Response): void;

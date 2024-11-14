@@ -5,4 +5,5 @@ export declare class BookDto {
     is_active: boolean;
     category_id: number;
     author_id: number;
+    image: string;
 }

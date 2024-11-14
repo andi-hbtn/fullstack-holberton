@@ -20,6 +20,7 @@ const book_dto_1 = require("./dto/book.dto");
 const multer_1 = require("multer");
 const imageName_helper_1 = require("../helpers/imageName.helper");
 const platform_express_1 = require("@nestjs/platform-express");
+const fs = require("fs");
 let BookController = class BookController {
     constructor(bookService) {
         this.bookService = bookService;
@@ -30,14 +31,26 @@ let BookController = class BookController {
     async cretePost(bodyParam, file) {
         return await this.bookService.createBooks(bodyParam, file.filename);
     }
-    async update(bodyParam, id) {
-        return await this.bookService.updateBooks(bodyParam, id);
+    async update(bodyParam, id, file) {
+        const book = await this.bookService.getBookById(id);
+        if (book) {
+            if (file) {
+                fs.unlinkSync('uploads/' + book.image);
+                return await this.bookService.updateBooks(bodyParam, id, file.filename);
+            }
+            return await this.bookService.updateBooks(bodyParam, id, book?.image);
+        }
     }
     async getById(id) {
         return await this.bookService.getBookById(id);
     }
     async deleteCategory(id) {
-        return await this.bookService.deleteBook(id);
+        const book = await this.bookService.getBookById(id);
+        if (book) {
+            const files = await fs.promises.readdir('uploads');
+            fs.unlinkSync('uploads/' + book.image);
+            await this.bookService.deleteBook(id);
+        }
     }
     getImage(path, res) {
         res.sendFile(path.path, { root: 'uploads' });
@@ -69,10 +82,20 @@ __decorate([
 ], BookController.prototype, "cretePost", null);
 __decorate([
     (0, common_1.Put)('update/:id'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', {
+        storage: (0, multer_1.diskStorage)({
+            destination: './uploads',
+            filename: (req, image, cb) => {
+                const imageName = new imageName_helper_1.ImageNameHelper(image.originalname).getImageName();
+                cb(null, imageName);
+            }
+        }),
+    })),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [book_dto_1.BookDto, Number]),
+    __metadata("design:paramtypes", [book_dto_1.BookDto, Number, Object]),
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "update", null);
 __decorate([
@@ -83,7 +106,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BookController.prototype, "getById", null);
 __decorate([
-    (0, common_1.Delete)('book/:id'),
+    (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

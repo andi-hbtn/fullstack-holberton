@@ -39,13 +39,22 @@ export class BookService {
 		}
 	}
 
-	public async updateBooks(data: BookDto, id: number): Promise<BookEntity> {
+	public async updateBooks(data: BookDto, id: number,file?:string): Promise<BookEntity> {
 		try {
 			const category = await this.bookEntity.findOne({ where: { id } });
 			if (!category) {
 				throw new ServiceHandler("This is category does not longer Exist", HttpStatus.NOT_FOUND);
 			}
-			await this.bookEntity.update(id, data);
+			const book = {
+				title:data.title,
+				description:data.description,
+				price:data.price,
+				is_active:data.is_active,
+				category_id:data.category_id,
+				author_id:data.author_id,
+				image:file
+			}
+			await this.bookEntity.update(id, book);
 			const updatedCategory = await this.bookEntity.findOne({ where: { id } });
 			return updatedCategory;
 		} catch (error) {

@@ -30,4 +30,6 @@ export class BookDto {
 	@IsNumber()
 	@Transform(({ value }) => parseInt(value))
 	author_id: number;
+
+	image:string
 }

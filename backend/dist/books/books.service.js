@@ -52,13 +52,22 @@ let BookService = class BookService {
             throw new service_error_1.ServiceHandler(error.message, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async updateBooks(data, id) {
+    async updateBooks(data, id, file) {
         try {
             const category = await this.bookEntity.findOne({ where: { id } });
             if (!category) {
                 throw new service_error_1.ServiceHandler("This is category does not longer Exist", common_1.HttpStatus.NOT_FOUND);
             }
-            await this.bookEntity.update(id, data);
+            const book = {
+                title: data.title,
+                description: data.description,
+                price: data.price,
+                is_active: data.is_active,
+                category_id: data.category_id,
+                author_id: data.author_id,
+                image: file
+            };
+            await this.bookEntity.update(id, book);
             const updatedCategory = await this.bookEntity.findOne({ where: { id } });
             return updatedCategory;
         }

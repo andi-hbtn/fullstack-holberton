@@ -7,6 +7,7 @@ import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
+import * as fs from "fs";
 
 
 @UseGuards(AuthGuard)
@@ -30,13 +31,29 @@ export class BookController {
         }),
     }))
 	public async cretePost(@Body() bodyParam: BookDto, @UploadedFile() file: Express.Multer.File) {
-		//console.log("bodyParam----",bodyParam);
 		return await this.bookService.createBooks(bodyParam,file.filename);
 	}
 
 	@Put('update/:id')
-	public async update(@Body() bodyParam: BookDto, @Param('id', ParseIntPipe) id: number): Promise<BookEntity> {
-		return await this.bookService.updateBooks(bodyParam, id);
+	@UseInterceptors(FileInterceptor('image', {
+        storage: diskStorage({
+            destination: './uploads',
+            filename: (req, image, cb) => {
+                const imageName = new ImageNameHelper(image.originalname).getImageName();
+                cb(null, imageName);
+            }
+        }),
+    }))
+	public async update(@Body() bodyParam: BookDto, @Param('id', ParseIntPipe) id: number,@UploadedFile() file: Express.Multer.File): Promise<any> {
+		const book = await this.bookService.getBookById(id);
+		if(book){
+			if(file) {
+                //const files = await fs.promises.readdir('uploads');
+                fs.unlinkSync('uploads/' + book.image);
+                return await this.bookService.updateBooks(bodyParam, id, file.filename);
+			}
+			return await this.bookService.updateBooks(bodyParam, id, book?.image);
+		}
 	}
 
 	@Get('get/:id')
@@ -44,9 +61,14 @@ export class BookController {
 		return await this.bookService.getBookById(id);
 	}
 
-	@Delete('book/:id')
+	@Delete('delete/:id')
 	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
-		return await this.bookService.deleteBook(id);
+		const book = await this.bookService.getBookById(id);
+        if (book) {
+            const files = await fs.promises.readdir('uploads');
+            fs.unlinkSync('uploads/' + book.image);
+            await this.bookService.deleteBook(id)
+        }
 	}
 
 	@UseGuards(AuthGuard)

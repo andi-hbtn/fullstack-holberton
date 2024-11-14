@@ -6,7 +6,7 @@ export declare class BookService {
     constructor(bookEntity: Repository<BookEntity>);
     getAllBooks(): Promise<BookEntity[]>;
     createBooks(data: BookDto, file: string): Promise<any>;
-    updateBooks(data: BookDto, id: number): Promise<BookEntity>;
+    updateBooks(data: BookDto, id: number, file?: string): Promise<BookEntity>;
     getBookById(id: number): Promise<BookEntity>;
     deleteBook(id: number): Promise<any>;
 }
