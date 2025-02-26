@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsNumber, IsBoolean } from "class-validator";
 import { Transform } from 'class-transformer';
 
-export class BookDto {
+export class ProductDto {
 
 	@IsNotEmpty()
 	@IsString()

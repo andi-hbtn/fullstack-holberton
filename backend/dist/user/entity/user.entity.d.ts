@@ -5,4 +5,5 @@ export declare class UserEntity {
     email: string;
     is_admin: boolean;
     password: string;
+    createdAt: Date;
 }

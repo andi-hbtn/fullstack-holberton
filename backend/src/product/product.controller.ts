@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe,UseGuards, UseInterceptors, Res, UploadedFile } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/guards/auth.guards';
+import { AuthGuard } from 'src/guards/auth.guards';
 import { BookService } from './books.service';
-import { BookEntity } from './entity/books.enity';
-import { BookDto } from './dto/book.dto';
+import { ProductEntity } from './entity/products.enity';
+import { ProductDto } from './dto/product.dto';
 import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
@@ -11,8 +11,8 @@ import * as fs from "fs";
 
 
 @UseGuards(AuthGuard)
-@Controller('book')
-export class BookController {
+@Controller('product')
+export class ProductController {
 	constructor(private readonly bookService: BookService) { }
 
 	@Get('all')
@@ -30,7 +30,7 @@ export class BookController {
             }
         }),
     }))
-	public async cretePost(@Body() bodyParam: BookDto, @UploadedFile() file: Express.Multer.File) {
+	public async cretePost(@Body() bodyParam: ProductDto, @UploadedFile() file: Express.Multer.File) {
 		return await this.bookService.createBooks(bodyParam,file.filename);
 	}
 
@@ -44,7 +44,7 @@ export class BookController {
             }
         }),
     }))
-	public async update(@Body() bodyParam: BookDto, @Param('id', ParseIntPipe) id: number,@UploadedFile() file: Express.Multer.File): Promise<any> {
+	public async update(@Body() bodyParam: ProductDto, @Param('id', ParseIntPipe) id: number,@UploadedFile() file: Express.Multer.File): Promise<any> {
 		const book = await this.bookService.getBookById(id);
 		if(book){
 			if(file) {
@@ -57,7 +57,7 @@ export class BookController {
 	}
 
 	@Get('get/:id')
-	public async getById(@Param('id', ParseIntPipe) id: number): Promise<BookEntity> {
+	public async getById(@Param('id', ParseIntPipe) id: number): Promise<ProductEntity> {
 		return await this.bookService.getBookById(id);
 	}
 

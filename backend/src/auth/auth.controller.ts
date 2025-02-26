@@ -9,7 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 import { Response, Request } from 'express';
 import { ServiceHandler } from "../errorHandler/service.error";
-import { AuthGuard } from './guards/auth.guards';
+import { AuthGuard } from '../guards/auth.guards';
 
 @Controller('auth')
 export class AuthController {

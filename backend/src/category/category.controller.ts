@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe,UseGuards
 import { CategoryService } from './category.service';
 import { CategoryEntity } from './entity/category.entity';
 import { CategoryDto } from './dto/category.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guards';
+import { AuthGuard } from 'src/guards/auth.guards';
 
 @UseGuards(AuthGuard)
 @Controller('category')

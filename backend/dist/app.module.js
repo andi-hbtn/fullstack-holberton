@@ -11,13 +11,12 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const category_module_1 = require("./category/category.module");
 const category_entity_1 = require("./category/entity/category.entity");
-const books_enity_1 = require("./books/entity/books.enity");
-const books_module_1 = require("./books/books.module");
-const author_module_1 = require("./author/author.module");
-const author_entity_1 = require("./author/entity/author.entity");
+const products_enity_1 = require("./product/entity/products.enity");
+const product_module_1 = require("./product/product.module");
 const user_module_1 = require("./user/user.module");
 const user_entity_1 = require("./user/entity/user.entity");
 const auth_module_1 = require("./auth/auth.module");
+const order_module_1 = require("./order/order.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,14 +27,14 @@ exports.AppModule = AppModule = __decorate([
                 type: 'mysql',
                 host: 'localhost',
                 port: 3306,
-                username: 'admin',
+                username: 'root',
                 password: 'root',
-                database: 'holberton-fullstack',
-                entities: [category_entity_1.CategoryEntity, books_enity_1.BookEntity, author_entity_1.AuthorEntity, user_entity_1.UserEntity],
+                database: 'glass_shop',
+                entities: [category_entity_1.CategoryEntity, products_enity_1.ProductEntity, user_entity_1.UserEntity],
                 synchronize: true,
                 autoLoadEntities: true
             }),
-            books_module_1.BookModule, category_module_1.CategoryModule, author_module_1.AuthorModule, user_module_1.UserModule, auth_module_1.AuthModule
+            product_module_1.ProductModule, category_module_1.CategoryModule, user_module_1.UserModule, auth_module_1.AuthModule, order_module_1.OrderModule
         ],
         controllers: [],
         providers: [],
