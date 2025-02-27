@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 import { CategoryEntity } from "src/category/entity/category.entity";
+import { OrderItemEntity } from "src/order/entity/order_item.entity";
 
 @Entity('products')
 export class ProductEntity {
@@ -24,9 +25,6 @@ export class ProductEntity {
 	@ManyToOne(() => CategoryEntity, (category) => category.books, { cascade: true })
 	@JoinColumn({ name: 'category_id' })
 	category: CategoryEntity;
-
-	@Column({ name: 'category_id', nullable: false })
-	category_id: number;
 
 	@Column()
 	image: string;

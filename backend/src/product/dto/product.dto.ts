@@ -26,10 +26,5 @@ export class ProductDto {
 	@Transform(({ value }) => parseInt(value))
 	category_id: number;
 
-	@IsNotEmpty()
-	@IsNumber()
-	@Transform(({ value }) => parseInt(value))
-	author_id: number;
-
 	image:string
 }

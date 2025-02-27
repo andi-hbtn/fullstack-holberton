@@ -1,3 +1,4 @@
+import { OrderEntity } from "src/order/entity/order.entity";
 export declare class UserEntity {
     id: number;
     name: string;
@@ -6,4 +7,5 @@ export declare class UserEntity {
     is_admin: boolean;
     password: string;
     createdAt: Date;
+    order: OrderEntity[];
 }

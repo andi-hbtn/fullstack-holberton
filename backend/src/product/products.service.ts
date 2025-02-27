@@ -6,13 +6,13 @@ import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
 
 @Injectable()
-export class BookService {
+export class ProductService {
 	constructor(@InjectRepository(ProductEntity) private readonly ProductEntity: Repository<ProductEntity>) { }
 
-	public async getAllBooks(): Promise<ProductEntity[]> {
+	public async getAllProducts(): Promise<ProductEntity[]> {
 		try {
 			const result = await this.ProductEntity.find({
-				relations:['category','author']
+				relations:['category']
 			});
 			return result;
 		} catch (error) {
@@ -20,18 +20,17 @@ export class BookService {
 		}
 	}
 
-	public async createBooks(data: ProductDto,file:string): Promise<any> {
+	public async createProduct(data: ProductDto,file:string): Promise<any> {
 		try {
-			const book={
+			const product={
 				title:data.title,
 				description:data.description,
 				price:data.price,
 				category_id:data.category_id,
-				author_id:data.author_id,
 				is_active:data.is_active,
 				image:file
 			};
-			const result = await this.ProductEntity.save(book);
+			const result = await this.ProductEntity.save(product);
 			return result;
 		} catch (error) {
 			console.log("error-----",error);
@@ -39,22 +38,21 @@ export class BookService {
 		}
 	}
 
-	public async updateBooks(data: ProductDto, id: number,file?:string): Promise<ProductEntity> {
+	public async updateProduct(data: ProductDto, id: number,file?:string): Promise<ProductEntity> {
 		try {
 			const category = await this.ProductEntity.findOne({ where: { id } });
 			if (!category) {
 				throw new ServiceHandler("This is category does not longer Exist", HttpStatus.NOT_FOUND);
 			}
-			const book = {
+			const product = {
 				title:data.title,
 				description:data.description,
 				price:data.price,
 				is_active:data.is_active,
 				category_id:data.category_id,
-				author_id:data.author_id,
 				image:file
 			}
-			await this.ProductEntity.update(id, book);
+			await this.ProductEntity.update(id, product);
 			const updatedCategory = await this.ProductEntity.findOne({ where: { id } });
 			return updatedCategory;
 		} catch (error) {
@@ -62,7 +60,7 @@ export class BookService {
 		}
 	}
 
-	public async getBookById(id: number): Promise<ProductEntity> {
+	public async getProductById(id: number): Promise<ProductEntity> {
 		try {
 			const result = this.ProductEntity.findOne({ where: { id } })
 			if (!result) {
@@ -74,7 +72,7 @@ export class BookService {
 		}
 	}
 
-	public async deleteBook(id: number): Promise<any> {
+	public async deleteProduct(id: number): Promise<any> {
 		try {
 			const result = this.ProductEntity.findOne({ where: { id } });
 			if (!result) {
