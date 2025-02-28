@@ -19,13 +19,10 @@ export class OrderService {
     public async create(orderData:OrderDto): Promise<OrderEntity> {
         const { user_id, items, total_price, status, createdAt } = orderData;
 
-        // console.log("items--48---",items);
+        let user: UserEntity | null = null;
 
-        // Fetch the user entity
-        const user = await this.usersRepository.findOne({ where: { id: user_id } });
-    
-        if (!user) {
-          throw new Error('User not found');
+        if (user_id) {
+          user = await this.usersRepository.findOne({ where: { id: user_id } });
         }
 
         // Create OrderEntity instance
@@ -42,14 +39,7 @@ export class OrderService {
         // Create order items
         const orderItems = await Promise.all(
           items.map(async (item) => {
-
-            console.log("item----",item);
-
-
             const product = await this.productsRepository.findOne({ where: { id: item.product_id } });
-
-            console.log("product----",product);
-
             if (!product) {
               throw new Error(`Product with ID ${item.product_id} not found`);
             }

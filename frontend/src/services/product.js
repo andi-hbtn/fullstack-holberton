@@ -1,9 +1,9 @@
 import axios from "axios";
-const url = "http://localhost:3000/api/book";
+const url = "http://localhost:3000/api/product";
 
-const create_book_service = async (data) => {
+const create_product_service = async (data) => {
 
-	const book = {
+	const product = {
 		title: data.title,
 		description: data.description,
 		price: parseInt(data.price),
@@ -12,7 +12,7 @@ const create_book_service = async (data) => {
 		is_active: data.is_active,
 		image:data.image
 	}
-	const result = await axios.post(`${url}/create`,book,{
+	const result = await axios.post(`${url}/create`,product,{
 			headers:{
 					"Content-Type":"multipart/form-data"
 				}
@@ -21,14 +21,14 @@ const create_book_service = async (data) => {
 
 }
 
-const get_books_service = async () => {
+const get_products_service = async () => {
 	const result = await axios.get(`${url}/all`);
 	return result;
 }
 
-const update_book_service = async (id, data) => {
+const update_product_service = async (id, data) => {
 
-	const book = {
+	const product = {
 		author_id: parseInt(data.author_id),
 		category_id: parseInt(data.category_id),
 		description: data.description,
@@ -38,9 +38,9 @@ const update_book_service = async (id, data) => {
 		image:data.image
 	}
 
-	// console.log("book----",book);
+	// console.log("product----",product);
 
-	const result = await axios.put(`${url}/update/${id}`, book,{
+	const result = await axios.put(`${url}/update/${id}`, product,{
 		headers:{
 				"Content-Type":"multipart/form-data"
 			}
@@ -48,9 +48,9 @@ const update_book_service = async (id, data) => {
 	return result;
 }
 
-const delete_book_service = async (id) => {
+const delete_product_service = async (id) => {
 	const result = await axios.delete(`${url}/delete/${id}`);
 	return result;
 }
 
-export { get_books_service, create_book_service, update_book_service, delete_book_service }
+export { get_products_service, create_product_service, update_product_service, delete_product_service }

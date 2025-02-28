@@ -59,22 +59,7 @@ const ModalManager = ({ open, categories, authors, close, case_modal, id, fields
 														</Form.Select>
 													</Form.Group>
 												)
-
-												: field.name === "author_id" ?
-													(
-													<Form.Group key={index} className="mb-3">
-														<Form.Select name={field.name} onChange={handleChange} aria-label="Default select example">
-															{
-																authors.map((author, i) => {
-																	return (
-																		<option key={i} value={author.id}>{author.name}</option>
-																	)
-																})
-															}
-														</Form.Select>
-													</Form.Group>
-													)
-													: field.name === "image" ?
+												: field.name === "image" ?
 													(
 														<Form.Group key={index} className="mb-3">
 															<Form.Label>{field.label}</Form.Label>

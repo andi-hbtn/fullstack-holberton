@@ -7,7 +7,7 @@ export class UserEntity {
 	id: number;
 
 	@Column()
-	name: string;
+	firstname: string;
 
 	@Column()
 	lastname: string;
@@ -21,7 +21,7 @@ export class UserEntity {
 	@Column()
 	password: string;
 
-	@Column()
+	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   	createdAt: Date;
 
 	@OneToMany(()=>OrderEntity,order=>order.user)

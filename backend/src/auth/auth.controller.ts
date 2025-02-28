@@ -29,11 +29,12 @@ export class AuthController {
             } else {
                 const hashedPassword = await bcrypt.hash(bodyParam?.password, 10);
                 const user = {
-                    name: bodyParam.name,
+                    firstname: bodyParam.firstname,
                     lastname: bodyParam.lastname,
                     email: bodyParam.email,
                     password: hashedPassword,
-                    is_admin: true
+                    is_admin: false,
+                    createdAt: new Date()
                 }
                 return this.userService.registerUser(user);
             }

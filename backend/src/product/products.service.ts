@@ -26,6 +26,7 @@ export class ProductService {
 				title:data.title,
 				description:data.description,
 				price:data.price,
+				stock:data.stock,
 				category_id:data.category_id,
 				is_active:data.is_active,
 				image:file

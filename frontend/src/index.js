@@ -5,14 +5,14 @@ import ReactDOM from 'react-dom/client';
 
 import { AuthenticateProvider } from './context/AuthenticateContext';
 import { CategoryProvider } from "./context/CategoryContext";
-import { AuthorProvider } from "./context/AuthorContext";
-import { BookProvider } from './context/BookContext';
+import { ProductProvider } from './context/ProductContext';
 
 import Categories from "./pages/Categories/Categories";
-import Authors from './pages/Authors/Authors';
-import Books from "./pages/Books/Books";
+import Products from "./pages/Products/index.js";
+import Home from './pages/Home/index.js';
 
-import Login from './pages/Login/Login';
+import Login from './pages/Auth/Login.js';
+import Register from './pages/Auth/Register.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
@@ -20,20 +20,19 @@ axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthenticateProvider>
-    <AuthorProvider>
       <CategoryProvider>
-        <BookProvider>
+        <ProductProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/login"     element={<Login />} />
-              <Route path="/authors"   element={<Authors />} />
+              <Route path="/register"     element={<Register />} />
               <Route path="/category"  element={<Categories />} />
-              <Route path="/books"     element={<Books />} />
+              <Route path="/products"  element={<Products />} />
+              <Route path="/"  element={<Home />} />
             </Routes>
           </BrowserRouter>
-        </BookProvider>
+        </ProductProvider>
       </CategoryProvider>
-    </AuthorProvider>
   </AuthenticateProvider>
 );
 

@@ -1,9 +1,9 @@
-import { IsNumber, IsNotEmpty, IsArray, IsEnum,IsDateString} from "class-validator";
+import { IsNumber, IsNotEmpty, IsArray, IsEnum,IsDateString, IsOptional} from "class-validator";
 
 export class OrderDto {
+	@IsOptional()
 	@IsNumber()
-	@IsNotEmpty()
-	user_id: number;
+	user_id?: number;
 
 	@IsArray()
 	@IsNotEmpty()
@@ -21,5 +21,4 @@ export class OrderDto {
 
 	@IsDateString()
 	createdAt:Date
-
 }

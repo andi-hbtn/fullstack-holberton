@@ -34,7 +34,6 @@ let CategoryService = class CategoryService {
     }
     async createCategory(data) {
         try {
-            console.log("create method in service");
             const result = await this.categoryRepository.save(data);
             return result;
         }

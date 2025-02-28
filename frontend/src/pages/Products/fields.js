@@ -30,7 +30,7 @@ const fields = [
     {
         type: "switch",
         name: "is_active",
-        label: "Book availability",
+        label: "Product availability",
     },
     {
         type:"file",

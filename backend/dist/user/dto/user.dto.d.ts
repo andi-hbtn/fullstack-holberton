@@ -1,6 +1,7 @@
 export declare class UserDto {
-    name: string;
+    firstname: string;
     lastname: string;
     email: string;
     password: string;
+    createdAt: Date;
 }

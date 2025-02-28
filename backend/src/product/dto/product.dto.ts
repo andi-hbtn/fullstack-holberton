@@ -17,6 +17,11 @@ export class ProductDto {
 	price: number;
 
 	@IsNotEmpty()
+	@IsNumber()
+	@Transform(({ value }) => parseInt(value))
+	stock:number;
+
+	@IsNotEmpty()
 	@IsBoolean()
 	@Transform(({ value }) => value === 'true')
 	is_active: boolean;

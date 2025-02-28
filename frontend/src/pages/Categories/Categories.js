@@ -17,13 +17,13 @@ const Categories = () => {
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
-		setCaseModal({ title: "Create Book", create: true, button: "Create" });
+		setCaseModal({ title: "Create Product", create: true, button: "Create" });
 		setOpen(!open);
 	}
 
 	const handleEdit = (id) => {
 		setDataId(id);
-		setCaseModal({ title: "Edit Book", create: false, button: "Update" })
+		setCaseModal({ title: "Edit Product", create: false, button: "Update" })
 		setOpen(!open);
 	}
 
@@ -46,7 +46,7 @@ const Categories = () => {
 					<Nav className="me-auto">
 						<Nav.Link as={Link} to="/authors">Authors</Nav.Link>
 						<Nav.Link as={Link} to="/category">Categories</Nav.Link>
-						<Nav.Link as={Link} to="/books">Books</Nav.Link>
+						<Nav.Link as={Link} to="/products">Products</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
 					{

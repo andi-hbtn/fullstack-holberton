@@ -21,7 +21,6 @@ export class CategoryService {
 
 	public async createCategory(data: CategoryDto): Promise<CategoryEntity> {
 		try {
-			console.log("create method in service");
 			const result = await this.categoryRepository.save(data);
 			return result;
 		} catch (error) {
