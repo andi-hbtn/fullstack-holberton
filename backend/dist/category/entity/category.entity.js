@@ -32,9 +32,9 @@ __decorate([
     __metadata("design:type", Date)
 ], CategoryEntity.prototype, "created", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => products_enity_1.ProductEntity, book => book.category),
+    (0, typeorm_1.OneToMany)(() => products_enity_1.ProductEntity, product => product.category),
     __metadata("design:type", Array)
-], CategoryEntity.prototype, "books", void 0);
+], CategoryEntity.prototype, "products", void 0);
 exports.CategoryEntity = CategoryEntity = __decorate([
     (0, typeorm_1.Entity)('category')
 ], CategoryEntity);

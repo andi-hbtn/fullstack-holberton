@@ -4,7 +4,7 @@ import { CategoryEntity } from './entity/category.entity';
 import { CategoryDto } from './dto/category.dto';
 import { AuthGuard } from 'src/guards/auth.guards';
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('category')
 export class CategoryController {
 	constructor(private readonly categoryService: CategoryService) { }

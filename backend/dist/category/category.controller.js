@@ -16,7 +16,6 @@ exports.CategoryController = void 0;
 const common_1 = require("@nestjs/common");
 const category_service_1 = require("./category.service");
 const category_dto_1 = require("./dto/category.dto");
-const auth_guards_1 = require("../guards/auth.guards");
 let CategoryController = class CategoryController {
     constructor(categoryService) {
         this.categoryService = categoryService;
@@ -74,7 +73,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "deleteCategory", null);
 exports.CategoryController = CategoryController = __decorate([
-    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     (0, common_1.Controller)('category'),
     __metadata("design:paramtypes", [category_service_1.CategoryService])
 ], CategoryController);

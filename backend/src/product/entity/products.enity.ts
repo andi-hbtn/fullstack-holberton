@@ -22,12 +22,15 @@ export class ProductEntity {
 	@Column({ default: true })
 	is_active: boolean;
 
-	@ManyToOne(() => CategoryEntity, (category) => category.books, { cascade: true })
+	@ManyToOne(() => CategoryEntity, (category) => category.products, { cascade: true })
 	@JoinColumn({ name: 'category_id' })
 	category: CategoryEntity;
 
 	@Column()
 	image: string;
+
+	@Column({ name: 'category_id', nullable: false })
+	category_id: number;
 
 }
 

@@ -18,14 +18,14 @@ const fields = [
         placeholder: "Insert price..."
     },
     {
-        type: "options",
-        name: "category_id",
-        label: "Category",
+        type: "number",
+        name: "stock",
+        label: "Stock",
     },
     {
         type: "options",
-        name: "author_id",
-        label: "Author",
+        name: "category_id",
+        label: "Category",
     },
     {
         type: "switch",

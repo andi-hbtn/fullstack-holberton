@@ -1,5 +1,6 @@
 import { Container, Card, Row, Col, Button } from 'react-bootstrap';
 import { FaInfoCircle } from 'react-icons/fa';
+import Header from "../../components/Header/Header";
 import { useProductContext } from "../../context/ProductContext";
 import "./index.css";
 
@@ -7,6 +8,7 @@ const Home = () => {
 	const { products } = useProductContext();
 	return (
 		<>
+			<Header/>
 			<Container className="my-5">
 				<h2 className="mb-4 text-center" style={{ color: '#444', fontWeight: 'bold' }}>Product Collection</h2>
 				<Row className="justify-content-center">

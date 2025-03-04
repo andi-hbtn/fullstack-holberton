@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import AlertMessage from "../alert/AlertMessage";
 
-const ModalManager = ({ open, categories, authors, close, case_modal, id, fields, create, update }) => {
+const ModalManager = ({ open, categories, close, case_modal, id, fields, create, update }) => {
 	const [formData, setFormData] = useState({});
 	const [show, setShow] = useState(false);
 
@@ -41,7 +41,6 @@ const ModalManager = ({ open, categories, authors, close, case_modal, id, fields
 					<Modal.Body>
 						{
 							fields.map((field, index) => {
-								//console.log("field----",field.name);
 								return (
 									<>
 										{

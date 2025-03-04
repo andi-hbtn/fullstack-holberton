@@ -1,0 +1,58 @@
+.main-cnt{
+    width: 100%;
+    background-color: #e8edef;
+    margin-bottom: 20px;
+}
+
+.slogan-cnt > h3{
+    font-size: 18px;
+    font-style: italic;
+    text-align: center;
+    font-weight: bold;
+    color: #475e68;
+    margin: 0px;
+    padding: 5px;
+}
+
+.logo-container{
+    margin: 0px 0px 15px 0px;
+    padding: 0px 0px 15px 0px;
+    border-bottom: 2px solid #d5dee3;
+}
+
+.slogan-cnt::before{
+    content: "";
+    position: absolute;
+    border: 12px solid transparent;
+    border-top-color: #e8edef;
+    margin-left: 50%;
+    top: 31px;
+}
+
+.logo-container > img{
+    width: 300px;
+    height: 51px;
+    display: block;
+    margin: 0 auto;
+}
+
+.menu-search-cnt{
+    width: 100%;
+}
+
+.menu-cnt{padding: 0px 11px;}
+
+.menu-cnt > a{
+    margin-right: 10px;
+    font-size: 13px;
+    line-height: 1.2em;
+    font-family: 'Ubuntu', sans-serif;
+    color: #a3aaad;
+    background: none;
+    display: block;
+    text-transform: uppercase;
+}
+
+.menu-cnt > a:hover{
+    border-bottom: 2px solid #d5dee3;
+}

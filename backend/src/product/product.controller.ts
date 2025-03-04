@@ -10,7 +10,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('product')
 export class ProductController {
 	constructor(private readonly productService: ProductService) { }

@@ -8,14 +8,12 @@ import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
 
 const ProductModal = () => {
-	const { products, categories, authors, createproduct, updateproduct, deleteproduct } = useProductContext();
+	const { products, categories, authors, createProduct , updateProduct , deleteProduct } = useProductContext();
 	const{ authUser,logout } = useAuthenticateContext();
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
 	const [dataId, setDataId] = useState({});
-
-	console.log("products----",products)
 
 	const close = () => setOpen(!open);
 
@@ -31,7 +29,7 @@ const ProductModal = () => {
 	}
 
 	const handleDelete = async (id) => {
-		await deleteproduct(id);
+		await deleteProduct(id);
 	}
 
 	const handleLogout = async() =>{
@@ -134,8 +132,8 @@ const ProductModal = () => {
 								fields={fields}
 								case_modal={caseModal}
 								id={dataId}
-								create={createproduct}
-								update={updateproduct}
+								create={createProduct}
+								update={updateProduct}
 								categories={categories}
 								authors={authors} />
 						}

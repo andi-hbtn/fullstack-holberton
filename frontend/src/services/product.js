@@ -7,8 +7,8 @@ const create_product_service = async (data) => {
 		title: data.title,
 		description: data.description,
 		price: parseInt(data.price),
+		stock: parseInt(data.stock),
 		category_id: parseInt(data.category_id),
-		author_id: parseInt(data.author_id),
 		is_active: data.is_active,
 		image:data.image
 	}
@@ -23,6 +23,7 @@ const create_product_service = async (data) => {
 
 const get_products_service = async () => {
 	const result = await axios.get(`${url}/all`);
+	console.log("result-----",result);
 	return result;
 }
 

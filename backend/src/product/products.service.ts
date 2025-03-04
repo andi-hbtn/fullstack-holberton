@@ -21,6 +21,7 @@ export class ProductService {
 	}
 
 	public async createProduct(data: ProductDto,file:string): Promise<any> {
+		console.log("data----",data);
 		try {
 			const product={
 				title:data.title,

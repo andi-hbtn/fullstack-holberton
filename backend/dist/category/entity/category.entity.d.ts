@@ -4,5 +4,5 @@ export declare class CategoryEntity {
     name: string;
     description: string;
     created: Date;
-    books: ProductEntity[];
+    products: ProductEntity[];
 }

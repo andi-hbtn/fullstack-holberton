@@ -17,13 +17,13 @@ const Categories = () => {
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
-		setCaseModal({ title: "Create Product", create: true, button: "Create" });
+		setCaseModal({ title: "Create Category", create: true, button: "Create" });
 		setOpen(!open);
 	}
 
 	const handleEdit = (id) => {
 		setDataId(id);
-		setCaseModal({ title: "Edit Product", create: false, button: "Update" })
+		setCaseModal({ title: "Edit Category", create: false, button: "Update" })
 		setOpen(!open);
 	}
 
