@@ -56,7 +56,7 @@ export class ProductController {
 		}
 	}
 
-	@Get('get/:id')
+	@Get(':id')
 	public async getById(@Param('id', ParseIntPipe) id: number): Promise<ProductEntity> {
 		return await this.productService.getProductById(id);
 	}
@@ -71,7 +71,7 @@ export class ProductController {
         }
 	}
 
-	@UseGuards(AuthGuard)
+	// @UseGuards(AuthGuard)
     @Get('uploads/:path')
     public getImage(@Param() path, @Res() res: Response) {
         res.sendFile(path.path, { root: 'uploads' });

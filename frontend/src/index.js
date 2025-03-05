@@ -10,6 +10,7 @@ import { ProductProvider } from './context/ProductContext';
 import Categories from "./pages/Categories/Categories";
 import Products from "./pages/Products/index.js";
 import Home from './pages/Home/index.js';
+import ProductPage from "./pages/ProductPage/index.js";
 
 import Login from './pages/Auth/Login.js';
 import Register from './pages/Auth/Register.js';
@@ -26,9 +27,10 @@ root.render(
             <Routes>
               <Route path="/login"     element={<Login />} />
               <Route path="/register"     element={<Register />} />
-              <Route path="/category"  element={<Categories />} />
-              <Route path="/products"  element={<Products />} />
+              <Route path="/admin-category"  element={<Categories />} />
+              <Route path="/admin-products"  element={<Products />} />
               <Route path="/"  element={<Home />} />
+              <Route path="/product/:id"  element={<ProductPage />} />
             </Routes>
           </BrowserRouter>
         </ProductProvider>

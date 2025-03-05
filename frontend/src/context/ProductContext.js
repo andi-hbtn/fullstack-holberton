@@ -1,12 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { create_product_service, get_products_service, update_product_service, delete_product_service } from "../services/product";
-import {get_category_service} from "../services/category";
+import { create_product_service, get_products_service,get_product_service, update_product_service, delete_product_service } from "../services/product";
 const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
 	const [products, setProducts] = useState([]);
-	const [categories,setCategories]=useState([]);
-
 	useEffect(() => {
 		getProducts();
 	},[]);
@@ -26,13 +23,20 @@ const ProductProvider = (props) => {
 	const getProducts = async () => {
 		try {
 			const products = await get_products_service();
-			const category = await get_category_service();
 			if (products.status === 200) {
 				setProducts(products.data);
-				setCategories(category.data);
+				
 			}
 		} catch (error) {
 			return error
+		}
+	}
+
+	const getProduct = async(id) =>{
+		try {
+			return await get_product_service(id);
+		} catch (error) {
+			return error;
 		}
 	}
 
@@ -60,7 +64,7 @@ const ProductProvider = (props) => {
 		}
 	}
 
-	const values = { products,categories,createProduct,updateProduct,deleteProduct };
+	const values = {createProduct,updateProduct,deleteProduct ,getProduct,products};
 	return (
 		<ProductContext.Provider value={values}>
 			{props.children}

@@ -64,11 +64,11 @@ export class ProductService {
 
 	public async getProductById(id: number): Promise<ProductEntity> {
 		try {
-			const result = this.ProductEntity.findOne({ where: { id } })
+			const result = await this.ProductEntity.findOne({ where: { id } });
 			if (!result) {
-				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
+				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}
-			return result
+			return result;
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}

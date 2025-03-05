@@ -25,7 +25,7 @@ const Header=()=>{
                     <Row className='menu-search-cnt'>
                         <Col xs={6} md={9} lg={9}>
                             <Nav className="menu-cnt" style={{ maxHeight: '100px' }} navbarScroll>
-                                <Nav.Link href="#action1">home</Nav.Link>
+                                <Nav.Link href="/">home</Nav.Link>
                                 <Nav.Link href="#action2">about us</Nav.Link>
                                 <Nav.Link href="#action3">our products</Nav.Link>
                                 <Nav.Link href="#action4">gallery</Nav.Link>

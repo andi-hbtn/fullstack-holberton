@@ -18,12 +18,15 @@ const create_product_service = async (data) => {
 				}
 		});
 	return result;
-
 }
 
 const get_products_service = async () => {
 	const result = await axios.get(`${url}/all`);
-	console.log("result-----",result);
+	return result;
+}
+
+const get_product_service = async(id)=>{
+	const result = await axios.get(`${url}/${id}`);
 	return result;
 }
 
@@ -38,9 +41,6 @@ const update_product_service = async (id, data) => {
 		title: data.title,
 		image:data.image
 	}
-
-	// console.log("product----",product);
-
 	const result = await axios.put(`${url}/update/${id}`, product,{
 		headers:{
 				"Content-Type":"multipart/form-data"
@@ -54,4 +54,4 @@ const delete_product_service = async (id) => {
 	return result;
 }
 
-export { get_products_service, create_product_service, update_product_service, delete_product_service }
+export { create_product_service,get_products_service,get_product_service, update_product_service, delete_product_service }

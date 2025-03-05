@@ -104,9 +104,7 @@ const ProductModal = () => {
 													<td>{product.id}</td>
 													<td>{product.title}</td>
 													<td>{product.description}</td>
-
 													<td>{product.category.name}</td>
-
 													<td>${product?.price}</td>
 													<td>{product.is_active ? "Is available" : "Not available"}</td>
 													<td>

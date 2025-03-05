@@ -1,14 +1,11 @@
-.price {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	background-color: #007BFF;
-	color: white;
-	padding: 5px 10px;
-	border-radius: 5px;
-	font-weight: bold;
-	font-size: 1rem;
+.card-cnt{
+    background-color: #f7f7f7 !important;
+	border: 0px !important;
+    text-align: center;
+    margin: 20px 10px;
+    vertical-align: top;
 }
+
 
 .stock {
 	position: absolute;
@@ -21,23 +18,29 @@
 	font-weight: bold;
 	font-size: 1rem;
 }
-
-.card {
-	width: '350px';
-	border-radius: '12px';
-	overflow: 'hidden';
-	background-color: '#FFF';
-	box-shadow: '0 4px 16px rgba(0, 0, 0, 0.15)';
-
+.price-cart{
+	border-top: 1px solid #bebebe;
+	padding-top: 20px;
 }
 
-.detail-btn,
-.cart-btn {
-	width: 40%;
-	display: inline-block;
+.price{
+	border-right: 1px solid #bebebe;
+}
+.price , .cart{
+	width: 50%;
+    display: inline-block;
 }
 
-.small-img{
-	width: 60px;
-	height: 60px;
+.cart{
+	cursor: pointer;
 }
+
+.cart > button{
+	display: block;
+    margin: 0 auto;
+	background-color: #ffffff !important;
+	border: 0px;
+	color: #000000;
+}
+
+.cart > button:hover{color: #000000;}
