@@ -11,9 +11,11 @@ import Categories from "./pages/Categories/Categories";
 import Products from "./pages/Products/index.js";
 import Home from './pages/Home/index.js';
 import ProductPage from "./pages/ProductPage/index.js";
-
+import Cart from './components/Cart/'
 import Login from './pages/Auth/Login.js';
 import Register from './pages/Auth/Register.js';
+
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
@@ -30,6 +32,7 @@ root.render(
               <Route path="/admin-category"  element={<Categories />} />
               <Route path="/admin-products"  element={<Products />} />
               <Route path="/"  element={<Home />} />
+              <Route path="/cart"  element={<Cart />} />
               <Route path="/product/:id"  element={<ProductPage />} />
             </Routes>
           </BrowserRouter>

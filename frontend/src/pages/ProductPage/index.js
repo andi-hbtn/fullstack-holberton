@@ -20,28 +20,6 @@ const ProductPage = () => {
         }
     );
 
-    const handleIncrement = (e) =>{
-       setCart((prevState)=>{
-
-        
-
-        const newItem = [];
-        newItem.push({product_id:product.id,quantity:1});
-        prevState.items.push(newItem);
-
-       prevState.items.reduce((total,item)=>{
-        console.log("item----",item);
-        console.log("total----",total);
-        });
-
-        //console.log("newTotal----",newTotal);
-
-        
-
-        return{...prevState}
-       })
-      }
-
   const [error, setError] = useState({message:"",status:0});
 
   useEffect(()=>{
@@ -61,12 +39,40 @@ const ProductPage = () => {
     }
   }
 
+
+  const handleIncrement = (e) =>{
+    setCart((prevState)=>{
+     const newItem = [
+        ...prevState.items,
+        { product_id: product.id, quantity: 1 }
+     ];
+     const newTotalPrice = newItem.reduce(
+         (total, item) => total + (item.quantity * product.price),
+         0
+     );
+     return {
+         ...prevState,
+         items: newItem,
+         total_price: newTotalPrice,
+     };
+    })
+ }
+
   const handleDecrement = (e) =>{
-
+    if(cart.items.length === 0){
+        return;
+    } else{
+        setCart((prev)=>{
+            const newItem = prev.items.pop();
+            const newPrice = cart.total_price - product.price
+            return {
+                ...prev,
+                item:newItem,
+                total_price:newPrice
+            };
+        });
+    }
   }
-
- 
-
 
   return (
     <>
@@ -87,7 +93,8 @@ const ProductPage = () => {
             </Col>
             <Col sm={5} md={5} lg={5} className="prod-desc">
                 <h1>{product.title}</h1>
-                <h4>{product.price}</h4>
+                <h4>&pound; {product.price}</h4>
+                <h4>subtotal is &pound;{cart.total_price}</h4>
                 <p>{product.description}</p>
                   <Col sm={12} md={12} lg={12}>
                       <Row>
@@ -95,14 +102,21 @@ const ProductPage = () => {
                               <Button variant="dark" onClick={handleDecrement}>-</Button>
                           </Col>
                           <Col sm={2} md={2} lg={1} className="c-b">
-                              <span>{cart.total_price}</span>
+                              <span>{cart.items.length}</span>
                           </Col>
                           <Col sm={2} md={2} lg={1} className="p-0 c-b">
                               <Button variant="dark" onClick={handleIncrement}>+</Button>
                           </Col>
 
-                          <Col sm={2} md={2} lg={3} className="p-0 m-l-50 cart-btn">
-                              <Button variant="dark">Add to cart</Button>
+                          <Col sm={2} md={2} lg={3} className="p-0 m-l-50">
+                              <Button variant="dark" className="">Add to cart</Button>
+                          </Col>
+                          <Col sm={2} md={2} lg={3}>
+                                <a href="/cart">
+                                    <Button variant="secondary">
+                                        View cart
+                                    </Button>
+                                </a>
                           </Col>
                       </Row>
                   </Col>

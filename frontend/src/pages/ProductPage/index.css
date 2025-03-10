@@ -28,3 +28,12 @@
 .cart-btn > button{
     background-color: #274c4f;
 }
+
+.cart-btn > a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.cart-btn > a:hover{
+    color: #ffffff;
+}
