@@ -40,13 +40,12 @@ const Categories = () => {
 		<>
 
 			<Navbar bg="primary" variant="dark" expand="lg">
-				<Navbar.Brand as={Link} to="/category">Admin Dashboard</Navbar.Brand>
+				<Navbar.Brand as={Link} to="">Admin Dashboard</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-						<Nav.Link as={Link} to="/authors">Authors</Nav.Link>
-						<Nav.Link as={Link} to="/category">Categories</Nav.Link>
-						<Nav.Link as={Link} to="/products">Products</Nav.Link>
+						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
+						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
 					{

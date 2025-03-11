@@ -63,17 +63,19 @@ export class ProductController {
 
 	@Delete('delete/:id')
 	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
-		const book = await this.productService.getProductById(id);
-        if (book) {
-            const files = await fs.promises.readdir('uploads');
-            fs.unlinkSync('uploads/' + book.image);
-            await this.productService.deleteProduct(id)
+		const product = await this.productService.getProductById(id);
+        if (product) {
+            // const files = await fs.promises.readdir('uploads');
+            // fs.unlinkSync('uploads/' + product.image);
+            await this.productService.deleteProduct(id);
         }
 	}
 
 	// @UseGuards(AuthGuard)
     @Get('uploads/:path')
-    public getImage(@Param() path, @Res() res: Response) {
+    public getImage(@Param() path:any, @Res() res: Response) {
+
+		console.log("path----",path);
         res.sendFile(path.path, { root: 'uploads' });
     }
 }

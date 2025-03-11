@@ -49,9 +49,4 @@ const update_product_service = async (id, data) => {
 	return result;
 }
 
-const delete_product_service = async (id) => {
-	const result = await axios.delete(`${url}/delete/${id}`);
-	return result;
-}
-
-export { create_product_service,get_products_service,get_product_service, update_product_service, delete_product_service }
+export { create_product_service,get_products_service,get_product_service, update_product_service }

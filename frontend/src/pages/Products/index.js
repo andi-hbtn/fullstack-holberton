@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useProductContext } from "../../context/ProductContext";
+import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
 
+
 const ProductModal = () => {
-	const { products, categories, authors, createProduct , updateProduct , deleteProduct } = useProductContext();
+	const { products, createProduct , updateProduct } = useProductContext();
+	const {categories} = useCategoryContext();
 	const{ authUser,logout } = useAuthenticateContext();
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
@@ -28,9 +31,9 @@ const ProductModal = () => {
 		setOpen(!open);
 	}
 
-	const handleDelete = async (id) => {
-		await deleteProduct(id);
-	}
+	// const handleDelete = async (id) => {
+	// 	await deleteProduct(id);
+	// }
 
 	const handleLogout = async() =>{
 		await logout();
@@ -44,8 +47,8 @@ const ProductModal = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-						<Nav.Link as={Link} to="/category">Categories</Nav.Link>
-						<Nav.Link as={Link} to="/products">Products</Nav.Link>
+					<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
+					<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
 					{
@@ -64,7 +67,7 @@ const ProductModal = () => {
 							</>
 							:   
 							""
-						}
+					}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
@@ -93,7 +96,7 @@ const ProductModal = () => {
 										<th>Status</th>
 										<th>Image</th>
 										<th>Edit</th>
-										<th>Delete</th>
+										{/* <th>Delete</th> */}
 									</tr>
 								</thead>
 								<tbody>
@@ -103,19 +106,19 @@ const ProductModal = () => {
 												<tr key={index}>
 													<td>{product.id}</td>
 													<td>{product.title}</td>
-													<td>{product.description}</td>
+													<td>{product.description.substring(0, 50)}</td>
 													<td>{product.category.name}</td>
 													<td>${product?.price}</td>
 													<td>{product.is_active ? "Is available" : "Not available"}</td>
 													<td>
-														<img className="small-img" src={`http://localhost:3000/api/product/uploads/${product.image}`} alt="product alt"/>
+														<img className="small-img" src={`http://localhost:3000/api/product/uploads/${product.image}`} alt="product alt" width={"120px"} height={"120px"}/>
 													</td>
 													<td>
 														<Button variant="primary" onClick={() => { handleEdit(product.id) }}>Edit</Button>
 													</td>
-													<td>
+													{/* <td>
 														<Button variant="danger" onClick={() => { handleDelete(product.id) }}>Delete</Button>
-													</td>
+													</td> */}
 												</tr>
 											)
 										})
@@ -133,7 +136,7 @@ const ProductModal = () => {
 								create={createProduct}
 								update={updateProduct}
 								categories={categories}
-								authors={authors} />
+								/>
 						}
 					</Col>
 				</Row>

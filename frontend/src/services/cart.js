@@ -1,0 +1,19 @@
+import axios from "axios";
+const url = "http://localhost:3000/api/order";
+
+const create_order_service = async (data) => {
+	const result = await axios.post(`${url}/create`, data);
+	return result;
+}
+
+const get_orders_service = async () => {
+	const result = await axios.get(`${url}/all`);
+	return result;
+}
+
+const get_order_service = async (id) => {
+	const result = await axios.get(`${url}/${id}`);
+	return result;
+}
+
+export { get_orders_service, create_order_service,get_order_service }
