@@ -27,13 +27,13 @@ root.render(
             <ProductProvider>
                 <BrowserRouter>
                     <Routes>
-                      <Route path="/login"     element={<Login />} />
-                      <Route path="/register"     element={<Register />} />
-                      <Route path="/admin-category"  element={<Categories />} />
-                      <Route path="/admin-products"  element={<Products />} />
-                      <Route path="/"  element={<Home />} />
-                      <Route path="/cart"  element={<Cart />} />
-                      <Route path="/product/:id"  element={<ProductPage />} />
+                      <Route path="/login"  element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/admin-category" element={<Categories />} />
+                      <Route path="/admin-products" element={<Products />} />
+                      <Route path="/" element={<Home />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/product/:id" element={<ProductPage />} />
                     </Routes>
                 </BrowserRouter>
             </ProductProvider>
