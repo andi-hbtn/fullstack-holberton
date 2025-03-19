@@ -1,0 +1,18 @@
+.item-img-cnt{
+    float: left;
+    width: 30%;
+}
+
+.item-desc-cnt > a , .item-desc-cnt > p > span{
+    text-decoration: none;
+    font-size: 25px;
+    font-style: italic;
+    text-align: center;
+    font-weight: bold;
+    color: #475e68;
+}
+
+.item-desc-cnt{
+    float: left;
+    width: 60%;
+}
