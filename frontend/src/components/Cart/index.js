@@ -44,6 +44,7 @@ const Cart = () =>{
                             <thead>
                                 <tr>
                                 <th>Product</th>
+                                <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Subtotal</th>
                                 </tr>
@@ -51,30 +52,28 @@ const Cart = () =>{
                             <tbody>
                                 {
                                     cart.map((item,index)=>{
-                                        console.log("item----",item);
                                         return(
-                                        
                                             <tr>
                                                 <td>
-                                                <div className='item-img-cnt'>
-                                                        <img src={`http://localhost:3000/api/product/uploads/${item.image}`} height={"150px"} width={"150"} alt='product name'/>
-                                                </div>
-                                                <div className='item-desc-cnt'>
+                                                    <div className='item-img-cnt'>
+                                                            <img src={`http://localhost:3000/api/product/uploads/${item.image}`} alt='product name'/>
+                                                    </div>
+                                                    <div className='item-desc-cnt'>
                                                         <a href=''>{item.title}</a>
-                                                        <p>
-                                                            <span>${item.price}</span>
-                                                        </p>
-                                                </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span>${item.price}</span>
                                                 </td>
                                                 <td>
                                                    <Row>
-                                                    <Col sm={2} md={2} lg={1} className="p-0 c-b">
+                                                        <Col sm={3} md={3} lg={3} className="p-0 c-b">
                                                             <Button variant="dark">-</Button>
                                                         </Col>
-                                                        <Col sm={2} md={2} lg={1} className="c-b">
+                                                        <Col sm={3} md={3} lg={3} className="c-b">
                                                             <span>{item.quantity}</span>
                                                         </Col>
-                                                        <Col sm={2} md={2} lg={1} className="p-0 c-b">
+                                                        <Col sm={3} md={3} lg={3} className="p-0 c-b">
                                                             <Button variant="dark">+</Button>
                                                         </Col>
                                                    </Row>
@@ -83,7 +82,6 @@ const Cart = () =>{
                                                    <span>$ {item.price * item.quantity}</span>
                                                 </td>
                                             </tr>
-                                            
                                         )
                                     })
                                 }

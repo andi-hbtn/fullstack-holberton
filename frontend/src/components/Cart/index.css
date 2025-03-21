@@ -3,6 +3,11 @@
     width: 30%;
 }
 
+.item-img-cnt > img {
+    width: 120px;
+    height: 120px;
+}
+
 .item-desc-cnt > a , .item-desc-cnt > p > span{
     text-decoration: none;
     font-size: 25px;
@@ -15,4 +20,5 @@
 .item-desc-cnt{
     float: left;
     width: 60%;
+    margin-top: 30px;
 }
