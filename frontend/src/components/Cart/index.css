@@ -22,3 +22,11 @@
     width: 60%;
     margin-top: 30px;
 }
+
+.price-cnt , .subtotal-quantity{
+    margin-top: 50px !important;
+}
+
+.quantity-cnt{
+    margin-top: 40px !important;
+}

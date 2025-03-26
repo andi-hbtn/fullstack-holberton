@@ -63,10 +63,12 @@ const Cart = () =>{
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span>${item.price}</span>
+                                                    <Row className='price-cnt'>
+                                                        <span>${item.price}</span>
+                                                    </Row>
                                                 </td>
                                                 <td>
-                                                   <Row>
+                                                   <Row className='quantity-cnt'>
                                                         <Col sm={3} md={3} lg={3} className="p-0 c-b">
                                                             <Button variant="dark">-</Button>
                                                         </Col>
@@ -79,7 +81,9 @@ const Cart = () =>{
                                                    </Row>
                                                 </td>
                                                 <td>
-                                                   <span>$ {item.price * item.quantity}</span>
+                                                   <Row className='subtotal-quantity'>
+                                                        <span>$ {item.price * item.quantity}</span>
+                                                   </Row>
                                                 </td>
                                             </tr>
                                         )

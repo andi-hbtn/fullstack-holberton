@@ -34,14 +34,6 @@ const ProductPage = () => {
     }
   }
 
-  const handleIncrement = () =>{
-    addQuantity(product);
-  }
-
-  const handleDecrement = (e) =>{
-    removeQuantity(product);
-  }
-
   return (
     <>
     <Header/>
@@ -67,13 +59,15 @@ const ProductPage = () => {
                     <Col sm={12} md={12} lg={12}>
                         <Row>
                             <Col sm={2} md={2} lg={1} className="p-0 c-b">
-                                <Button variant="dark" onClick={handleDecrement}>-</Button>
+                                <Button variant="dark" onClick={()=> removeQuantity(product) }>-</Button>
                             </Col>
+
                             <Col sm={2} md={2} lg={1} className="c-b">
                                 <span>{quantity.items.length}</span>
                             </Col>
+
                             <Col sm={2} md={2} lg={1} className="p-0 c-b">
-                                <Button variant="dark" onClick={()=>handleIncrement(product)}>+</Button>
+                                <Button variant="dark" onClick={()=>  addQuantity(product) }>+</Button>
                             </Col>
 
                             <Col sm={2} md={2} lg={3} className="p-0 m-l-50">

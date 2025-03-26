@@ -15,7 +15,8 @@ const CartProvider = (props) => {
 	useEffect(() => {
 		getOrders();
 	},[]);
-	
+
+
 	const addQuantity = (product)=>{
 		setQuantity((prevState)=>{
 			const newItem = [
