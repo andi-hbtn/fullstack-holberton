@@ -18,6 +18,7 @@ const CartProvider = (props) => {
 
 
 	const addQuantity = (product)=>{
+
 		setQuantity((prevState)=>{
 			const newItem = [
 			   ...prevState.items,
@@ -37,6 +38,7 @@ const CartProvider = (props) => {
 				...prevState,
 				items: newItem,
 				total_price: newTotalPrice,
+				id:product.id
 			};
 		});
 	}
@@ -60,8 +62,23 @@ const CartProvider = (props) => {
 
 	const addToCart = () =>{
 		let existingCart = JSON.parse(localStorage.getItem("items")) || [];
-		existingCart.push(quantity);
-		localStorage.setItem("items", JSON.stringify(existingCart));
+		
+		let found = false; // Flag to check if item exists
+
+    existingCart.forEach(element => {
+        if (element.id === quantity.id) {
+			element.items.push(quantity);
+            found = true;
+        }
+    });
+
+    if (!found) {
+        // If no matching ID is found, add a new cart entry
+        existingCart.push(quantity);
+    }
+
+    localStorage.setItem("items", JSON.stringify(existingCart));
+
 	}
 
 	const createOrder = async (data) => {

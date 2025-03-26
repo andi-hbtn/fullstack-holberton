@@ -26,9 +26,6 @@ const Cart = () =>{
            setCart(result);
         }
 
-
-        // console.log("cart-----",cart);
-
         return(
             <>
             <Header/>
