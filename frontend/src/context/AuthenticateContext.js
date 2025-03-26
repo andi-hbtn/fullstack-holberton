@@ -49,12 +49,10 @@ const AuthenticateProvider = (props) => {
 	const checkAuthUser = async() => {
 		try{
 			const result = await checkAuth_user_service();
-			 //console.log("result-----",result);
 			if (result.status === 200) {
 				setAuthUser(...result.data);
 			}
 		}catch(error){
-			console.log("error--checkAuthUser method--", error.response.data);
 			setAuthUser(null);
 			return error;
 		}

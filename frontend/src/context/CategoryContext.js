@@ -6,7 +6,7 @@ const CategoryContext = createContext({});
 
 const CategoryProvider = (props) => {
 	const {authUser} = useAuthenticateContext();
-	const [categories, setCategoris] = useState([]);
+	const [categories, setCategories] = useState([]);
 
 	useEffect(() => {
 		getCategories();
@@ -28,7 +28,7 @@ const CategoryProvider = (props) => {
 		try {
 			const result = await get_category_service();
 			if (result.status === 200) {
-				setCategoris(result.data);
+				setCategories(result.data);
 			}
 		} catch (error) {
 			console.log("error--in get method--", error);

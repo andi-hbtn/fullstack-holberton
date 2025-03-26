@@ -2,12 +2,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
+import { useProductContext } from "../../context/ProductContext";
 import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
-const Categories = () => {
-	const { categories, createCategories, updateCategory, deleteCategorie } = useCategoryContext();
+
+
+const ProductModal = () => {
+	const { products, createProduct , updateProduct } = useProductContext();
+	const {categories} = useCategoryContext();
 	const{ authUser,logout } = useAuthenticateContext();
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
@@ -17,19 +21,19 @@ const Categories = () => {
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
-		setCaseModal({ title: "Create Category", create: true, button: "Create" });
+		setCaseModal({ title: "Create product", create: true, button: "Create" });
 		setOpen(!open);
 	}
 
 	const handleEdit = (id) => {
 		setDataId(id);
-		setCaseModal({ title: "Edit Category", create: false, button: "Update" })
+		setCaseModal({ title: "Edit product", create: false, button: "Update" })
 		setOpen(!open);
 	}
 
-	const handleDelete = async (id) => {
-		await deleteCategorie(id);
-	}
+	// const handleDelete = async (id) => {
+	// 	await deleteProduct(id);
+	// }
 
 	const handleLogout = async() =>{
 		await logout();
@@ -38,21 +42,20 @@ const Categories = () => {
 
 	return (
 		<>
-
 			<Navbar bg="primary" variant="dark" expand="lg">
-				<Navbar.Brand as={Link} to="">Admin Dashboard</Navbar.Brand>
+				<Navbar.Brand as={Link} to="/products">Admin Dashboard</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
-						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+					<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
+					<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
 					{
 							authUser ?
 							<>
 							<Nav>
-								<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
+							<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
 							</Nav>
 							<div className="user-auth">
 								<span>
@@ -64,7 +67,7 @@ const Categories = () => {
 							</>
 							:   
 							""
-						}
+					}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
@@ -79,38 +82,47 @@ const Categories = () => {
 					</Col>
 					<Col md={10} className="p-4">
 						<Col md={12} className="mb-4">
-							<h4>Create a new Category <Button variant="primary" onClick={handleCreate}>Create</Button></h4>
+							<h4>Create a new Product <Button variant="primary" onClick={handleCreate}>Create</Button></h4>
 						</Col>
 						<Col md={12} className="mb-4">
 							<Table striped>
 								<thead>
 									<tr>
 										<th>Id</th>
-										<th>Name</th>
+										<th>Title</th>
 										<th>Description</th>
-										<th>Created at</th>
+										<th>Category</th>
+										<th>Price</th>
+										<th>Status</th>
+										<th>Image</th>
 										<th>Edit</th>
-										<th>Delete</th>
+										{/* <th>Delete</th> */}
 									</tr>
 								</thead>
 								<tbody>
 									{
-										categories.map((category, index) => {
+										products.map((product, index) => {
 											return (
 												<tr key={index}>
-													<td>{category.id}</td>
-													<td>{category.name}</td>
-													<td>{category.description}</td>
-													<td>{category?.created}</td>
+													<td>{product.id}</td>
+													<td>{product.title}</td>
+													<td>{product.description.substring(0, 50)}</td>
+													<td>{product.category.name}</td>
+													<td>${product?.price}</td>
+													<td>{product.is_active ? "Is available" : "Not available"}</td>
 													<td>
-														<Button variant="primary" onClick={() => { handleEdit(category.id) }}>Edit</Button>
+														<img className="small-img" src={`http://localhost:3000/api/product/uploads/${product.image}`} alt="product alt" width={"120px"} height={"120px"}/>
 													</td>
 													<td>
-														<Button variant="danger" onClick={() => { handleDelete(category.id) }}>Delete</Button>
+														<Button variant="primary" onClick={() => { handleEdit(product.id) }}>Edit</Button>
 													</td>
+													{/* <td>
+														<Button variant="danger" onClick={() => { handleDelete(product.id) }}>Delete</Button>
+													</td> */}
 												</tr>
 											)
-										})}
+										})
+									}
 								</tbody>
 							</Table>
 						</Col>
@@ -121,8 +133,10 @@ const Categories = () => {
 								fields={fields}
 								case_modal={caseModal}
 								id={dataId}
-								create={createCategories}
-								update={updateCategory} />
+								create={createProduct}
+								update={updateProduct}
+								categories={categories}
+								/>
 						}
 					</Col>
 				</Row>
@@ -131,4 +145,4 @@ const Categories = () => {
 	)
 }
 
-export default Categories;
+export default ProductModal;

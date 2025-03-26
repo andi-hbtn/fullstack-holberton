@@ -1,0 +1,32 @@
+.item-img-cnt{
+    float: left;
+    width: 30%;
+}
+
+.item-img-cnt > img {
+    width: 120px;
+    height: 120px;
+}
+
+.item-desc-cnt > a , .item-desc-cnt > p > span{
+    text-decoration: none;
+    font-size: 25px;
+    font-style: italic;
+    text-align: center;
+    font-weight: bold;
+    color: #475e68;
+}
+
+.item-desc-cnt{
+    float: left;
+    width: 60%;
+    margin-top: 30px;
+}
+
+.price-cnt , .subtotal-quantity{
+    margin-top: 50px !important;
+}
+
+.quantity-cnt{
+    margin-top: 40px !important;
+}

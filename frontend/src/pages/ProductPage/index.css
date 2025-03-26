@@ -1,0 +1,39 @@
+.prod-cart-cnt{
+    margin-top: 50px !important;
+}
+
+.card-cnt{
+    border-radius: 20px;
+}
+
+.prod-desc{margin-left: 20px;}
+
+.prod-desc > p {
+    letter-spacing: 1px;
+    font-size: 18px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dfdfdf;
+}
+.c-b > button{
+   width: 100%; 
+}
+
+.c-b > span{
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-btn > button{
+    background-color: #274c4f;
+}
+
+.cart-btn > a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.cart-btn > a:hover{
+    color: #ffffff;
+}

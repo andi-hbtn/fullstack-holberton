@@ -1,0 +1,47 @@
+.card-cnt{
+	width: 306px;
+    background-color: #f7f7f7 !important;
+	border: 0px !important;
+    text-align: center;
+    margin: 20px 0px;
+    vertical-align: top;
+}
+
+
+.stock {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background-color: #ff0022;
+	color: white;
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-weight: bold;
+	font-size: 1rem;
+}
+.price-cart{
+	border-top: 1px solid #bebebe;
+	padding-top: 20px;
+}
+
+.price{
+	border-right: 1px solid #bebebe;
+}
+.price , .cart{
+	width: 50%;
+    display: inline-block;
+}
+
+.cart{
+	cursor: pointer;
+}
+
+.cart > button{
+	display: block;
+    margin: 0 auto;
+	background-color: #ffffff !important;
+	border: 0px;
+	color: #000000;
+}
+
+.cart > button:hover{color: #000000;}
