@@ -16,8 +16,8 @@ import { OrderModule } from './order/order.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root',
-      database: 'glass_shop',
+      password: 'andi',
+      database: 'glass-shop',
       entities: [CategoryEntity, ProductEntity, UserEntity],
       synchronize: true,
       autoLoadEntities: true

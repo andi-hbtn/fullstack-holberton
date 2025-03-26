@@ -1,32 +1,34 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { get_orders_service, create_order_service,get_order_service} from "../services/cart";
+import { get_orders_service, create_order_service, get_order_service } from "../services/cart";
 
 const CartContext = createContext({});
 
 const CartProvider = (props) => {
 	const [quantity, setQuantity] = useState(
-        {
-            user_id:null,
-            items:[],
-            total_price:0,
-        }
-    );
+		{
+			user_id: null,
+			items: JSON.parse(localStorage.getItem("items")) || [],
+			total_price: 0,
+		}
+	);
 
 	useEffect(() => {
 		getOrders();
-	},[]);
+	}, []);
 
 
-	const addQuantity = (product)=>{
+	const addQuantity = (product) => {
 
-		setQuantity((prevState)=>{
+		console.log("product---", product);
+
+		setQuantity((prevState) => {
 			const newItem = [
-			   ...prevState.items,
-			   	{
+				...prevState.items,
+				{
 					product_id: product.id,
-					title:product.title,
-					image:product.image,
-					price:product.price,
+					title: product.title,
+					image: product.image,
+					price: product.price,
 					quantity: 1
 				}
 			];
@@ -38,47 +40,41 @@ const CartProvider = (props) => {
 				...prevState,
 				items: newItem,
 				total_price: newTotalPrice,
-				id:product.id
+				id: product.id
 			};
 		});
 	}
 
-	const removeQuantity =(product)=>{
-		if(quantity.items.length === 0){
+	const removeQuantity = (product) => {
+		if (quantity.items.length === 0) {
 			return;
-		} else{
-			setQuantity((prev)=>{
+		} else {
+			setQuantity((prev) => {
 				const newItem = prev.items.pop();
 				const newPrice = quantity.total_price - product.price
 				return {
 					...prev,
-					item:newItem,
-					total_price:newPrice
+					item: newItem,
+					total_price: newPrice
 				};
 			});
 		}
 	}
 
 
-	const addToCart = () =>{
+	const addToCart = () => {
 		let existingCart = JSON.parse(localStorage.getItem("items")) || [];
-		
-		let found = false; // Flag to check if item exists
-
-    existingCart.forEach(element => {
-        if (element.id === quantity.id) {
-			element.items.push(quantity);
-            found = true;
-        }
-    });
-
-    if (!found) {
-        // If no matching ID is found, add a new cart entry
-        existingCart.push(quantity);
-    }
-
-    localStorage.setItem("items", JSON.stringify(existingCart));
-
+		let found = false;
+		existingCart.forEach(element => {
+			if (element.id === quantity.id) {
+				element.items.push(...quantity.items);
+				found = true;
+			}
+		});
+		if (!found) {
+			existingCart.push(quantity);
+		}
+		localStorage.setItem("items", JSON.stringify(existingCart));
 	}
 
 	const createOrder = async (data) => {
@@ -103,7 +99,7 @@ const CartProvider = (props) => {
 		}
 	}
 
-    const getOrderById = async (id) => {
+	const getOrderById = async (id) => {
 		try {
 			const result = await get_order_service(id);
 			if (result.status === 200) {
@@ -114,7 +110,7 @@ const CartProvider = (props) => {
 		}
 	}
 
-	const values = {quantity,setQuantity,addQuantity,addToCart,removeQuantity,createOrder, getOrders, getOrderById};
+	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders, getOrderById };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}

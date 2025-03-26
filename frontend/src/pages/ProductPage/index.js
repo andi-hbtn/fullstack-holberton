@@ -67,7 +67,7 @@ const ProductPage = () => {
                             </Col>
 
                             <Col sm={2} md={2} lg={1} className="p-0 c-b">
-                                <Button variant="dark" onClick={()=>  addQuantity(product) }>+</Button>
+                                <Button variant="dark" onClick={()=> addQuantity(product) }>+</Button>
                             </Col>
 
                             <Col sm={2} md={2} lg={3} className="p-0 m-l-50">
