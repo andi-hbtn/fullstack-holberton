@@ -46,21 +46,21 @@ const Cart = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col sm={12} md={8} lg={8}>
+                    <Col sm={12} md={7} lg={7}>
                         <Table>
                             <thead>
                                 <tr>
                                     <th>Product</th>
                                     <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Subtotal</th>
+                                    <th className='text-center'>Quantity</th>
+                                    <th className='text-center'>Subtotal</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
                                     cart.map((item, index) => {
                                         return (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td>
                                                     <div className='item-img-cnt'>
                                                         <img src={`http://localhost:3000/api/product/uploads/${item.image}`} alt='product name' />
@@ -89,7 +89,7 @@ const Cart = () => {
                                                 </td>
                                                 <td>
                                                     <Row className='subtotal-quantity'>
-                                                        <span>$ {item.price * item.quantity}</span>
+                                                        <span className='text-center'>$ {item.price * item.quantity}</span>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -99,10 +99,21 @@ const Cart = () => {
                             </tbody>
                         </Table>
                     </Col>
-                    <Col sm={12} md={4} lg={4}>
+                    <Col sm={12} md={4} lg={4} className='cart-total-cnt'>
                         <Row>
-                            <Col sm={12} md={12} lg={12}>
+                            <Col sm={12} md={12} lg={12} className='cart-total'>
                                 <h4>Cart totals</h4>
+                                <div className='subtotal-cnt'>
+                                    <span>Subtotal</span>
+                                    <span>$30452145</span>
+                                </div>
+                                <div className='total-cnt'>
+                                    <span>Total</span>
+                                    <span>$30452145</span>
+                                </div>
+                                <Button variant="dark" className='checkout-btn'>
+                                    Proceed to checkout
+                                </Button>
                             </Col>
                         </Row>
                     </Col>

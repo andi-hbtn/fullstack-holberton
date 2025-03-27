@@ -7,7 +7,7 @@ const CartProvider = (props) => {
 	const [quantity, setQuantity] = useState(
 		{
 			user_id: null,
-			items: JSON.parse(localStorage.getItem("items")) || [],
+			items:[],
 			total_price: 0,
 		}
 	);
@@ -18,9 +18,6 @@ const CartProvider = (props) => {
 
 
 	const addQuantity = (product) => {
-
-		console.log("product---", product);
-
 		setQuantity((prevState) => {
 			const newItem = [
 				...prevState.items,
