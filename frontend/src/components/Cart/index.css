@@ -1,14 +1,20 @@
-.item-img-cnt{
+.item-img-cnt {
     float: left;
     width: 30%;
 }
 
-.item-img-cnt > img {
+.item-img-cnt>img {
     width: 120px;
     height: 120px;
 }
 
-.item-desc-cnt > a , .item-desc-cnt > p > span{
+.td-p {
+    display: table-cell;
+    padding: 20px 0px 20px 0px !important;
+}
+
+.item-desc-cnt>a,
+.item-desc-cnt>p>span {
     text-decoration: none;
     font-size: 25px;
     font-style: italic;
@@ -17,74 +23,99 @@
     color: #475e68;
 }
 
-.item-desc-cnt{
+.item-desc-cnt {
     float: left;
     width: 60%;
-    margin-top: 30px;
+    padding-top: 30px;
+    padding-left: 30px;
 }
 
-.price-cnt , .subtotal-quantity{
+.price-cnt,
+.subtotal-quantity {
     margin-top: 50px !important;
 }
 
-.quantity-cnt{
+.remove-item {
+    cursor: pointer;
+}
+
+.subtotal-quantity>span {
+    width: 50%;
+}
+
+.quantity-cnt {
     margin-top: 40px !important;
 }
 
-.cart-total-cnt{
+.cart-total-cnt {
     margin-left: 40px;
 }
 
-.cart-total{
+.cart-total {
     border: 2px solid #e2edef;
     border-radius: 20px;
     padding: 30px !important;
 }
-.cart-total > h4{
+
+.cart-total>h4 {
     font-size: 15px;
     font-weight: bold;
     margin-bottom: 30px;
 }
 
-.subtotal-cnt{
+.subtotal-cnt {
     padding-bottom: 20px;
 }
 
-.subtotal-cnt , .total-cnt{
+.subtotal-cnt,
+.total-cnt {
     overflow: hidden;
     width: 100%;
 }
-.subtotal-cnt > span:first-of-type{
+
+.subtotal-cnt>span:first-of-type {
     font-size: 15px;
     font-weight: bold;
     float: left;
 }
 
-.subtotal-cnt > span:last-of-type{
+.subtotal-cnt>span:last-of-type {
     font-size: 15px;
     float: right;
 }
 
-.total-cnt{
-    border-top:  dotted #212529;
+.total-cnt {
+    border-top: dotted #212529;
     padding-top: 20px;
     margin-bottom: 50px;
 }
 
-.total-cnt > span:first-of-type{
+.total-cnt>span:first-of-type {
     font-size: 15px;
     font-weight: bold;
     float: left;
 }
 
-.total-cnt > span:last-of-type{
+.total-cnt>span:last-of-type {
     font-size: 15px;
     font-weight: bold;
     float: right;
 }
 
-.checkout-btn{
+.checkout-btn {
     width: 80%;
     display: block !important;
     margin: 0 auto;
+}
+
+.checkout-btn>a {
+    display: inline-block;
+    width: 90%;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 17px;
+}
+
+.checkout-btn>a:hover {
+    color: #ffffff;
 }

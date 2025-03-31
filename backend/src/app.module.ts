@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryModule } from './category/category.module';
 import { CategoryEntity } from './category/entity/category.entity';
@@ -11,16 +12,22 @@ import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'andi',
-      database: 'glass-shop',
-      entities: [CategoryEntity, ProductEntity, UserEntity],
-      synchronize: true,
-      autoLoadEntities: true
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: 'localhost',
+        port: configService.get<number>('DATABASE_PORT'),
+        username: configService.get<string>('DATABASE_USERNAME'),
+        password: configService.get<string>('DATABASE_PASSWORD'),
+        database: configService.get<string>('DATABASE_NAME'),
+        entities: [CategoryEntity, ProductEntity, UserEntity],
+        synchronize: true,
+        autoLoadEntities: true,
+
+      })
     })
     , ProductModule, CategoryModule, UserModule, AuthModule, OrderModule],
   controllers: [],

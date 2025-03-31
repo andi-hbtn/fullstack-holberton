@@ -13,6 +13,7 @@ import Products from "./pages/Products/index.js";
 import Home from './pages/Home/index.js';
 import ProductPage from "./pages/ProductPage/index.js";
 import Cart from './components/Cart/'
+import Checkout from './components/Checkout/';
 import Login from './pages/Auth/Login.js';
 import Register from './pages/Auth/Register.js';
 
@@ -23,21 +24,22 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <CartProvider>
     <AuthenticateProvider>
-        <CategoryProvider>
-            <ProductProvider>
-                <BrowserRouter>
-                    <Routes>
-                      <Route path="/login"  element={<Login />} />
-                      <Route path="/register" element={<Register />} />
-                      <Route path="/admin-category" element={<Categories />} />
-                      <Route path="/admin-products" element={<Products />} />
-                      <Route path="/" element={<Home />} />
-                      <Route path="/cart" element={<Cart />} />
-                      <Route path="/product/:id" element={<ProductPage />} />
-                    </Routes>
-                </BrowserRouter>
-            </ProductProvider>
-        </CategoryProvider>
+      <CategoryProvider>
+        <ProductProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/admin-category" element={<Categories />} />
+              <Route path="/admin-products" element={<Products />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+            </Routes>
+          </BrowserRouter>
+        </ProductProvider>
+      </CategoryProvider>
     </AuthenticateProvider>
   </CartProvider>
 );

@@ -1,0 +1,80 @@
+.billing-detail {
+    margin-right: 30px;
+}
+
+.ch-t-cnt {
+    margin-top: 50px !important;
+}
+
+.ch-t-cnt>div>h2,
+.ch-t-cnt>div>h5 {
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+
+.additional-cnt {
+    margin-top: 20px !important;
+}
+
+.border-radius {
+    border: 2px solid #e2edef !important;
+    border-radius: 20px !important;
+    height: 50px;
+}
+
+.order-cnt {
+    padding: 20px !important;
+    border: 2px solid #e2edef !important;
+    border-radius: 20px !important;
+}
+
+
+.final-order {
+    margin-top: 50px;
+}
+
+.each-order {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 20px !important;
+    padding-bottom: 30px;
+}
+
+.each-order>div>img {
+    width: 60px;
+    height: 60px;
+}
+
+.checkout-img-title>span {
+    margin-left: 20px;
+}
+
+.checkout-quantity {
+    margin-top: 10px !important;
+}
+
+.checkout-quantity>span {
+    float: right;
+}
+
+.checkout-total {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 40px;
+}
+
+.checkout-total>span:first-of-type {
+    float: left;
+}
+
+.checkout-total>span:last-of-type {
+    float: right;
+}
+
+.place-order-btn {
+    margin-top: 80px !important;
+    width: 80% !important;
+    display: block !important;
+    margin: 0 auto;
+}

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import Header from "../Header/Header";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import { FaTrashAlt } from "react-icons/fa";
 import { useCartContext } from "../../context/CartContext";
 import "./index.css";
+import { Prev } from 'react-bootstrap/esm/PageItem';
 
 const Cart = () => {
 
@@ -14,13 +16,12 @@ const Cart = () => {
 
     const loadItems = (items) => {
         const result = items.map((el, index) => {
-            console.log("el----", el);
             return {
                 id: el.id,
                 product_id: el.items[0].product_id,
                 title: el.items[0].title,
                 image: el.items[0].image,
-                price: 10, 
+                price: 10,
                 quantity: el.items.length
             };
         });
@@ -28,13 +29,52 @@ const Cart = () => {
     }
 
     const addQuantity = (item) => {
-        console.log("addQuantity---", item);
-        console.log("cart----", cart);
+        setCart((prevState) => {
+            return prevState.map((el, index) => {
+                if (el.id === item.id) {
+                    const newQuantity = Math.max(el.quantity + 1, 0);
+                    return {
+                        ...el,
+                        quantity: newQuantity
+                    };
+                }
+                return el;
+            });
+        });
     }
 
     const removeQuantity = (item) => {
-        console.log("removeQuantity---", item);
+        setCart((prevState) => {
+            return prevState.map((el, index) => {
+                if (el.id === item.id) {
+                    const newQuantity = Math.max(el.quantity - 1, 0);
+                    return {
+                        ...el,
+                        quantity: newQuantity
+                    };
+                }
+                return el;
+            });
+        });
     }
+
+    const removeItem = (item) => {
+        setCart((prevState) => {
+            return prevState.filter((el) => { return el.id !== item.id });
+        });
+    }
+
+
+    const subtotal = cart.reduce((acc, item) => {
+        return acc + (Number(item.price) * Number(item.quantity))
+    }, 0);
+
+
+    const handleCheckout = () => {
+
+    }
+
+
 
     return (
         <>
@@ -61,7 +101,7 @@ const Cart = () => {
                                     cart.map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td>
+                                                <td className='td-p'>
                                                     <div className='item-img-cnt'>
                                                         <img src={`http://localhost:3000/api/product/uploads/${item.image}`} alt='product name' />
                                                     </div>
@@ -69,12 +109,12 @@ const Cart = () => {
                                                         <a href=''>{item.title}</a>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td className='td-p'>
                                                     <Row className='price-cnt'>
                                                         <span>${item.price}</span>
                                                     </Row>
                                                 </td>
-                                                <td>
+                                                <td className='td-p'>
                                                     <Row className='quantity-cnt'>
                                                         <Col sm={3} md={3} lg={3} className="p-0 c-b">
                                                             <Button variant="dark" onClick={() => { removeQuantity(item) }}>-</Button>
@@ -89,7 +129,10 @@ const Cart = () => {
                                                 </td>
                                                 <td>
                                                     <Row className='subtotal-quantity'>
-                                                        <span className='text-center'>$ {item.price * item.quantity}</span>
+                                                        <span>$ {item.price * item.quantity}</span>
+                                                        <span className='remove-item' onClick={() => { removeItem(item) }}>
+                                                            <FaTrashAlt />
+                                                        </span>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -105,14 +148,14 @@ const Cart = () => {
                                 <h4>Cart totals</h4>
                                 <div className='subtotal-cnt'>
                                     <span>Subtotal</span>
-                                    <span>$30452145</span>
+                                    <span>${subtotal}</span>
                                 </div>
                                 <div className='total-cnt'>
                                     <span>Total</span>
-                                    <span>$30452145</span>
+                                    <span>${subtotal}</span>
                                 </div>
-                                <Button variant="dark" className='checkout-btn'>
-                                    Proceed to checkout
+                                <Button variant="dark" className='checkout-btn' onClick={handleCheckout}>
+                                    <a href='/checkout'>Proceed to checkout</a>
                                 </Button>
                             </Col>
                         </Row>
