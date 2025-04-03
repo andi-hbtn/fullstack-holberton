@@ -1,7 +1,18 @@
 import {Container,Row,Col,Button,Form,Nav,Navbar} from 'react-bootstrap';
 import "./Header.css";
 import logo from "../../images/logo.png";
+import { useAuthenticateContext } from "../../context/AuthenticateContext";
+
 const Header=()=>{
+
+    const {authUser,logout} = useAuthenticateContext();
+
+    const handleLogout = async() =>{
+        return await logout();
+    }
+
+    console.log("header----");
+
   return (
     <>
         <div className='main-cnt'>
@@ -31,7 +42,19 @@ const Header=()=>{
                                 <Nav.Link href="#action4">gallery</Nav.Link>
                                 <Nav.Link href="#action5">faq</Nav.Link>
                                 <Nav.Link href="#">shopping cart</Nav.Link>
-                                <Nav.Link href="#"> sign in/register</Nav.Link>
+                                {!authUser?.id ? (
+                                <Nav.Link href="/login">Sign In/Register</Nav.Link>
+                                ) : (
+                                // Show user-related content when logged in
+                                <>
+                                    <Nav.Link href="/profile" className="d-flex align-items-center">
+                                    <span style={{ marginRight: '8px' }}>
+                                        👋 Hi, {authUser.firstname}
+                                    </span>
+                                    </Nav.Link>
+                                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                                </>
+                                )}
                             </Nav>
                         </Col>
                         <Col xs={6} md={3} lg={3}>

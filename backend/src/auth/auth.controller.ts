@@ -69,11 +69,10 @@ export class AuthController {
     //fshijme cookie sepse fronti nuk ka akses ti fshije
     public logout(@Res({ passthrough: true }) response: Response) {
         response.clearCookie('jwt');
-        return { "message": "success", "status": 200 }
+        return { "message": "success", "status": 201 }
     }
 
     @Get('checkUser')
-    @UseGuards(AuthGuard)
     public async checkAuthUser(@Req() request :Request):Promise<UserEntity[]>{
         const id = await this.authService.authUserId(request)
         return await this.userService.findById(id);

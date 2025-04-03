@@ -10,7 +10,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 
 
-// @UseGuards(AuthGuard)
+
 @Controller('product')
 export class ProductController {
 	constructor(private readonly productService: ProductService) { }
@@ -20,6 +20,7 @@ export class ProductController {
 		return await this.productService.getAllProducts()
 	}
 
+	@UseGuards(AuthGuard)
 	@Post('create')
 	@UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
@@ -34,6 +35,7 @@ export class ProductController {
 		return await this.productService.createProduct(bodyParam,file.filename);
 	}
 
+	@UseGuards(AuthGuard)
 	@Put('update/:id')
 	@UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
@@ -61,6 +63,7 @@ export class ProductController {
 		return await this.productService.getProductById(id);
 	}
 
+	@UseGuards(AuthGuard)
 	@Delete('delete/:id')
 	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
 		const product = await this.productService.getProductById(id);
@@ -71,7 +74,6 @@ export class ProductController {
         }
 	}
 
-	// @UseGuards(AuthGuard)
     @Get('uploads/:path')
     public getImage(@Param() path:any, @Res() res: Response) {
         res.sendFile(path.path, { root: 'uploads' });

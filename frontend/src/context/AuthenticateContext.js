@@ -5,10 +5,12 @@ const AuthenticateContext = createContext({});
 
 const AuthenticateProvider = (props) => {
 	const [authUser, setAuthUser] = useState({});
+	const [trigger, setTrigger] = useState(false);
 
 	useEffect(() => {
+		console.log("----AuthenticateContext--useEffect--");
 		checkAuthUser();
-	}, []);
+	}, [trigger]);
 
 	const register = async (data) => {
 		try {
@@ -38,8 +40,10 @@ const AuthenticateProvider = (props) => {
 	const logout = async (id, data) => {
 		try {
 			const result = await logout_user_service();
-			if (result.status === 200) {
+			console.log("result",result);
+			if (result.data.status === 201) {
 				setAuthUser([]);
+				setTrigger(!trigger);
 			}
 		} catch (error) {
 			return error
@@ -51,6 +55,8 @@ const AuthenticateProvider = (props) => {
 			const result = await checkAuth_user_service();
 			if (result.status === 200) {
 				setAuthUser(...result.data);
+			} else{
+				setAuthUser({});
 			}
 		}catch(error){
 			setAuthUser(null);
@@ -58,6 +64,10 @@ const AuthenticateProvider = (props) => {
 		}
 	}
 	const values = { authUser, register, login, logout };
+
+
+	console.log("-------AuthenticateContext----",authUser);
+
 	return (
 		<AuthenticateContext.Provider value={values}>
 			{props.children}
