@@ -9,11 +9,10 @@ import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 
-
-
 @Controller('product')
 export class ProductController {
 	constructor(private readonly productService: ProductService) { }
+
 
 	@Get('all')
 	public async getAll() {

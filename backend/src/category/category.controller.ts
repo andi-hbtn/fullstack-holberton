@@ -3,8 +3,12 @@ import { CategoryService } from './category.service';
 import { CategoryEntity } from './entity/category.entity';
 import { CategoryDto } from './dto/category.dto';
 import { AuthGuard } from 'src/guards/auth.guards';
+import { Roles } from 'src/decorators/roles.decorator';
+import { PermissionGuard } from 'src/guards/permission.guards';
 
-// @UseGuards(AuthGuard)
+
+@Roles('admin')
+@UseGuards(AuthGuard,PermissionGuard)
 @Controller('category')
 export class CategoryController {
 	constructor(private readonly categoryService: CategoryService) { }
