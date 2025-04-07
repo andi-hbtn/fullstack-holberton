@@ -15,8 +15,8 @@ export class UserEntity {
 	@Column()
 	email: string;
 
-	@Column({ default: false })
-	is_admin: boolean;
+	@Column({ default: 'user' })
+	roles: string;
 
 	@Column()
 	password: string;
@@ -26,5 +26,4 @@ export class UserEntity {
 
 	@OneToMany(()=>OrderEntity,order=>order.user)
 	order:OrderEntity[]
-
 }
