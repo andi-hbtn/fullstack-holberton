@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe,UseGuards, UseInterceptors, Res, UploadedFile } from '@nestjs/common';
-import { Roles } from 'src/decorators/roles.decorator';
 import { AuthGuard } from 'src/guards/auth.guards';
 import { PermissionGuard } from 'src/guards/permission.guards';
+import { IsPublic } from 'src/decorators/public.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ProductService } from './products.service';
 import { ProductEntity } from './entity/products.enity';
 import { ProductDto } from './dto/product.dto';
@@ -17,6 +18,7 @@ import * as fs from "fs";
 export class ProductController {
 	constructor(private readonly productService: ProductService) { }
 
+	@IsPublic()
 	@Get('all')
 	public async getAll() {
 		return await this.productService.getAllProducts()
@@ -60,11 +62,11 @@ export class ProductController {
 		}
 	}
 
+	@IsPublic()
 	@Get(':id')
 	public async getById(@Param('id', ParseIntPipe) id: number): Promise<ProductEntity> {
 		return await this.productService.getProductById(id);
 	}
-
 
 	@Roles('admin')
 	@Delete('delete/:id')
@@ -77,6 +79,7 @@ export class ProductController {
         }
 	}
 
+	@IsPublic()
     @Get('uploads/:path')
     public getImage(@Param() path:any, @Res() res: Response) {
         res.sendFile(path.path, { root: 'uploads' });

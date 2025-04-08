@@ -15,13 +15,9 @@ export class PermissionGuard implements CanActivate{
         const roles = this.reflector.get<string[]>('roles', context.getHandler());
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-
-        //console.log('User:', user[0].roles);
-        console.log("PermissionGuard---",roles);
-
-        // if(roles[0] !== user[0].roles){
-        //     throw new ServiceHandler('you are not authorized',HttpStatus.UNAUTHORIZED)
-        // } 
+        if(roles[0] !== user[0].roles){
+            throw new ServiceHandler('you does not have permissions',HttpStatus.UNAUTHORIZED)
+        } 
         return true;
     }
 }

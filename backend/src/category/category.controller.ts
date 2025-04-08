@@ -32,7 +32,7 @@ export class CategoryController {
 	}
 
 	@IsPublic()
-	@Get('get/:id')
+	@Get(':id')
 	public async getById(@Param() id: number): Promise<CategoryEntity> {
 		return await this.categoryService.getCategoryById(id);
 	}
