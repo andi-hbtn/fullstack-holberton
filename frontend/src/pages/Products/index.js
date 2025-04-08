@@ -7,6 +7,7 @@ import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
+import "./index.css";
 
 
 const ProductModal = () => {
@@ -16,24 +17,33 @@ const ProductModal = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
-	const [dataId, setDataId] = useState({});
+	const [formData,setFormData] = useState({ id: 0, title: "", description: "", category_id : 0,price : 0,stock : 0,image : "", is_active:false});
 
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
+		setFormData({});
 		setCaseModal({ title: "Create product", create: true, button: "Create" });
 		setOpen(!open);
 	}
+	
 
-	const handleEdit = (id) => {
-		setDataId(id);
+	const handleEdit = (product) => {
+		setFormData(
+			{
+				id: product.id,
+				title: product.title,
+				description: product.description,
+				category_id: product.category_id,
+				price: product.price,
+				stock: product.stock,
+				image: product.image,
+				is_active: product.is_active
+			}
+		);
 		setCaseModal({ title: "Edit product", create: false, button: "Update" })
 		setOpen(!open);
 	}
-
-	// const handleDelete = async (id) => {
-	// 	await deleteProduct(id);
-	// }
 
 	const handleLogout = async() =>{
 		await logout();
@@ -94,9 +104,9 @@ const ProductModal = () => {
 										<th>Category</th>
 										<th>Price</th>
 										<th>Status</th>
+										<th>Stock</th>
 										<th>Image</th>
 										<th>Edit</th>
-										{/* <th>Delete</th> */}
 									</tr>
 								</thead>
 								<tbody>
@@ -105,20 +115,20 @@ const ProductModal = () => {
 											return (
 												<tr key={index}>
 													<td>{product.id}</td>
-													<td>{product.title}</td>
-													<td>{product.description.substring(0, 50)}</td>
-													<td>{product.category.name}</td>
+													<td className="col-2">{product.title}</td>
+													<td className="col-2">{product.description.substring(0, 50)}</td>
+													<td className="col-2">{product.category.name}</td>
 													<td>${product?.price}</td>
 													<td>{product.is_active ? "Is available" : "Not available"}</td>
+													<td>
+														{product.stock}
+													</td>
 													<td>
 														<img className="small-img" src={`http://localhost:3000/api/product/uploads/${product.image}`} alt="product alt" width={"120px"} height={"120px"}/>
 													</td>
 													<td>
-														<Button variant="primary" onClick={() => { handleEdit(product.id) }}>Edit</Button>
+														<Button variant="primary" onClick={() => { handleEdit(product) }}>Edit</Button>
 													</td>
-													{/* <td>
-														<Button variant="danger" onClick={() => { handleDelete(product.id) }}>Delete</Button>
-													</td> */}
 												</tr>
 											)
 										})
@@ -132,9 +142,10 @@ const ProductModal = () => {
 								close={close}
 								fields={fields}
 								case_modal={caseModal}
-								id={dataId}
 								create={createProduct}
 								update={updateProduct}
+								data={formData}
+								setData={setFormData}
 								categories={categories}
 								/>
 						}

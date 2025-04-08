@@ -30,18 +30,18 @@ const get_product_service = async(id)=>{
 	return result;
 }
 
-const update_product_service = async (id, data) => {
+const update_product_service = async (data) => {
 
 	const product = {
-		author_id: parseInt(data.author_id),
-		category_id: parseInt(data.category_id),
+		category_id:data.category_id,
 		description: data.description,
 		is_active: data.is_active,
-		price: parseInt(data.price),
+		price: data.price,
 		title: data.title,
 		image:data.image
 	}
-	const result = await axios.put(`${url}/update/${id}`, product,{
+
+	const result = await axios.put(`${url}/update/${data.id}`, product,{
 		headers:{
 				"Content-Type":"multipart/form-data"
 			}

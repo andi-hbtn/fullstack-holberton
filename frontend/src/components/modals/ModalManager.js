@@ -2,27 +2,20 @@ import { useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import AlertMessage from "../alert/AlertMessage";
 
-const ModalManager = ({ open, categories, close, case_modal, id, fields, create, update }) => {
+const ModalManager = ({ open, categories, close, case_modal, fields, create, update,data,setData }) => {
 
-	const [formData, setFormData] = useState({});
 	const [show, setShow] = useState(false);
-
-	const handleChange = (event) => {
-		const { name, value, type, checked } = event.target;
-		setFormData((prev) => {
-			return { 
-				...prev,
-				[name]: type === "checkbox" ? checked : type === "file" ? event.target.files[0] : value
-			};
-		});
-	}
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
+
+
+		// console.log("data-----",data);
+
 		if (case_modal.create) {
-			await create(formData);
+			await create(data);
 		} else {
-			await update(id, formData)
+			await update({...data})
 		}
 		setShow(!show);
 	}
@@ -41,12 +34,13 @@ const ModalManager = ({ open, categories, close, case_modal, id, fields, create,
 					</Modal.Header>
 					<Modal.Body>
 						{
-							fields.map((field, index) => 
-								(
+							fields.map((field, index) => {
+								console.log("field----",data[field.name]);
+								return(
 									<Form.Group key={index} className="mb-3">
 										{
 											field.name === "category_id" ?
-												<Form.Select name={field.name} onChange={handleChange} aria-label="Default select example">
+												<Form.Select name={field.name} onChange={()=>{ return setData()}} aria-label="Default select example">
 													{
 														categories.map((category, i) => {
 															return (
@@ -61,7 +55,7 @@ const ModalManager = ({ open, categories, close, case_modal, id, fields, create,
 													<Form.Control
 														type={field.type}
 														name={field.name}
-														onChange={handleChange}
+														onChange={()=>{return setData()}}
 													/>
 												</>	
 											: field.name === "is_active" ?
@@ -70,8 +64,8 @@ const ModalManager = ({ open, categories, close, case_modal, id, fields, create,
 														name={field.name}
 														type={field.type}
 														label={field.label}
-														checked={formData[field.name]}
-														onChange={handleChange}
+														checked={data[field.name]}
+														onChange={()=>{ return setData()}}
 													/>
 												</>
 											:
@@ -81,14 +75,15 @@ const ModalManager = ({ open, categories, close, case_modal, id, fields, create,
 													type={field.type}
 													name={field.name}
 													placeholder={field.placeholder}
-													onChange={handleChange}
-													value={formData[field.name]}
+													onChange={()=>{ return setData()}}
+													value={data[field.name]}
 												/>
 											</>
 										}
 									</Form.Group>
 								)
-							)}
+							}
+						)}
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={close}>

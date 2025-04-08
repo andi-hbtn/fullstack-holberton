@@ -37,7 +37,6 @@ export class AuthController {
                 }
                 return this.userService.registerUser(user);
             }
-
         } catch (error) {
             throw new ServiceHandler(error.response, error.status)
         }

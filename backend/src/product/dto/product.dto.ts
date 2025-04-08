@@ -13,12 +13,10 @@ export class ProductDto {
 
 	@IsNotEmpty()
 	@IsNumber()
-	@Transform(({ value }) => parseFloat(value))
 	price: number;
 
 	@IsNotEmpty()
 	@IsNumber()
-	@Transform(({ value }) => parseInt(value))
 	stock:number;
 
 	@IsNotEmpty()
@@ -28,7 +26,6 @@ export class ProductDto {
 
 	@IsNotEmpty()
 	@IsNumber()
-	@Transform(({ value }) => parseInt(value))
 	category_id: number;
 
 	image:string

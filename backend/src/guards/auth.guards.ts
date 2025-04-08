@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
         if (isPublic) {
             return true; // Skip auth for public routes
         }
-
+        
         const request = context.switchToHttp().getRequest();
         const jwt = request.cookies.jwt;
         if (!jwt) {
