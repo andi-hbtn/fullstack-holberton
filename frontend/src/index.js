@@ -16,6 +16,7 @@ import Cart from './components/Cart/'
 import Checkout from './components/Checkout/';
 import Login from './pages/Auth/Login.js';
 import Register from './pages/Auth/Register.js';
+import AdminRoute from "./components/AdminRoute";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
@@ -23,7 +24,7 @@ axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <CartProvider>
-    <AuthenticateProvider>
+    <AuthenticateProvider >
       <CategoryProvider>
         <ProductProvider>
           <BrowserRouter>
@@ -31,7 +32,13 @@ root.render(
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/admin-category" element={<Categories />} />
-              <Route path="/admin-products" element={<Products />} />
+              
+              <Route path="/admin-products" element={ 
+                  <AdminRoute> 
+                    <Products /> 
+                  </AdminRoute>
+                } 
+              />
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />

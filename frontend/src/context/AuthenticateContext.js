@@ -4,7 +4,7 @@ import { register_user_service, login_user_service, logout_user_service,checkAut
 const AuthenticateContext = createContext({});
 
 const AuthenticateProvider = (props) => {
-	const [authUser, setAuthUser] = useState({});
+	const [authUser, setAuthUser] = useState(null);
 	const [trigger, setTrigger] = useState(false);
 
 	useEffect(() => {
@@ -26,7 +26,6 @@ const AuthenticateProvider = (props) => {
 	const login = async (data) => {
 		try {
 			const result = await login_user_service(data);
-			console.log("result----",result);
 			if (result.status === 201) {
 				setAuthUser(result.data);
 			}
@@ -40,9 +39,8 @@ const AuthenticateProvider = (props) => {
 	const logout = async (id, data) => {
 		try {
 			const result = await logout_user_service();
-			console.log("result",result);
 			if (result.data.status === 201) {
-				setAuthUser([]);
+				setAuthUser({});
 				setTrigger(!trigger);
 			}
 		} catch (error) {
@@ -54,6 +52,7 @@ const AuthenticateProvider = (props) => {
 		try{
 			const result = await checkAuth_user_service();
 			if (result.status === 200) {
+				console.log("result---",result);
 				setAuthUser(...result.data);
 			} else{
 				setAuthUser({});
@@ -63,7 +62,8 @@ const AuthenticateProvider = (props) => {
 			return error;
 		}
 	}
-	const values = { authUser, register, login, logout };
+
+	const values = { authUser, register, login, logout , checkAuthUser };
 
 	return (
 		<AuthenticateContext.Provider value={values}>

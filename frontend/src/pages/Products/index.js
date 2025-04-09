@@ -18,7 +18,6 @@ const ProductModal = () => {
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
 	const [formData,setFormData] = useState({ id: 0, title: "", description: "", category_id : 0,price : 0,stock : 0,image : "", is_active:false});
-
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
