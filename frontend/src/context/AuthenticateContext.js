@@ -8,7 +8,6 @@ const AuthenticateProvider = (props) => {
 	const [trigger, setTrigger] = useState(false);
 
 	useEffect(() => {
-		console.log("----AuthenticateContext--useEffect--");
 		checkAuthUser();
 	}, [trigger]);
 
@@ -27,6 +26,7 @@ const AuthenticateProvider = (props) => {
 	const login = async (data) => {
 		try {
 			const result = await login_user_service(data);
+			console.log("result----",result);
 			if (result.status === 201) {
 				setAuthUser(result.data);
 			}
@@ -64,9 +64,6 @@ const AuthenticateProvider = (props) => {
 		}
 	}
 	const values = { authUser, register, login, logout };
-
-
-	console.log("-------AuthenticateContext----",authUser);
 
 	return (
 		<AuthenticateContext.Provider value={values}>

@@ -58,10 +58,10 @@ export class OrderService {
     }
 
     public async findOne(id:number):Promise<OrderEntity>{
-        return this.ordersRepository.findOne({where:{id},relations:['users','order_item']})
+        return this.ordersRepository.findOne({where:{id},relations:['user','order_items']})
     }
 
     public async findAll():Promise<OrderEntity[]>{
-        return this.ordersRepository.find({ relations: ['users', 'order_item'] });
+        return this.ordersRepository.find({ relations: ['user', 'orderItems'] });
     }
 }

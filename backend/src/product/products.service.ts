@@ -21,7 +21,6 @@ export class ProductService {
 	}
 
 	public async createProduct(data: ProductDto,file:string): Promise<any> {
-		console.log("data----",data);
 		try {
 			const product={
 				title:data.title,
@@ -32,6 +31,8 @@ export class ProductService {
 				is_active:data.is_active,
 				image:file
 			};
+
+			// console.log("product-----",product);
 			const result = await this.ProductEntity.save(product);
 			return result;
 		} catch (error) {
@@ -42,8 +43,8 @@ export class ProductService {
 
 	public async updateProduct(data: ProductDto, id: number,file?:string): Promise<ProductEntity> {
 		try {
-			const category = await this.ProductEntity.findOne({ where: { id } });
-			if (!category) {
+			const result = await this.ProductEntity.findOne({ where: { id } });
+			if (!result) {
 				throw new ServiceHandler("This is category does not longer Exist", HttpStatus.NOT_FOUND);
 			}
 			const product = {

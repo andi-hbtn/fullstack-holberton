@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsNumber, IsBoolean } from "class-validator";
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class ProductDto {
 
@@ -13,10 +13,12 @@ export class ProductDto {
 
 	@IsNotEmpty()
 	@IsNumber()
+	@Transform(({ value }) => parseInt(value))
 	price: number;
 
 	@IsNotEmpty()
 	@IsNumber()
+	@Transform(({ value }) => parseInt(value))
 	stock:number;
 
 	@IsNotEmpty()
@@ -26,6 +28,7 @@ export class ProductDto {
 
 	@IsNotEmpty()
 	@IsNumber()
+	@Type(() => Number)
 	category_id: number;
 
 	image:string

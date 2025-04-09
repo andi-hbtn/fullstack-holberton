@@ -46,24 +46,20 @@ export class ProductController {
             destination: './uploads',
             filename: (req, image, cb) => {
                 const imageName = new ImageNameHelper(image.originalname).getImageName();
+				console.log("image.originalname----",image);
                 cb(null, imageName);
             }
         }),
     }))
 	public async update(@Body() bodyParam:any, @Param('id', ParseIntPipe) id: number,@UploadedFile() file: Express.Multer.File): Promise<any> {
-		
-		console.log("bodyParam----",bodyParam);
-		console.log("id----",id);
-
-		// const product = await this.productService.getProductById(id);
-		// if(product){
-		// 	if(file) {
-        //         //const files = await fs.promises.readdir('uploads');
-        //         fs.unlinkSync('uploads/' + product.image);
-        //         return await this.productService.updateProduct(bodyParam, id, file.filename);
-		// 	}
-		// 	return await this.productService.updateProduct(bodyParam, id, product?.image);
-		// }
+		const product = await this.productService.getProductById(id);
+		if(product){
+			if(file) {
+                fs.unlinkSync('uploads/' + product.image);
+                return await this.productService.updateProduct(bodyParam, id, file.filename);
+			}
+			return await this.productService.updateProduct(bodyParam, id, product?.image);
+		}
 	}
 
 	@IsPublic()

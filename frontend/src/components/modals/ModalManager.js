@@ -35,12 +35,12 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 					<Modal.Body>
 						{
 							fields.map((field, index) => {
-								console.log("field----",data[field.name]);
+								//console.log("field----",data[field.name]);
 								return(
 									<Form.Group key={index} className="mb-3">
 										{
 											field.name === "category_id" ?
-												<Form.Select name={field.name} onChange={()=>{ return setData()}} aria-label="Default select example">
+												<Form.Select name={field.name} onChange={(e) => setData({ ...data, [field.name]: Number(e.target.value) })} aria-label="Default select example">
 													{
 														categories.map((category, i) => {
 															return (
@@ -55,7 +55,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 													<Form.Control
 														type={field.type}
 														name={field.name}
-														onChange={()=>{return setData()}}
+														onChange={(e) => setData({ ...data, [field.name]: e.target.files[0]})}
 													/>
 												</>	
 											: field.name === "is_active" ?
@@ -65,7 +65,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 														type={field.type}
 														label={field.label}
 														checked={data[field.name]}
-														onChange={()=>{ return setData()}}
+														onChange={(e) => setData({ ...data, [field.name]: e.target.checked })}
 													/>
 												</>
 											:
@@ -75,7 +75,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 													type={field.type}
 													name={field.name}
 													placeholder={field.placeholder}
-													onChange={()=>{ return setData()}}
+													onChange={(e) => setData({ ...data, [field.name]: e.target.value })}
 													value={data[field.name]}
 												/>
 											</>

@@ -124,7 +124,7 @@ const ProductModal = () => {
 														{product.stock}
 													</td>
 													<td>
-														<img className="small-img" src={`http://localhost:3000/api/product/uploads/${product.image}`} alt="product alt" width={"120px"} height={"120px"}/>
+														<img className="small-img" src={`http://localhost:3000/api/product/uploads/${product.image}`} alt="product alt" width={"60px"} height={"60px"}/>
 													</td>
 													<td>
 														<Button variant="primary" onClick={() => { handleEdit(product) }}>Edit</Button>

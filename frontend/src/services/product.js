@@ -3,20 +3,20 @@ const url = "http://localhost:3000/api/product";
 
 const create_product_service = async (data) => {
 
-	const product = {
-		title: data.title,
-		description: data.description,
-		price: parseInt(data.price),
-		stock: parseInt(data.stock),
-		category_id: parseInt(data.category_id),
-		is_active: data.is_active,
-		image:data.image
-	}
-	const result = await axios.post(`${url}/create`,product,{
-			headers:{
-					"Content-Type":"multipart/form-data"
-				}
-		});
+	const formData = new FormData();
+	formData.append("title", data.title);
+	formData.append("description", data.description);
+	formData.append("category_id", parseInt(data.category_id));
+	formData.append("price", parseInt(data.price));
+	formData.append("stock", parseInt(data.stock));
+	formData.append("is_active", data.is_active);
+	formData.append("image", data.image);
+
+	const result = await axios.post(`${url}/create`,formData,{
+		headers:{
+			"Content-Type":"multipart/form-data"
+		}
+	});
 	return result;
 }
 
@@ -31,17 +31,16 @@ const get_product_service = async(id)=>{
 }
 
 const update_product_service = async (data) => {
+	const formData = new FormData();
+	formData.append("title", data.title);
+	formData.append("description", data.description);
+	formData.append("category_id", parseInt(data.category_id));
+	formData.append("price",  parseInt(data.price));
+	formData.append("stock",  parseInt(data.stock));
+	formData.append("is_active", data.is_active);
+	formData.append("image", data.image);
 
-	const product = {
-		category_id:data.category_id,
-		description: data.description,
-		is_active: data.is_active,
-		price: data.price,
-		title: data.title,
-		image:data.image
-	}
-
-	const result = await axios.put(`${url}/update/${data.id}`, product,{
+	const result = await axios.put(`${url}/update/${data.id}`,formData,{
 		headers:{
 				"Content-Type":"multipart/form-data"
 			}
