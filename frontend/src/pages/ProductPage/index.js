@@ -1,10 +1,8 @@
 import {useEffect,useState } from "react";
 import { Container, Row, Col,Button,Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-
 import Header from "../../components/Header/Header";
 import NotFount from "../../components/NotFount";
-
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
 
@@ -37,6 +35,7 @@ const ProductPage = () => {
   return (
     <>
     <Header/>
+
     <Container>
     { 
         error.message

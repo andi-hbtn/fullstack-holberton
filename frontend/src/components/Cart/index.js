@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from "../Header/Header";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { FaTrashAlt } from "react-icons/fa";
-import { useCartContext } from "../../context/CartContext";
 import "./index.css";
-import { Prev } from 'react-bootstrap/esm/PageItem';
 
 const Cart = () => {
 
@@ -21,7 +19,7 @@ const Cart = () => {
                 product_id: el.items[0].product_id,
                 title: el.items[0].title,
                 image: el.items[0].image,
-                price: 10,
+                price: el.items[0].price,
                 quantity: el.items.length
             };
         });
@@ -29,6 +27,28 @@ const Cart = () => {
     }
 
     const addQuantity = (item) => {
+        let existingCart = JSON.parse(localStorage.getItem("items"));
+        let found = false;
+
+        const newItem = {
+            image:item.image,
+            price:item.price,
+            product_id:item.id,
+            quantity:item.quantity,
+            title:item.title
+        }
+        
+		existingCart.forEach(element => {
+			if (element.id === newItem.product_id) {
+                element.items.push(newItem);
+				found = true;
+			}
+		});
+        if (!found) {
+			existingCart.push(newItem);
+		}
+		localStorage.setItem("items", JSON.stringify(existingCart));
+
         setCart((prevState) => {
             return prevState.map((el, index) => {
                 if (el.id === item.id) {
@@ -41,9 +61,27 @@ const Cart = () => {
                 return el;
             });
         });
+
     }
 
     const removeQuantity = (item) => {
+        let existingCart = JSON.parse(localStorage.getItem("items"));
+        const newItem = {
+            image:item.image,
+            price:item.price,
+            product_id:item.id,
+            quantity:item.quantity,
+            title:item.title
+        }
+
+
+        existingCart.forEach(element => {
+			if (element.id === newItem.product_id) {
+                console.log("found---",element.items);
+			}
+		});
+
+
         setCart((prevState) => {
             return prevState.map((el, index) => {
                 if (el.id === item.id) {
@@ -73,8 +111,6 @@ const Cart = () => {
     const handleCheckout = () => {
 
     }
-
-
 
     return (
         <>

@@ -1,11 +1,13 @@
-import {Container,Row,Col,Button,Form,Nav,Navbar} from 'react-bootstrap';
+import { useState } from 'react';
+import {Row,Col,Navbar,Container,Nav,Button,Form} from 'react-bootstrap';
 import "./Header.css";
 import logo from "../../images/logo.png";
+import Login from '../AuthModal/login';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 
 const Header=()=>{
-
     const {authUser,logout} = useAuthenticateContext();
+    const [loginModal, setLoginModal] = useState(false);
 
     const handleLogout = async() =>{
         return await logout();
@@ -41,7 +43,7 @@ const Header=()=>{
                                     <Nav.Link href="#action5">faq</Nav.Link>
                                     <Nav.Link href="#">shopping cart</Nav.Link>
                                     {!authUser?.id ? (
-                                    <Nav.Link href="/login">Sign In/Register</Nav.Link>
+                                    <Nav.Link onClick={() => setLoginModal(!loginModal)}>Login</Nav.Link>
                                     ) : (
                                     // Show user-related content when logged in
                                     <>
@@ -67,12 +69,10 @@ const Header=()=>{
                                 </Form>
                             </Col>
                         </Row>
-                    
-                
-
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
+            <Login openLogin={loginModal} closeLogin={() => setLoginModal(false)}/>
         </>
     );
 }

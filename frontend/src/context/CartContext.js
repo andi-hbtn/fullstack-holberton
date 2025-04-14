@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, } from 'react';
 import { get_orders_service, create_order_service, get_order_service } from "../services/cart";
 
 const CartContext = createContext({});
@@ -11,11 +11,6 @@ const CartProvider = (props) => {
 			total_price: 0,
 		}
 	);
-
-	useEffect(() => {
-		getOrders();
-	}, []);
-
 
 	const addQuantity = (product) => {
 		setQuantity((prevState) => {
@@ -57,7 +52,6 @@ const CartProvider = (props) => {
 			});
 		}
 	}
-
 
 	const addToCart = () => {
 		let existingCart = JSON.parse(localStorage.getItem("items")) || [];

@@ -18,7 +18,7 @@ const Checkout = () => {
                 product_id: el.items[0].product_id,
                 title: el.items[0].title,
                 image: el.items[0].image,
-                price: 10,
+                price:  el.items[0].price,
                 quantity: el.items.length
             };
         });
@@ -29,9 +29,6 @@ const Checkout = () => {
     const subtotal = cart.reduce((acc, item) => {
         return acc + (Number(item.price) * Number(item.quantity))
     }, 0);
-
-
-    console.log("cart------", cart);
 
     return (
         <>
