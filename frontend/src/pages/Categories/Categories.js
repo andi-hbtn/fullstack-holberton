@@ -46,6 +46,7 @@ const Categories = () => {
 					<Nav className="me-auto">
 						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
 						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+						<Nav.Link as={Link} to="/">Home</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
 					{

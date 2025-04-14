@@ -16,7 +16,7 @@ const ProductProvider = (props) => {
 			}
 		} catch (error) {
 			console.log("error--in post method--", error);
-			return error
+			throw error.response.data;
 		}
 	}
 
@@ -28,7 +28,7 @@ const ProductProvider = (props) => {
 				
 			}
 		} catch (error) {
-			return error
+			throw error.response.data;
 		}
 	}
 
@@ -36,7 +36,7 @@ const ProductProvider = (props) => {
 		try {
 			return await get_product_service(id);
 		} catch (error) {
-			return error;
+			throw error.response.data;
 		}
 	}
 
@@ -48,7 +48,7 @@ const ProductProvider = (props) => {
 			}
 		} catch (error) {
 			console.log("error--in update--", error);
-			return error
+			throw error.response.data;
 		}
 	}
 

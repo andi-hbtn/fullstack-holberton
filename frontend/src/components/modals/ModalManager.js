@@ -8,17 +8,26 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
+		try{
+			let response;
+			if (case_modal.create) {
+				response = await create(data);
+				
+			} else {
+				response = await update({ ...data });
+			}
+			setShow(!show);
+		}catch(error){
 
-
-		// console.log("data-----",data);
-
-		if (case_modal.create) {
-			await create(data);
-		} else {
-			await update({...data})
 		}
-		setShow(!show);
 	}
+
+	const isDisabled = fields.some(field => {
+		const value = data[field.name];
+		if (field.type === "checkbox") return false; // allow unchecked
+		if (field.type === "file") return !value || value === null;
+		return value === undefined || value === null || value === "";
+	});
 
 	return (
 		<>
@@ -35,7 +44,6 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 					<Modal.Body>
 						{
 							fields.map((field, index) => {
-								//console.log("field----",data[field.name]);
 								return(
 									<Form.Group key={index} className="mb-3">
 										{
@@ -89,7 +97,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 						<Button variant="secondary" onClick={close}>
 							Close
 						</Button>
-						<Button variant="primary" type="submit">{case_modal.button}</Button>
+						<Button variant="primary" type="submit" disabled={isDisabled}>{case_modal.button}</Button>
 					</Modal.Footer>
 				</Form>
 				{show && <AlertMessage message={`${case_modal.title.split(' ')[1]} has been ${case_modal.create ? "created" : "updated"} successfully`} close={setShow} />}

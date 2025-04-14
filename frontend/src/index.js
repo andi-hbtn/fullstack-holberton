@@ -22,7 +22,7 @@ axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <CartProvider>
-    {/* <AuthenticateProvider > */}
+    <AuthenticateProvider >
       <CategoryProvider>
         <ProductProvider>
           <BrowserRouter>
@@ -42,7 +42,7 @@ root.render(
           </BrowserRouter>
         </ProductProvider>
       </CategoryProvider>
-    {/* </AuthenticateProvider> */}
+    </AuthenticateProvider>
   </CartProvider>
 );
 

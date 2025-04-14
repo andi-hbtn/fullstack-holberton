@@ -57,25 +57,17 @@ const ProductPage = () => {
                     <p>{product.description}</p>
                     <Col sm={12} md={12} lg={12}>
                         <Row>
-                            <Col sm={2} md={2} lg={1} className="p-0 c-b">
+                            <Col sm={12} md={6} lg={6} className="p-q">
                                 <Button variant="dark" onClick={()=> removeQuantity(product) }>-</Button>
-                            </Col>
-
-                            <Col sm={2} md={2} lg={1} className="c-b">
-                                <span>{quantity.items.length}</span>
-                            </Col>
-
-                            <Col sm={2} md={2} lg={1} className="p-0 c-b">
+                                <span className="text-center">{quantity.items.length}</span>
                                 <Button variant="dark" onClick={()=> addQuantity(product) }>+</Button>
                             </Col>
 
-                            <Col sm={2} md={2} lg={3} className="p-0 m-l-50">
+                            <Col sm={12} md={6} lg={6} className="p-c">
                               <Button variant="dark" className="" onClick={()=>{addToCart()}}>Add to cart</Button>
-                          </Col>
 
-                            <Col sm={2} md={2} lg={3}>
-                                <a href="/cart">
-                                    <Button variant="secondary">
+                              <a href="/cart">
+                                    <Button variant="dark">
                                         View cart
                                     </Button>
                                 </a>

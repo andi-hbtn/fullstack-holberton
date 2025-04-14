@@ -14,26 +14,7 @@
     padding-bottom: 20px;
     border-bottom: 1px solid #dfdfdf;
 }
-.c-b > button{
-   width: 100%; 
-}
 
-.c-b > span{
-    margin-top: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cart-btn > button{
-    background-color: #274c4f;
-}
-
-.cart-btn > a {
-    text-decoration: none;
-    color: #ffffff;
-}
-
-.cart-btn > a:hover{
-    color: #ffffff;
-}
+.p-q > button , .p-q > span{ width: 20%; display: inline-block;}
+.p-c > button{float: left;}
+.p-c > a{float: right;}

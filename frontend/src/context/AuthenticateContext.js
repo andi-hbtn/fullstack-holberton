@@ -18,8 +18,7 @@ const AuthenticateProvider = (props) => {
 				setAuthUser(result.data);
 			}
 		} catch (error) {
-			console.log("error--in post method--", error);
-			return error
+			throw error.response.data
 		}
 	}
 
@@ -31,8 +30,7 @@ const AuthenticateProvider = (props) => {
 			}
 			return result;
 		} catch (error) {
-			console.log("error--in get method--", error.response.data);
-			return error;
+			throw error.response.data;
 		}
 	}
 
@@ -52,7 +50,6 @@ const AuthenticateProvider = (props) => {
 		try{
 			const result = await checkAuth_user_service();
 			if (result.status === 200) {
-				console.log("result---",result);
 				setAuthUser(...result.data);
 			} else{
 				setAuthUser({});

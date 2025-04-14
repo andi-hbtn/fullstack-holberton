@@ -13,7 +13,8 @@ const Cart = () => {
     }, []);
 
     const loadItems = (items) => {
-        const result = items.map((el, index) => {
+        const result = items.filter(el => el.items && el.items.length > 0)
+        .map((el, index) => {
             return {
                 id: el.id,
                 product_id: el.items[0].product_id,
@@ -66,7 +67,8 @@ const Cart = () => {
 
     const removeQuantity = (item) => {
         let existingCart = JSON.parse(localStorage.getItem("items"));
-        const newItem = {
+
+        const itemToRemove = {
             image:item.image,
             price:item.price,
             product_id:item.id,
@@ -74,26 +76,27 @@ const Cart = () => {
             title:item.title
         }
 
-
         existingCart.forEach(element => {
-			if (element.id === newItem.product_id) {
-                console.log("found---",element.items);
+			if (element.id === itemToRemove.product_id) {
+                const indexToRemove = element.items.findIndex((e,i)=> e.product_id === itemToRemove.product_id );
+                if (indexToRemove !== -1) {
+                    element.items.splice(indexToRemove, 1);
+                }
 			}
 		});
-
+        existingCart = existingCart.filter(el => el.items.length > 0);
+        localStorage.setItem("items", JSON.stringify(existingCart));
 
         setCart((prevState) => {
-            return prevState.map((el, index) => {
+            return prevState.map((el) => {
                 if (el.id === item.id) {
                     const newQuantity = Math.max(el.quantity - 1, 0);
-                    return {
-                        ...el,
-                        quantity: newQuantity
-                    };
+                    return { ...el, quantity: newQuantity };
                 }
                 return el;
-            });
+            }).filter(el => el.quantity > 0);
         });
+    
     }
 
     const removeItem = (item) => {

@@ -13,6 +13,8 @@ const Header=()=>{
         return await logout();
     }
 
+    console.log("authUser--",authUser);
+
     return (
         <>
             <div className='main-cnt'>
@@ -47,7 +49,7 @@ const Header=()=>{
                                     ) : (
                                     // Show user-related content when logged in
                                     <>
-                                        <Nav.Link href="/profile" className="d-flex align-items-center">
+                                        <Nav.Link href={ authUser.roles === 'admin' ? 'admin-products':'profile' } className="d-flex align-items-center">
                                         <span style={{ marginRight: '8px' }}>
                                             👋 Hi, {authUser.firstname}
                                         </span>

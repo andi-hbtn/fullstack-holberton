@@ -151,7 +151,7 @@ const Checkout = () => {
                                     cart.map((el, index) => {
                                         return (
                                             <>
-                                                <Row className='each-order border-bottom'>
+                                                <Row key={index} className='each-order border-bottom'>
                                                     <Col sm={12} md={5} lg={5} className='checkout-img-title'>
                                                         <img src={`http://localhost:3000/api/product/uploads/${el.image}`} alt='product name' />
                                                         <span>{el.title} </span>

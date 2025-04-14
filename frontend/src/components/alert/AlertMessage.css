@@ -1,6 +1,6 @@
 .alert-container {
 	width: 80%;
-	margin: 20px auto;
+	margin: 20px auto !important;
 }
 
 .alert-message {
@@ -8,3 +8,5 @@
 	text-align: center !important;
 	margin: 0px !important;
 }
+
+.alert-message > strong {padding-right: 10px;}
