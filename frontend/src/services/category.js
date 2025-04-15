@@ -11,8 +11,8 @@ const get_category_service = async () => {
 	return result;
 }
 
-const update_category_service = async (id,data) => {
-	const result = await axios.put(`${url}/update/${id}`, data);
+const update_category_service = async (data) => {
+	const result = await axios.put(`${url}/update/${data.id}`, data);
 	return result;
 }
 

@@ -31,17 +31,19 @@ export class ProductService {
 				is_active:data.is_active,
 				image:file
 			};
-
-			// console.log("product-----",product);
 			const result = await this.ProductEntity.save(product);
-			return result;
+			return {
+				statusCode: HttpStatus.CREATED,
+				message: 'Product created successfully',
+				data: result
+			};
 		} catch (error) {
 			console.log("error-----",error);
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	public async updateProduct(data: ProductDto, id: number,file?:string): Promise<ProductEntity> {
+	public async updateProduct(data: ProductDto, id: number,file?:string){
 		try {
 			const result = await this.ProductEntity.findOne({ where: { id } });
 			if (!result) {
@@ -57,7 +59,11 @@ export class ProductService {
 			}
 			await this.ProductEntity.update(id, product);
 			const updatedCategory = await this.ProductEntity.findOne({ where: { id } });
-			return updatedCategory;
+			return {
+				statusCode: HttpStatus.CREATED,
+				message: 'Product updated successfully',
+				data: updatedCategory
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

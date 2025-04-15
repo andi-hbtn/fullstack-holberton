@@ -8,18 +8,20 @@ const AdminRoute = ({ children }) => {
     const [hasAccess,setHasAccess] = useState(null);
 
     useEffect(()=> {
+        console.log("authUser--in--useEffect--",authUser);
         if (authUser) {
             if (authUser?.roles === 'admin') {
                 setHasAccess(true);
             } else {
                 setHasAccess(false);
             }
-
         }
     }, [authUser]);
 
+    console.log("hasAccess----",hasAccess);
+
     if (hasAccess === null) {
-        return <>Loading...</>
+        return <Navigate to="/" />
     } else if (hasAccess) {
         return children
     } else {

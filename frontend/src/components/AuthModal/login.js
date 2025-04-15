@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import {Modal,Container,Row,Col,Form,Button} from 'react-bootstrap';
 import AlertMessage from '../alert/AlertMessage';
@@ -7,8 +6,7 @@ import "./login.css"
 
 const Login = ({openLogin,closeLogin}) => {
     const { login } = useAuthenticateContext();
-    const [loginError,setLoginError]=useState({error:false,message:"",status:0});
-    const [alert,setAlert] = useState(false);
+    const [loginResponse,setLoginResponse]=useState({error:false,message:"",status:0});
     const [values, setValues] = useState({ email: "", password: "" });
 
     const handleLogin = async (event) => {
@@ -19,7 +17,7 @@ const Login = ({openLogin,closeLogin}) => {
               closeLogin()
             }
         } catch (error) {
-          setLoginError({error:true,message:error.message,status:error.statusCode})
+          setLoginResponse({error:true,message:error.message,status:error.statusCode})
           console.log("error--in-handleLogin-",error);
         }
     }
@@ -82,8 +80,8 @@ const Login = ({openLogin,closeLogin}) => {
               </Modal.Body>
               <Modal.Footer>
               {
-                  loginError.error ? 
-                  <AlertMessage status={loginError.status} message={loginError.message}/>
+                  loginResponse.error ? 
+                  <AlertMessage status={loginResponse.status} message={loginResponse.message}/>
                   :
                   ""
                 }

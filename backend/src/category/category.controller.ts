@@ -21,13 +21,14 @@ export class CategoryController {
 
 	@Roles('admin')
 	@Post('create')
-	public async create(@Body() bodyParam: CategoryDto): Promise<CategoryEntity> {
+	public async create(@Body() bodyParam: CategoryDto) {
+		console.log("bodyparam---",bodyParam);
 		return await this.categoryService.createCategory(bodyParam);
 	}
 
 	@Roles('admin')
 	@Put('update/:id')
-	public async update(@Body() bodyParam: CategoryDto, @Param('id', ParseIntPipe) id: number): Promise<CategoryEntity> {
+	public async update(@Body() bodyParam: CategoryDto, @Param('id', ParseIntPipe) id: number) {
 		return await this.categoryService.updateCategory(bodyParam, id);
 	}
 

@@ -4,7 +4,8 @@ import AlertMessage from "../alert/AlertMessage";
 
 const ModalManager = ({ open, categories, close, case_modal, fields, create, update,data,setData }) => {
 
-	const [show, setShow] = useState(false);
+
+	const [resMsg,setResMsg] = useState({error:false,message:"",status:0});
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
@@ -12,13 +13,12 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 			let response;
 			if (case_modal.create) {
 				response = await create(data);
-				
 			} else {
-				response = await update({ ...data });
+				response = await update(data);
 			}
-			setShow(!show);
+			setResMsg({error:true,message:response.message,status:response.statusCode})
 		}catch(error){
-
+			console.log("error---",error);
 		}
 	}
 
@@ -52,7 +52,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 													{
 														categories.map((category, i) => {
 															return (
-																<option key={i} value={category.id}>{category.name}</option>
+																<option key={i} value={category.id}>{category.title}</option>
 															)
 														})
 													}
@@ -100,7 +100,12 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 						<Button variant="primary" type="submit" disabled={isDisabled}>{case_modal.button}</Button>
 					</Modal.Footer>
 				</Form>
-				{show && <AlertMessage message={`${case_modal.title.split(' ')[1]} has been ${case_modal.create ? "created" : "updated"} successfully`} close={setShow} />}
+				{	resMsg.error && 
+						<AlertMessage 
+							message={resMsg.message}
+							status={resMsg.status}
+						/>
+				}
 			</Modal >
 		</>
 	);

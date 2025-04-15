@@ -17,10 +17,11 @@ const CategoryProvider = (props) => {
 			const result = await create_category_service(data);
 			if (result.status === 201) {
 				await getCategories();
+				return result.data;
 			}
 		} catch (error) {
 			console.log("error--in post method--", error);
-			return error
+			throw error.response.data;
 		}
 	}
 
@@ -36,15 +37,16 @@ const CategoryProvider = (props) => {
 		}
 	}
 
-	const updateCategory = async (id,data) => {
+	const updateCategory = async (data) => {
 		try {
-			const result = await update_category_service(id,data);
+			const result = await update_category_service(data);
 			if (result.status === 200) {
-				await getCategories()
+				await getCategories();
+				return result.data;
 			}
 		} catch (error) {
 			console.log("error--in update--", error);
-			return error
+			throw error.response.data;
 		}
 	}
 
@@ -56,7 +58,7 @@ const CategoryProvider = (props) => {
 			}
 		} catch (error) {
 			console.log("error--in delete method--", error);
-			return error
+			throw error.response.data;
 		}
 	}
 

@@ -1,8 +1,8 @@
 const fields = [
     {
         type: "text",
-        name: "name",
-        label: "Name",
+        name: "title",
+        label: "Title",
         placeholder: "Insert name..."
     },
     {

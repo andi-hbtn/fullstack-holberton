@@ -3,7 +3,7 @@ import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 export class CategoryDto {
 	@IsString()
 	@IsNotEmpty()
-	name: string;
+	title: string;
 
 	@IsString()
 	@IsNotEmpty()

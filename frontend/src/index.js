@@ -8,10 +8,10 @@ import { AuthenticateProvider } from './context/AuthenticateContext';
 import { CategoryProvider } from "./context/CategoryContext";
 import { ProductProvider } from './context/ProductContext';
 
-import Categories from "./pages/Categories/Categories";
-import Products from "./pages/Products/index.js";
-import Home from './pages/Home/index.js';
-import ProductPage from "./pages/ProductPage/index.js";
+import Categories from "./pages/Categories";
+import Products from "./pages/Products";
+import Home from './pages/Home';
+import ProductPage from "./pages/ProductPage";
 import Cart from './components/Cart/'
 import Checkout from './components/Checkout/';
 import AdminRoute from "./components/AdminRoute";
@@ -27,12 +27,17 @@ root.render(
         <ProductProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/admin-category" element={<Categories />} />
-              <Route path="/admin-products" element={ 
-                  <AdminRoute> 
-                    <Products /> 
+              <Route path="/admin-category" element={
+                    <AdminRoute>
+                      <Categories/>
+                    </AdminRoute>
+                }
+              />
+              <Route path="/admin-products" element={
+                  <AdminRoute>
+                    <Products/>
                   </AdminRoute>
-                } 
+                }
               />
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<Cart />} />

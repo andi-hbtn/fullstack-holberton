@@ -12,17 +12,19 @@ const Categories = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
-	const [dataId, setDataId] = useState({});
-
+	const [formData,setFormData] = useState({ id: 0, title: "", description: ""});
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
+		setFormData({});
 		setCaseModal({ title: "Create Category", create: true, button: "Create" });
 		setOpen(!open);
 	}
 
-	const handleEdit = (id) => {
-		setDataId(id);
+	const handleEdit = (category) => {
+		setFormData(
+			{id: category.id,title: category.title,description: category.description}
+		);
 		setCaseModal({ title: "Edit Category", create: false, button: "Update" })
 		setOpen(!open);
 	}
@@ -33,7 +35,7 @@ const Categories = () => {
 
 	const handleLogout = async() =>{
 		await logout();
-		navigate("/login");
+		navigate("/");
 	}
 
 	return (
@@ -100,11 +102,11 @@ const Categories = () => {
 											return (
 												<tr key={index}>
 													<td>{category.id}</td>
-													<td>{category.name}</td>
+													<td>{category.title}</td>
 													<td>{category.description}</td>
 													<td>{category?.created}</td>
 													<td>
-														<Button variant="primary" onClick={() => { handleEdit(category.id) }}>Edit</Button>
+														<Button variant="primary" onClick={() => { handleEdit(category) }}>Edit</Button>
 													</td>
 													<td>
 														<Button variant="danger" onClick={() => { handleDelete(category.id) }}>Delete</Button>
@@ -121,9 +123,11 @@ const Categories = () => {
 								close={close}
 								fields={fields}
 								case_modal={caseModal}
-								id={dataId}
 								create={createCategories}
-								update={updateCategory} />
+								update={updateCategory}
+								data={formData}
+								setData={setFormData}
+								/>
 						}
 					</Col>
 				</Row>

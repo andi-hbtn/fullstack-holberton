@@ -13,8 +13,6 @@ const Header=()=>{
         return await logout();
     }
 
-    console.log("authUser--",authUser);
-
     return (
         <>
             <div className='main-cnt'>

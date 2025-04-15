@@ -13,9 +13,9 @@ const ProductProvider = (props) => {
 			const result = await create_product_service(data);
 			if (result.status === 201) {
 				await getProducts();
+				return result.data;
 			}
 		} catch (error) {
-			console.log("error--in post method--", error);
 			throw error.response.data;
 		}
 	}
@@ -45,6 +45,8 @@ const ProductProvider = (props) => {
 			const result = await update_product_service(data);
 			if (result.status === 200) {
 				await getProducts()
+				console.log("result-----",result.data);
+				return result.data;
 			}
 		} catch (error) {
 			console.log("error--in update--", error);

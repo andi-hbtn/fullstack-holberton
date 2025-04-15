@@ -72,7 +72,7 @@ export class AuthController {
 
     @Get('checkUser')
     public async checkAuthUser(@Req() request :Request):Promise<UserEntity[]>{
-        const id = await this.authService.authUserId(request)
+        const id = await this.authService.authUserId(request);
         return await this.userService.findById(id);
     }
 

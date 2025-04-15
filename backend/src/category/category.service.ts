@@ -19,24 +19,32 @@ export class CategoryService {
 		}
 	}
 
-	public async createCategory(data: CategoryDto): Promise<CategoryEntity> {
+	public async createCategory(data: CategoryDto) {
 		try {
 			const result = await this.categoryRepository.save(data);
-			return result;
+			return {
+				statusCode: HttpStatus.CREATED,
+				message: 'Category created successfully',
+				data: result
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	public async updateCategory(data: CategoryDto, id: number): Promise<CategoryEntity> {
+	public async updateCategory(data: CategoryDto, id: number) {
 		try {
 			const category = await this.categoryRepository.findOne({ where: { id } });
 			if (!category) {
 				throw new ServiceHandler("This is category does not longer Exist", HttpStatus.NOT_FOUND);
 			}
 			await this.categoryRepository.update(id, data);
-			const updatedCategory = await this.categoryRepository.findOne({ where: { id } });
-			return updatedCategory;
+			const result = await this.categoryRepository.findOne({ where: { id } });
+			return {
+				statusCode: HttpStatus.CREATED,
+				message: 'Category updated successfully',
+				data: result
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
