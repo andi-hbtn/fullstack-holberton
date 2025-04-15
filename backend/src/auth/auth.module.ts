@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
         JwtModule.register({
             global: true,
             secret: "secret",
-            signOptions: { expiresIn: "15s" }
+            signOptions: { expiresIn: "3600s" }
         })
         , UserModule
     ],
