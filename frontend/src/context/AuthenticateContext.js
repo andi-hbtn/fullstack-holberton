@@ -1,11 +1,12 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { register_user_service, login_user_service, logout_user_service,checkAuth_user_service } from "../services/authenticate";
+import { register_user_service, login_user_service, logout_user_service, checkAuth_user_service } from "../services/authenticate";
 
 const AuthenticateContext = createContext({});
 
 const AuthenticateProvider = (props) => {
 	const [authUser, setAuthUser] = useState(null);
 	const [trigger, setTrigger] = useState(false);
+	const [isAuthChecked, setIsAuthChecked] = useState(false);
 
 	useEffect(() => {
 		checkAuthUser();
@@ -46,21 +47,23 @@ const AuthenticateProvider = (props) => {
 		}
 	}
 
-	const checkAuthUser = async() => {
-		try{
+	const checkAuthUser = async () => {
+		try {
 			const result = await checkAuth_user_service();
 			if (result.status === 200) {
 				setAuthUser(...result.data);
-			} else{
+			} else {
 				setAuthUser({});
 			}
-		}catch(error){
-			setAuthUser(null);
+		} catch (error) {
+			setAuthUser({});
 			return error;
+		} finally {
+			setIsAuthChecked(true);
 		}
 	}
 
-	const values = { authUser, register, login, logout , checkAuthUser };
+	const values = { authUser, register, login, logout, checkAuthUser, isAuthChecked };
 
 	return (
 		<AuthenticateContext.Provider value={values}>
