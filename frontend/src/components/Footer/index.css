@@ -1,0 +1,13 @@
+.footer-cnt{
+    background-color: #e8edef;
+    margin-top: 40px !important;
+    padding: 25px;
+}
+
+.footer-cnt > div > p {
+    font: 13px 'Ubuntu', sans-serif;
+    text-transform: uppercase;
+    color: #012440;
+    text-align: center; 
+    margin: 0px;
+}

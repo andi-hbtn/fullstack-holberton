@@ -11,6 +11,8 @@ import { ProductProvider } from './context/ProductContext';
 import Categories from "./pages/Categories";
 import Products from "./pages/Products";
 import Home from './pages/Home';
+import AboutUs from './pages/AboutUs';
+import Faq from './pages/Faq';
 import ProductPage from "./pages/ProductPage";
 import Cart from './components/Cart/'
 import Checkout from './components/Checkout/';
@@ -40,6 +42,8 @@ root.render(
                 }
               />
               <Route path="/" element={<Home />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/faq" element={<Faq />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/product/:id" element={<ProductPage />} />

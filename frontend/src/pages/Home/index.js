@@ -1,5 +1,6 @@
 import { Container, Card, Row, Col, Button } from 'react-bootstrap';
 import Header from "../../components/Header/Header";
+import Footer from '../../components/Footer';
 import { useProductContext } from "../../context/ProductContext";
 import "./index.css";
 
@@ -13,7 +14,7 @@ const Home = () => {
 					{
 						products.map((product,index)=>{
 							return(
-								<Col xs={3} key={index}>
+								<Col xs={12} sm={6} lg={4} xl={3} key={index}>
 									<Card className='card-cnt'>
 										<a href={`product/${product.id}`}>
 											<Card.Img variant="top" src={`http://localhost:3000/api/product/uploads/${product.image}`} />
@@ -37,6 +38,7 @@ const Home = () => {
 					}
 				</Row>
 			</Container>
+			<Footer/>
 		</>
 	);
 };

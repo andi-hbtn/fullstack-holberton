@@ -1,0 +1,13 @@
+.faq-cnt{margin-top: 80px;}
+.faq-title>h3{    
+    color: #2f2f2f;
+    font-size: 28px;
+    font-family:'Playfair Display';
+    margin-bottom: 20px;
+}
+.question{font-weight:bold;}
+.answer{
+    border-bottom:1px solid #DDDDDD; 
+    margin-bottom:30px;
+    padding-bottom: 20px;
+}

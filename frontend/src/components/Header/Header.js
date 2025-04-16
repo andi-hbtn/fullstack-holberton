@@ -3,11 +3,13 @@ import {Row,Col,Navbar,Container,Nav,Button,Form} from 'react-bootstrap';
 import "./Header.css";
 import logo from "../../images/logo.png";
 import Login from '../AuthModal/login';
+import Register from '../AuthModal/register';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 
 const Header=()=>{
     const {authUser,logout} = useAuthenticateContext();
     const [loginModal, setLoginModal] = useState(false);
+    const [registerModal, setRegisterModal] = useState(false);
 
     const handleLogout = async() =>{
         return await logout();
@@ -37,15 +39,17 @@ const Header=()=>{
                             <Col xs={6} md={9} lg={9}>
                                 <Nav className="menu-cnt" style={{ maxHeight: '100px' }} navbarScroll>
                                     <Nav.Link href="/">home</Nav.Link>
-                                    <Nav.Link href="#action2">about us</Nav.Link>
+                                    <Nav.Link href="/about-us">about us</Nav.Link>
                                     <Nav.Link href="#action3">our products</Nav.Link>
                                     <Nav.Link href="#action4">gallery</Nav.Link>
-                                    <Nav.Link href="#action5">faq</Nav.Link>
+                                    <Nav.Link href="/faq">faq</Nav.Link>
                                     <Nav.Link href="#">shopping cart</Nav.Link>
                                     {!authUser?.id ? (
+                                    <>
                                     <Nav.Link onClick={() => setLoginModal(!loginModal)}>Login</Nav.Link>
+                                    <Nav.Link onClick={() => setRegisterModal(!registerModal)}>Register</Nav.Link>
+                                    </>
                                     ) : (
-                                    // Show user-related content when logged in
                                     <>
                                         <Nav.Link href={ authUser.roles === 'admin' ? 'admin-products':'profile' } className="d-flex align-items-center">
                                         <span style={{ marginRight: '8px' }}>
@@ -73,6 +77,7 @@ const Header=()=>{
                 </Container>
             </Navbar>
             <Login openLogin={loginModal} closeLogin={() => setLoginModal(false)}/>
+            <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)}/>
         </>
     );
 }
