@@ -8,10 +8,18 @@ const Register = ({ openRegister, closeRegister }) => {
   const [registerResponse, setRegisterResponse] = useState({ error: false, message: "", status: 0 });
   const [values, setValues] = useState({ firstname: "", lastname: "", email: "", password: "" });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-
-    console.log("register----",values);
+    setRegisterResponse({ error: false, message: "", status: 0 });
+    try {
+      const result = await register(values);
+      if (result.status === 201) {
+        closeRegister()
+      }
+    } catch (error) {
+      setRegisterResponse({ error: true, message: error.message, status: error.statusCode })
+      console.log("error--in-handleRegister-", error);
+    }
   }
 
   const handleChange = (event) => {
@@ -40,21 +48,21 @@ const Register = ({ openRegister, closeRegister }) => {
           <Container>
             <Row className='login-form'>
               <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="email">
-                  <Form.Label>Your lastname</Form.Label>
+                <Form.Group className="mb-3" controlId="firstname">
+                  <Form.Label>Your firstname</Form.Label>
                   <Form.Control
                     value={values.firstname}
                     onChange={handleChange}
                     type="text"
                     name="firstname"
-                    placeholder="insert your name..."
+                    placeholder="insert your firstname..."
                     autoFocus
                     className='border-radius'
                   />
                 </Form.Group>
               </Col>
               <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="email">
+                <Form.Group className="mb-3" controlId="lastname">
                   <Form.Label>Your lastname</Form.Label>
                   <Form.Control
                     value={values.lastname}

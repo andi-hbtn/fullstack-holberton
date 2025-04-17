@@ -6,7 +6,7 @@ import "./index.css";
 const Checkout = () => {
 
     const [cart, setCart] = useState([]);
-    const [userValues, setUserValues] = useState({ name: "", lastname: "", email: "", phone: 0, country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: 0, message: "" });
+    const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: 0, message: "" });
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("items")) || [];
         loadItems(storedCart);
@@ -32,17 +32,18 @@ const Checkout = () => {
 
     const handleChange = (event) => {
         const { value, name } = event.target;
-        setUserValues((prev) => {
+        setValues((prev) => {
             return { ...prev, [name]: value };
         });
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("userValues----", userValues);
     }
 
-    const isDisabled = false;
+    const isDisabled = Object.values(values).some((value)=>{
+        return value.trim().length === 0
+    });
 
     return (
         <>
@@ -65,8 +66,8 @@ const Checkout = () => {
                                         <Form.Group className="mb-3" controlId="firstname">
                                             <Form.Label>First name</Form.Label>
                                             <Form.Control
-                                                name="name"
-                                                value={userValues.name}
+                                                name="firstname"
+                                                value={values.firstname}
                                                 onChange={handleChange}
                                                 type="text"
                                                 placeholder="Enter name"
@@ -81,7 +82,7 @@ const Checkout = () => {
                                             <Form.Label>Last name</Form.Label>
                                             <Form.Control
                                                 name="lastname"
-                                                value={userValues.lastname}
+                                                value={values.lastname}
                                                 onChange={handleChange}
                                                 type="text"
                                                 placeholder="Enter lastname"
@@ -96,7 +97,7 @@ const Checkout = () => {
                                             <Form.Label>Email address</Form.Label>
                                             <Form.Control
                                                 name="email"
-                                                value={userValues.email}
+                                                value={values.email}
                                                 onChange={handleChange}
                                                 type="email"
                                                 placeholder="Enter email"
@@ -111,7 +112,7 @@ const Checkout = () => {
                                             <Form.Label>Phone number</Form.Label>
                                             <Form.Control
                                                 name="phone"
-                                                value={userValues.phone}
+                                                value={values.phone}
                                                 onChange={handleChange}
                                                 type="number"
                                                 placeholder="Phone number"
@@ -128,7 +129,7 @@ const Checkout = () => {
                                             <Form.Select aria-label="country" className='border-radius'>
                                                 <option
                                                     name="country"
-                                                    value={userValues.country}
+                                                    value={values.country}
                                                     onChange={handleChange}
                                                     type="options" >
                                                     United Kingdom (UK)
@@ -142,7 +143,7 @@ const Checkout = () => {
                                             <Form.Label>Town / City</Form.Label>
                                             <Form.Control
                                                 name="town"
-                                                value={userValues.town}
+                                                value={values.town}
                                                 onChange={handleChange}
                                                 type="text"
                                                 placeholder="Enter Town/City"
@@ -157,7 +158,7 @@ const Checkout = () => {
                                             <Form.Label>Zip Code</Form.Label>
                                             <Form.Control
                                                 name="zipCode"
-                                                value={userValues.zipCode}
+                                                value={values.zipCode}
                                                 onChange={handleChange}
                                                 type="text"
                                                 placeholder="Enter ZIP Code"
@@ -172,7 +173,7 @@ const Checkout = () => {
                                             <Form.Label>Street address</Form.Label>
                                             <Form.Control
                                                 name="streetAddr"
-                                                value={userValues.streetAddr}
+                                                value={values.streetAddr}
                                                 onChange={handleChange}
                                                 type="text"
                                                 placeholder="Enter street address"
@@ -187,7 +188,7 @@ const Checkout = () => {
                                             <Form.Label>Apartment, suite, unit, etc. (optional)</Form.Label>
                                             <Form.Control
                                                 name="appartment"
-                                                value={userValues.appartment}
+                                                value={values.appartment}
                                                 onChange={handleChange}
                                                 type="text"
                                                 placeholder="Enter appartment/suite/unit"
@@ -203,7 +204,7 @@ const Checkout = () => {
                                             <Form.Label>Order notes (optional)</Form.Label>
                                             <FloatingLabel controlId="information" label="Provide additional information">
                                                 <Form.Control
-                                                    name="message" value={userValues.message} onChange={handleChange}
+                                                    name="message" value={values.message} onChange={handleChange}
                                                     as="textarea"
                                                     placeholder="Leave a comment here"
                                                     style={{ height: '100px' }}

@@ -17,7 +17,7 @@ const logout_user_service = async () => {
 	return result;
 }
 
-const checkAuth_user_service = async (id, data) => {
+const checkAuth_user_service = async () => {
 	const result = await axios.get(`${url}/checkUser`);
 	return result;
 }

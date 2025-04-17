@@ -3,7 +3,7 @@ import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { LoginDto } from "./dto/login.dto";
-import { UserDto } from '../user/dto/user.dto';
+import { RegisterDto } from './dto/register.dto';
 import { HttpStatus } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
@@ -20,11 +20,11 @@ export class AuthController {
     ) { }
 
     @Post('register')
-    public async register(@Body() bodyParam: UserDto): Promise<UserEntity> {
+    public async register(@Body() bodyParam: RegisterDto, @Res({ passthrough: true }) response: Response): Promise<UserEntity> {
         try {
             const checkUser = await this.userService.findByEmail(bodyParam.email);
             if (checkUser) {
-                throw new ServiceHandler("You have un account ", HttpStatus.FOUND)
+                throw new ServiceHandler("You are already registered ", HttpStatus.FOUND)
             } else {
                 const hashedPassword = await bcrypt.hash(bodyParam?.password, 10);
                 const user = {
@@ -35,7 +35,10 @@ export class AuthController {
                     is_admin: false,
                     createdAt: new Date()
                 }
-                return this.userService.registerUser(user);
+                const result =  await this.userService.registerUser(user);
+                const jwt = await this.jwtService.signAsync({ id: result.id });
+                response.cookie('jwt', jwt, { httpOnly: true });
+                return result;
             }
         } catch (error) {
             throw new ServiceHandler(error.response, error.status)

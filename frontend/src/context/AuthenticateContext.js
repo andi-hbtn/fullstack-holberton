@@ -18,6 +18,7 @@ const AuthenticateProvider = (props) => {
 			if (result.status === 201) {
 				setAuthUser(result.data);
 			}
+			return result;
 		} catch (error) {
 			throw error.response.data
 		}
@@ -55,6 +56,7 @@ const AuthenticateProvider = (props) => {
 			} else {
 				setAuthUser({});
 			}
+			return result;
 		} catch (error) {
 			setAuthUser({});
 			return error;
