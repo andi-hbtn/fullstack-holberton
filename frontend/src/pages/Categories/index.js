@@ -46,8 +46,9 @@ const Categories = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
-						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+					<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
+					<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+                    <Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
 						<Nav.Link as={Link} to="/">Home</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">

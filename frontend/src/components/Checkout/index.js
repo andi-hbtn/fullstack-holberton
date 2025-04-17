@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
+import {useAuthenticateContext} from "../../context/AuthenticateContext";
+import { useCartContext } from '../../context/CartContext';
+
+import getFormattedDate from "../../helpers/dateTime";
+import AlertMessage from '../alert/AlertMessage';
 import Header from '../Header/Header';
 import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
 import "./index.css";
 
 const Checkout = () => {
 
+    const {authUser} = useAuthenticateContext();
+    const {createOrder} = useCartContext();
     const [cart, setCart] = useState([]);
-    const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: 0, message: "" });
+    const [orderResponse, setOrderResponse] = useState({ show: false, message: "", status: 0 });
+    const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: "", message: "" });
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("items")) || [];
         loadItems(storedCart);
@@ -37,8 +45,31 @@ const Checkout = () => {
         });
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
+        try{
+            const total_price = cart.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+              }, 0);
+            
+            const items = cart.map(item => ({
+            product_id: item.product_id,
+            quantity: item.quantity
+            }));
+    
+            const order_product = {
+                user_id:authUser?.id || 0,
+                items,
+                total_price,
+                status:"pending",
+                createdAt:getFormattedDate()
+            }
+            const result = await createOrder(order_product);
+            setOrderResponse({ show: true, message: result.message, status: result.statusCode })
+        }catch(error){
+            console.error("Failed to submit order:", error);
+            setOrderResponse({ show: true, message: error.message, status: error.statusCode })
+        }
     }
 
     const isDisabled = Object.values(values).some((value)=>{
@@ -121,7 +152,6 @@ const Checkout = () => {
                                         </Form.Group>
                                     </Col>
                                 </Row>
-
                                 <Row>
                                     <Col md={4}>
                                         <Form.Group className="mb-3" controlId="country">
@@ -214,37 +244,38 @@ const Checkout = () => {
                                         </Form.Group>
                                     </Col>
                                 </Row>
-
                             </Col>
 
                             <Col sm={12} md={5} lg={5} className='order-cnt'>
-                                <h5>Your order</h5>
+                                
+                                {
+                                    orderResponse.show &&  <AlertMessage status={orderResponse.status} message={orderResponse.message} />
+                                }
+                               
 
+                                <h5>Your order</h5>
                                 <div className='subtotal-cnt'>
                                     <span>Product</span>
                                     <span>Subtotal</span>
 
                                     <div className='final-order'>
                                         {
-                                            cart.map((el, index) => {
-                                                return (
-                                                    <>
-                                                        <Row key={index} className='each-order border-bottom'>
-                                                            <Col sm={12} md={5} lg={5} className='checkout-img-title'>
-                                                                <img src={`http://localhost:3000/api/product/uploads/${el.image}`} alt='product name' />
-                                                                <span>{el.title} </span>
-                                                            </Col>
-                                                            <Col sm={12} md={2} lg={2} className='checkout-quantity'>
-                                                                <span> x {el.quantity}</span>
-                                                            </Col>
+                                            cart.map((el, index) => (
+                                                <Row key={index} className='each-order border-bottom'>
+                                                    <Col sm={12} md={5} lg={5} className='checkout-img-title'>
+                                                        <img src={`http://localhost:3000/api/product/uploads/${el.image}`} alt='product name' />
+                                                        <span>{el.title} </span>
+                                                    </Col>
+                                                    <Col sm={12} md={2} lg={2} className='checkout-quantity'>
+                                                        <span> x {el.quantity}</span>
+                                                    </Col>
 
-                                                            <Col sm={12} md={5} lg={5} className='checkout-quantity'>
-                                                                <span>{el.quantity * el.price}</span>
-                                                            </Col>
-                                                        </Row>
-                                                    </>
+                                                    <Col sm={12} md={5} lg={5} className='checkout-quantity'>
+                                                        <span>{el.quantity * el.price}</span>
+                                                    </Col>
+                                                </Row>
                                                 )
-                                            })
+                                            )
                                         }
                                     </div>
                                 </div>
@@ -253,6 +284,9 @@ const Checkout = () => {
                                     <span>Subtotal</span>
                                     <span>${subtotal}</span>
                                 </div>
+
+
+                                
 
                                 <Button variant="dark" className='place-order-btn' type="submit" disabled={isDisabled}>
                                     Proceed to checkout

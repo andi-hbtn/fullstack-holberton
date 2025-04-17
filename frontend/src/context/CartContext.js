@@ -1,16 +1,21 @@
-import { createContext, useContext, useState, } from 'react';
-import { get_orders_service, create_order_service, get_order_service } from "../services/cart";
+import { createContext, useContext, useState,useEffect } from 'react';
+import { get_orders_service, create_order_service } from "../services/cart";
 
 const CartContext = createContext({});
 
 const CartProvider = (props) => {
-	const [quantity, setQuantity] = useState(
+	const [orders,setOrders] = useState(
 		{
 			user_id: null,
 			items:[],
 			total_price: 0,
 		}
-	);
+	)
+	const [quantity, setQuantity] = useState({});
+
+		useEffect(() => {
+			getOrders();
+		},[]);
 
 	const addQuantity = (product) => {
 		setQuantity((prevState) => {
@@ -72,10 +77,11 @@ const CartProvider = (props) => {
 		try {
 			const result = await create_order_service(data);
 			if (result.status === 201) {
-				await get_orders_service();
+				await getOrders();
 			}
+			return result.data;
 		} catch (error) {
-			return error
+			throw error.response.data;
 		}
 	}
 
@@ -83,25 +89,16 @@ const CartProvider = (props) => {
 		try {
 			const result = await get_orders_service();
 			if (result.status === 200) {
-				setQuantity(result.data);
+				setOrders(result.data);
 			}
+			return result.data;
 		} catch (error) {
-			return error
+			throw error.response.data
 		}
 	}
 
-	const getOrderById = async (id) => {
-		try {
-			const result = await get_order_service(id);
-			if (result.status === 200) {
-				setQuantity(result.data);
-			}
-		} catch (error) {
-			return error
-		}
-	}
 
-	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders, getOrderById };
+	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders,orders };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}

@@ -25,7 +25,6 @@ const ProductProvider = (props) => {
 			const products = await get_products_service();
 			if (products.status === 200) {
 				setProducts(products.data);
-				
 			}
 		} catch (error) {
 			throw error.response.data;

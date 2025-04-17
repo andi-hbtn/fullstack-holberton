@@ -10,6 +10,7 @@ import { ProductProvider } from './context/ProductContext';
 
 import Categories from "./pages/Categories";
 import Products from "./pages/Products";
+import Orders from './pages/Orders/';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import Faq from './pages/Faq';
@@ -23,24 +24,32 @@ import reportWebVitals from './reportWebVitals';
 axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <CartProvider>
-    <AuthenticateProvider >
+  <AuthenticateProvider >
+    <CartProvider>
       <CategoryProvider>
         <ProductProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/admin-category" element={
-                    <AdminRoute>
-                      <Categories/>
-                    </AdminRoute>
-                }
+                <AdminRoute>
+                  <Categories />
+                </AdminRoute>
+              }
               />
               <Route path="/admin-products" element={
-                  <AdminRoute>
-                    <Products/>
-                  </AdminRoute>
-                }
+                <AdminRoute>
+                  <Products />
+                </AdminRoute>
+              }
               />
+
+              <Route path="/admin-orders" element={
+                <AdminRoute>
+                  <Orders />
+                </AdminRoute>
+              }
+              />
+
               <Route path="/" element={<Home />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/faq" element={<Faq />} />
@@ -51,8 +60,8 @@ root.render(
           </BrowserRouter>
         </ProductProvider>
       </CategoryProvider>
-    </AuthenticateProvider>
-  </CartProvider>
+    </CartProvider>
+  </AuthenticateProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

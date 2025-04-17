@@ -18,7 +18,7 @@ export class OrderController {
   }
 
   @Post('create')
-  public async create(@Body() orderData: OrderDto): Promise<OrderEntity> {
+  public async create(@Body() orderData: OrderDto): Promise<any> {
     return this.orderService.create(orderData);
   }
 
