@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, Get,UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, Res, Get, UseGuards, Req } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { UserEntity } from 'src/user/entity/user.entity';
@@ -15,7 +15,7 @@ export class AuthController {
 
     constructor(
         private readonly userService: UserService,
-        private authService:AuthService,
+        private authService: AuthService,
         private jwtService: JwtService,
     ) { }
 
@@ -32,10 +32,10 @@ export class AuthController {
                     lastname: bodyParam.lastname,
                     email: bodyParam.email,
                     password: hashedPassword,
-                    is_admin: false,
+                    is_admin: true,
                     createdAt: new Date()
                 }
-                const result =  await this.userService.registerUser(user);
+                const result = await this.userService.registerUser(user);
                 const jwt = await this.jwtService.signAsync({ id: result.id });
                 response.cookie('jwt', jwt, { httpOnly: true });
                 return result;
@@ -74,7 +74,7 @@ export class AuthController {
     }
 
     @Get('checkUser')
-    public async checkAuthUser(@Req() request :Request):Promise<UserEntity[]>{
+    public async checkAuthUser(@Req() request: Request): Promise<UserEntity[]> {
         const id = await this.authService.authUserId(request);
         return await this.userService.findById(id);
     }

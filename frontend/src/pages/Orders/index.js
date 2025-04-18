@@ -4,21 +4,20 @@ import { useCartContext } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
-import "./index.css";
 
 
 const Orders = () => {
-    const{authUser,logout} = useAuthenticateContext();
-    const{orders} = useCartContext();
+	const { authUser, logout } = useAuthenticateContext();
+	const { orders } = useCartContext();
 	const navigate = useNavigate();
 
-	const handleLogout = async() =>{
+	const handleLogout = async () => {
 		await logout();
 		navigate("/");
 	}
 
 
-    console.log("orders----",orders);
+	console.log("orders----", orders);
 
 	return (
 		<>
@@ -27,25 +26,20 @@ const Orders = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-					<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
-					<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
-                    <Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
-					<Nav.Link as={Link} to="/">Home</Nav.Link>
+						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
+						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+						<Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
+						<Nav.Link as={Link} to="/">Home</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
-					{
+						{
 							authUser ?
-							<>
-							<Nav>
-							<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
-							</Nav>
-							<div className="user-auth">
-								
-							</div>
-							</>
-							:   
-							""
-					}
+								<Nav>
+									<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
+								</Nav>
+								:
+								""
+						}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
@@ -71,7 +65,7 @@ const Orders = () => {
 										<th>Status</th>
 										<th>Created</th>
 										<th>Email</th>
-										
+
 									</tr>
 								</thead>
 								<tbody>

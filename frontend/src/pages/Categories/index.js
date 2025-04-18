@@ -8,11 +8,11 @@ import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
 const Categories = () => {
 	const { categories, createCategories, updateCategory, deleteCategorie } = useCategoryContext();
-	const{ authUser,logout } = useAuthenticateContext();
+	const { authUser, logout } = useAuthenticateContext();
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
-	const [formData,setFormData] = useState({ id: 0, title: "", description: ""});
+	const [formData, setFormData] = useState({ id: 0, title: "", description: "" });
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
@@ -23,7 +23,7 @@ const Categories = () => {
 
 	const handleEdit = (category) => {
 		setFormData(
-			{id: category.id,title: category.title,description: category.description}
+			{ id: category.id, title: category.title, description: category.description }
 		);
 		setCaseModal({ title: "Edit Category", create: false, button: "Update" })
 		setOpen(!open);
@@ -33,10 +33,12 @@ const Categories = () => {
 		await deleteCategorie(id);
 	}
 
-	const handleLogout = async() =>{
+	const handleLogout = async () => {
 		await logout();
 		navigate("/");
 	}
+
+	console.log("user-auth---", authUser);
 
 	return (
 		<>
@@ -46,28 +48,21 @@ const Categories = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-					<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
-					<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
-                    <Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
+						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
+						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+						<Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
 						<Nav.Link as={Link} to="/">Home</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
-					{
+						{
 							authUser ?
-							<>
-							<Nav>
-								<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
-							</Nav>
-							<div className="user-auth">
-								<span>
-									{
-										authUser.name?.charAt(0) +""+ authUser.lastname?.charAt(0) 
-									}
-								</span>
-							</div>
-							</>
-							:   
-							""
+								<>
+									<Nav>
+										<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
+									</Nav>
+								</>
+								:
+								""
 						}
 					</Nav>
 				</Navbar.Collapse>
@@ -128,7 +123,7 @@ const Categories = () => {
 								update={updateCategory}
 								data={formData}
 								setData={setFormData}
-								/>
+							/>
 						}
 					</Col>
 				</Row>

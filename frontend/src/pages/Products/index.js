@@ -7,17 +7,15 @@ import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
-import "./index.css";
-
 
 const ProductModal = () => {
-	const { products, createProduct , updateProduct } = useProductContext();
-	const {categories} = useCategoryContext();
-	const{ authUser,logout } = useAuthenticateContext();
+	const { products, createProduct, updateProduct } = useProductContext();
+	const { categories } = useCategoryContext();
+	const { authUser, logout } = useAuthenticateContext();
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
-	const [formData,setFormData] = useState({ id: 0, title: "", description: "", category_id : 0,price : 0,stock : 0,image : "", is_active:false});
+	const [formData, setFormData] = useState({ id: 0, title: "", description: "", category_id: 0, price: 0, stock: 0, image: "", is_active: false });
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
@@ -25,7 +23,7 @@ const ProductModal = () => {
 		setCaseModal({ title: "Create product", create: true, button: "Create" });
 		setOpen(!open);
 	}
-	
+
 
 	const handleEdit = (product) => {
 		setFormData(
@@ -44,7 +42,7 @@ const ProductModal = () => {
 		setOpen(!open);
 	}
 
-	const handleLogout = async() =>{
+	const handleLogout = async () => {
 		await logout();
 		navigate("/");
 	}
@@ -56,29 +54,20 @@ const ProductModal = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-					<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
-					<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
-                    <Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
-					<Nav.Link as={Link} to="/">Home</Nav.Link>
+						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
+						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+						<Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
+						<Nav.Link as={Link} to="/">Home</Nav.Link>
 					</Nav>
 					<Nav className="d-flex">
-					{
+						{
 							authUser ?
-							<>
-							<Nav>
-							<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
-							</Nav>
-							<div className="user-auth">
-								<span>
-									{
-										authUser.name?.charAt(0) +""+ authUser.lastname?.charAt(0) 
-									}
-								</span>
-							</div>
-							</>
-							:   
-							""
-					}
+								<Nav>
+									<Button variant="danger" className="logout-btn" onClick={handleLogout}>Logout</Button>
+								</Nav>
+								:
+								""
+						}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
@@ -125,7 +114,7 @@ const ProductModal = () => {
 														{product.stock}
 													</td>
 													<td>
-														<img className="small-img" src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`} alt="product alt" width={"60px"} height={"60px"}/>
+														<img className="small-img" src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`} alt="product alt" width={"60px"} height={"60px"} />
 													</td>
 													<td>
 														<Button variant="primary" onClick={() => { handleEdit(product) }}>Edit</Button>
@@ -148,7 +137,7 @@ const ProductModal = () => {
 								data={formData}
 								setData={setFormData}
 								categories={categories}
-								/>
+							/>
 						}
 					</Col>
 				</Row>
