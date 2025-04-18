@@ -22,7 +22,6 @@ export class CategoryController {
 	@Roles('admin')
 	@Post('create')
 	public async create(@Body() bodyParam: CategoryDto) {
-		console.log("bodyparam---",bodyParam);
 		return await this.categoryService.createCategory(bodyParam);
 	}
 

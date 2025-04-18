@@ -103,7 +103,7 @@ const CartProvider = (props) => {
 	}
 
 
-	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders };
+	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders, orders };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}
