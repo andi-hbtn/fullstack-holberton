@@ -17,7 +17,7 @@ const Home = () => {
 								<Col xs={12} sm={6} lg={4} xl={3} key={index}>
 									<Card className='card-cnt'>
 										<a href={`product/${product.id}`}>
-											<Card.Img variant="top" src={`http://localhost:3000/api/product/uploads/${product.image}`} />
+											<Card.Img variant="top" src={`${process.env.REACT_APP_BACKEND_URL}api/product/uploads/${product.image}`} />
 										</a>
 									</Card>
 									<Card.Body>

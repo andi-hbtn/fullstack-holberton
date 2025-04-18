@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "http://localhost:3000/api/category";
+const url = `${process.env.REACT_APP_BACKEND_URL}api/category`;
 
 const create_category_service = async (data) => {
 	const result = await axios.post(`${url}/create`, data);

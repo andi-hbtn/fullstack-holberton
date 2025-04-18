@@ -48,7 +48,7 @@ const ProductPage = () => {
             :
             <Row className="prod-cart-cnt">
                 <Col sm={5} md={5} lg={5} className="card-cnt">
-                <Card.Img variant="top" src={`http://localhost:3000/api/product/uploads/${product.image}`} />
+                <Card.Img variant="top" src={`${process.env.REACT_APP_BACKEND_URL}api/product/uploads/${product.image}`} />
                 </Col>
                 <Col sm={5} md={5} lg={5} className="prod-desc">
                     <h1>{product.title}</h1>
