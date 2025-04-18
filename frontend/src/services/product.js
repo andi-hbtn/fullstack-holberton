@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = `${process.env.REACT_APP_BACKEND_URL}api/product`;
+const url = `${process.env.REACT_APP_API_URL}api/product`;
 
 const create_product_service = async (data) => {
 

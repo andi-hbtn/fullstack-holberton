@@ -142,7 +142,7 @@ const Cart = () => {
                                             <tr key={index}>
                                                 <td className='td-p'>
                                                     <div className='item-img-cnt'>
-                                                        <img src={`${process.env.REACT_APP_BACKEND_URL}api/product/uploads/${item.image}`} alt='product name' />
+                                                        <img src={`${process.env.REACT_APP_API_URL}api/product/uploads/${item.image}`} alt='product name' />
                                                     </div>
                                                     <div className='item-desc-cnt'>
                                                         <a href=''>{item.title}</a>
