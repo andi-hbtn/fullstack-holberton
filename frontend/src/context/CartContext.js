@@ -11,11 +11,16 @@ const CartProvider = (props) => {
 			total_price: 0,
 		}
 	)
-	const [quantity, setQuantity] = useState({});
+	const [quantity, setQuantity] = useState(
+	{
+		user_id: null,
+		items: [],
+		total_price: 0,
+	});
 
-		useEffect(() => {
-			getOrders();
-		},[]);
+	useEffect(() => {
+		getOrders();
+	},[]);
 
 	const addQuantity = (product) => {
 		setQuantity((prevState) => {
@@ -98,7 +103,7 @@ const CartProvider = (props) => {
 	}
 
 
-	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders,orders };
+	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}
