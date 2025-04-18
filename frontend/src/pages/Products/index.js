@@ -25,6 +25,9 @@ const ProductModal = () => {
 	}
 
 
+	console.log("products----", products);
+
+
 	const handleEdit = (product) => {
 		setFormData(
 			{
@@ -107,7 +110,7 @@ const ProductModal = () => {
 													<td>{product.id}</td>
 													<td className="col-2">{product.title}</td>
 													<td className="col-2">{product.description.substring(0, 50)}</td>
-													<td className="col-2">{product.category.name}</td>
+													<td className="col-2">{product.category.title}</td>
 													<td>${product?.price}</td>
 													<td>{product.is_active ? "Is available" : "Not available"}</td>
 													<td>
