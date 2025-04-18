@@ -38,8 +38,6 @@ const Categories = () => {
 		navigate("/");
 	}
 
-	console.log("user-auth---", authUser);
-
 	return (
 		<>
 

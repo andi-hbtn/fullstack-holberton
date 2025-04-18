@@ -32,7 +32,7 @@ export class AuthController {
                     lastname: bodyParam.lastname,
                     email: bodyParam.email,
                     password: hashedPassword,
-                    is_admin: true,
+                    roles: "admin",
                     createdAt: new Date()
                 }
                 const result = await this.userService.registerUser(user);
