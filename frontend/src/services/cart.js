@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "http://localhost:3000/api/order";
+const url = `${process.env.REACT_APP_API_URL}api/order`;
 
 const create_order_service = async (data) => {
 	const result = await axios.post(`${url}/create`, data);

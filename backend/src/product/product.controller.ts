@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe,UseGuards, UseInterceptors, Res, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, UseGuards, UseInterceptors, Res, UploadedFile } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guards';
 import { PermissionGuard } from 'src/guards/permission.guards';
 import { IsPublic } from 'src/decorators/public.decorator';
@@ -13,7 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 
 
-@UseGuards(AuthGuard,PermissionGuard)
+@UseGuards(AuthGuard, PermissionGuard)
 @Controller('product')
 export class ProductController {
 	constructor(private readonly productService: ProductService) { }
@@ -27,36 +27,35 @@ export class ProductController {
 	@Roles('admin')
 	@Post('create')
 	@UseInterceptors(FileInterceptor('image', {
-        storage: diskStorage({
-            destination: './uploads',
-            filename: (req, image, cb) => {
-                const imageName = new ImageNameHelper(image.originalname).getImageName();
-                cb(null, imageName);
-            }
-        }),
-    }))
+		storage: diskStorage({
+			destination: './uploads',
+			filename: (req, image, cb) => {
+				const imageName = new ImageNameHelper(image.originalname).getImageName();
+				cb(null, imageName);
+			}
+		}),
+	}))
 	public async cretePost(@Body() bodyParam: ProductDto, @UploadedFile() file: Express.Multer.File) {
-		return await this.productService.createProduct(bodyParam,file.filename);
+		return await this.productService.createProduct(bodyParam, file.filename);
 	}
 
 	@Roles('admin')
 	@Put('update/:id')
 	@UseInterceptors(FileInterceptor('image', {
-        storage: diskStorage({
-            destination: './uploads',
-            filename: (req, image, cb) => {
-                const imageName = new ImageNameHelper(image.originalname).getImageName();
-				console.log("image.originalname----",image);
-                cb(null, imageName);
-            }
-        }),
-    }))
-	public async update(@Body() bodyParam:any, @Param('id', ParseIntPipe) id: number,@UploadedFile() file: Express.Multer.File): Promise<any> {
+		storage: diskStorage({
+			destination: './uploads',
+			filename: (req, image, cb) => {
+				const imageName = new ImageNameHelper(image.originalname).getImageName();
+				cb(null, imageName);
+			}
+		}),
+	}))
+	public async update(@Body() bodyParam: any, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<any> {
 		const product = await this.productService.getProductById(id);
-		if(product){
-			if(file) {
-                fs.unlinkSync('uploads/' + product.image);
-                return await this.productService.updateProduct(bodyParam, id, file.filename);
+		if (product) {
+			if (file) {
+				fs.unlinkSync('uploads/' + product.image);
+				return await this.productService.updateProduct(bodyParam, id, file.filename);
 			}
 			return await this.productService.updateProduct(bodyParam, id, product?.image);
 		}
@@ -72,11 +71,11 @@ export class ProductController {
 	@Delete('delete/:id')
 	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
 		const product = await this.productService.getProductById(id);
-        if (product) {
-            const files = await fs.promises.readdir('uploads');
-            fs.unlinkSync('uploads/' + product.image);
-            await this.productService.deleteProduct(id);
-        }
+		if (product) {
+			const files = await fs.promises.readdir('uploads');
+			fs.unlinkSync('uploads/' + product.image);
+			await this.productService.deleteProduct(id);
+		}
 	}
 
 	@IsPublic()
