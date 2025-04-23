@@ -31,5 +31,6 @@ export class ProductDto {
 	@Type(() => Number)
 	category_id: number;
 
+	
 	image:string
 }

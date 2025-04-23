@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { HttpStatus } from '@nestjs/common';
 import { CategoryDto } from './dto/category.dto';
+import { CreateCategoryResponse } from './responseType/response.interface';
 
 @Injectable()
 export class CategoryService {
@@ -19,7 +20,7 @@ export class CategoryService {
 		}
 	}
 
-	public async createCategory(data: CategoryDto) {
+	public async createCategory(data: CategoryDto): Promise<CreateCategoryResponse> {
 		try {
 			const result = await this.categoryRepository.save(data);
 			return {
@@ -32,13 +33,10 @@ export class CategoryService {
 		}
 	}
 
-	public async updateCategory(data: CategoryDto, id: number) {
+	public async updateCategory(data: CategoryDto, id: number,file?:string) {
 		try {
-			const category = await this.categoryRepository.findOne({ where: { id } });
-			if (!category) {
-				throw new ServiceHandler("This is category does not longer Exist", HttpStatus.NOT_FOUND);
-			}
-			await this.categoryRepository.update(id, data);
+			const category = {title:data.title,description:data.description,image:file}
+			await this.categoryRepository.update(id, category);
 			const result = await this.categoryRepository.findOne({ where: { id } });
 			return {
 				statusCode: HttpStatus.CREATED,

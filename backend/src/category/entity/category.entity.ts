@@ -18,4 +18,7 @@ export class CategoryEntity {
 
 	@OneToMany(() => ProductEntity, product => product.category)
 	products: ProductEntity[];
+
+	@Column()
+	image: string;
 }

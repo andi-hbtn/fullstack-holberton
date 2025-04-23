@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {useAuthenticateContext} from "../../context/AuthenticateContext";
 import { useCartContext } from '../../context/CartContext';
 
-import getFormattedDate from "../../helpers/dateTime";
+import formatDate from "../../helpers/dateTime";
 import AlertMessage from '../alert/AlertMessage';
 import Header from '../Header/Header';
 import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
@@ -62,7 +62,7 @@ const Checkout = () => {
                 items,
                 total_price,
                 status:"pending",
-                createdAt:getFormattedDate()
+                createdAt: formatDate.getFormattedDate()
             }
             const result = await createOrder(order_product);
             setOrderResponse({ show: true, message: result.message, status: result.statusCode })

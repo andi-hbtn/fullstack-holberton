@@ -10,6 +10,11 @@ const fields = [
         name: "description",
         label: "Description",
         placeholder: "Insert description..."
+    },
+    {
+        type:"file",
+        name:"image",
+        label:"Upload Image"
     }
 ];
 

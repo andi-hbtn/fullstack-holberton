@@ -6,6 +6,8 @@ import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
+import dateUtils from "../../helpers/dateTime.js";
+
 const Categories = () => {
 	const { categories, createCategories, updateCategory, deleteCategorie } = useCategoryContext();
 	const{ authUser,logout } = useAuthenticateContext();
@@ -40,7 +42,6 @@ const Categories = () => {
 
 	return (
 		<>
-
 			<Navbar bg="primary" variant="dark" expand="lg">
 				<Navbar.Brand as={Link} to="">Admin Dashboard</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -93,6 +94,7 @@ const Categories = () => {
 										<th>Name</th>
 										<th>Description</th>
 										<th>Created at</th>
+										<th>Image</th>
 										<th>Edit</th>
 										<th>Delete</th>
 									</tr>
@@ -105,7 +107,10 @@ const Categories = () => {
 													<td>{category.id}</td>
 													<td>{category.title}</td>
 													<td>{category.description}</td>
-													<td>{category?.created}</td>
+													<td>{dateUtils.formatIsoDateTime(category.created)}</td>
+													<td>
+														<img className="small-img" src={`http://localhost:3000/api/category/uploads/${category.image}`} alt="product alt" width={"60px"} height={"60px"}/>
+													</td>
 													<td>
 														<Button variant="primary" onClick={() => { handleEdit(category) }}>Edit</Button>
 													</td>

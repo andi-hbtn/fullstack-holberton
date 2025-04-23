@@ -14,4 +14,9 @@ const getFormattedDate = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-export default getFormattedDate;
+const formatIsoDateTime = (dateParam) =>{
+    const date = new Date(dateParam);
+    return date.toLocaleString();
+}
+
+export default {getFormattedDate,formatIsoDateTime};
