@@ -1,4 +1,4 @@
-const getFormattedDate = () => {
+const formatDate = () => {
     const now = new Date();
 
     const pad = (n) => n.toString().padStart(2, '0');
@@ -19,4 +19,9 @@ const formatIsoDateTime = (dateParam) =>{
     return date.toLocaleString();
 }
 
-export default {getFormattedDate,formatIsoDateTime};
+const dateTimeHelpers = {
+    formatDate,
+    formatIsoDateTime,
+};
+
+export default dateTimeHelpers;

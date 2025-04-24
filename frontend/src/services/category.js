@@ -2,12 +2,10 @@ import axios from "axios";
 const url = `${process.env.REACT_APP_API_URL}api/category`;
 
 const create_category_service = async (data) => {
-
 	const formData = new FormData();
 	formData.append("title", data.title);
 	formData.append("description", data.description);
 	formData.append("image", data.image);
-
 	const result = await axios.post(`${url}/create`,formData,{
 		headers:{
 			"Content-Type":"multipart/form-data"
@@ -22,12 +20,10 @@ const get_category_service = async () => {
 }
 
 const update_category_service = async (data) => {
-
 	const formData = new FormData();
 	formData.append("title", data.title);
 	formData.append("description", data.description);
 	formData.append("image", data.image);
-
 	const result = await axios.put(`${url}/update/${data.id}`,formData,{
 		headers:{
 			"Content-Type":"multipart/form-data"

@@ -145,7 +145,7 @@ const Cart = () => {
                                                         <img src={`${process.env.REACT_APP_API_URL}api/product/uploads/${item.image}`} alt='product name' />
                                                     </div>
                                                     <div className='item-desc-cnt'>
-                                                        <a href=''>{item.title}</a>
+                                                        <a href='/'>{item.title}</a>
                                                     </div>
                                                 </td>
                                                 <td className='td-p'>

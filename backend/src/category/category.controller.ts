@@ -12,6 +12,7 @@ import { ImageNameHelper } from 'src/helpers/imageName.helper';
 import { Response } from 'express';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import * as fs from "fs";
+import { CategoryResponse , DeleteCategoryResponse } from './responseType/response.interface';
 
 @UseGuards(AuthGuard, PermissionGuard)
 @Controller('category')
@@ -35,9 +36,9 @@ export class CategoryController {
 			}
 		}),
 	}))
-	public async create(@Body() bodyParam: CategoryDto, @UploadedFile() file: Express.Multer.File) {
+	public async create(@Body() bodyParam: CategoryDto, @UploadedFile() file: Express.Multer.File): Promise<CategoryResponse> {
 		try{
-			if (!file.filename) {
+			if (!file || !file.filename) {
 				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
 			}
 			const category = {
@@ -64,12 +65,10 @@ export class CategoryController {
 	}))
 	public async update(@Body() bodyParam: CategoryDto, @Param('id', ParseIntPipe) id: number,@UploadedFile() file: Express.Multer.File) {
 		try {
-			const category = await this.categoryService.getCategoryById(id);
-
-			if (!category) {
-			  throw new ServiceHandler('This category does not exist', HttpStatus.NOT_FOUND);
-			}
-			if (!file?.filename) {
+			const categoryResponse = await this.categoryService.getCategoryById(id);
+			const category = categoryResponse.data;
+			
+			if (!file || !file?.filename) {
 			  throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
 			}
 			// Delete the old image
@@ -77,21 +76,31 @@ export class CategoryController {
 			// Proceed with the update
 			return await this.categoryService.updateCategory(bodyParam, id, file.filename);
 		} catch (error) {
-			console.log("error---",error.status);
+			 if(file || file?.filename){
+				fs.unlinkSync('uploads/' + file.filename);
+			 }
 			throw new ServiceHandler(error.response, error.status);
 		}
 	}
 
 	@IsPublic()
 	@Get(':id')
-	public async getById(@Param() id: number): Promise<CategoryEntity> {
-		return await this.categoryService.getCategoryById(id);
+	public async getById(@Param() id: number): Promise<CategoryResponse> {
+		try{
+			return await this.categoryService.getCategoryById(id);
+		}catch(error){
+			throw new ServiceHandler(error.response, error.status);
+		}
 	}
 
 	@Roles('admin')
 	@Delete('delete/:id')
-	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
-		return await this.categoryService.deleteCategory(id);
+	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<DeleteCategoryResponse> {
+		try{
+			return await this.categoryService.deleteCategory(id);
+		}catch(error){
+			throw new ServiceHandler(error.response, error.status);
+		}
 	}
 
 

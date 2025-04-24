@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { HttpStatus } from '@nestjs/common';
 import { CategoryDto } from './dto/category.dto';
-import { CreateCategoryResponse } from './responseType/response.interface';
+import { CategoryResponse, DeleteCategoryResponse } from './responseType/response.interface';
+import * as fs from "fs";
 
 @Injectable()
 export class CategoryService {
@@ -20,7 +21,7 @@ export class CategoryService {
 		}
 	}
 
-	public async createCategory(data: CategoryDto): Promise<CreateCategoryResponse> {
+	public async createCategory(data: CategoryDto): Promise<CategoryResponse> {
 		try {
 			const result = await this.categoryRepository.save(data);
 			return {
@@ -33,9 +34,9 @@ export class CategoryService {
 		}
 	}
 
-	public async updateCategory(data: CategoryDto, id: number,file?:string) {
+	public async updateCategory(data: CategoryDto, id: number, file?: string): Promise<CategoryResponse> {
 		try {
-			const category = {title:data.title,description:data.description,image:file}
+			const category = { title: data.title, description: data.description, image: file }
 			await this.categoryRepository.update(id, category);
 			const result = await this.categoryRepository.findOne({ where: { id } });
 			return {
@@ -48,26 +49,34 @@ export class CategoryService {
 		}
 	}
 
-	public async getCategoryById(id: number): Promise<CategoryEntity> {
+	public async getCategoryById(id: number): Promise<CategoryResponse> {
 		try {
-			const result = this.categoryRepository.findOne({ where: { id } })
+			const result = await this.categoryRepository.findOne({ where: { id } })
 			if (!result) {
 				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
 			}
-			return result
+			return {
+				statusCode: HttpStatus.CREATED,
+				message: 'Category exists',
+				data: result
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}
 	}
 
-	public async deleteCategory(id: number): Promise<any> {
+	public async deleteCategory(id: number): Promise<DeleteCategoryResponse> {
 		try {
-			// const result = this.categoryRepository.findOne({ where: { id } });
-			// if (!result) {
-			// 	throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
-			// }
-			const result = await this.categoryRepository.delete(id);
-			return result;
+			const result = await this.categoryRepository.findOne({ where: { id } });
+			if (!result) {
+				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
+			}
+			fs.unlinkSync('uploads/' + result.image);
+			await this.categoryRepository.delete(id);
+			return {
+				statusCode: 200,
+				message: "Category deleted successfully"
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}

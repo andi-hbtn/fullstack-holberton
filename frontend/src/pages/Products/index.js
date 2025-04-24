@@ -24,10 +24,6 @@ const ProductModal = () => {
 		setOpen(!open);
 	}
 
-
-	console.log("products----", products);
-
-
 	const handleEdit = (product) => {
 		setFormData(
 			{
