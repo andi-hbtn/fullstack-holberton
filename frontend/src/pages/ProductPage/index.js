@@ -21,13 +21,11 @@ const ProductPage = () => {
     const getById = async (id) => {
         try {
             const result = await getProduct(id);
-            if (result.status === 200) {
+            if (result.statusCode === 200) {
                 setProduct(result.data);
-            } else {
-                setError({ message: result.response.data.message, status: result.response.data.statusCode })
             }
         } catch (error) {
-            console.log(error);
+            setError({ message: error.message, status: error.statusCode });
         }
     }
 

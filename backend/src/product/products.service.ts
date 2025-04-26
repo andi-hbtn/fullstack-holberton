@@ -4,6 +4,7 @@ import { ProductEntity } from './entity/products.enity';
 import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
+import { ProductResponse } from './responseType/response.interface';
 
 @Injectable()
 export class ProductService {
@@ -12,7 +13,7 @@ export class ProductService {
 	public async getAllProducts(): Promise<ProductEntity[]> {
 		try {
 			const result = await this.ProductEntity.find({
-				relations:['category']
+				relations: ['category']
 			});
 			return result;
 		} catch (error) {
@@ -20,16 +21,16 @@ export class ProductService {
 		}
 	}
 
-	public async createProduct(data: ProductDto,file:string): Promise<any> {
+	public async createProduct(data: ProductDto, file: string): Promise<ProductResponse> {
 		try {
-			const product={
-				title:data.title,
-				description:data.description,
-				price:data.price,
-				stock:data.stock,
-				category_id:data.category_id,
-				is_active:data.is_active,
-				image:file
+			const product = {
+				title: data.title,
+				description: data.description,
+				price: data.price,
+				stock: data.stock,
+				category_id: data.category_id,
+				is_active: data.is_active,
+				image: file
 			};
 			const result = await this.ProductEntity.save(product);
 			return {
@@ -38,44 +39,48 @@ export class ProductService {
 				data: result
 			};
 		} catch (error) {
-			console.log("error-----",error);
+			console.log("error-----", error);
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	public async updateProduct(data: ProductDto, id: number,file?:string){
+	public async updateProduct(data: ProductDto, id: number, file?: string): Promise<any> {
+
 		try {
-			const result = await this.ProductEntity.findOne({ where: { id } });
-			if (!result) {
-				throw new ServiceHandler("This is category does not longer Exist", HttpStatus.NOT_FOUND);
-			}
 			const product = {
-				title:data.title,
-				description:data.description,
-				price:data.price,
-				is_active:data.is_active,
-				category_id:data.category_id,
-				image:file
+				title: data.title,
+				description: data.description,
+				price: data.price,
+				stock: data.stock,
+				is_active: data.is_active,
+				category_id: data.category_id,
+				image: file
 			}
 			await this.ProductEntity.update(id, product);
-			const updatedCategory = await this.ProductEntity.findOne({ where: { id } });
+			const result = await this.ProductEntity.findOne({ where: { id } });
+
 			return {
-				statusCode: HttpStatus.CREATED,
+				statusCode: HttpStatus.OK,
 				message: 'Product updated successfully',
-				data: updatedCategory
+				data: result
 			};
 		} catch (error) {
+			console.log("error-in update--", error);
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	public async getProductById(id: number): Promise<ProductEntity> {
+	public async getProductById(id: number): Promise<ProductResponse> {
 		try {
 			const result = await this.ProductEntity.findOne({ where: { id } });
 			if (!result) {
 				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}
-			return result;
+			return {
+				statusCode: HttpStatus.OK,
+				message: 'Product exists',
+				data: result
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}

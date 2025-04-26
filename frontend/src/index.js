@@ -12,6 +12,7 @@ import Categories from "./pages/Categories";
 import Products from "./pages/Products";
 import Orders from './pages/Orders/';
 import Home from './pages/Home';
+import CategoryPage from "./pages/CategoryPage";
 import AboutUs from './pages/AboutUs';
 import Faq from './pages/Faq';
 import ProductPage from "./pages/ProductPage";
@@ -51,6 +52,7 @@ root.render(
               />
 
               <Route path="/" element={<Home />} />
+              <Route path="/category/:id" element={<CategoryPage />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/faq" element={<Faq />} />
               <Route path="/cart" element={<Cart />} />

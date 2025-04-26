@@ -33,7 +33,3 @@ export class ProductEntity {
 	category_id: number;
 
 }
-
-
-
-

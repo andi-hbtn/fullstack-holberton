@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import {Row,Col,Navbar,Container,Nav,Button,Form} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Row, Col, Navbar, Container, Nav, Button, Form, } from 'react-bootstrap';
 import "./Header.css";
 import logo from "../../images/logo.png";
 import Login from '../AuthModal/login';
 import Register from '../AuthModal/register';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 
-const Header=()=>{
-    const {authUser,logout} = useAuthenticateContext();
+const Header = () => {
+    const { authUser, logout } = useAuthenticateContext();
     const [loginModal, setLoginModal] = useState(false);
     const [registerModal, setRegisterModal] = useState(false);
 
-    const handleLogout = async() =>{
+    const handleLogout = async () => {
         return await logout();
     }
 
@@ -27,7 +28,7 @@ const Header=()=>{
 
             <Row>
                 <Col className='logo-container'>
-                    <img src={logo} alt='header brand logo'/>
+                    <img src={logo} alt='header brand logo' />
                 </Col>
             </Row>
 
@@ -45,30 +46,30 @@ const Header=()=>{
                                     <Nav.Link href="/faq">faq</Nav.Link>
                                     <Nav.Link href="#">shopping cart</Nav.Link>
                                     {!authUser?.id ? (
-                                    <>
-                                    <Nav.Link onClick={() => setLoginModal(!loginModal)}>Login</Nav.Link>
-                                    <Nav.Link onClick={() => setRegisterModal(!registerModal)}>Register</Nav.Link>
-                                    </>
+                                        <>
+                                            <Nav.Link onClick={() => setLoginModal(!loginModal)}>Login</Nav.Link>
+                                            <Nav.Link onClick={() => setRegisterModal(!registerModal)}>Register</Nav.Link>
+                                        </>
                                     ) : (
-                                    <>
-                                        <Nav.Link href={ authUser.roles === 'admin' ? 'admin-products':'profile' } className="d-flex align-items-center">
-                                        <span style={{ marginRight: '8px' }}>
-                                            👋 Hi, {authUser.firstname}
-                                        </span>
-                                        </Nav.Link>
-                                        <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                                    </>
+                                        <>
+                                            <Nav.Link as={Link} to={authUser.roles === 'admin' ? '/admin-products' : '/profile'} className="d-flex align-items-center">
+                                                <span style={{ marginRight: '8px' }}>
+                                                    👋 Hi, {authUser.firstname}
+                                                </span>
+                                            </Nav.Link>
+                                            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                                        </>
                                     )}
                                 </Nav>
                             </Col>
                             <Col xs={6} md={3} lg={3}>
                                 <Form className="d-flex">
-                                <Form.Control
-                                    type="search"
-                                    placeholder="Search"
-                                    className="me-2"
-                                    aria-label="Search"
-                                />
+                                    <Form.Control
+                                        type="search"
+                                        placeholder="Search"
+                                        className="me-2"
+                                        aria-label="Search"
+                                    />
                                     <Button variant="outline-success">Search</Button>
                                 </Form>
                             </Col>
@@ -76,8 +77,8 @@ const Header=()=>{
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <Login openLogin={loginModal} closeLogin={() => setLoginModal(false)}/>
-            <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)}/>
+            <Login openLogin={loginModal} closeLogin={() => setLoginModal(false)} />
+            <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} />
         </>
     );
 }

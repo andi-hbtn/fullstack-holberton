@@ -14,7 +14,11 @@ export class CategoryService {
 
 	public async getAllCategory(): Promise<CategoryEntity[]> {
 		try {
-			const result = await this.categoryRepository.find();
+			const result = await this.categoryRepository.find({
+				relations: {
+					products: true
+				}
+			});
 			return result;
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -51,12 +55,15 @@ export class CategoryService {
 
 	public async getCategoryById(id: number): Promise<CategoryResponse> {
 		try {
-			const result = await this.categoryRepository.findOne({ where: { id } })
+			const result = await this.categoryRepository.findOne({
+				where: { id },
+				relations: { products: true }
+			})
 			if (!result) {
 				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
 			}
 			return {
-				statusCode: HttpStatus.CREATED,
+				statusCode: HttpStatus.OK,
 				message: 'Category exists',
 				data: result
 			};

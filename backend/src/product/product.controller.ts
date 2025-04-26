@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, UseGuards, UseInterceptors, Res, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, UseGuards, UseInterceptors, Res, UploadedFile, HttpStatus } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guards';
 import { PermissionGuard } from 'src/guards/permission.guards';
 import { IsPublic } from 'src/decorators/public.decorator';
@@ -6,11 +6,13 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { ProductService } from './products.service';
 import { ProductEntity } from './entity/products.enity';
 import { ProductDto } from './dto/product.dto';
+import { ProductResponse } from './responseType/response.interface';
 import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
+import { ServiceHandler } from 'src/errorHandler/service.error';
 
 
 @UseGuards(AuthGuard, PermissionGuard)
@@ -36,7 +38,14 @@ export class ProductController {
 		}),
 	}))
 	public async cretePost(@Body() bodyParam: ProductDto, @UploadedFile() file: Express.Multer.File) {
-		return await this.productService.createProduct(bodyParam, file.filename);
+		try {
+			if (!file || !file.filename) {
+				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
+			}
+			return await this.productService.createProduct(bodyParam, file.filename);
+		} catch (error) {
+			throw new ServiceHandler(error.response, error.status);
+		}
 	}
 
 	@Roles('admin')
@@ -50,37 +59,45 @@ export class ProductController {
 			}
 		}),
 	}))
-	public async update(@Body() bodyParam: any, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<any> {
-		const product = await this.productService.getProductById(id);
-		if (product) {
-			if (file) {
-				fs.unlinkSync('uploads/' + product.image);
-				return await this.productService.updateProduct(bodyParam, id, file.filename);
+	public async update(@Body() bodyParam: any, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<ProductResponse> {
+
+		try {
+			const productResponse = await this.productService.getProductById(id);
+			const product = productResponse.data;
+			if (!file || !file?.filename) {
+				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
 			}
-			return await this.productService.updateProduct(bodyParam, id, product?.image);
+			// Delete the old image
+			fs.unlinkSync('uploads/' + product.image);
+			// Proceed with the update
+			return await this.productService.updateProduct(bodyParam, id, file.filename);
+		} catch (error) {
+			if (file || file?.filename) {
+				fs.unlinkSync('uploads/' + file.filename);
+			}
+			throw new ServiceHandler(error.response, error.status);
 		}
 	}
 
 	@IsPublic()
 	@Get(':id')
-	public async getById(@Param('id', ParseIntPipe) id: number): Promise<ProductEntity> {
-		return await this.productService.getProductById(id);
+	public async getById(@Param('id', ParseIntPipe) id: number): Promise<ProductResponse> {
+		try {
+			return await this.productService.getProductById(id);
+		} catch (error) {
+			throw new ServiceHandler(error.response, error.status);
+		}
 	}
 
 	@Roles('admin')
 	@Delete('delete/:id')
-	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<any> {
-		const product = await this.productService.getProductById(id);
-		if (product) {
-			const files = await fs.promises.readdir('uploads');
-			fs.unlinkSync('uploads/' + product.image);
-			await this.productService.deleteProduct(id);
-		}
+	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<ProductResponse> {
+		return await this.productService.getProductById(id);
 	}
 
 	@IsPublic()
-    @Get('uploads/:path')
-    public getImage(@Param() path:any, @Res() res: Response) {
-        res.sendFile(path.path, { root: 'uploads' });
-    }
+	@Get('uploads/:path')
+	public getImage(@Param() path: any, @Res() res: Response) {
+		res.sendFile(path.path, { root: 'uploads' });
+	}
 }
