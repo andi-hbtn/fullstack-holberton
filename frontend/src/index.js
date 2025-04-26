@@ -24,7 +24,7 @@ import reportWebVitals from './reportWebVitals';
 axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <AuthenticateProvider >
+  <AuthenticateProvider>
     <CartProvider>
       <CategoryProvider>
         <ProductProvider>
