@@ -102,7 +102,7 @@ const Categories = () => {
 													<td>{category.description}</td>
 													<td>{dateUtils.formatIsoDateTime(category.created)}</td>
 													<td>
-														<img className="small-img" src={`http://localhost:3000/api/category/uploads/${category.image}`} alt="product alt" width={"60px"} height={"60px"}/>
+														<img className="small-img" src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} alt="product alt" width={"60px"} height={"60px"}/>
 													</td>
 													<td>
 														<Button variant="primary" onClick={() => { handleEdit(category) }}>Edit</Button>
