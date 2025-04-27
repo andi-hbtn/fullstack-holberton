@@ -15,11 +15,21 @@ const ProductModal = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
-	const [formData, setFormData] = useState({ title: "", description: "", category_id: 0, price: 0, stock: 0, image: "", is_active: true });
+	const [formData, setFormData] = useState(
+		{
+			title: "",
+			description: "",
+			category_id: 0,
+			price: 0,
+			stock: 0,
+			image: "",
+			is_active: true
+		}
+	);
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
-		setFormData({ ...formData, category_id: categories.length === 1 ? categories[0].id : 0 });
+		setFormData({ ...formData, category_id: categories[0].id, });
 		setCaseModal({ title: "Create product", create: true, button: "Create" });
 		setOpen(!open);
 	}
@@ -81,7 +91,13 @@ const ProductModal = () => {
 					</Col>
 					<Col md={10} className="p-4">
 						<Col md={12} className="mb-4">
-							<h4>Create a new Product <Button variant="primary" onClick={handleCreate}>Create</Button></h4>
+							{
+								categories.length === 0
+									?
+									<h4>You must create one category first!</h4>
+									:
+									<h4>Create a new Product <Button variant="primary" onClick={handleCreate}>Create</Button></h4>
+							}
 						</Col>
 						<Col md={12} className="mb-4">
 							<Table striped>
