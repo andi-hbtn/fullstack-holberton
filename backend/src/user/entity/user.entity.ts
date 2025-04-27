@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn,OneToMany } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { OrderEntity } from "src/order/entity/order.entity";
 
 @Entity('users')
@@ -13,6 +13,9 @@ export class UserEntity {
 	lastname: string;
 
 	@Column()
+	phone: number;
+
+	@Column()
 	email: string;
 
 	@Column({ default: 'user' })
@@ -22,8 +25,8 @@ export class UserEntity {
 	password: string;
 
 	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  	createdAt: Date;
+	createdAt: Date;
 
-	@OneToMany(()=>OrderEntity,order=>order.user)
-	order:OrderEntity[]
+	@OneToMany(() => OrderEntity, order => order.user)
+	order: OrderEntity[]
 }

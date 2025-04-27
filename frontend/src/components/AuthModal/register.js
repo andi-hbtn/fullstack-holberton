@@ -6,9 +6,9 @@ const Register = ({ openRegister, closeRegister }) => {
 
   const { register } = useAuthenticateContext();
   const [registerResponse, setRegisterResponse] = useState({ error: false, message: "", status: 0 });
-  const [values, setValues] = useState({ firstname: "", lastname: "", email: "", password: "" });
+  const [values, setValues] = useState({ firstname: "", lastname: "", phone: "", email: "", password: "" });
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setRegisterResponse({ error: false, message: "", status: 0 });
     try {
@@ -49,13 +49,13 @@ const Register = ({ openRegister, closeRegister }) => {
             <Row className='login-form'>
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="firstname">
-                  <Form.Label>Your firstname</Form.Label>
+                  <Form.Label>First name</Form.Label>
                   <Form.Control
                     value={values.firstname}
                     onChange={handleChange}
                     type="text"
                     name="firstname"
-                    placeholder="insert your firstname..."
+                    placeholder="first name..."
                     autoFocus
                     className='border-radius'
                   />
@@ -63,13 +63,27 @@ const Register = ({ openRegister, closeRegister }) => {
               </Col>
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="lastname">
-                  <Form.Label>Your lastname</Form.Label>
+                  <Form.Label>Last name</Form.Label>
                   <Form.Control
                     value={values.lastname}
                     onChange={handleChange}
                     type="text"
                     name="lastname"
-                    placeholder="insert your lastname..."
+                    placeholder="last name..."
+                    autoFocus
+                    className='border-radius'
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={12}>
+                <Form.Group className="mb-3" controlId="lastname">
+                  <Form.Label>Phone number</Form.Label>
+                  <Form.Control
+                    value={values.phone}
+                    onChange={handleChange}
+                    type="number"
+                    name="phone"
+                    placeholder="phone..."
                     autoFocus
                     className='border-radius'
                   />

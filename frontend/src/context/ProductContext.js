@@ -44,8 +44,6 @@ const ProductProvider = (props) => {
 	}
 
 	const updateProduct = async (data) => {
-
-		//console.log("data----", data);
 		try {
 			const result = await update_product_service(data);
 			console.log("result-----", result);

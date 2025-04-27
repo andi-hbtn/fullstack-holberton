@@ -1,4 +1,4 @@
-import { Container, Card, Row, Col, Button } from 'react-bootstrap';
+import { Container, Card, Row, Col } from 'react-bootstrap';
 import Header from "../../components/Header/Header";
 import Footer from '../../components/Footer';
 import { useCategoryContext } from '../../context/CategoryContext';
@@ -23,15 +23,6 @@ const Home = () => {
 									<Card.Body>
 										<Card.Title className='text-center'>{category.title}</Card.Title>
 										<Card.Text className='text-center'>{category.description}</Card.Text>
-										<div className='price-cart'>
-											<div className='price text-center'>
-												<span>products</span>
-												<span>{category.products.length}</span>
-											</div>
-											<div className='cart'>
-												<Button>Add to cart</Button>
-											</div>
-										</div>
 									</Card.Body>
 								</Col>
 							)

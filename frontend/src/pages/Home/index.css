@@ -1,10 +1,10 @@
-.card-cnt{
+.card-cnt {
 	width: 306px;
-    background-color: #f7f7f7 !important;
+	background-color: #f7f7f7 !important;
 	border: 0px !important;
-    text-align: center;
-    margin: 20px 0px;
-    vertical-align: top;
+	text-align: center;
+	margin: 20px 0px;
+	vertical-align: top;
 }
 
 
@@ -19,29 +19,32 @@
 	font-weight: bold;
 	font-size: 1rem;
 }
-.price-cart{
+
+.price-cart {
 	border-top: 1px solid #bebebe;
 	padding-top: 20px;
 }
 
-.price{
+.price {
 	border-right: 1px solid #bebebe;
 }
-.price , .cart{
+
+.price,
+.cart {
 	width: 50%;
-    display: inline-block;
+	display: inline-block;
 }
 
-.cart{
+.cart {
 	cursor: pointer;
 }
 
-.cart > button{
+.cart>a {
+	text-decoration: none;
 	display: block;
-    margin: 0 auto;
-	background-color: #ffffff !important;
-	border: 0px;
 	color: #000000;
 }
 
-.cart > button:hover{color: #000000;}
+.cart>button:hover {
+	color: #000000;
+}

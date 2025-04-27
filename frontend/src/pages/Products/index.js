@@ -15,11 +15,11 @@ const ProductModal = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
-	const [formData, setFormData] = useState({ id: 0, title: "", description: "", category_id: 0, price: 0, stock: 0, image: "", is_active: false });
+	const [formData, setFormData] = useState({ title: "", description: "", category_id: 0, price: 0, stock: 0, image: "", is_active: true });
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
-		setFormData({});
+		setFormData({ ...formData, category_id: categories.length === 1 ? categories[0].id : 0 });
 		setCaseModal({ title: "Create product", create: true, button: "Create" });
 		setOpen(!open);
 	}

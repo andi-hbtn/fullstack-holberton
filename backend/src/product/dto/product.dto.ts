@@ -19,11 +19,16 @@ export class ProductDto {
 	@IsNotEmpty()
 	@IsNumber()
 	@Transform(({ value }) => parseInt(value))
-	stock:number;
+	stock: number;
 
 	@IsNotEmpty()
 	@IsBoolean()
-	@Transform(({ value }) => value === 'true')
+	@Transform(({ value }) => {
+		if (typeof value === 'string') {
+			return value === 'true' || value === '1' || value === 'on';
+		}
+		return Boolean(value);
+	})
 	is_active: boolean;
 
 	@IsNotEmpty()
@@ -31,6 +36,6 @@ export class ProductDto {
 	@Type(() => Number)
 	category_id: number;
 
-	
-	image:string
+
+	image: string
 }

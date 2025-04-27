@@ -30,6 +30,7 @@ export class AuthController {
                 const user = {
                     firstname: bodyParam.firstname,
                     lastname: bodyParam.lastname,
+                    phone:bodyParam.phone,
                     email: bodyParam.email,
                     password: hashedPassword,
                     roles: "user",

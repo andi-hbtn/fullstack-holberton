@@ -97,7 +97,7 @@ const CategoryPage = () => {
                                             <span>${product.price}</span>
                                         </div>
                                         <div className="cart">
-                                            <Button>Add to cart</Button>
+                                            <a href={`/product/${product.id}`}>See Details</a>
                                         </div>
                                     </div>
                                 </Card.Body>
