@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import { useCategoryContext } from "../../context/CategoryContext";
 import { Container, Row, Col, Button, Card, Spinner } from "react-bootstrap";
+import { PiMinusLight, PiPlusLight } from "react-icons/pi";
+import { useCartContext } from "../../context/CartContext";
 
 import Header from "../../components/Header/Header";
 import NotFound from "../../components/NotFount";
@@ -10,6 +13,7 @@ import "./index.css";
 
 const CategoryPage = () => {
     const { id } = useParams();
+    const { addQuantity, removeQuantity, quantity, addToCart } = useCartContext();
     const { getCategory } = useCategoryContext();
 
     const [category, setCategory] = useState(null); // Start with null
@@ -17,25 +21,26 @@ const CategoryPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchCategory = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const result = await getCategory(id);
-                if (result.statusCode === 200) {
-                    setCategory(result.data);
-                } else {
-                    setError({ message: "Category not found", status: result.statusCode });
-                }
-            } catch (err) {
-                setError({ message: err.message || "An error occurred", status: err.statusCode || 500 });
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchCategory();
     }, [id, getCategory]);
+
+
+    const fetchCategory = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const result = await getCategory(id);
+            if (result.statusCode === 200) {
+                setCategory(result.data);
+            } else {
+                setError({ message: "Category not found", status: result.statusCode });
+            }
+        } catch (err) {
+            setError({ message: err.message || "An error occurred", status: err.statusCode || 500 });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -74,6 +79,10 @@ const CategoryPage = () => {
             </>
         );
     }
+    const getQuantity = (productId) => {
+        const item = quantity.items.find(el => el.product_id === productId);
+        return item?.quantity || 0;
+    };
 
     return (
         <>
@@ -90,14 +99,24 @@ const CategoryPage = () => {
                                     />
                                 </a>
                                 <Card.Body>
-                                    <Card.Title className="text-center">{product.title}</Card.Title>
+                                    <Card.Title className="product-title">{product.title}</Card.Title>
+                                    <Card.Title className="product-price">${product.price}</Card.Title>
                                     <Card.Text className="text-center">{product.description}</Card.Text>
                                     <div className="price-cart">
-                                        <div className="price text-center">
-                                            <span>${product.price}</span>
+                                        <div className="quantity text-center">
+                                            <Button variant="link" onClick={() => { removeQuantity(product) }}>
+                                                <PiMinusLight />
+                                            </Button>
+
+                                            <span>{getQuantity(product.id)}</span>
+
+                                            <Button variant="link" onClick={() => { addQuantity(product) }}>
+                                                <PiPlusLight />
+                                            </Button>
+
                                         </div>
                                         <div className="cart">
-                                            <a href={`/product/${product.id}`}>See Details</a>
+                                            <Button variant="link" onClick={() => { addToCart() }}>Add to Cart</Button>
                                         </div>
                                     </div>
                                 </Card.Body>

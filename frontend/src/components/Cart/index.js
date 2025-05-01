@@ -110,7 +110,6 @@ const Cart = () => {
         return acc + (Number(item.price) * Number(item.quantity))
     }, 0);
 
-
     const handleCheckout = () => {
 
     }
