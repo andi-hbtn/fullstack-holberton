@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { create_product_service, get_products_service, get_product_service, update_product_service } from "../services/product";
+import { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service } from "../services/product";
 const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
@@ -57,6 +57,19 @@ const ProductProvider = (props) => {
 		}
 	}
 
+	const uploadColorProduct = async (data) => {
+		try {
+			const result = await upload_color_images_service(data);
+			if (result.status === 200) {
+				await getProducts()
+				return result.data;
+			}
+		} catch (error) {
+			console.log("error--in update--", error);
+			throw error.response.data;
+		}
+	}
+
 	// const deleteProduct = async (id) => {
 	// 	try {
 	// 		const result = await delete_product_service(id);
@@ -69,7 +82,7 @@ const ProductProvider = (props) => {
 	// 	}
 	// }
 
-	const values = { createProduct, updateProduct, getProduct, products };
+	const values = { createProduct, updateProduct, getProduct, products, uploadColorProduct };
 	return (
 		<ProductContext.Provider value={values}>
 			{props.children}

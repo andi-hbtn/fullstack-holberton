@@ -1,49 +1,35 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { get_orders_service, create_order_service } from "../services/cart";
+import { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext({});
-
 const CartProvider = (props) => {
-	const [orders, setOrders] = useState(
-		{
-			user_id: null,
-			items: [],
-			total_price: 0,
-		}
-	)
-	const [quantity, setQuantity] = useState(
+
+	const [cart, setCart] = useState(
 		{
 			user_id: null,
 			items: [],
 			total_price: 0,
 		});
 
-	useEffect(() => {
-		getOrders();
-	}, []);
-
 	const addQuantity = (product) => {
-		setQuantity((prevState) => {
-			const existingItem = prevState.items.find(item => item.product_id === product.id);
-			let newItems;
+		setCart((prevState) => {
+			const newItems = [...prevState.items];
+			const existingIndex = newItems.findIndex(item => item.product_id === product.id);
 
-			if (existingItem) {
-				newItems = prevState.items.map(item =>
-					item.product_id === product.id
-						? { ...item, quantity: item.quantity + 1 }
-						: item
-				);
+			if (existingIndex !== -1) {
+				// Update quantity
+				newItems[existingIndex] = {
+					...newItems[existingIndex],
+					quantity: newItems[existingIndex].quantity + 1,
+				};
 			} else {
-				newItems = [
-					...prevState.items,
-					{
-						product_id: product.id,
-						title: product.title,
-						image: product.image,
-						price: product.price,
-						quantity: 1
-					}
-				];
+				// Add new item
+				newItems.push({
+					product_id: product.id,
+					title: product.title,
+					image: product.image,
+					price: product.price,
+					quantity: 1,
+				});
 			}
 
 			const newTotalPrice = newItems.reduce(
@@ -51,16 +37,16 @@ const CartProvider = (props) => {
 				0
 			);
 
-			return {
+			const updatedCart = {
 				...prevState,
 				items: newItems,
 				total_price: newTotalPrice
 			};
+			return updatedCart;
 		});
 	};
-
 	const removeQuantity = (product) => {
-		setQuantity((prevState) => {
+		setCart((prevState) => {
 			const existingItem = prevState.items.find(item => item.product_id === product.id);
 			if (!existingItem) return prevState;
 
@@ -87,46 +73,27 @@ const CartProvider = (props) => {
 	};
 
 	const addToCart = () => {
+		console.log("cart----", cart);
+		if (cart.items.length === 0) return;
+
 		let existingCart = JSON.parse(localStorage.getItem("items")) || [];
-		let found = false;
-		existingCart.forEach(element => {
-			if (element.id === quantity.id) {
-				element.items.push(...quantity.items);
-				found = true;
+		const updatedItems = [...existingCart];
+		cart.items.forEach((cartItem) => {
+			const existingIndex = updatedItems.findIndex((item) => {
+				return item.product_id === cartItem.product_id;
+			});
+			if (existingIndex !== -1) {
+				updatedItems[existingIndex].quantity = cartItem.quantity;
+			} else {
+				updatedItems.push(cartItem);
 			}
 		});
-		if (!found) {
-			existingCart.push(quantity);
-		}
-		localStorage.setItem("items", JSON.stringify(existingCart));
-	}
-
-	const createOrder = async (data) => {
-		try {
-			const result = await create_order_service(data);
-			if (result.status === 201) {
-				await getOrders();
-			}
-			return result.data;
-		} catch (error) {
-			throw error.response.data;
-		}
-	}
-
-	const getOrders = async () => {
-		try {
-			const result = await get_orders_service();
-			if (result.status === 200) {
-				setOrders(result.data);
-			}
-			return result.data;
-		} catch (error) {
-			throw error.response.data
-		}
+		localStorage.setItem("items", JSON.stringify(updatedItems));
 	}
 
 
-	const values = { quantity, setQuantity, addQuantity, addToCart, removeQuantity, createOrder, getOrders, orders };
+
+	const values = { cart, setCart, addQuantity, addToCart, removeQuantity };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}

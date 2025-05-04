@@ -33,9 +33,9 @@ const fields = [
         label: "Product availability",
     },
     {
-        type:"file",
-        name:"image",
-        label:"Upload Image"
+        type: "file",
+        name: "image",
+        label: "Upload Image"
     }
 ];
 

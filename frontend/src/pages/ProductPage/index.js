@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Button, Card, Badge } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import NotFount from "../../components/NotFount";
+import { PiMinusLight, PiPlusLight } from "react-icons/pi";
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
 import "./index.css";
@@ -10,69 +11,98 @@ import "./index.css";
 const ProductPage = () => {
     const { id } = useParams();
     const { getProduct } = useProductContext();
-    const { addQuantity, removeQuantity, quantity, addToCart } = useCartContext();
+    const { addQuantity, removeQuantity, cart, addToCart } = useCartContext();
     const [product, setProduct] = useState([]);
     const [error, setError] = useState({ message: "", status: 0 });
 
     useEffect(() => {
+        const getById = async (id) => {
+            try {
+                const result = await getProduct(id);
+                if (result.statusCode === 200) {
+                    setProduct(result.data);
+                }
+            } catch (error) {
+                setError({ message: error.message, status: error.statusCode });
+            }
+        }
         getById(id)
     }, [id]);
 
-    const getById = async (id) => {
-        try {
-            const result = await getProduct(id);
-            if (result.statusCode === 200) {
-                setProduct(result.data);
-            }
-        } catch (error) {
-            setError({ message: error.message, status: error.statusCode });
-        }
-    }
+
+
+    const getQuantity = (productId) => {
+        const item = cart.items.find(el => el.product_id === productId);
+        return item?.quantity || 0;
+    };
 
     return (
         <>
             <Header />
-
-            <Container>
+            <Container className="py-5">
                 {
-                    error.message
-                        ?
+                    error.message ? (
                         <Row>
                             <Col md={10} className="p-4">
                                 <NotFount errors={error} />
                             </Col>
                         </Row>
-                        :
-                        <Row className="prod-cart-cnt">
-                            <Col sm={5} md={5} lg={5} className="card-cnt">
-                                <Card.Img variant="top" src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`} />
+                    ) : (
+                        <Row className="prod-card-container g-5">
+                            <Col lg={6} className="d-flex justify-content-center">
+                                <Card className="product-image-card">
+                                    <Card.Img
+                                        variant="top"
+                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                        className="product-image"
+                                    />
+                                </Card>
                             </Col>
-                            <Col sm={5} md={5} lg={5} className="prod-desc">
-                                <h1>{product.title}</h1>
-                                <h4>&pound; {product.price}</h4>
-                                <h4>subtotal is &pound;{quantity.total_price}</h4>
-                                <p>{product.description}</p>
-                                <Col sm={12} md={12} lg={12}>
-                                    <Row>
-                                        <Col sm={12} md={6} lg={6} className="p-q">
-                                            <Button variant="dark" onClick={() => removeQuantity(product)}>-</Button>
-                                            <span className="text-center">{quantity.items.length}</span>
-                                            <Button variant="dark" onClick={() => addQuantity(product)}>+</Button>
-                                        </Col>
 
-                                        <Col sm={12} md={6} lg={6} className="p-c">
-                                            <Button variant="dark" className="" onClick={() => { addToCart() }}>Add to cart</Button>
+                            <Col lg={6}>
+                                <div className="product-details">
+                                    <h1 className="product-title mb-3">{product.title}</h1>
+                                    <Badge bg="success" className="mb-3">In Stock</Badge>
 
-                                            <a href="/cart">
-                                                <Button variant="dark">
-                                                    View cart
+                                    <div className="price-section mb-4">
+                                        <h3 className="text-primary mb-0">
+                                            £{product.price}
+                                        </h3>
+                                        <small className="text-muted">(Inc. VAT)</small>
+                                    </div>
+
+                                    <div className="quantity-controls mb-4">
+                                        <div className="d-flex align-items-center gap-3">
+                                            <span className="fw-medium">Quantity:</span>
+                                            <div className="d-flex align-items-center border rounded-pill">
+                                                <Button variant="link" onClick={() => { removeQuantity(product) }}>
+                                                    <PiMinusLight />
                                                 </Button>
-                                            </a>
-                                        </Col>
-                                    </Row>
-                                </Col>
+                                                <span className="px-3 fs-5">{getQuantity(product.id)}</span>
+                                                <Button variant="link" onClick={() => { addQuantity(product) }}>
+                                                    <PiPlusLight />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <Button
+                                        variant="primary"
+                                        size="lg"
+                                        className="w-100 mb-4 add-to-cart-btn"
+                                        onClick={() => addToCart(product)}
+                                    >
+                                        Add to Cart
+                                    </Button>
+
+                                    <div className="product-info">
+                                        <h4 className="mb-3">Product Details</h4>
+                                        <p className="product-description">{product.description}</p>
+                                    </div>
+                                </div>
                             </Col>
                         </Row>
+                    )
                 }
             </Container>
         </>

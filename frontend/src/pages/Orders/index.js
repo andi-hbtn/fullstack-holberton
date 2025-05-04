@@ -1,6 +1,6 @@
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useCartContext } from "../../context/CartContext";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
 
 
@@ -26,6 +26,7 @@ const Orders = () => {
 					<Nav className="me-auto">
 						<Nav.Link as={Link} to="/admin-category">Categories</Nav.Link>
 						<Nav.Link as={Link} to="/admin-products">Products</Nav.Link>
+						<Nav.Link as={Link} to="/admin-product-with-colors">Product-colors</Nav.Link>
 						<Nav.Link as={Link} to="/admin-orders">Orders</Nav.Link>
 						<Nav.Link as={Link} to="/">Home</Nav.Link>
 					</Nav>

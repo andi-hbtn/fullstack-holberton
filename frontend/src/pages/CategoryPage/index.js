@@ -13,7 +13,7 @@ import "./index.css";
 
 const CategoryPage = () => {
     const { id } = useParams();
-    const { addQuantity, removeQuantity, quantity, addToCart } = useCartContext();
+    const { addQuantity, removeQuantity, cart, addToCart } = useCartContext();
     const { getCategory } = useCategoryContext();
 
     const [category, setCategory] = useState(null); // Start with null
@@ -21,26 +21,28 @@ const CategoryPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+
+        const fetchCategory = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const result = await getCategory(id);
+                if (result.statusCode === 200) {
+                    setCategory(result.data);
+                } else {
+                    setError({ message: "Category not found", status: result.statusCode });
+                }
+            } catch (err) {
+                setError({ message: err.message || "An error occurred", status: err.statusCode || 500 });
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchCategory();
     }, [id, getCategory]);
 
 
-    const fetchCategory = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const result = await getCategory(id);
-            if (result.statusCode === 200) {
-                setCategory(result.data);
-            } else {
-                setError({ message: "Category not found", status: result.statusCode });
-            }
-        } catch (err) {
-            setError({ message: err.message || "An error occurred", status: err.statusCode || 500 });
-        } finally {
-            setLoading(false);
-        }
-    };
 
     if (loading) {
         return (
@@ -80,7 +82,7 @@ const CategoryPage = () => {
         );
     }
     const getQuantity = (productId) => {
-        const item = quantity.items.find(el => el.product_id === productId);
+        const item = cart.items.find(el => el.product_id === productId);
         return item?.quantity || 0;
     };
 
@@ -113,10 +115,9 @@ const CategoryPage = () => {
                                             <Button variant="link" onClick={() => { addQuantity(product) }}>
                                                 <PiPlusLight />
                                             </Button>
-
                                         </div>
                                         <div className="cart">
-                                            <Button variant="link" onClick={() => { addToCart() }}>Add to Cart</Button>
+                                            <Button variant="link" onClick={() => { addToCart(product) }}>Add to Cart</Button>
                                         </div>
                                     </div>
                                 </Card.Body>

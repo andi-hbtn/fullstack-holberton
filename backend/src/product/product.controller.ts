@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, UseGuards, UseInterceptors, Res, UploadedFile, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, UseGuards, UseInterceptors, Res, UploadedFile, HttpStatus, UploadedFiles } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guards';
 import { PermissionGuard } from 'src/guards/permission.guards';
 import { IsPublic } from 'src/decorators/public.decorator';
@@ -10,7 +10,7 @@ import { ProductResponse } from './responseType/response.interface';
 import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 import { ServiceHandler } from 'src/errorHandler/service.error';
 
@@ -23,7 +23,11 @@ export class ProductController {
 	@IsPublic()
 	@Get('all')
 	public async getAll() {
-		return await this.productService.getAllProducts()
+		try {
+			return await this.productService.getAllProducts();
+		} catch (error) {
+			throw new ServiceHandler(error.response, error.status);
+		}
 	}
 
 	@Roles('admin')
@@ -92,7 +96,42 @@ export class ProductController {
 	@Roles('admin')
 	@Delete('delete/:id')
 	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<ProductResponse> {
-		return await this.productService.getProductById(id);
+		try {
+			return await this.productService.deleteProduct(id);
+		} catch (error) {
+			throw new ServiceHandler(error.response, error.status);
+		}
+	}
+
+
+	@Roles('admin')
+	@Post('upload-colors/:productId')
+	@UseInterceptors(FilesInterceptor('images', 10, {
+		storage: diskStorage({
+			destination: './uploads/colors',
+			filename: (req, file, cb) => {
+				const imageName = new ImageNameHelper(file.originalname).getImageName();
+				cb(null, imageName);
+			}
+		}),
+	}))
+	public async uploadProductColors(
+		@Param('productId', ParseIntPipe) productId: number,
+		@UploadedFiles() files: Express.Multer.File[],
+		@Body('colors') colorsJson: string
+	) {
+		try {
+			const colors = JSON.parse(colorsJson);
+
+			if (!Array.isArray(colors) || colors.length !== files.length) {
+				files.map(file => fs.unlinkSync('uploads/colors/' + file.filename));
+				throw new ServiceHandler("Number of colors and images must match", HttpStatus.BAD_REQUEST);
+			}
+
+			return await this.productService.uploadColorImages(productId, files, colors);
+		} catch (error) {
+			throw new ServiceHandler(error.message || 'Failed to upload color images', HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@IsPublic()
