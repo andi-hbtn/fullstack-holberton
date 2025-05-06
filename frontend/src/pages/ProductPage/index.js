@@ -29,8 +29,6 @@ const ProductPage = () => {
         getById(id)
     }, [id]);
 
-
-
     const getQuantity = (productId) => {
         const item = cart.items.find(el => el.product_id === productId);
         return item?.quantity || 0;
@@ -108,5 +106,4 @@ const ProductPage = () => {
         </>
     )
 }
-
 export default ProductPage;

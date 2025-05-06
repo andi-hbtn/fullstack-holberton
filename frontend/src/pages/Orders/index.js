@@ -3,7 +3,6 @@ import { useCartContext } from "../../context/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
 
-
 const Orders = () => {
 	const { authUser, logout } = useAuthenticateContext();
 	const { orders } = useCartContext();
@@ -13,9 +12,6 @@ const Orders = () => {
 		await logout();
 		navigate("/");
 	}
-
-
-	console.log("orders----", orders);
 
 	return (
 		<>
