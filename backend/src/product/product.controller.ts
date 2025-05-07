@@ -118,10 +118,15 @@ export class ProductController {
 	public async uploadProductColors(
 		@Param('productId', ParseIntPipe) productId: number,
 		@UploadedFiles() files: Express.Multer.File[],
-		@Body('colors') colorsJson: string
+		@Body('colors') colors: string
 	) {
 		try {
-			const colors = JSON.parse(colorsJson);
+
+			// console.log("productId---", productId);
+			// console.log("files---", files);
+			//console.log("colorsJson---", colorsJson);
+			// console.log("colors----", colors);
+			//const colors = JSON.parse(colorsJson);
 
 			if (!Array.isArray(colors) || colors.length !== files.length) {
 				files.map(file => fs.unlinkSync('uploads/colors/' + file.filename));
@@ -130,7 +135,7 @@ export class ProductController {
 
 			return await this.productService.uploadColorImages(productId, files, colors);
 		} catch (error) {
-			throw new ServiceHandler(error.message || 'Failed to upload color images', HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new ServiceHandler(error.message, error.status);
 		}
 	}
 
@@ -138,5 +143,11 @@ export class ProductController {
 	@Get('uploads/:path')
 	public getImage(@Param() path: any, @Res() res: Response) {
 		res.sendFile(path.path, { root: 'uploads' });
+	}
+
+	@IsPublic()
+	@Get('uploads/colors/:path')
+	public getColorImages(@Param('path') path: any, @Res() res: Response) {
+		res.sendFile(path, { root: 'uploads/colors' });
 	}
 }

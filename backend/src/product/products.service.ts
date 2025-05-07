@@ -17,7 +17,7 @@ export class ProductService {
 	public async getAllProducts(): Promise<ProductEntity[]> {
 		try {
 			const result = await this.ProductEntity.find({
-				relations: ['category']
+				relations: ['category', 'colorImages']
 			});
 			return result;
 		} catch (error) {
@@ -113,6 +113,12 @@ export class ProductService {
 		try {
 			const product = await this.ProductEntity.findOne({ where: { id: productId } });
 			if (!product) {
+				if (files) {
+					files.forEach(file => {
+						fs.existsSync(`uploads/colors/${file.filename}`) &&
+							fs.unlinkSync(`uploads/colors/${file.filename}`);
+					});
+				}
 				throw new ServiceHandler("Product not found", HttpStatus.NOT_FOUND);
 			}
 
@@ -152,7 +158,7 @@ export class ProductService {
 				data: result,
 			};
 		} catch (error) {
-			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new ServiceHandler(error.message, error.status);
 		}
 	}
 

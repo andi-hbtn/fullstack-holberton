@@ -33,6 +33,8 @@ const ProductWithColorOptions = () => {
         setOpen(!open);
     }
 
+    //console.log("products----", products);
+
     return (
         <div className="admin-dashboard">
             <Navbar bg="dark" variant="dark" expand="lg" className="admin-navbar">
@@ -113,7 +115,7 @@ const ProductWithColorOptions = () => {
                                         <th>ID</th>
                                         <th>Product</th>
                                         <th>Color Options</th>
-                                        <th>Status</th>
+                                        <th>Images</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -138,19 +140,25 @@ const ProductWithColorOptions = () => {
                                             </td>
                                             <td>
                                                 <div className="color-options">
-                                                    {product.colors?.map((color, i) => (
+                                                    {product.colorImages?.map((property, i) => (
                                                         <span
                                                             key={i}
                                                             className="color-dot"
-                                                            style={{ backgroundColor: color }}
+                                                            style={{ backgroundColor: property.color }}
                                                         />
                                                     ))}
                                                 </div>
                                             </td>
                                             <td>
-                                                <Badge bg={product.status === 'active' ? 'success' : 'secondary'}>
-                                                    {product.status}
-                                                </Badge>
+                                                <div className="d-flex align-items-center">
+                                                    {product.colorImages?.map((property, i) => (
+                                                        <img
+                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${property.image}`}
+                                                            alt="product"
+                                                            className="product-img rounded-circle me-3"
+                                                        />
+                                                    ))}
+                                                </div>
                                             </td>
                                             <td>
                                                 <Button

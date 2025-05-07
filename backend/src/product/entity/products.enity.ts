@@ -1,6 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import { CategoryEntity } from "src/category/entity/category.entity";
-import { OrderItemEntity } from "src/order/entity/order_item.entity";
 import { ProductColorImageEntity } from "./productColors.entity";
 
 @Entity('products')
