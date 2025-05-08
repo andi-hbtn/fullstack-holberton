@@ -21,8 +21,6 @@ const ProductColorModal = ({ show, close, data, setData }) => {
 
     const handleFileChange = (e, index, field) => {
         const file = e.target.files[0];
-        console.log("e.target.files----", e.target.files);
-
         if (index !== undefined) {
             const updatedVariants = [...data.colorVariants];
             updatedVariants[index][field] = file;
@@ -80,7 +78,7 @@ const ProductColorModal = ({ show, close, data, setData }) => {
                                 </div>
 
                                 {data.colorVariants.map((variant, index) => {
-                                    console.log("variant---", variant);
+                                    //console.log("variant---", variant);
                                     return (
                                         <div key={index} className="mb-3 border-bottom pb-3">
                                             <div className="d-flex justify-content-between align-items-center mb-2">

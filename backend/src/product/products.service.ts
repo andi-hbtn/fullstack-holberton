@@ -111,55 +111,66 @@ export class ProductService {
 		colors: string[]
 	): Promise<any> {
 		try {
+			// Find product in database
 			const product = await this.ProductEntity.findOne({ where: { id: productId } });
 			if (!product) {
-				if (files) {
-					files.forEach(file => {
-						fs.existsSync(`uploads/colors/${file.filename}`) &&
-							fs.unlinkSync(`uploads/colors/${file.filename}`);
-					});
-				}
+				// Clean up files if product not found
+				files.forEach(file => {
+					if (fs.existsSync(`uploads/colors/${file.filename}`)) {
+						fs.unlinkSync(`uploads/colors/${file.filename}`);
+					}
+				});
 				throw new ServiceHandler("Product not found", HttpStatus.NOT_FOUND);
 			}
 
-			const existingColors = await this.ColorImageRepo.find({
-				where: { product_id: productId }
-			});
-
+			// Check for existing colors for this product
+			const existingColors = await this.ColorImageRepo.find({ where: { product_id: productId } });
 			const existingColorSet = new Set(existingColors.map(c => c.color));
 			const newColorImageEntities = [];
 
+			// Process each uploaded file and color
 			for (let i = 0; i < colors.length; i++) {
 				const color = colors[i];
-				const file = files[i];
 
+				// Pick the two files for this color
+				const colorImage = files[i * 2];
+				const mainImage = files[i * 2 + 1];
+
+				// Skip if color already exists
 				if (existingColorSet.has(color)) {
-					// Optionally, delete uploaded file to prevent leftover uploads
-					fs.unlinkSync(`uploads/colors/${file.filename}`);
-					continue; // Skip existing color
+					if (colorImage) fs.existsSync(`uploads/colors/${colorImage.filename}`) && fs.unlinkSync(`uploads/colors/${colorImage.filename}`);
+					if (mainImage) fs.existsSync(`uploads/colors/${mainImage.filename}`) && fs.unlinkSync(`uploads/colors/${mainImage.filename}`);
+					continue;
 				}
 
 				newColorImageEntities.push({
 					color,
-					image: file.filename,
+					color_image: colorImage.filename,
+					product_color_image: mainImage.filename,
 					product_id: productId,
 				});
 			}
 
+			// If no new entities to save, throw an error
 			if (newColorImageEntities.length === 0) {
 				throw new ServiceHandler('All provided colors already exist for this product.', HttpStatus.CONFLICT);
 			}
 
+			// Save new color images to the database
 			const result = await this.ColorImageRepo.save(newColorImageEntities);
 
 			return {
-				statusCode: HttpStatus.OK,
+				status: HttpStatus.OK,
 				message: 'Color images uploaded successfully',
 				data: result,
 			};
 		} catch (error) {
-			throw new ServiceHandler(error.message, error.status);
+			// Log errors for debugging
+			console.error("Error in uploadProductColors:", error);
+			throw new ServiceHandler(error.message, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+
+
 	}
 
 }

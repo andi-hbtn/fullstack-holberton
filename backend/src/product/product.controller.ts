@@ -120,18 +120,23 @@ export class ProductController {
 	) {
 		try {
 
-			// console.log("productId---", productId);
-			// console.log("files---", files);
-			//console.log("colorsJson---", colorsJson);
-			// console.log("colors----", colors);
-			//const colors = JSON.parse(colorsJson);
+			if (!colors) {
+				// Clean up any uploaded files
+				files.forEach(file => {
+					fs.existsSync(`uploads/colors/${file.filename}`) &&
+						fs.unlinkSync(`uploads/colors/${file.filename}`);
+				});
+				throw new ServiceHandler("Colors field is required", HttpStatus.BAD_REQUEST);
+			}
 
-			if (!Array.isArray(colors) || colors.length !== files.length) {
+			const parsedColors = JSON.parse(colors);
+			console.log("parsedColors---", parsedColors);
+			if (!Array.isArray(parsedColors)) {
 				files.map(file => fs.unlinkSync('uploads/colors/' + file.filename));
 				throw new ServiceHandler("Number of colors and images must match", HttpStatus.BAD_REQUEST);
 			}
 
-			return await this.productService.uploadColorImages(productId, files, colors);
+			return await this.productService.uploadColorImages(productId, files, parsedColors);
 		} catch (error) {
 			throw new ServiceHandler(error.message, error.status);
 		}

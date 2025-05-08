@@ -49,27 +49,28 @@ const update_product_service = async (data) => {
 }
 
 const upload_color_images_service = async (data) => {
+	const formData = new FormData();
+	// Collect colors and files
+	const colorNames = [];
+	data.colorVariants.forEach((variant) => {
+		// Append the two image files per variant
+		formData.append('images', variant.color_image);
+		formData.append('images', variant.main_image);
+		colorNames.push(variant.colorName);
+	});
 
-	//console.log("data---", data);
+	formData.append('colors', JSON.stringify(colorNames));
 
-	// const formData = new FormData();
-
-	// // // Append each image file
-	// data.colorVariants.forEach((imageFile) => {
-	// 	formData.append('images', imageFile.image);
-	// });
-
-	// data.colorVariants.forEach((color) => {
-	// 	formData.append('colors', [color.colorName]);
-	// });
-
-	// const result = await axios.post(`${url}/upload-colors/${data.product_id}`, formData, {
-	// 	headers: {
-	// 		"Content-Type": "multipart/form-data"
-	// 	}
-	// });
-
-	// return result;
+	const result = await axios.post(
+		`${url}/upload-colors/${data.product_id}`,
+		formData,
+		{
+			headers: {
+				"Content-Type": "multipart/form-data"
+			}
+		}
+	);
+	return result.data;
 };
 
 export { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service }

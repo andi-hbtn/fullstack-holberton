@@ -31,7 +31,7 @@ const ProductWithColorOptions = () => {
         setOpen(!open);
     }
 
-    //console.log("products----", products);
+    console.log("products----", products);
 
     return (
         <div className="admin-dashboard">
@@ -151,7 +151,8 @@ const ProductWithColorOptions = () => {
                                                 <div className="d-flex align-items-center">
                                                     {product.colorImages?.map((property, i) => (
                                                         <img
-                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${property.image}`}
+                                                            key={i}
+                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${property.product_color_image}`}
                                                             alt="product"
                                                             className="product-img rounded-circle me-3"
                                                         />
