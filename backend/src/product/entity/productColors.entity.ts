@@ -11,7 +11,10 @@ export class ProductColorImageEntity {
     color: string;
 
     @Column()
-    image: string;
+    color_image: string;
+
+    @Column()
+    product_color_image: string;
 
     @ManyToOne(() => ProductEntity, (product) => product.colorImages, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'product_id' })

@@ -19,14 +19,16 @@ const ProductColorModal = ({ show, close, data, setData }) => {
         }
     };
 
-    const handleFileChange = (e, index) => {
+    const handleFileChange = (e, index, field) => {
         const file = e.target.files[0];
+        console.log("e.target.files----", e.target.files);
+
         if (index !== undefined) {
             const updatedVariants = [...data.colorVariants];
-            updatedVariants[index].image = file;
+            updatedVariants[index][field] = file;
             setData({ ...data, colorVariants: updatedVariants });
         } else {
-            setData({ ...data, mainImage: file });
+            setData({ ...data, main_image: file });
         }
     };
 
@@ -77,51 +79,73 @@ const ProductColorModal = ({ show, close, data, setData }) => {
                                     </Button>
                                 </div>
 
-                                {data.colorVariants.map((variant, index) => (
-                                    <div key={index} className="mb-3 border-bottom pb-3">
-                                        <div className="d-flex justify-content-between align-items-center mb-2">
-                                            <h6 className="mb-0">Color #{index + 1}</h6>
-                                            <Button
-                                                variant="link"
-                                                size="sm"
-                                                className="text-danger"
-                                                onClick={() => removeColorVariant(index)}
-                                                disabled={data.colorVariants.length === 1}
-                                            >
-                                                <FaTrash />
-                                            </Button>
-                                        </div>
+                                {data.colorVariants.map((variant, index) => {
+                                    console.log("variant---", variant);
+                                    return (
+                                        <div key={index} className="mb-3 border-bottom pb-3">
+                                            <div className="d-flex justify-content-between align-items-center mb-2">
+                                                <h6 className="mb-0">Color #{index + 1}</h6>
+                                                <Button
+                                                    variant="link"
+                                                    size="sm"
+                                                    className="text-danger"
+                                                    onClick={() => removeColorVariant(index)}
+                                                    disabled={data.colorVariants.length === 1}
+                                                >
+                                                    <FaTrash />
+                                                </Button>
+                                            </div>
 
-                                        <Form.Group className="mb-2">
-                                            <Form.Label>Color Name</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name="colorName"
-                                                value={variant.colorName}
-                                                onChange={(e) => handleInputChange(e, index)}
-                                                required
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group>
-                                            <Form.Label>Color Image</Form.Label>
-                                            <Form.Control
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={(e) => handleFileChange(e, index)}
-                                                required
-                                            />
-                                            {variant.image && (
-                                                <Image
-                                                    src={URL.createObjectURL(variant.image)}
-                                                    thumbnail
-                                                    className="mt-2"
-                                                    style={{ maxHeight: '80px' }}
+                                            <Form.Group className="mb-2">
+                                                <Form.Label>Color Name</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="colorName"
+                                                    value={variant.colorName}
+                                                    onChange={(e) => handleInputChange(e, index)}
+                                                    required
                                                 />
-                                            )}
-                                        </Form.Group>
-                                    </div>
-                                ))}
+                                            </Form.Group>
+
+                                            <Form.Group>
+                                                <Form.Label>Colored Image</Form.Label>
+                                                <Form.Control
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => handleFileChange(e, index, 'color_image')}
+                                                    required
+                                                />
+                                                {variant.color_image && (
+                                                    <Image
+                                                        src={URL.createObjectURL(variant.color_image)}
+                                                        thumbnail
+                                                        className="mt-2"
+                                                        style={{ maxHeight: '80px' }}
+                                                    />
+                                                )}
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-2">
+                                                <Form.Label>Main Image</Form.Label>
+                                                <Form.Control
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => handleFileChange(e, index, 'main_image')}
+                                                    required
+                                                />
+
+                                                {variant.main_image && (
+                                                    <Image
+                                                        src={URL.createObjectURL(variant.main_image)}
+                                                        thumbnail
+                                                        className="mt-2"
+                                                        style={{ maxHeight: '80px' }}
+                                                    />
+                                                )}
+                                            </Form.Group>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </Col>
                     </Row>

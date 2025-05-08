@@ -12,8 +12,7 @@ const ProductWithColorOptions = () => {
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState({
         product_id: '',
-        mainImage: null,
-        colorVariants: [{ colorName: '', image: null }]
+        colorVariants: [{ colorName: '', color_image: null, main_image: null }]
     });
     const { products } = useProductContext();
     const { authUser, logout } = useAuthenticateContext();
@@ -27,8 +26,7 @@ const ProductWithColorOptions = () => {
     const handleModal = (data) => {
         setFormData({
             product_id: data?.id,
-            mainImage: data?.image,
-            colorVariants: [{ colorName: '', image: null }]
+            colorVariants: [{ colorName: '', color_image: null, main_image: null }]
         });
         setOpen(!open);
     }

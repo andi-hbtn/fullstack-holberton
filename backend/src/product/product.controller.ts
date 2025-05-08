@@ -4,7 +4,6 @@ import { PermissionGuard } from 'src/guards/permission.guards';
 import { IsPublic } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ProductService } from './products.service';
-import { ProductEntity } from './entity/products.enity';
 import { ProductDto } from './dto/product.dto';
 import { ProductResponse } from './responseType/response.interface';
 import { diskStorage } from 'multer';
@@ -13,7 +12,6 @@ import { Response } from 'express';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 import { ServiceHandler } from 'src/errorHandler/service.error';
-
 
 @UseGuards(AuthGuard, PermissionGuard)
 @Controller('product')
