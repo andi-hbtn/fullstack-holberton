@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {useAuthenticateContext} from "../../context/AuthenticateContext";
+import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useCartContext } from '../../context/CartContext';
 
 import formatDate from "../../helpers/dateTime";
@@ -10,8 +10,8 @@ import "./index.css";
 
 const Checkout = () => {
 
-    const {authUser} = useAuthenticateContext();
-    const {createOrder} = useCartContext();
+    const { authUser } = useAuthenticateContext();
+    const { createOrder } = useCartContext();
     const [cart, setCart] = useState([]);
     const [orderResponse, setOrderResponse] = useState({ show: false, message: "", status: 0 });
     const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: "", message: "" });
@@ -45,34 +45,34 @@ const Checkout = () => {
         });
     }
 
-    const handleSubmit = async(event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        try{
+        try {
             const total_price = cart.reduce((total, item) => {
                 return total + (item.price * item.quantity);
-              }, 0);
-            
+            }, 0);
+
             const items = cart.map(item => ({
-            product_id: item.product_id,
-            quantity: item.quantity
+                product_id: item.product_id,
+                quantity: item.quantity
             }));
-    
+
             const order_product = {
-                user_id:authUser?.id || 0,
+                user_id: authUser?.id || 0,
                 items,
                 total_price,
-                status:"pending",
+                status: "pending",
                 createdAt: formatDate.getFormattedDate()
             }
             const result = await createOrder(order_product);
             setOrderResponse({ show: true, message: result.message, status: result.statusCode })
-        }catch(error){
+        } catch (error) {
             console.error("Failed to submit order:", error);
             setOrderResponse({ show: true, message: error.message, status: error.statusCode })
         }
     }
 
-    const isDisabled = Object.values(values).some((value)=>{
+    const isDisabled = Object.values(values).some((value) => {
         return value.trim().length === 0
     });
 
@@ -247,11 +247,11 @@ const Checkout = () => {
                             </Col>
 
                             <Col sm={12} md={5} lg={5} className='order-cnt'>
-                                
+
                                 {
-                                    orderResponse.show &&  <AlertMessage status={orderResponse.status} message={orderResponse.message} />
+                                    orderResponse.show && <AlertMessage status={orderResponse.status} message={orderResponse.message} />
                                 }
-                               
+
 
                                 <h5>Your order</h5>
                                 <div className='subtotal-cnt'>
@@ -274,7 +274,7 @@ const Checkout = () => {
                                                         <span>{el.quantity * el.price}</span>
                                                     </Col>
                                                 </Row>
-                                                )
+                                            )
                                             )
                                         }
                                     </div>
@@ -282,11 +282,11 @@ const Checkout = () => {
 
                                 <div className='checkout-total'>
                                     <span>Subtotal</span>
-                                    <span>${subtotal}</span>
+                                    <span>&#163;{subtotal}</span>
                                 </div>
 
 
-                                
+
 
                                 <Button variant="dark" className='place-order-btn' type="submit" disabled={isDisabled}>
                                     Proceed to checkout

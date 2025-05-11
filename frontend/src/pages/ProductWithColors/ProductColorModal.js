@@ -57,7 +57,7 @@ const ProductColorModal = ({ show, close, data, setData }) => {
     return (
         <Modal show={show} onHide={close} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>Create New Product</Modal.Title>
+                <Modal.Title>Add products with colors</Modal.Title>
             </Modal.Header>
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -153,7 +153,7 @@ const ProductColorModal = ({ show, close, data, setData }) => {
                         Cancel
                     </Button>
                     <Button variant="primary" type="submit">
-                        Create Product
+                        Add Color Variants
                     </Button>
                 </Modal.Footer>
             </Form>

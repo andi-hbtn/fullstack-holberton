@@ -9,6 +9,9 @@ export class UserDto {
 	@IsNotEmpty()
 	lastname: string;
 
+	@IsOptional()
+	roles: string;
+
 	@IsNumber()
 	@IsNotEmpty()
 	phone: number;

@@ -29,4 +29,10 @@ export class UserEntity {
 
 	@OneToMany(() => OrderEntity, order => order.user)
 	order: OrderEntity[]
+
+	@Column({ nullable: true })
+	passwordResetToken: string;
+
+	@Column({ nullable: true })
+	passwordResetExpires: Date;
 }

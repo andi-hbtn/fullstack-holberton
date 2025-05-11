@@ -14,16 +14,16 @@ const Cart = () => {
 
     const loadItems = (items) => {
         const result = items.filter(el => el.items && el.items.length > 0)
-        .map((el, index) => {
-            return {
-                id: el.id,
-                product_id: el.items[0].product_id,
-                title: el.items[0].title,
-                image: el.items[0].image,
-                price: el.items[0].price,
-                quantity: el.items.length
-            };
-        });
+            .map((el, index) => {
+                return {
+                    id: el.id,
+                    product_id: el.items[0].product_id,
+                    title: el.items[0].title,
+                    image: el.items[0].image,
+                    price: el.items[0].price,
+                    quantity: el.items.length
+                };
+            });
         setCart(result);
     }
 
@@ -32,23 +32,23 @@ const Cart = () => {
         let found = false;
 
         const newItem = {
-            image:item.image,
-            price:item.price,
-            product_id:item.id,
-            quantity:item.quantity,
-            title:item.title
+            image: item.image,
+            price: item.price,
+            product_id: item.id,
+            quantity: item.quantity,
+            title: item.title
         }
-        
-		existingCart.forEach(element => {
-			if (element.id === newItem.product_id) {
+
+        existingCart.forEach(element => {
+            if (element.id === newItem.product_id) {
                 element.items.push(newItem);
-				found = true;
-			}
-		});
+                found = true;
+            }
+        });
         if (!found) {
-			existingCart.push(newItem);
-		}
-		localStorage.setItem("items", JSON.stringify(existingCart));
+            existingCart.push(newItem);
+        }
+        localStorage.setItem("items", JSON.stringify(existingCart));
 
         setCart((prevState) => {
             return prevState.map((el, index) => {
@@ -69,21 +69,21 @@ const Cart = () => {
         let existingCart = JSON.parse(localStorage.getItem("items"));
 
         const itemToRemove = {
-            image:item.image,
-            price:item.price,
-            product_id:item.id,
-            quantity:item.quantity,
-            title:item.title
+            image: item.image,
+            price: item.price,
+            product_id: item.id,
+            quantity: item.quantity,
+            title: item.title
         }
 
         existingCart.forEach(element => {
-			if (element.id === itemToRemove.product_id) {
-                const indexToRemove = element.items.findIndex((e,i)=> e.product_id === itemToRemove.product_id );
+            if (element.id === itemToRemove.product_id) {
+                const indexToRemove = element.items.findIndex((e, i) => e.product_id === itemToRemove.product_id);
                 if (indexToRemove !== -1) {
                     element.items.splice(indexToRemove, 1);
                 }
-			}
-		});
+            }
+        });
         existingCart = existingCart.filter(el => el.items.length > 0);
         localStorage.setItem("items", JSON.stringify(existingCart));
 
@@ -96,7 +96,7 @@ const Cart = () => {
                 return el;
             }).filter(el => el.quantity > 0);
         });
-    
+
     }
 
     const removeItem = (item) => {
@@ -149,7 +149,7 @@ const Cart = () => {
                                                 </td>
                                                 <td className='td-p'>
                                                     <Row className='price-cnt'>
-                                                        <span>${item.price}</span>
+                                                        <span>&#163;{item.price}</span>
                                                     </Row>
                                                 </td>
                                                 <td className='td-p'>
@@ -167,7 +167,7 @@ const Cart = () => {
                                                 </td>
                                                 <td>
                                                     <Row className='subtotal-quantity'>
-                                                        <span>$ {item.price * item.quantity}</span>
+                                                        <span>&#163; {item.price * item.quantity}</span>
                                                         <span className='remove-item' onClick={() => { removeItem(item) }}>
                                                             <FaTrashAlt />
                                                         </span>
@@ -186,11 +186,11 @@ const Cart = () => {
                                 <h4>Cart totals</h4>
                                 <div className='subtotal-cnt'>
                                     <span>Subtotal</span>
-                                    <span>${subtotal}</span>
+                                    <span>&#163;{subtotal}</span>
                                 </div>
                                 <div className='total-cnt'>
                                     <span>Total</span>
-                                    <span>${subtotal}</span>
+                                    <span>&#163;{subtotal}</span>
                                 </div>
                                 <Button variant="dark" className='checkout-btn' onClick={handleCheckout}>
                                     <a href='/checkout'>Proceed to checkout</a>

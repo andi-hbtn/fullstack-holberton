@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Navbar, Container, Nav, Button, Form, } from 'react-bootstrap';
+import { Row, Col, Navbar, Container, Nav, Button, Form, Badge } from 'react-bootstrap';
+import { FaShoppingCart } from 'react-icons/fa';
 import "./Header.css";
 import logo from "../../images/logo.png";
 import Login from '../AuthModal/login';
 import Register from '../AuthModal/register';
+import { useCartContext } from '../../context/CartContext';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 
 const Header = () => {
+
+    const { cart } = useCartContext();
     const { authUser, logout } = useAuthenticateContext();
     const [loginModal, setLoginModal] = useState(false);
     const [registerModal, setRegisterModal] = useState(false);
@@ -15,6 +19,8 @@ const Header = () => {
     const handleLogout = async () => {
         return await logout();
     }
+
+    // console.log("cart----", cart);
 
     return (
         <>
@@ -40,11 +46,26 @@ const Header = () => {
                             <Col xs={6} md={9} lg={9}>
                                 <Nav className="menu-cnt" style={{ maxHeight: '100px' }} navbarScroll>
                                     <Nav.Link href="/">home</Nav.Link>
-                                    <Nav.Link href="/about-us">about us</Nav.Link>
-                                    <Nav.Link href="#action3">our products</Nav.Link>
+                                    <Nav.Link href="/about-us">about</Nav.Link>
+                                    <Nav.Link href="#action3">products</Nav.Link>
                                     <Nav.Link href="#action4">gallery</Nav.Link>
                                     <Nav.Link href="/faq">faq</Nav.Link>
-                                    <Nav.Link href="#">shopping cart</Nav.Link>
+                                    <Nav.Link href="/cart" className="cart-link">
+                                        cart
+                                        <FaShoppingCart />
+                                        <Badge
+                                            pill
+                                            bg="danger"
+                                            className="cart-total-number"
+                                        >
+                                            {
+                                                cart.items.reduce((total, item) => {
+                                                    return total + item.quantity
+                                                }, 0)
+                                            }
+                                        </Badge>
+                                    </Nav.Link>
+                                    <Nav.Link href="/forgot-password">Forgot Password</Nav.Link>
                                     {!authUser?.id ? (
                                         <>
                                             <Nav.Link onClick={() => setLoginModal(!loginModal)}>Login</Nav.Link>

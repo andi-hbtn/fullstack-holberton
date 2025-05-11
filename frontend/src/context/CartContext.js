@@ -1,14 +1,19 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext({});
 const CartProvider = (props) => {
 
-	const [cart, setCart] = useState(
-		{
-			user_id: null,
-			items: [],
-			total_price: 0,
-		});
+	const [cart, setCart] = useState(() => {
+		// Load cart from localStorage on initial state
+		const savedCart = localStorage.getItem('cart');
+		return savedCart
+			? JSON.parse(savedCart)
+			: { user_id: null, items: [], total_price: 0 };
+	});
+
+	useEffect(() => {
+		localStorage.setItem('cart', JSON.stringify(cart));
+	}, [cart]);
 
 	const addQuantity = (product) => {
 		setCart((prevState) => {
@@ -73,9 +78,7 @@ const CartProvider = (props) => {
 	};
 
 	const addToCart = () => {
-		console.log("cart----", cart);
 		if (cart.items.length === 0) return;
-
 		let existingCart = JSON.parse(localStorage.getItem("items")) || [];
 		const updatedItems = [...existingCart];
 		cart.items.forEach((cartItem) => {

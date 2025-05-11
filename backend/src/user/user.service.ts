@@ -34,4 +34,37 @@ export class UserService {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}
 	}
+
+	public async setPasswordResetToken(
+		userId: number,
+		token: string,
+		expires: Date
+	): Promise<void> {
+		await this.usersRepository.update(userId, {
+			passwordResetToken: token,
+			passwordResetExpires: expires
+		});
+	}
+
+	public async findByResetToken(token: string): Promise<UserEntity> {
+		return this.usersRepository.findOneBy({
+			passwordResetToken: token
+		});
+	}
+
+	public async updateUserPassword(
+		userId: number,
+		newPassword: string
+	): Promise<void> {
+		await this.usersRepository.update(userId, {
+			password: newPassword
+		});
+	}
+
+	public async clearResetToken(userId: number): Promise<void> {
+		await this.usersRepository.update(userId, {
+			passwordResetToken: null,
+			passwordResetExpires: null
+		});
+	}
 }

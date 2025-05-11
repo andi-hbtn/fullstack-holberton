@@ -5,6 +5,8 @@ import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bo
 import { useProductContext } from "../../context/ProductContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit } from "react-icons/fi";
+import { CiLock } from "react-icons/ci";
+
 import ProductColorModal from "./ProductColorModal.js";
 import "./index.css";
 
@@ -30,8 +32,6 @@ const ProductWithColorOptions = () => {
         });
         setOpen(!open);
     }
-
-    console.log("products----", products);
 
     return (
         <div className="admin-dashboard">
@@ -59,6 +59,11 @@ const ProductWithColorOptions = () => {
                             <Nav.Link as={Link} to="/" className="nav-link">
                                 <FiHome className="me-1" />
                                 Home
+                            </Nav.Link>
+
+                            <Nav.Link as={Link} to="/forgot-password" className="nav-link">
+                                <CiLock className="me-1" />
+                                Forgot password
                             </Nav.Link>
                         </Nav>
                         <Nav>

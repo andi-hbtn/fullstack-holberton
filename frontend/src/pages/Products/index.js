@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
 import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit, FiPlus } from "react-icons/fi";
+import { CiLock } from "react-icons/ci";
 import { useProductContext } from "../../context/ProductContext";
 import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
@@ -15,6 +16,23 @@ const ProductModal = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
+	const initialProductData = {
+		title: "",
+		description: "",
+		category_id: 0,
+		price: 0,
+		stock: 0,
+		image: "",
+		is_active: true
+	};
+
+	const initialCategorytData = {
+		id: 0,
+		title: "",
+		description: "",
+		image: "",
+	};
+
 	const [formData, setFormData] = useState(
 		{
 			title: "",
@@ -26,7 +44,11 @@ const ProductModal = () => {
 			is_active: true
 		}
 	);
-	const close = () => setOpen(!open);
+
+	const close = () => {
+		setFormData(initialProductData || initialCategorytData);
+		setOpen(!open);
+	};
 
 	const handleCreate = () => {
 		setFormData({ ...formData, category_id: categories[0].id, });
@@ -83,6 +105,10 @@ const ProductModal = () => {
 								<Nav.Link as={Link} to="/" className="nav-link">
 									<FiHome className="me-1" />
 									Home
+								</Nav.Link>
+								<Nav.Link as={Link} to="/forgot-password" className="nav-link">
+									<CiLock className="me-1" />
+									Forgot password
 								</Nav.Link>
 							</Nav>
 							<Nav>

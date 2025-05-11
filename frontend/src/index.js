@@ -12,6 +12,8 @@ import Categories from "./pages/Categories";
 import Products from "./pages/Products";
 import Orders from './pages/Orders/';
 import ProductWithColorOptions from "./pages/ProductWithColors";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Home from './pages/Home';
 import CategoryPage from "./pages/CategoryPage";
 import AboutUs from './pages/AboutUs';
@@ -68,6 +70,8 @@ root.render(
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/test/:id" element={<Test />} />
             </Routes>
           </BrowserRouter>

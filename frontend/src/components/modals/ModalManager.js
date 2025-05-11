@@ -6,17 +6,36 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 
 
 	const [resMsg, setResMsg] = useState({ error: false, message: "", status: 0 });
+	const initialProductData = {
+		title: "",
+		description: "",
+		category_id: 0,
+		price: 0,
+		stock: 0,
+		image: "",
+		is_active: true
+	};
+
+	const initialCategorytData = {
+		id: 0,
+		title: "",
+		description: "",
+		image: "",
+	};
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
 		try {
 			let response;
+
 			if (case_modal.create) {
 				response = await create(data);
 			} else {
 				response = await update(data);
 			}
-			setResMsg({ error: true, message: response.message, status: response.statusCode })
+
+			setData(initialProductData || initialCategorytData);
+			setResMsg({ error: true, message: response.message, status: response.statusCode });
 		} catch (error) {
 			setResMsg({ error: true, message: error.message, status: error.statusCode })
 		}
@@ -24,9 +43,17 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 
 	const isDisabled = fields.some(field => {
 		const value = data[field.name];
-		if (field.type === "checkbox") return false; // allow unchecked
-		if (field.type === "file") return !value || value === null;
+
+		if (field.type === "file" ) {
+			return !value; 
+		}
+		// Switch (boolean) can be false, so only undefined/null is invalid
+		if (field.type === "switch") {
+			return value === undefined || value === null;
+		}
+		// All others: text, number, options
 		return value === undefined || value === null || value === "";
+
 	});
 
 	return (

@@ -6,3 +6,13 @@
 	margin: 20px 0px;
 	vertical-align: top;
 }
+
+.card-cnt>a {
+	text-decoration: none;
+	text-transform: uppercase;
+	color: #012440;
+}
+
+.card-cnt>a>div>h4 {
+	font-size: 18px;
+}

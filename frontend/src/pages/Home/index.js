@@ -18,12 +18,11 @@ const Home = () => {
 									<Card className='card-cnt'>
 										<a href={`category/${category.id}`}>
 											<Card.Img variant="top" src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} />
+											<Card.Title className='text-center'>
+												<h4>{category.title} </h4>
+											</Card.Title>
 										</a>
 									</Card>
-									<Card.Body>
-										<Card.Title className='text-center'>{category.title}</Card.Title>
-										<Card.Text className='text-center'>{category.description}</Card.Text>
-									</Card.Body>
 								</Col>
 							)
 						})

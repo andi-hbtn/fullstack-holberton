@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
 import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
+import { CiLock } from "react-icons/ci";
 import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
@@ -68,6 +69,10 @@ const Categories = () => {
 							<Nav.Link as={Link} to="/" className="nav-link">
 								<FiHome className="me-1" />
 								Home
+							</Nav.Link>
+							<Nav.Link as={Link} to="/forgot-password" className="nav-link">
+								<CiLock className="me-1" />
+								Forgot password
 							</Nav.Link>
 						</Nav>
 						<Nav>

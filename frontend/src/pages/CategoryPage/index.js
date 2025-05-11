@@ -102,7 +102,7 @@ const CategoryPage = () => {
                                 </a>
                                 <Card.Body>
                                     <Card.Title className="product-title">{product.title}</Card.Title>
-                                    <Card.Title className="product-price">${product.price}</Card.Title>
+                                    <Card.Title className="product-price">&#163;{product.price}</Card.Title>
                                     <Card.Text className="text-center">{product.description}</Card.Text>
                                     <div className="price-cart">
                                         <div className="quantity text-center">
