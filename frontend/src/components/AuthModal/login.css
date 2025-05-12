@@ -1,13 +1,20 @@
-.login-btn{
+.login-btn {
     display: block !important;
-    width:50%;
-    margin:0 auto !important;
+    width: 50%;
+    margin: 0 auto !important;
 }
-input:focus{box-shadow: none !important;}
 
-input:-webkit-autofill{
+input:focus {
+    box-shadow: none !important;
+}
+
+input:-webkit-autofill {
     box-shadow: 0 0 0px 1000px white inset !important;
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
     background-color: white !important;
     color: #000 !important;
+}
+
+.forgot-pass {
+    text-align: center;
 }

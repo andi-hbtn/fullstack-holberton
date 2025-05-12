@@ -13,12 +13,13 @@ import Products from "./pages/Products";
 import Orders from './pages/Orders/';
 import ProductWithColorOptions from "./pages/ProductWithColors";
 import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
 import Home from './pages/Home';
-import CategoryPage from "./pages/CategoryPage";
 import AboutUs from './pages/AboutUs';
-import Faq from './pages/Faq';
 import ProductPage from "./pages/ProductPage";
+import CategoryPage from "./pages/CategoryPage";
+import Faq from './pages/Faq';
+import Contact from './pages/Contact';
+
 import Cart from './components/Cart/'
 import Checkout from './components/Checkout/';
 import AdminRoute from "./components/AdminRoute";
@@ -64,14 +65,17 @@ root.render(
               />
 
               <Route path="/" element={<Home />} />
-              <Route path="/category/:id" element={<CategoryPage />} />
               <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/faq" element={<Faq />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/category/:id" element={<CategoryPage />} />
+
+
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/product/:id" element={<ProductPage />} />
+
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/test/:id" element={<Test />} />
             </Routes>
           </BrowserRouter>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
-import { Modal, Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Modal, Container, Row, Col, Form, Nav, Button } from 'react-bootstrap';
 import AlertMessage from '../alert/AlertMessage';
 import "./login.css"
 
@@ -88,6 +88,9 @@ const Login = ({ openLogin, closeLogin }) => {
           <Button type="submit" variant="dark" disabled={isDisabled} className='login-btn'>Login</Button>
         </Modal.Footer>
       </Form>
+      <div className='forgot-pass'>
+        <Nav.Link href="/forgot-password" className="">Forgot Password ?</Nav.Link>
+      </div>
     </Modal>
   )
 }
