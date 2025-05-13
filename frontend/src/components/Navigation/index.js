@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCartContext } from '../../context/CartContext';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import Login from '../AuthModal/login';
@@ -9,9 +9,12 @@ import { FaShoppingCart } from 'react-icons/fa';
 
 const Navigation = () => {
     const { cart } = useCartContext();
+
     const { authUser, logout } = useAuthenticateContext();
     const [loginModal, setLoginModal] = useState(false);
     const [registerModal, setRegisterModal] = useState(false);
+
+    const cartCount = cart.items.reduce((total, item) => total + item.quantity, 0);
 
     const handleLogout = async () => {
         return await logout();
@@ -54,11 +57,7 @@ const Navigation = () => {
                                             bg="dark"
                                             className="cart-total-number"
                                         >
-                                            {/* {
-                                                cart.items.reduce((total, item) => {
-                                                    return total + item.quantity
-                                                }, 0)
-                                            } */}
+                                            {cartCount}
                                         </Badge>
                                     </Nav.Link>
                                 </Nav>

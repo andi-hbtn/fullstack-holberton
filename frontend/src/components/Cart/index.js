@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useCartContext } from '../../context/CartContext';
 import Header from "../Header/Header";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
@@ -7,12 +6,6 @@ import "./index.css";
 
 const Cart = () => {
     const { cart, addQuantity, removeQuantity } = useCartContext();
-
-    //console.log("cart-----", cart);
-
-    const handleCheckout = () => {
-    }
-
 
     return (
         <>
@@ -92,7 +85,7 @@ const Cart = () => {
                                     <span>Total</span>
                                     <span>&#163;</span>
                                 </div>
-                                <Button variant="dark" className='checkout-btn' onClick={handleCheckout}>
+                                <Button variant="dark" className='checkout-btn'>
                                     <a href='/checkout'>Proceed to checkout</a>
                                 </Button>
                             </Col>

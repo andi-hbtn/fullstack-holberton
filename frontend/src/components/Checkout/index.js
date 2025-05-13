@@ -16,19 +16,19 @@ const Checkout = () => {
     const [orderResponse, setOrderResponse] = useState({ show: false, message: "", status: 0 });
     const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: "", message: "" });
     useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem("items")) || [];
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
         loadItems(storedCart);
     }, []);
 
     const loadItems = (items) => {
-        const result = items.map((el, index) => {
+        const result = items.items.map((el, index) => {
             return {
                 id: el.id,
-                product_id: el.items[0].product_id,
-                title: el.items[0].title,
-                image: el.items[0].image,
-                price: el.items[0].price,
-                quantity: el.items.length
+                product_id: el.id,
+                title: el.title,
+                image: el.image,
+                price: el.price,
+                quantity: el.quantity
             };
         });
         setCart(result);

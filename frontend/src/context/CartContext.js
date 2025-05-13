@@ -81,19 +81,7 @@ const CartProvider = (props) => {
 
 	const addToCart = () => {
 		if (cart.items.length === 0) return;
-		let existingCart = JSON.parse(localStorage.getItem("items")) || [];
-		const updatedItems = [...existingCart];
-		cart.items.forEach((cartItem) => {
-			const existingIndex = updatedItems.findIndex((item) => {
-				return item.product_id === cartItem.product_id;
-			});
-			if (existingIndex !== -1) {
-				updatedItems[existingIndex].quantity = cartItem.quantity;
-			} else {
-				updatedItems.push(cartItem);
-			}
-		});
-		localStorage.setItem("items", JSON.stringify(updatedItems));
+		localStorage.setItem("cart", JSON.stringify(cart));
 	}
 
 	const values = { cart, setCart, addQuantity, addToCart, removeQuantity };
