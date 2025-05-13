@@ -42,8 +42,6 @@ const CategoryPage = () => {
         fetchCategory();
     }, [id, getCategory]);
 
-
-
     if (loading) {
         return (
             <>
@@ -81,10 +79,8 @@ const CategoryPage = () => {
             </>
         );
     }
-    const getQuantity = (productId) => {
-        const item = cart.items.find(el => el.product_id === productId);
-        return item?.quantity || null;
-    };
+
+    const getQuantity = (id) => cart.items.find(el => el.id === id)?.quantity;
 
     return (
         <>

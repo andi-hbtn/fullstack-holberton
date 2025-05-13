@@ -35,6 +35,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 			}
 
 			setData(initialProductData || initialCategorytData);
+			close();
 			setResMsg({ error: true, message: response.message, status: response.statusCode });
 		} catch (error) {
 			setResMsg({ error: true, message: error.message, status: error.statusCode })

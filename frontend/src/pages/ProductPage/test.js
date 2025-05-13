@@ -3,14 +3,12 @@ import { Container, Row, Col, Button, Card, Badge } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import { PiMinusLight, PiPlusLight } from "react-icons/pi";
-import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
 import products from "./products";
 import "./test.css";
 
 const Test = () => {
     const { id } = useParams();
-    const { getProduct } = useProductContext();
     const { addQuantity, removeQuantity, cart, addToCart } = useCartContext();
     const [product, setProduct] = useState({});
     const [selectedColor, setSelectedColor] = useState("");

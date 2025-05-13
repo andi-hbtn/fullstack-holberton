@@ -54,11 +54,11 @@ const Navigation = () => {
                                             bg="dark"
                                             className="cart-total-number"
                                         >
-                                            {
+                                            {/* {
                                                 cart.items.reduce((total, item) => {
                                                     return total + item.quantity
                                                 }, 0)
-                                            }
+                                            } */}
                                         </Badge>
                                     </Nav.Link>
                                 </Nav>

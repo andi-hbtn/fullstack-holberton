@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
+import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useProductContext } from "../../context/ProductContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit } from "react-icons/fi";

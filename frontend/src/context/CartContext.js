@@ -16,9 +16,10 @@ const CartProvider = (props) => {
 	}, [cart]);
 
 	const addQuantity = (product) => {
+		//console.log("product---", product);
 		setCart((prevState) => {
 			const newItems = [...prevState.items];
-			const existingIndex = newItems.findIndex(item => item.product_id === product.id);
+			const existingIndex = newItems.findIndex(item => item.id === product.id);
 
 			if (existingIndex !== -1) {
 				// Update quantity
@@ -29,7 +30,7 @@ const CartProvider = (props) => {
 			} else {
 				// Add new item
 				newItems.push({
-					product_id: product.id,
+					id: product.id,
 					title: product.title,
 					image: product.image,
 					price: product.price,
@@ -50,17 +51,18 @@ const CartProvider = (props) => {
 			return updatedCart;
 		});
 	};
+
 	const removeQuantity = (product) => {
 		setCart((prevState) => {
-			const existingItem = prevState.items.find(item => item.product_id === product.id);
+			const existingItem = prevState.items.find(item => item.id === product.id);
 			if (!existingItem) return prevState;
 
 			let newItems;
 			if (existingItem.quantity === 1) {
-				newItems = prevState.items.filter(item => item.product_id !== product.id);
+				newItems = prevState.items.filter(item => item.id !== product.id);
 			} else {
 				newItems = prevState.items.map(item =>
-					item.product_id === product.id
+					item.id === product.id
 						? { ...item, quantity: item.quantity - 1 }
 						: item
 				);
@@ -93,8 +95,6 @@ const CartProvider = (props) => {
 		});
 		localStorage.setItem("items", JSON.stringify(updatedItems));
 	}
-
-
 
 	const values = { cart, setCart, addQuantity, addToCart, removeQuantity };
 	return (
