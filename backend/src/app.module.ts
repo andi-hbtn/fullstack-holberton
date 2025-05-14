@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entity/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
+import { OrderItemEntity } from './order/entity/order_item.entity';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { OrderModule } from './order/order.module';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [CategoryEntity, ProductEntity, UserEntity],
+        entities: [CategoryEntity, ProductEntity, UserEntity, OrderItemEntity],
         synchronize: true,
         autoLoadEntities: true,
 

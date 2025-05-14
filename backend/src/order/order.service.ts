@@ -1,4 +1,4 @@
-import { Injectable,HttpStatus,} from '@nestjs/common';
+import { Injectable, HttpStatus, } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrderEntity } from './entity/order.entity';
@@ -21,7 +21,7 @@ export class OrderService {
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      const { user_id, items, total_price, status, createdAt } = orderData;
+      const { user_id, items, total_price, status, created_at } = orderData;
       let user: UserEntity | null = null;
       if (user_id) {
         user = await this.usersRepository.findOne({ where: { id: user_id } });
@@ -32,7 +32,7 @@ export class OrderService {
         user, // Assign the full entity, not just the ID
         total_price,
         status,
-        createdAt,
+        created_at,
       });
 
       // Save order

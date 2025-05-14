@@ -1,4 +1,4 @@
-import { IsNumber, IsNotEmpty, IsArray, IsEnum,IsDateString, IsOptional} from "class-validator";
+import { IsNumber, IsNotEmpty, IsArray, IsEnum, IsDateString, IsOptional } from "class-validator";
 
 export class OrderDto {
 	@IsOptional()
@@ -8,8 +8,8 @@ export class OrderDto {
 	@IsArray()
 	@IsNotEmpty()
 	items: {
-	  product_id: number;
-	  quantity: number;
+		product_id: number;
+		quantity: number;
 	}[];
 
 	@IsNumber()
@@ -20,5 +20,5 @@ export class OrderDto {
 	status: string;
 
 	@IsDateString()
-	createdAt:Date
+	created_at: Date
 }

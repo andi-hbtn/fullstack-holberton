@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { create_order_service } from "../services/cart";
 
 const CartContext = createContext({});
 const CartProvider = (props) => {
@@ -84,7 +85,18 @@ const CartProvider = (props) => {
 		localStorage.setItem("cart", JSON.stringify(cart));
 	}
 
-	const values = { cart, setCart, addQuantity, addToCart, removeQuantity };
+	const createOrder = async (order) => {
+		try {
+			const result = await create_order_service(order);
+			if (result.status === 201) {
+				return result.data;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+
+	const values = { cart, setCart, addQuantity, addToCart, removeQuantity, createOrder };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}

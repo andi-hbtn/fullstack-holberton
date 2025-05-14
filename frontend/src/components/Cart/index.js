@@ -7,6 +7,10 @@ import "./index.css";
 const Cart = () => {
     const { cart, addQuantity, removeQuantity } = useCartContext();
 
+    const totalPrice = cart.items.reduce((total, item) => {
+        return total + (item.price * item.quantity);
+    }, 0);
+
     return (
         <>
             <Header />
@@ -79,11 +83,11 @@ const Cart = () => {
                                 <h4>Cart totals</h4>
                                 <div className='subtotal-cnt'>
                                     <span>Subtotal</span>
-                                    <span>&#163;</span>
+                                    <span>&#163; {totalPrice}</span>
                                 </div>
                                 <div className='total-cnt'>
                                     <span>Total</span>
-                                    <span>&#163;</span>
+                                    <span>&#163; {totalPrice}</span>
                                 </div>
                                 <Button variant="dark" className='checkout-btn'>
                                     <a href='/checkout'>Proceed to checkout</a>

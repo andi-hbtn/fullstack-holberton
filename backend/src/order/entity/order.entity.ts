@@ -21,5 +21,5 @@ export class OrderEntity {
 	status: string;
 
 	@Column()
-	createdAt: Date;
+	created_at: Date;
 }
