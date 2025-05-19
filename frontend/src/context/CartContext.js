@@ -12,16 +12,22 @@ const CartProvider = (props) => {
 			: { user_id: null, items: [], total_price: 0 };
 	});
 
-	useEffect(() => {
-		localStorage.setItem('cart', JSON.stringify(cart));
-	}, [cart]);
+	const [finalCart, setFinalCart] = useState(0);
+
+	// useEffect(() => {
+	// 	localStorage.setItem('cart', JSON.stringify(cart));
+	// }, [cart]);
+
+	// useEffect(() => {
+	// 	localStorage.setItem('finalCart', JSON.stringify(finalCart));
+	// }, [finalCart]);
 
 	const addQuantity = (product) => {
-		//console.log("product---", product);
+		// console.log("product---", product);
 		setCart((prevState) => {
+
 			const newItems = [...prevState.items];
 			const existingIndex = newItems.findIndex(item => item.id === product.id);
-
 			if (existingIndex !== -1) {
 				// Update quantity
 				newItems[existingIndex] = {
@@ -29,13 +35,14 @@ const CartProvider = (props) => {
 					quantity: newItems[existingIndex].quantity + 1,
 				};
 			} else {
+				// console.log("product---", product);
 				// Add new item
 				newItems.push({
 					id: product.id,
 					title: product.title,
 					image: product.image,
 					price: product.price,
-					quantity: 1,
+					quantity: 2,
 				});
 			}
 
@@ -80,10 +87,40 @@ const CartProvider = (props) => {
 		});
 	};
 
-	const addToCart = () => {
-		if (cart.items.length === 0) return;
-		localStorage.setItem("cart", JSON.stringify(cart));
-	}
+	const addToCart = (product) => {
+		setCart((prevCart) => {
+			const newItems = [...prevCart.items];
+			const existingIndex = newItems.findIndex(item => item.id === product.id);
+
+			if (existingIndex === -1) {
+				// Add new item with quantity = 1
+				newItems.push({
+					id: product.id,
+					title: product.title,
+					image: product.image,
+					price: product.price,
+					quantity: 1,
+				});
+			}
+			// 🛑 Don't increment quantity if product already exists
+
+			const newTotalPrice = newItems.reduce(
+				(total, item) => total + item.price * item.quantity,
+				0
+			);
+
+			const updatedCart = {
+				...prevCart,
+				items: newItems,
+				total_price: newTotalPrice,
+			};
+
+			localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+			return updatedCart;
+		});
+	};
+
 
 	const createOrder = async (order) => {
 		try {
@@ -96,7 +133,7 @@ const CartProvider = (props) => {
 		}
 	}
 
-	const values = { cart, setCart, addQuantity, addToCart, removeQuantity, createOrder };
+	const values = { cart, setCart, addQuantity, addToCart, removeQuantity, createOrder, finalCart };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}

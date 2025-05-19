@@ -8,14 +8,11 @@ import { Row, Col, Navbar, Container, Nav, Button, Form, Badge } from 'react-boo
 import { FaShoppingCart } from 'react-icons/fa';
 
 const Navigation = () => {
-    const { cart } = useCartContext();
+    const {  finalCart } = useCartContext();
 
     const { authUser, logout } = useAuthenticateContext();
     const [loginModal, setLoginModal] = useState(false);
     const [registerModal, setRegisterModal] = useState(false);
-
-    const cartCount = cart.items.reduce((total, item) => total + item.quantity, 0);
-
     const handleLogout = async () => {
         return await logout();
     }
@@ -57,7 +54,7 @@ const Navigation = () => {
                                             bg="dark"
                                             className="cart-total-number"
                                         >
-                                            {cartCount}
+                                            {finalCart}
                                         </Badge>
                                     </Nav.Link>
                                 </Nav>
