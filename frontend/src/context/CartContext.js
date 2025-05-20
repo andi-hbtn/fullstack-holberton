@@ -14,13 +14,11 @@ const CartProvider = (props) => {
 
 	const [finalCart, setFinalCart] = useState(0);
 
-	// useEffect(() => {
-	// 	localStorage.setItem('cart', JSON.stringify(cart));
-	// }, [cart]);
-
-	// useEffect(() => {
-	// 	localStorage.setItem('finalCart', JSON.stringify(finalCart));
-	// }, [finalCart]);
+	useEffect(() => {
+		const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
+		const newQtu = cartFromStorage.items.reduce((total, item) => total + item.quantity, 0);
+		setFinalCart(newQtu)
+	}, [cart]);
 
 	const addQuantity = (product) => {
 		// console.log("product---", product);
@@ -58,6 +56,9 @@ const CartProvider = (props) => {
 			};
 			return updatedCart;
 		});
+
+
+
 	};
 
 	const removeQuantity = (product) => {
@@ -102,7 +103,6 @@ const CartProvider = (props) => {
 					quantity: 1,
 				});
 			}
-			// 🛑 Don't increment quantity if product already exists
 
 			const newTotalPrice = newItems.reduce(
 				(total, item) => total + item.price * item.quantity,
@@ -114,9 +114,7 @@ const CartProvider = (props) => {
 				items: newItems,
 				total_price: newTotalPrice,
 			};
-
 			localStorage.setItem("cart", JSON.stringify(updatedCart));
-
 			return updatedCart;
 		});
 	};
