@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useCartContext } from '../../context/CartContext';
 import Header from "../Header/Header";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
@@ -5,11 +6,84 @@ import { FaTrashAlt } from "react-icons/fa";
 import "./index.css";
 
 const Cart = () => {
-    const { cart, addQuantity, removeQuantity } = useCartContext();
+    const { cart, setCart, finalCart, setFinalCart } = useCartContext();
+
+    useEffect(() => {
+        const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
+        const newQtu = cartFromStorage.items.reduce((total, item) => total + item.quantity, 0);
+        setFinalCart(newQtu);
+    }, [cart]);
 
     const totalPrice = cart.items.reduce((total, item) => {
         return total + (item.price * item.quantity);
     }, 0);
+
+    const addQuantity = (product) => {
+        setCart((prevState) => {
+            const newItems = [...prevState.items];
+            const existingIndex = newItems.findIndex(item => item.id === product.id);
+            if (existingIndex !== -1) {
+                // Update quantity
+                newItems[existingIndex] = {
+                    ...newItems[existingIndex],
+                    quantity: newItems[existingIndex].quantity + 1,
+                };
+            } else {
+                // console.log("product---", product);
+                // Add new item
+                newItems.push({
+                    id: product.id,
+                    title: product.title,
+                    image: product.image,
+                    price: product.price,
+                    quantity: 2,
+                });
+            }
+
+            const newTotalPrice = newItems.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+            );
+
+            const updatedCart = {
+                ...prevState,
+                items: newItems,
+                total_price: newTotalPrice
+            };
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            return updatedCart;
+        });
+    }
+
+    const removeQuantity = (product) => {
+        setCart((prevState) => {
+            const existingItem = prevState.items.find(item => item.id === product.id);
+            if (!existingItem) return prevState;
+
+            let newItems;
+            if (existingItem.quantity === 1) {
+                newItems = prevState.items.filter(item => item.id !== product.id);
+            } else {
+                newItems = prevState.items.map(item =>
+                    item.id === product.id
+                        ? { ...item, quantity: item.quantity - 1 }
+                        : item
+                );
+            }
+            const newTotalPrice = newItems.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+            );
+
+            const updatedCart = {
+                ...prevState,
+                items: newItems,
+                total_price: newTotalPrice,
+            };
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            return updatedCart;
+        });
+    };
 
     return (
         <>

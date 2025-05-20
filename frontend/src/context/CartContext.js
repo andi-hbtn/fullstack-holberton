@@ -17,7 +17,7 @@ const CartProvider = (props) => {
 	useEffect(() => {
 		const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
 		const newQtu = cartFromStorage.items.reduce((total, item) => total + item.quantity, 0);
-		setFinalCart(newQtu)
+		setFinalCart(newQtu);
 	}, [cart]);
 
 	const addQuantity = (product) => {
@@ -56,9 +56,6 @@ const CartProvider = (props) => {
 			};
 			return updatedCart;
 		});
-
-
-
 	};
 
 	const removeQuantity = (product) => {
@@ -80,11 +77,14 @@ const CartProvider = (props) => {
 				(total, item) => total + item.price * item.quantity,
 				0
 			);
-			return {
+
+			const updatedCart = {
 				...prevState,
 				items: newItems,
-				total_price: newTotalPrice
+				total_price: newTotalPrice,
 			};
+			localStorage.setItem("cart", JSON.stringify(updatedCart));
+			return updatedCart;
 		});
 	};
 
@@ -119,7 +119,6 @@ const CartProvider = (props) => {
 		});
 	};
 
-
 	const createOrder = async (order) => {
 		try {
 			const result = await create_order_service(order);
@@ -131,7 +130,7 @@ const CartProvider = (props) => {
 		}
 	}
 
-	const values = { cart, setCart, addQuantity, addToCart, removeQuantity, createOrder, finalCart };
+	const values = { cart, setCart, addQuantity, addToCart, removeQuantity, createOrder, finalCart, setFinalCart };
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}

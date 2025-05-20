@@ -70,10 +70,8 @@ root.render(
               <Route path="/faq" element={<Faq />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/category/:id" element={<CategoryPage />} />
-
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
-
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/test/:id" element={<Test />} />
             </Routes>
