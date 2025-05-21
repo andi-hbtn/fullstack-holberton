@@ -6,7 +6,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import "./index.css";
 
 const Cart = () => {
-    const { cart, setCart, finalCart, setFinalCart } = useCartContext();
+    const { cart, setCart, setFinalCart } = useCartContext();
 
     useEffect(() => {
         const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
@@ -85,6 +85,23 @@ const Cart = () => {
         });
     };
 
+
+    const deleteItem = (item) => {
+        //console.log("item-----", item);
+
+        setCart((prevState) => {
+
+            const itemToRemove = prevState.items.find(data => data.id === item.id);
+            console.log("itemToRemove----", itemToRemove);
+
+            return {
+                ...prevState,
+                items: prevState.items,
+                total_price: 0
+            }
+        })
+    }
+
     return (
         <>
             <Header />
@@ -126,20 +143,20 @@ const Cart = () => {
                                                 <td className='td-p'>
                                                     <Row className='quantity-cnt'>
                                                         <Col sm={3} md={3} lg={3} className="p-0 c-b">
-                                                            <Button variant="dark" onClick={() => { removeQuantity(item) }}>-</Button>
+                                                            <Button variant="dark" onClick={() => removeQuantity(item)}>-</Button>
                                                         </Col>
                                                         <Col sm={3} md={3} lg={3} className="c-b">
                                                             <span>{item.quantity}</span>
                                                         </Col>
                                                         <Col sm={3} md={3} lg={3} className="p-0 c-b">
-                                                            <Button variant="dark" onClick={() => { addQuantity(item) }}>+</Button>
+                                                            <Button variant="dark" onClick={() => addQuantity(item)}>+</Button>
                                                         </Col>
                                                     </Row>
                                                 </td>
                                                 <td>
                                                     <Row className='subtotal-quantity'>
                                                         <span>&#163; {item.price * item.quantity}</span>
-                                                        <span className='remove-item'>
+                                                        <span className='remove-item' onClick={() => deleteItem(item)}>
                                                             <FaTrashAlt />
                                                         </span>
                                                     </Row>
