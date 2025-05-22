@@ -30,7 +30,7 @@ const ProductPage = () => {
     }, [id]);
 
     const getQuantity = (productId) => {
-        const item = cart.items.find(el => el.id === productId);
+        const item = cart.items?.find(el => el.id === productId);
         return item?.quantity || 0;
     };
 

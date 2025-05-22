@@ -63,7 +63,6 @@ root.render(
                 </AdminRoute>
               }
               />
-
               <Route path="/" element={<Home />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/product/:id" element={<ProductPage />} />

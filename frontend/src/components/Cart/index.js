@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useCartContext } from '../../context/CartContext';
 import Header from "../Header/Header";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
@@ -6,15 +7,17 @@ import { FaTrashAlt } from "react-icons/fa";
 import "./index.css";
 
 const Cart = () => {
+    const { authUser } = useAuthenticateContext();
     const { cart, setCart, setFinalCart } = useCartContext();
 
     useEffect(() => {
         const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
-        const newQtu = cartFromStorage.items.reduce((total, item) => total + item.quantity, 0);
+        const items = Array.isArray(cartFromStorage.items) ? cartFromStorage.items : [];
+        const newQtu = items.reduce((total, item) => total + item.quantity, 0);
         setFinalCart(newQtu);
     }, [cart]);
 
-    const totalPrice = cart.items.reduce((total, item) => {
+    const totalPrice = cart.items?.reduce((total, item) => {
         return total + (item.price * item.quantity);
     }, 0);
 
@@ -29,7 +32,6 @@ const Cart = () => {
                     quantity: newItems[existingIndex].quantity + 1,
                 };
             } else {
-                // console.log("product---", product);
                 // Add new item
                 newItems.push({
                     id: product.id,
@@ -87,18 +89,22 @@ const Cart = () => {
 
 
     const deleteItem = (item) => {
-        //console.log("item-----", item);
-
         setCart((prevState) => {
-
-            const itemToRemove = prevState.items.find(data => data.id === item.id);
-            console.log("itemToRemove----", itemToRemove);
-
-            return {
+            const itemToRemove = prevState.items.findIndex(data => data.id === item.id);
+            const newCart = prevState.items.filter((el, index) => index !== itemToRemove);
+            const totalPrice = newCart.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+            );
+            const updatedCart = {
                 ...prevState,
-                items: prevState.items,
-                total_price: 0
+                items: newCart,
+                total_price: totalPrice,
+                user_id: authUser.id || null
+
             }
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            return updatedCart;
         })
     }
 
@@ -124,7 +130,7 @@ const Cart = () => {
                             </thead>
                             <tbody>
                                 {
-                                    cart.items.map((item, index) => {
+                                    cart.items?.map((item, index) => {
                                         return (
                                             <tr key={index}>
                                                 <td className='td-p'>

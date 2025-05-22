@@ -80,7 +80,7 @@ const CategoryPage = () => {
         );
     }
 
-    const getQuantity = (id) => cart.items.find(el => el.id === id)?.quantity || 1;
+    const getQuantity = (id) => cart.items?.find(el => el.id === id)?.quantity || 1;
 
     return (
         <>

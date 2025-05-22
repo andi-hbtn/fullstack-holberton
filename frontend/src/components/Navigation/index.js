@@ -8,7 +8,7 @@ import { Row, Col, Navbar, Container, Nav, Button, Form, Badge } from 'react-boo
 import { FaShoppingCart } from 'react-icons/fa';
 
 const Navigation = () => {
-    const {  finalCart } = useCartContext();
+    const { finalCart } = useCartContext();
 
     const { authUser, logout } = useAuthenticateContext();
     const [loginModal, setLoginModal] = useState(false);

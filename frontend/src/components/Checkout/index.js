@@ -10,14 +10,14 @@ import "./index.css";
 const Checkout = () => {
 
     const { authUser } = useAuthenticateContext();
-    const { createOrder } = useCartContext();
-    const [cart, setCart] = useState([]);
+    const { createOrder, finalCart, setFinalCart, setCart } = useCartContext();
+    const [order, setOrder] = useState([]);
     const [orderResponse, setOrderResponse] = useState({ show: false, message: "", status: 0 });
     const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: "", message: "" });
     useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || '{"items": []}';
         loadItems(storedCart);
-    }, []);
+    }, [finalCart]);
 
     const loadItems = (items) => {
         const result = items.items.map((el, index) => {
@@ -30,10 +30,10 @@ const Checkout = () => {
                 quantity: el.quantity
             };
         });
-        setCart(result);
+        setOrder(result);
     }
 
-    const subtotal = cart.reduce((acc, item) => {
+    const subtotal = order.reduce((acc, item) => {
         return acc + (Number(item.price) * Number(item.quantity))
     }, 0);
 
@@ -47,11 +47,11 @@ const Checkout = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const total_price = cart.reduce((total, item) => {
+            const total_price = order.reduce((total, item) => {
                 return total + (item.price * item.quantity);
             }, 0);
 
-            const items = cart.map(item => ({
+            const items = order.map(item => ({
                 product_id: item.product_id,
                 quantity: item.quantity
             }));
@@ -63,12 +63,22 @@ const Checkout = () => {
                 status: "pending",
                 created_at: dateTime.formatDate()
             }
+
             const result = await createOrder(order_product);
-            console.log("result----", result);
-            setOrderResponse({ show: true, message: result.message, status: result.statusCode })
+            setOrderResponse({ show: true, message: result.message, status: result.statusCode });
+            setFinalCart(0);
+            setCart({
+                items: [],
+                total_price: 0,
+                user_id: authUser.id || null
+            })
+            localStorage.setItem("cart", JSON.stringify({
+                items: [],
+                total_price: 0,
+                user_id: authUser.id || null
+            }));
         } catch (error) {
-            console.error("Failed to submit order:", error);
-            setOrderResponse({ show: true, message: error.message, status: error.statusCode })
+            setOrderResponse({ show: true, message: error.message, status: error.statusCode });
         }
     }
 
@@ -260,7 +270,7 @@ const Checkout = () => {
 
                                     <div className='final-order'>
                                         {
-                                            cart.map((el, index) => (
+                                            order.map((el, index) => (
                                                 <Row key={index} className='each-order border-bottom'>
                                                     <Col sm={12} md={5} lg={5} className='checkout-img-title'>
                                                         <img src={`${process.env.REACT_APP_API_URL}api/product/uploads/${el.image}`} alt='product name' />
@@ -284,9 +294,6 @@ const Checkout = () => {
                                     <span>Subtotal</span>
                                     <span>&#163;{subtotal}</span>
                                 </div>
-
-
-
 
                                 <Button variant="dark" className='place-order-btn' type="submit" disabled={isDisabled}>
                                     Proceed to checkout

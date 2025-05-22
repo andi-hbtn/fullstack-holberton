@@ -56,6 +56,10 @@ const ProductWithColorOptions = () => {
                                 <FiBox className="me-1" />
                                 Product Colors
                             </Nav.Link>
+                            <Nav.Link as={Link} to="/admin-orders" className="nav-link active">
+                                <FiBox className="me-1" />
+                                Orders
+                            </Nav.Link>
                             <Nav.Link as={Link} to="/" className="nav-link">
                                 <FiHome className="me-1" />
                                 Home

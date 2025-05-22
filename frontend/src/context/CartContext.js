@@ -16,15 +16,14 @@ const CartProvider = (props) => {
 
 	useEffect(() => {
 		const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
-		const newQtu = cartFromStorage.items.reduce((total, item) => total + item.quantity, 0);
+		const items = Array.isArray(cartFromStorage.items) ? cartFromStorage.items : [];
+		const newQtu = items.reduce((total, item) => total + item.quantity, 0);
 		setFinalCart(newQtu);
 	}, [cart]);
 
 	const addQuantity = (product) => {
-		// console.log("product---", product);
 		setCart((prevState) => {
-
-			const newItems = [...prevState.items];
+			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
 			const existingIndex = newItems.findIndex(item => item.id === product.id);
 			if (existingIndex !== -1) {
 				// Update quantity
@@ -33,7 +32,6 @@ const CartProvider = (props) => {
 					quantity: newItems[existingIndex].quantity + 1,
 				};
 			} else {
-				// console.log("product---", product);
 				// Add new item
 				newItems.push({
 					id: product.id,
@@ -43,7 +41,6 @@ const CartProvider = (props) => {
 					quantity: 2,
 				});
 			}
-
 			const newTotalPrice = newItems.reduce(
 				(total, item) => total + item.price * item.quantity,
 				0
@@ -60,7 +57,8 @@ const CartProvider = (props) => {
 
 	const removeQuantity = (product) => {
 		setCart((prevState) => {
-			const existingItem = prevState.items.find(item => item.id === product.id);
+			const prevItems = Array.isArray(prevState.items) ? prevState.items : [];
+			const existingItem = prevItems.find(item => item.id === product.id);
 			if (!existingItem) return prevState;
 
 			let newItems;
@@ -83,14 +81,13 @@ const CartProvider = (props) => {
 				items: newItems,
 				total_price: newTotalPrice,
 			};
-			localStorage.setItem("cart", JSON.stringify(updatedCart));
 			return updatedCart;
 		});
 	};
 
 	const addToCart = (product) => {
-		setCart((prevCart) => {
-			const newItems = [...prevCart.items];
+		setCart((prevState) => {
+			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
 			const existingIndex = newItems.findIndex(item => item.id === product.id);
 
 			if (existingIndex === -1) {
@@ -110,7 +107,7 @@ const CartProvider = (props) => {
 			);
 
 			const updatedCart = {
-				...prevCart,
+				...prevState,
 				items: newItems,
 				total_price: newTotalPrice,
 			};
