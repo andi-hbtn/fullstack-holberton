@@ -59,6 +59,8 @@ export class AuthController {
         try {
             const user = await this.authService.getUserByEmail(email);
             const resetToken = await this.authService.createPasswordResetToken(user);
+            console.log("resetToken---", resetToken);
+
             await this.authService.sendPasswordResetEmail(user.email, resetToken);
             return {
                 message: 'Password reset link sent to your email',

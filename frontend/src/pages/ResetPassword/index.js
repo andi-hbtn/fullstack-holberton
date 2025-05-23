@@ -1,24 +1,33 @@
 import React, { useState } from 'react';
+import { useParams } from "react-router-dom";
 import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer';
 import './index.css'; // Make sure to use your existing CSS file
 
-const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
+const ResetPassword = () => {
+    const { token } = useParams();
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const [variant, setVariant] = useState('success');
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    console.log("token----", token);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
 
         try {
-            await axios.post('http://localhost:3000/api/auth/forgot-password', { email });
+            await axios.post('http://localhost:3000/api/auth/reset-password', { email });
             setVariant('success');
             setMessage(`Password reset link sent to ${email}. Please check your inbox.`);
             setTimeout(() => navigate('/'), 3000);
@@ -26,7 +35,6 @@ const ForgotPassword = () => {
             setVariant('danger');
             setMessage(error.response?.data?.message || 'Error sending reset link');
         }
-
         setLoading(false);
     };
 
@@ -48,14 +56,28 @@ const ForgotPassword = () => {
                                     </p>
                                 </div>
                                 <Form onSubmit={handleSubmit}>
-                                    <Form.Group className="mb-4">
-                                        <Form.Label>Email Address</Form.Label>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>New Password</Form.Label>
                                         <Form.Control
-                                            type="email"
-                                            placeholder="Enter your email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            type="password"
+                                            placeholder="Enter new password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
                                             required
+                                            minLength="6"
+                                            style={{ borderColor: '#d5dee3' }}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-4">
+                                        <Form.Label>Confirm New Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Confirm new password"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            required
+                                            minLength="6"
                                             style={{ borderColor: '#d5dee3' }}
                                         />
                                     </Form.Group>
@@ -68,21 +90,6 @@ const ForgotPassword = () => {
                                             size="lg"
                                             style={{ backgroundColor: '#012440', border: 'none' }}
                                         >
-                                            {loading ? (
-                                                <>
-                                                    <Spinner
-                                                        as="span"
-                                                        animation="border"
-                                                        size="sm"
-                                                        role="status"
-                                                        aria-hidden="true"
-                                                        className="me-2"
-                                                    />
-                                                    Sending...
-                                                </>
-                                            ) : (
-                                                'Send Reset Link'
-                                            )}
                                         </Button>
                                     </div>
 
@@ -112,4 +119,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default ResetPassword;
