@@ -1,19 +1,36 @@
+import { useState } from "react";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
-import { useCartContext } from "../../context/CartContext";
+import { useOrderContext } from "../../context/OrderContext";
 import { useNavigate, Link } from "react-router-dom";
-import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit, FiPlus } from "react-icons/fi";
+import { Navbar, Nav, Container, Row, Col, Table, Button, Badge, Form } from "react-bootstrap";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEye, FiPlus, FiEdit } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
+import OrderModal from "./OrderModal";
 
 const Orders = () => {
 	const { authUser, logout } = useAuthenticateContext();
-	const { orders } = useCartContext();
+	const { orders } = useOrderContext();
 	const navigate = useNavigate();
+	const [open, setOpen] = useState(false);
 
 	const handleLogout = async () => {
 		await logout();
 		navigate("/");
 	}
+
+	const handleOpen = () => {
+		setOpen(!open);
+	}
+
+	const handleStatusChange = async (orderId, newStatus) => {
+		try {
+
+			console.log("orderId----", orderId);
+
+		} catch (error) {
+			console.error('Error updating order status:', error);
+		}
+	};
 
 	return (
 		<>
@@ -93,10 +110,10 @@ const Orders = () => {
 
 						<Col md={9} xl={10} className="p-4 main-content-area">
 							<div className="d-flex justify-content-between align-items-center mb-4">
-								<h2 className="page-title">Product Color Management</h2>
+								<h2 className="page-title">Order Management</h2>
 								<Button variant="primary" className="rounded-pill">
 									<FiPlus className="me-2" />
-									Add New Product
+									Add New Order
 								</Button>
 							</div>
 
@@ -106,62 +123,92 @@ const Orders = () => {
 										<tr>
 											<th>ID</th>
 											<th>Product</th>
-											<th>Category</th>
 											<th>Price</th>
-											<th>Stock</th>
+											<th>Created at</th>
 											<th>Status</th>
-											<th>Actions</th>
+											<th>Open</th>
+											<th>Edit</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr className="table-row">
-											<td className="text-muted">#</td>
-											<td>
-												<div className="d-flex align-items-center">
-													<img
-														src=''
-														alt="product"
-														className="product-img rounded-circle me-3"
-													/>
-													<div>
-														<h6 className="mb-0"></h6>
-														<small className="text-muted">
-															...
-														</small>
-													</div>
-												</div>
-											</td>
-											<td>
-												<Badge bg="secondary" className="category-badge">
+										{
+											orders.map((order, index) => {
+												return (
+													<tr key={index} className="table-row">
+														<td className="text-muted">#{order.id}</td>
+														<td>
+															<div className="d-flex align-items-center">
+																{
+																	order.orderItems.map((product, pkey) => {
+																		return (
+																			<div key={pkey}>
+																				<img
+																					src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.product.image}`}
+																					alt="product"
+																					className="product-img rounded-circle me-3"
+																				/>
+																				<div>
+																					<h6 className="mb-0"></h6>
+																					<small className="text-muted">
+																						{product.product.title}
+																					</small>
+																				</div>
 
-												</Badge>
-											</td>
-											<td>
-												<div className="color-options">
-													<h6 className="mb-0"></h6>
-												</div>
-											</td>
-											<td>
-												<div className="color-options">
-													<h6 className="mb-0"></h6>
-												</div>
-											</td>
-											<td>
-												<Badge bg='success' >
+																			</div>
+																		)
+																	})
+																}
+															</div>
+														</td>
+														<td>
+															<div className="color-options">
+																<h6 className="mb-0">{order.total_price}</h6>
+															</div>
+														</td>
+														<td>
+															<div className="color-options">
+																<h6 className="mb-0">
+																	{new Date(order.created_at).toLocaleDateString()}
+																</h6>
+															</div>
+														</td>
+														<td>
+															<Badge bg='success' >
+																{order.status}
+															</Badge>
+														</td>
+														<td>
+															<Button
+																variant="outline-primary"
+																size="sm"
+																className="me-2 action-btn"
+																onClick={() => { return handleOpen() }}
 
-												</Badge>
-											</td>
-											<td>
-												<Button
-													variant="outline-primary"
-													size="sm"
-													className="me-2 action-btn"
-
-												>
-													<FiEdit />
-												</Button>
-											</td>
-										</tr>
+															>
+																<FiEye />
+															</Button>
+														</td>
+														<td>
+															<Form.Select
+																value={order.status}
+																onChange={(e) => handleStatusChange(order.id, e.target.value)}
+																style={{
+																	cursor: 'pointer',
+																	width: 'fit-content',
+																	appearance: 'none',
+																	padding: '0.25rem 1.5rem 0.25rem 0.75rem'
+																}}
+															>
+																<option value="pending">Pending</option>
+																<option value="shipped">Shipped</option>
+																<option value="delivered">Delivered</option>
+																<option value="cancelled">Cancelled</option>
+															</Form.Select>
+														</td>
+													</tr>
+												)
+											})
+										}
 									</tbody>
 								</Table>
 							</div>
@@ -175,6 +222,8 @@ const Orders = () => {
 					<FiPlus size={24} />
 				</Button>
 			</div>
+
+			<OrderModal open={open} close={handleOpen} orders={orders} />
 		</>
 	)
 }

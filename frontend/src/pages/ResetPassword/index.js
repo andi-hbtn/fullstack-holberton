@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
-import { useParams } from "react-router-dom";
-import axios from 'axios';
-
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer';
-import './index.css'; // Make sure to use your existing CSS file
+import './index.css';
 
 const ResetPassword = () => {
+    const { resetPassword } = useAuthenticateContext();
     const { token } = useParams();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const [variant, setVariant] = useState('success');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    console.log("token----", token);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setVariant('danger');
+            setMessage('Passwords do not match');
             return;
         }
-
+        setLoading(true);
         try {
-            await axios.post('http://localhost:3000/api/auth/reset-password', { email });
+             await resetPassword(token, password);
             setVariant('success');
-            setMessage(`Password reset link sent to ${email}. Please check your inbox.`);
-            setTimeout(() => navigate('/'), 3000);
+            setMessage('Password reset successfully! Redirecting to login...');
+            setTimeout(() => navigate('/'), 2000);
         } catch (error) {
             setVariant('danger');
-            setMessage(error.response?.data?.message || 'Error sending reset link');
+            setMessage(error.response?.data?.message || 'Error resetting password');
         }
         setLoading(false);
     };
@@ -49,10 +49,10 @@ const ResetPassword = () => {
                                 <div className="text-center mb-4">
                                     <i className="bi bi-shield-lock fs-1 text-primary"></i>
                                     <h2 className="mt-3 mb-2" style={{ color: '#012440' }}>
-                                        Forgot Your Password?
+                                        Reset Your Password
                                     </h2>
                                     <p className="text-muted">
-                                        Enter your email address and we'll send you a link to reset your password.
+                                        Enter your new password below.
                                     </p>
                                 </div>
                                 <Form onSubmit={handleSubmit}>
@@ -90,6 +90,21 @@ const ResetPassword = () => {
                                             size="lg"
                                             style={{ backgroundColor: '#012440', border: 'none' }}
                                         >
+                                            {loading ? (
+                                                <>
+                                                    <Spinner
+                                                        as="span"
+                                                        animation="border"
+                                                        size="sm"
+                                                        role="status"
+                                                        aria-hidden="true"
+                                                        className="me-2"
+                                                    />
+                                                    Resetting...
+                                                </>
+                                            ) : (
+                                                'Reset Password'
+                                            )}
                                         </Button>
                                     </div>
 

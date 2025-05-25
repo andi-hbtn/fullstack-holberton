@@ -45,8 +45,8 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 	const isDisabled = fields.some(field => {
 		const value = data[field.name];
 
-		if (field.type === "file" ) {
-			return !value; 
+		if (field.type === "file") {
+			return !value;
 		}
 		// Switch (boolean) can be false, so only undefined/null is invalid
 		if (field.type === "switch") {

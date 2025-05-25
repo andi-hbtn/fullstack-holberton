@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { register_user_service, login_user_service, logout_user_service, checkAuth_user_service } from "../services/authenticate";
+import { register_user_service, login_user_service, logout_user_service, checkAuth_user_service, reset_password } from "../services/authenticate";
 
 const AuthenticateContext = createContext({});
 
@@ -65,7 +65,16 @@ const AuthenticateProvider = (props) => {
 		}
 	}
 
-	const values = { authUser, register, login, logout, checkAuthUser, isAuthChecked };
+	const resetPassword = async (token, password) => {
+		try {
+			const result = await reset_password(token, password);
+			return result.data
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	const values = { authUser, register, login, logout, checkAuthUser, isAuthChecked, resetPassword };
 
 	return (
 		<AuthenticateContext.Provider value={values}>

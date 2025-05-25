@@ -136,8 +136,6 @@ export class AuthService {
             return user;
         } catch (error) {
             {
-                // Log the error details for debugging
-                console.error('Token validation failed:', error);
                 // Throw generic error for unexpected issues
                 throw new ServiceHandler(error.response, error.status);
             }
@@ -191,24 +189,12 @@ export class AuthService {
             // Update password and clear token
             await this.userService.updateUserPassword(user.id, hashedPassword);
             await this.userService.clearResetToken(user.id);
-
             return {
                 message: 'Password updated successfully',
                 status: HttpStatus.OK
             };
         } catch (error) {
-            // Handle known error types
-            if (error instanceof ServiceHandler) {
-                throw error; // Preserve existing error handling
-            }
-
-            // Log unexpected errors
-            console.error(`Password reset failed: ${error.message}`);
-
-            throw new ServiceHandler(
-                'Password reset failed. Please try again later.',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new ServiceHandler(error.response, error.status);
         }
     }
 }

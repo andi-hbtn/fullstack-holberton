@@ -6,8 +6,6 @@ import { UserEntity } from 'src/user/entity/user.entity';
 import { ProductEntity } from 'src/product/entity/products.enity';
 import { OrderItemEntity } from './entity/order_item.entity';
 import { OrderDto } from './dto/order.dto';
-
-
 import { ServiceHandler } from 'src/errorHandler/service.error';
 
 @Injectable()
@@ -66,8 +64,44 @@ export class OrderService {
     }
   }
 
+  public async updateStatus(id: number, status: string): Promise<any> {
+    try {
+
+      console.log("status----", status);
+
+      const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
+      if (!validStatuses.includes(status)) {
+        throw new ServiceHandler(`Invalid status: ${status}`, HttpStatus.NOT_FOUND);
+      }
+
+      const order = await this.ordersRepository.findOne({ where: { id } });
+      if (!order) {
+        throw new ServiceHandler('Order not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.ordersRepository.update(id, { status: status });
+
+      return await this.ordersRepository.findOne({
+        where: { id },
+        relations: ['user', 'orderItems']
+      });
+
+    } catch (error) {
+      throw new ServiceHandler(error.response, error.status);
+    }
+  }
+
   public async findOne(id: number): Promise<OrderEntity> {
-    return this.ordersRepository.findOne({ where: { id }, relations: ['user', 'order_items'] })
+    return this.ordersRepository.findOne({
+      where: { id }, relations: {
+        user: true,
+        orderItems: {
+          product: {
+            category: true
+          },
+        }
+      }
+    })
   }
 
   public async findAll(): Promise<OrderEntity[]> {
@@ -75,7 +109,9 @@ export class OrderService {
       relations: {
         user: true,
         orderItems: {
-          product: true,
+          product: {
+            category: true
+          },
         }
       }
     });

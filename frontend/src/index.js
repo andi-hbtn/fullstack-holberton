@@ -7,6 +7,7 @@ import { CartProvider } from "./context/CartContext.js";
 import { AuthenticateProvider } from './context/AuthenticateContext';
 import { CategoryProvider } from "./context/CategoryContext";
 import { ProductProvider } from './context/ProductContext';
+import { OrderProvider } from './context/OrderContext.js';
 
 import Categories from "./pages/Categories";
 import Products from "./pages/Products";
@@ -36,47 +37,49 @@ root.render(
     <CartProvider>
       <CategoryProvider>
         <ProductProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/admin-category" element={
-                <AdminRoute>
-                  <Categories />
-                </AdminRoute>
-              }
-              />
-              <Route path="/admin-products" element={
-                <AdminRoute>
-                  <Products />
-                </AdminRoute>
-              }
-              />
+          <OrderProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/admin-category" element={
+                  <AdminRoute>
+                    <Categories />
+                  </AdminRoute>
+                }
+                />
+                <Route path="/admin-products" element={
+                  <AdminRoute>
+                    <Products />
+                  </AdminRoute>
+                }
+                />
 
-              <Route path="/admin-product-with-colors" element={
-                <AdminRoute>
-                  <ProductWithColorOptions />
-                </AdminRoute>
-              }
-              />
+                <Route path="/admin-product-with-colors" element={
+                  <AdminRoute>
+                    <ProductWithColorOptions />
+                  </AdminRoute>
+                }
+                />
 
-              <Route path="/admin-orders" element={
-                <AdminRoute>
-                  <Orders />
-                </AdminRoute>
-              }
-              />
-              <Route path="/" element={<Home />} />
-              <Route path="/about-us" element={<AboutUs />} />
-              <Route path="/product/:id" element={<ProductPage />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/category/:id" element={<CategoryPage />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
-              <Route path="/test/:id" element={<Test />} />
-            </Routes>
-          </BrowserRouter>
+                <Route path="/admin-orders" element={
+                  <AdminRoute>
+                    <Orders />
+                  </AdminRoute>
+                }
+                />
+                <Route path="/" element={<Home />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="/product/:id" element={<ProductPage />} />
+                <Route path="/faq" element={<Faq />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/category/:id" element={<CategoryPage />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/test/:id" element={<Test />} />
+              </Routes>
+            </BrowserRouter>
+          </OrderProvider>
         </ProductProvider>
       </CategoryProvider>
     </CartProvider>

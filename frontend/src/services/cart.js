@@ -16,4 +16,9 @@ const get_order_service = async (id) => {
 	return result;
 }
 
-export { get_orders_service, create_order_service,get_order_service }
+const update_orderStatus_service = async (id, status) => {
+	const result = await axios.put(`${url}/${id}`, status);
+	return result;
+}
+
+export { get_orders_service, create_order_service, get_order_service, update_orderStatus_service }
