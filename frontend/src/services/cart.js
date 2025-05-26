@@ -17,7 +17,7 @@ const get_order_service = async (id) => {
 }
 
 const update_orderStatus_service = async (id, status) => {
-	const result = await axios.put(`${url}/${id}`, status);
+	const result = await axios.put(`${url}/update-status/${id}`, {status});
 	return result;
 }
 

@@ -67,8 +67,6 @@ export class OrderService {
   public async updateStatus(id: number, status: string): Promise<any> {
     try {
 
-      console.log("status----", status);
-
       const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
       if (!validStatuses.includes(status)) {
         throw new ServiceHandler(`Invalid status: ${status}`, HttpStatus.NOT_FOUND);

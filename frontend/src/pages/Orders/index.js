@@ -3,13 +3,13 @@ import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useOrderContext } from "../../context/OrderContext";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container, Row, Col, Table, Button, Badge, Form } from "react-bootstrap";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEye, FiPlus, FiEdit } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEye, FiPlus } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
 import OrderModal from "./OrderModal";
 
 const Orders = () => {
 	const { authUser, logout } = useAuthenticateContext();
-	const { orders } = useOrderContext();
+	const { orders, updateOrderStatus } = useOrderContext();
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 
@@ -24,11 +24,10 @@ const Orders = () => {
 
 	const handleStatusChange = async (orderId, newStatus) => {
 		try {
-
-			console.log("orderId----", orderId);
-
+			await updateOrderStatus(orderId, newStatus);
 		} catch (error) {
 			console.error('Error updating order status:', error);
+			return error
 		}
 	};
 

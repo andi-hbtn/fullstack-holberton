@@ -23,8 +23,8 @@ export class OrderController {
     return await this.orderService.create(orderData);
   }
 
-  @Put('update/:id')
-  public async updateStatus(@Param('id', ParseIntPipe) id: number, @Body() status: string): Promise<any> {
+  @Put('update-status/:id')
+  public async updateStatus(@Param('id', ParseIntPipe) id: number, @Body('status') status: string): Promise<any> {
     return await this.orderService.updateStatus(id, status);
   }
 
