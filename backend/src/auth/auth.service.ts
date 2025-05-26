@@ -6,6 +6,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from "./dto/login.dto";
 import { ServiceHandler } from "../errorHandler/service.error";
 import { UserEntity } from 'src/user/entity/user.entity';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import * as nodemailer from 'nodemailer';
@@ -16,6 +17,7 @@ export class AuthService {
     constructor(
         private jwtService: JwtService,
         private readonly userService: UserService,
+        private configService: ConfigService
     ) { }
 
     public async registerUser(bodyParam: RegisterDto): Promise<{ user: UserEntity, token: string }> {
@@ -149,19 +151,19 @@ export class AuthService {
             //https://support.google.com/accounts/answer/185833?visit_id=638825869642420653-2156485490&p=InvalidSecondFactor&rd=1
 
             const transporter = nodemailer.createTransport({
-                service: 'Gmail', // or your SMTP provider
-                host: "smtp.gmail.com",
-                port: 587,
+                service: this.configService.get<string>('EMAIL_SERVICE'),
+                host: this.configService.get<string>('EMAIL_HOST'),
+                port: parseInt(this.configService.get<string>('EMAIL_PORT')),
                 auth: {
-                    user: 'andi.bevapi@gmail.com',
-                    pass: 'oxpp ggch itwc jpnz',
+                    user: this.configService.get<string>('EMAIL_USER'),
+                    pass: this.configService.get<string>('EMAIL_PASS'),
                 },
             });
 
-            const resetUrl = `http://localhost:3001/reset-password/${token}`;
+            const resetUrl = `${this.configService.get<string>('CORS_ORIGIN')}/reset-password/${token}`;
 
             await transporter.sendMail({
-                from: 'andi.bevapi@gmail.com',
+                from: this.configService.get<string>('EMAIL_USER'),
                 to: email,
                 subject: 'Password Reset Request',
                 html: `Click <a href="${resetUrl}">here</a> to reset your password.`,
