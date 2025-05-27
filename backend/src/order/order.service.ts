@@ -7,6 +7,8 @@ import { ProductEntity } from 'src/product/entity/products.enity';
 import { OrderItemEntity } from './entity/order_item.entity';
 import { OrderDto } from './dto/order.dto';
 import { ServiceHandler } from 'src/errorHandler/service.error';
+import { ConfigService } from '@nestjs/config';
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class OrderService {
@@ -15,6 +17,7 @@ export class OrderService {
     @InjectRepository(OrderEntity) private readonly ordersRepository: Repository<OrderEntity>,
     @InjectRepository(ProductEntity) private readonly productsRepository: Repository<ProductEntity>,
     @InjectRepository(OrderItemEntity) private readonly orderItemsRepository: Repository<OrderItemEntity>,
+    private configService: ConfigService
   ) { }
 
   public async create(orderData: OrderDto): Promise<any> {
@@ -52,8 +55,11 @@ export class OrderService {
           });
         })
       );
+
       // Save all order items
-      const result = this.orderItemsRepository.save(orderItems);
+      const orderItem = await this.orderItemsRepository.save(orderItems);
+      await this.sendOrderWithEmail(savedOrder, orderItem);
+
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Order was successfully created',
@@ -112,6 +118,57 @@ export class OrderService {
           },
         }
       }
+    });
+  }
+
+  public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[]): Promise<any> {
+    const transporter = nodemailer.createTransport({
+      service: this.configService.get<string>('EMAIL_SERVICE'),
+      host: this.configService.get<string>('EMAIL_HOST'),
+      port: parseInt(this.configService.get<string>('EMAIL_PORT')),
+      auth: {
+        user: this.configService.get<string>('EMAIL_USER'),
+        pass: this.configService.get<string>('EMAIL_PASS'),
+      },
+    });
+
+
+    const itemRows = items.map(item => `
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">${item.product.title}</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">${item.quantity}</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">$${item.price.toFixed(2)}</td>
+      </tr>
+    `).join('');
+
+    const htmlContent =
+      `<div style="font-family: Arial, sans-serif; padding: 20px;" >
+      <h2>Thank you for your order! </h2>
+        < p > Your order has been successfully placed on < strong > ${new Date(order.created_at).toLocaleDateString()} </strong>.</p >
+          <h3>Order Summary </h3>
+            <table style = "border-collapse: collapse; width: 100%;" >
+              <thead>
+                  <tr>
+                    <th style="text-align: left; padding: 8px; border: 1px solid #ddd;"> Product </th>
+                    <th style = "text-align: left; padding: 8px; border: 1px solid #ddd;"> Quantity </th>
+                    <th style = "text-align: left; padding: 8px; border: 1px solid #ddd;"> Price </th>
+                  </tr>
+              </thead>
+              <tbody>
+                    ${itemRows}
+              </tbody>
+              </table>
+
+      <p style ="margin-top: 20px;"> <strong>Total: </strong> $${order.total_price.toFixed(2)}</p>
+      <p>If you have any questions, feel free to contact us.</p>
+      <p style="margin-top: 40px;"> Best regards, <br/>Your Company</p>
+      </div>`
+
+    await transporter.sendMail({
+      from: this.configService.get<string>('EMAIL_OWNER'),
+      to: this.configService.get<string>('EMAIL_OWNER'),
+      subject: 'New Order',
+      html: htmlContent,
     });
   }
 }
