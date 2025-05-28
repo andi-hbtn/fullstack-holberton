@@ -1,4 +1,4 @@
-import { IsNumber, IsNotEmpty, IsArray, IsEnum, IsDateString, IsOptional } from "class-validator";
+import { IsNumber, IsNotEmpty, IsArray, IsEnum, IsDateString, IsOptional, IsString, IsEmail } from "class-validator";
 
 export class OrderDto {
 	@IsOptional()
@@ -20,5 +20,46 @@ export class OrderDto {
 	status: string;
 
 	@IsDateString()
-	created_at: Date
+	created_at: Date;
+
+	@IsOptional()
+	@IsString()
+	firstname?: string;
+
+	@IsOptional()
+	@IsString()
+	lastname?: string;
+
+	@IsOptional()
+	@IsEmail()
+	email?: string;
+
+	@IsOptional()
+	@IsString()
+	phone?: string;
+
+	@IsOptional()
+	@IsString()
+	country?: string;
+
+	@IsOptional()
+	@IsString()
+	town?: string;
+
+	@IsOptional()
+	@IsString()
+	zipCode?: string;
+
+	@IsOptional()
+	@IsString()
+	street_address?: string;
+
+	@IsOptional()
+	@IsString()
+	appartment?: string;
+
+	@IsOptional()
+	@IsString()
+	message?: string;
+
 }

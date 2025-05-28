@@ -1,8 +1,16 @@
 import axios from "axios";
 const url = `${process.env.REACT_APP_API_URL}api/order`;
 
-const create_order_service = async (data) => {
-	const result = await axios.post(`${url}/create`, data);
+const create_order_service = async (data, userInfo) => {
+	console.log("userInfo----", userInfo);
+
+	const payload = {
+		...data,
+		...userInfo,
+	};
+
+	console.log("payload---", payload);
+	const result = await axios.post(`${url}/create`, payload);
 	return result;
 }
 
@@ -17,7 +25,7 @@ const get_order_service = async (id) => {
 }
 
 const update_orderStatus_service = async (id, status) => {
-	const result = await axios.put(`${url}/update-status/${id}`, {status});
+	const result = await axios.put(`${url}/update-status/${id}`, { status });
 	return result;
 }
 

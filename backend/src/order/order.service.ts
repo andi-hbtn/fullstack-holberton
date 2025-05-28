@@ -5,6 +5,7 @@ import { OrderEntity } from './entity/order.entity';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { ProductEntity } from 'src/product/entity/products.enity';
 import { OrderItemEntity } from './entity/order_item.entity';
+import { UserAddress } from './entity/user_address.entity';
 import { OrderDto } from './dto/order.dto';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ConfigService } from '@nestjs/config';
@@ -17,12 +18,13 @@ export class OrderService {
     @InjectRepository(OrderEntity) private readonly ordersRepository: Repository<OrderEntity>,
     @InjectRepository(ProductEntity) private readonly productsRepository: Repository<ProductEntity>,
     @InjectRepository(OrderItemEntity) private readonly orderItemsRepository: Repository<OrderItemEntity>,
+    @InjectRepository(UserAddress) private readonly userAddress: Repository<UserAddress>,
     private configService: ConfigService
   ) { }
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      const { user_id, items, total_price, status, created_at } = orderData;
+      const { user_id, items, total_price, status, created_at, firstname, lastname, email, phone, country, town, zipCode, street_address, appartment, message } = orderData;
       let user: UserEntity | null = null;
       if (user_id) {
         user = await this.usersRepository.findOne({ where: { id: user_id } });
@@ -56,9 +58,23 @@ export class OrderService {
         })
       );
 
+      const userAddress = this.userAddress.create({
+        firstname,
+        lastname,
+        email,
+        phone,
+        country,
+        town,
+        zipCode,
+        street_address,
+        appartment,
+        message,
+      });
+
       // Save all order items
       const orderItem = await this.orderItemsRepository.save(orderItems);
       await this.sendOrderWithEmail(savedOrder, orderItem);
+      await this.userAddress.save(userAddress);
 
       return {
         statusCode: HttpStatus.CREATED,
@@ -158,7 +174,6 @@ export class OrderService {
                     ${itemRows}
               </tbody>
               </table>
-
       <p style ="margin-top: 20px;"> <strong>Total: </strong> $${order.total_price.toFixed(2)}</p>
       <p>If you have any questions, feel free to contact us.</p>
       <p style="margin-top: 40px;"> Best regards, <br/>Your Company</p>

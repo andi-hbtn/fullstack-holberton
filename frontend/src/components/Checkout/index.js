@@ -13,7 +13,7 @@ const Checkout = () => {
     const { createOrder, finalCart, setFinalCart, setCart } = useCartContext();
     const [order, setOrder] = useState([]);
     const [orderResponse, setOrderResponse] = useState({ show: false, message: "", status: 0 });
-    const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", streetAddr: "", appartment: "", message: "" });
+    const [values, setValues] = useState({ firstname: "", lastname: "", email: "", phone: "", country: "united-kingdom", town: "", zipCode: "", street_address: "", appartment: "", message: "" });
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart")) || '{"items": []}';
         loadItems(storedCart);
@@ -64,7 +64,7 @@ const Checkout = () => {
                 created_at: dateTime.formatDate()
             }
 
-            const result = await createOrder(order_product);
+            const result = await createOrder(order_product, values);
             setOrderResponse({ show: true, message: result.message, status: result.statusCode });
             setFinalCart(0);
             setCart({
@@ -82,8 +82,9 @@ const Checkout = () => {
         }
     }
 
-    const isDisabled = Object.values(values).some((value) => {
-        return value.trim().length === 0
+    const isDisabled = Object.entries(values).some(([key, value]) => {
+        if (key === "message") return false; // make "message" optional
+        return (value || "").toString().trim().length === 0;
     });
 
     return (
@@ -212,8 +213,8 @@ const Checkout = () => {
                                         <Form.Group className="mb-3" controlId="street">
                                             <Form.Label>Street address</Form.Label>
                                             <Form.Control
-                                                name="streetAddr"
-                                                value={values.streetAddr}
+                                                name="street_address"
+                                                value={values.street_address}
                                                 onChange={handleChange}
                                                 type="text"
                                                 placeholder="Enter street address"
@@ -295,7 +296,7 @@ const Checkout = () => {
                                     <span>&#163;{subtotal}</span>
                                 </div>
 
-                                <Button variant="dark" className='place-order-btn' type="submit" disabled={isDisabled}>
+                                <Button variant="dark" className='place-order-btn' type="submit" disabled={order.length === 0 ? true : isDisabled}>
                                     Proceed to checkout
                                 </Button>
                             </Col>

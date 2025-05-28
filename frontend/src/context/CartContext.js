@@ -116,9 +116,9 @@ const CartProvider = (props) => {
 		});
 	};
 
-	const createOrder = async (order) => {
+	const createOrder = async (order, userInfo) => {
 		try {
-			const result = await create_order_service(order);
+			const result = await create_order_service(order, userInfo);
 			if (result.status === 201) {
 				return result.data;
 			}

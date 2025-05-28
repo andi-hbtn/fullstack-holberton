@@ -10,6 +10,7 @@ import { UserEntity } from './user/entity/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { OrderItemEntity } from './order/entity/order_item.entity';
+import { UserAddress } from './order/entity/user_address.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { OrderItemEntity } from './order/entity/order_item.entity';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [CategoryEntity, ProductEntity, UserEntity, OrderItemEntity],
+        entities: [CategoryEntity, ProductEntity, UserEntity, OrderItemEntity, UserAddress],
         synchronize: true,
         autoLoadEntities: true,
 
