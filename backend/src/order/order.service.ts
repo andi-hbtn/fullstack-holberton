@@ -6,10 +6,14 @@ import { UserEntity } from 'src/user/entity/user.entity';
 import { ProductEntity } from 'src/product/entity/products.enity';
 import { OrderItemEntity } from './entity/order_item.entity';
 import { UserAddress } from './entity/user_address.entity';
+import { UserAddressDto } from './dto/userAddress.dto';
 import { OrderDto } from './dto/order.dto';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
+import * as puppeteer from 'puppeteer';
+import { writeFileSync, unlinkSync } from 'fs';
+import { join } from 'path';
 
 @Injectable()
 export class OrderService {
@@ -73,7 +77,7 @@ export class OrderService {
 
       // Save all order items
       const orderItem = await this.orderItemsRepository.save(orderItems);
-      await this.sendOrderWithEmail(savedOrder, orderItem);
+      await this.sendOrderWithEmail(savedOrder, orderItem, userAddress);
       await this.userAddress.save(userAddress);
 
       return {
@@ -82,6 +86,7 @@ export class OrderService {
         data: savedOrder
       };
     } catch (error) {
+      console.log("error--in crete order---", error);
       throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -137,7 +142,7 @@ export class OrderService {
     });
   }
 
-  public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[]): Promise<any> {
+  public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: UserAddressDto): Promise<any> {
     const transporter = nodemailer.createTransport({
       service: this.configService.get<string>('EMAIL_SERVICE'),
       host: this.configService.get<string>('EMAIL_HOST'),
@@ -160,7 +165,7 @@ export class OrderService {
     const htmlContent =
       `<div style="font-family: Arial, sans-serif; padding: 20px;" >
       <h2>Thank you for your order! </h2>
-        < p > Your order has been successfully placed on < strong > ${new Date(order.created_at).toLocaleDateString()} </strong>.</p >
+        <p> Your order has been successfully placed on <strong> ${new Date(order.created_at).toLocaleDateString()} </strong>.</p >
           <h3>Order Summary </h3>
             <table style = "border-collapse: collapse; width: 100%;" >
               <thead>
@@ -179,11 +184,27 @@ export class OrderService {
       <p style="margin-top: 40px;"> Best regards, <br/>Your Company</p>
       </div>`
 
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(htmlContent, { waitUntil: 'load' });
+    const pdfPath = join(__dirname, `order-${order.id}.pdf`);
+    await page.pdf({ path: pdfPath, format: 'A4' });
+    await browser.close();
+
     await transporter.sendMail({
-      from: this.configService.get<string>('EMAIL_OWNER'),
-      to: this.configService.get<string>('EMAIL_OWNER'),
+      from: this.configService.get<string>('EMAIL_USER'),
+      to: this.configService.get<string>('EMAIL_USER'),
       subject: 'New Order',
-      html: htmlContent,
+      html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
+      attachments: [
+        {
+          filename: `order-${order.id}.pdf`,
+          path: pdfPath,
+          contentType: 'application/pdf'
+        }
+      ]
     });
+
+    unlinkSync(pdfPath);
   }
 }

@@ -91,14 +91,12 @@ const Checkout = () => {
         <>
             <Header />
             <Container>
-
                 <Row className='ch-t-cnt'>
                     <Col>
                         <h2>Checkout</h2>
                         <h5>Billing details</h5>
                     </Col>
                 </Row>
-
                 <Row className='billing-detail-cnt'>
                     <Form onSubmit={handleSubmit}>
                         <Row>
