@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductEntity } from './entity/products.enity';
+import { ProductEntity } from './entity/products.entity';
 import { ProductColorImageEntity } from './entity/productColors.entity';
 import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
@@ -14,7 +14,7 @@ export class ProductService {
 		@InjectRepository(ProductColorImageEntity) private readonly ColorImageRepo: Repository<ProductColorImageEntity>
 	) { }
 
-	public async getAllProducts(): Promise<ProductEntity[]> {
+	public async getAllProducts(): Promise<any> {
 		try {
 			const result = await this.ProductEntity.find({
 				relations: ['category', 'colorImages']
@@ -76,7 +76,7 @@ export class ProductService {
 
 	public async getProductById(id: number): Promise<ProductResponse> {
 		try {
-			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['category'] });
+			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['category', 'colorImages'] });
 			if (!result) {
 				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}

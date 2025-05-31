@@ -4,7 +4,7 @@ import { OrderService } from './order.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { OrderEntity } from "./entity/order.entity";
-import { ProductEntity } from 'src/product/entity/products.enity';
+import { ProductEntity } from 'src/product/entity/products.entity';
 import { OrderItemEntity } from './entity/order_item.entity';
 import { UserAddress } from './entity/user_address.entity';
 

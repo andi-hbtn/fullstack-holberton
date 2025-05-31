@@ -1,6 +1,6 @@
 // src/product/entity/product_color_image.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { ProductEntity } from './products.enity';
+import { ProductEntity } from './products.entity';
 
 @Entity('product_color_images')
 export class ProductColorImageEntity {

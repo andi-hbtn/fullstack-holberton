@@ -1,4 +1,4 @@
-import { ProductEntity } from "../entity/products.enity";
+import { ProductEntity } from "../entity/products.entity";
 import { ProductColorImageEntity } from "../entity/productColors.entity";
 
 export interface ProductResponse {

@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryModule } from './category/category.module';
 import { CategoryEntity } from './category/entity/category.entity';
-import { ProductEntity } from './product/entity/products.enity';
+import { ProductEntity } from './product/entity/products.entity';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entity/user.entity';
@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { OrderItemEntity } from './order/entity/order_item.entity';
 import { UserAddress } from './order/entity/user_address.entity';
+import { ProductColorImageEntity } from './product/entity/productColors.entity';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { UserAddress } from './order/entity/user_address.entity';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [CategoryEntity, ProductEntity, UserEntity, OrderItemEntity, UserAddress],
+        entities: [CategoryEntity, ProductEntity, ProductColorImageEntity, UserEntity, OrderItemEntity, UserAddress],
         synchronize: true,
         autoLoadEntities: true,
 

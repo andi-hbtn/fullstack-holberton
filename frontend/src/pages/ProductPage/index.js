@@ -34,6 +34,8 @@ const ProductPage = () => {
         return item?.quantity || 0;
     };
 
+    console.log("product----",product);
+
     return (
         <>
             <Header />

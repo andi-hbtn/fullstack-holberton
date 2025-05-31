@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCartContext } from '../../context/CartContext';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
+import { useCategoryContext } from '../../context/CategoryContext';
 import Login from '../AuthModal/login';
 import Register from '../AuthModal/register';
 import { Link } from 'react-router-dom';
@@ -9,10 +10,25 @@ import { FaShoppingCart } from 'react-icons/fa';
 
 const Navigation = () => {
     const { finalCart } = useCartContext();
-
     const { authUser, logout } = useAuthenticateContext();
+    const { categories, allCategories, setCategories } = useCategoryContext();
     const [loginModal, setLoginModal] = useState(false);
     const [registerModal, setRegisterModal] = useState(false);
+    const [search, setSearch] = useState("");
+
+    const handleChange = (event) => {
+        const value = event.target.value.trim().toLowerCase();
+        setSearch(value);
+        if (value.length === 0) {
+            setCategories(allCategories);
+        } else {
+            console.log("else---", categories);
+            const result = categories.filter((category, el) => {
+                return category.title.includes(value)
+            });
+            setCategories(result);
+        }
+    }
     const handleLogout = async () => {
         return await logout();
     }
@@ -66,6 +82,8 @@ const Navigation = () => {
                                         placeholder="Search"
                                         className="me-2"
                                         aria-label="Search"
+                                        onChange={handleChange}
+                                        value={search}
                                     />
                                     <Button variant="outline-success">Search</Button>
                                 </Form>
