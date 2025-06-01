@@ -14,6 +14,8 @@ const ProductPage = () => {
     const { addQuantity, removeQuantity, cart, addToCart } = useCartContext();
     const [product, setProduct] = useState([]);
     const [error, setError] = useState({ message: "", status: 0 });
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [mainImage, setMainImage] = useState('');
 
     useEffect(() => {
         const getById = async (id) => {
@@ -29,12 +31,17 @@ const ProductPage = () => {
         getById(id)
     }, [id]);
 
+    useEffect(() => {
+        if (product?.image) {
+            setMainImage(product.image);
+            setSelectedColor(null);
+        }
+    }, [product]);
+
     const getQuantity = (productId) => {
         const item = cart.items?.find(el => el.id === productId);
         return item?.quantity || 0;
     };
-
-    console.log("product----",product);
 
     return (
         <>
@@ -53,7 +60,7 @@ const ProductPage = () => {
                                 <Card className="product-image-card">
                                     <Card.Img
                                         variant="top"
-                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/` + (selectedColor ? `colors/${mainImage}` : `${mainImage}`)}
                                         className="product-image"
                                     />
                                 </Card>
@@ -70,6 +77,58 @@ const ProductPage = () => {
                                         </h3>
                                         <small className="text-muted">(Inc. VAT)</small>
                                     </div>
+
+                                    {/* Color Selector */}
+                                    {product.colorImages && product.colorImages.length > 0 && (
+                                        <div className="color-selector mb-4">
+                                            <h5 className="fw-medium">Color:</h5>
+                                            <div className="d-flex gap-2">
+                                                {product.colorImages.map((colorImage) => (
+                                                    <div
+                                                        key={colorImage.id}
+                                                        className={`color-swatch ${selectedColor === colorImage.id ? 'selected' : ''}`}
+                                                        onClick={() => {
+                                                            setSelectedColor(colorImage.id);
+                                                            setMainImage(colorImage.product_color_image);
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${colorImage.color_image}`}
+                                                            alt={colorImage.color}
+                                                            className="img-fluid"
+                                                            style={{
+                                                                width: '40px',
+                                                                height: '40px',
+                                                                objectFit: 'cover',
+                                                                borderRadius: '50%',
+                                                                cursor: 'pointer',
+                                                                border: selectedColor === colorImage.id
+                                                                    ? '2px solid var(--bs-primary)'
+                                                                    : '1px solid #ddd'
+                                                            }}
+                                                        />
+                                                    </div>
+                                                ))}
+
+                                                <img
+                                                    src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                                    className="img-fluid"
+                                                    style={{
+                                                        width: '40px',
+                                                        height: '40px',
+                                                        objectFit: 'cover',
+                                                        borderRadius: '50%',
+                                                        cursor: 'pointer',
+                                                        border: '1px solid #ddd'
+                                                    }}
+                                                    onClick={() => {
+                                                        setSelectedColor(null);
+                                                        setMainImage(product.image);
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
 
                                     <div className="quantity-controls mb-4">
                                         <div className="d-flex align-items-center gap-3">
@@ -100,11 +159,11 @@ const ProductPage = () => {
                                         <p className="product-description">{product.description}</p>
                                     </div>
                                 </div>
-                            </Col>
-                        </Row>
+                            </Col >
+                        </Row >
                     )
                 }
-            </Container>
+            </Container >
         </>
     )
 }
