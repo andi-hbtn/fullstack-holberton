@@ -11,8 +11,9 @@ import { OrderDto } from './dto/order.dto';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
-import * as puppeteer from 'puppeteer';
-import { writeFileSync, unlinkSync } from 'fs';
+import * as PdfPrinter from 'pdfmake/src/printer';
+import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import * as fs from 'fs';
 import { join } from 'path';
 
 @Injectable()
@@ -143,6 +144,16 @@ export class OrderService {
   }
 
   public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: UserAddressDto): Promise<any> {
+
+    const printer = new PdfPrinter({
+      Roboto: {
+        normal: 'Helvetica',
+        bold: 'Helvetica-Bold',
+        italics: 'Helvetica-Oblique',
+        bolditalics: 'Helvetica-BoldOblique'
+      }
+    })
+
     const transporter = nodemailer.createTransport({
       service: this.configService.get<string>('EMAIL_SERVICE'),
       host: this.configService.get<string>('EMAIL_HOST'),
@@ -153,121 +164,94 @@ export class OrderService {
       },
     });
 
-    console.log("userAddress-----", userAddress);
+    const itemTableBody = [
+      ['Product', 'Quantity', 'Unit Price', 'Price'], // header
+      ...items.map(item => [
+        item.product.title,
+        item.quantity.toString(),
+        `£${item.price.toFixed(2)}`,
+        `£${(item.quantity * item.price).toFixed(2)}`
+      ])
+    ];
 
-    const itemRows = items.map(item => `
-      <tr>
-        <td style="padding: 10px;">${item.product.title}</td>
-        <td style="padding: 10px;">${item.quantity}</td>
-        <td style="padding: 10px;"> &#163; ${item.price.toFixed(2)}</td>
-        <td style="padding: 10px;"> &#163; ${(item.quantity * item.price).toFixed(2)}</td>
-      </tr>
-    `).join('');
+    const vat = order.total_price * 0.2;
+    const total = order.total_price + vat;
 
-    const htmlContent =
-      `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
-    style="background-color: #f9f9f9; padding: 20px 0;">
-    <tr>
-        <td align="center">
-            <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"
-                style="background-color: #ffffff; padding: 20px; border: 1px solid #dddddd;">
-
-                <!-- Header -->
-                <tr>
-                    <td style="padding-bottom: 20px;">
-                        <h2 style="margin: 0; font-size: 24px; color: #333;">Quote Summary</h2>
-                    </td>
-                </tr>
-
-                <!-- Customer & Order Info in 3 Horizontal Blocks -->
-                <tr>
-                    <td>
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
-                            <tr valign="top">
-                                <!-- Block 1: Customer -->
-                                <td width="33.33%" style="padding: 10px; font-size: 14px; color: #333; border-bottom: 1px solid #cccccc;">
-                                    <p style="margin: 0;"><strong>Customer Name:</strong><br />${userAddress.firstname} ${userAddress.lastname}</p>
-                                </td>
-
-                                <!-- Block 2: Delivery + Quote -->
-                                <td width="33.33%" style="padding: 10px; font-size: 14px; color: #333;">
-                                    <p style="margin: 0;"><strong>Delivery Address:</strong><br />
-                                    Country: ${userAddress.country} Town: ${userAddress.town} Zipcode: ${userAddress.zipCode} 
-                                    Street address: ${userAddress.street_address} Unit: ${userAddress.appartment}
-                                    </p>
-                                    <p style="margin: 8px 0 0;"><strong>Quote:</strong> 012090</p>
-                                </td>
-
-                                <!-- Block 3: Date + Page -->
-                                <td width="33.33%" style="padding: 10px; font-size: 14px; color: #333;">
-                                    <p style="margin: 0;"><strong>Date:</strong> 14/03/2025</p>
-                                    <p style="margin: 8px 0 0;"><strong>Page:</strong> 1 / 1</p>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-
-                <!-- Order Summary -->
-                <tr>
-                    <td style="padding-top: 20px;">
-                        <h3 style="margin-bottom: 10px; font-size: 18px; color: #333;">Order Summary</h3>
-                        <p style="font-size: 14px; color: #333;"><strong>Order Date:</strong> ${new Date(order.created_at).toLocaleDateString()}</p>
-
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                            style="border-collapse: collapse; margin-top: 10px;">
-                            <thead>
-                                <tr style="background-color: #f4f4f4;">
-                                    <th align="left" style="padding: 8px; border-bottom: 1px solid #ccc;">Product</th>
-                                    <th align="left" style="padding: 8px; border-bottom: 1px solid #ccc;">Quantity</th>
-                                    <th align="left" style="padding: 8px; border-bottom: 1px solid #ccc;">Unit Price</th>
-                                    <th align="left" style="padding: 8px; border-bottom: 1px solid #ccc;">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${itemRows}
-                            </tbody>
-                        </table>
-
-                        <p style="font-size: 14px; margin-top: 20px;"><strong>Total Net:</strong> &#163; ${order.total_price.toFixed(2)}</p>
-                         <p style="font-size: 14px; margin-top: 20px;"><strong>Total Vat 20%: ${order.total_price * 0.20}</strong></p>
-                         <p style="font-size: 14px; margin-top: 20px;"><strong>Total Amount:   ${(order.total_price.toFixed(2) + order.total_price * 0.20)} </strong></p>
-                    </td>
-                </tr>
-                <tr>
-                  <td style="padding-top: 30px; font-size: 14px; color: #555;" >
-                    <p>If you have any questions, feel free to contact us.</p>
-                      <p style = "margin-top: 30px;" > Best regards, <br /><strong>London Glass Fittings</strong > </p>
-                  </td>
-                </tr>
-
-            </table>
-          </td>
-        </tr>
-    </table>
-              `
-
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: 'load' });
-    const pdfPath = join(__dirname, `order - ${order.id}.pdf`);
-    await page.pdf({ path: pdfPath, format: 'A4' });
-    await browser.close();
-
-    await transporter.sendMail({
-      from: this.configService.get<string>('EMAIL_OWNER'),
-      to: this.configService.get<string>('EMAIL_OWNER'),
-      subject: 'New Order',
-      html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
-      attachments: [
+    const docDefinition: TDocumentDefinitions = {
+      content: [
+        { text: 'Quote Summary', style: 'header' },
         {
-          filename: `order - ${order.id}.pdf`,
-          path: pdfPath,
-          contentType: 'application/pdf'
+          columns: [
+            {
+              width: '33%',
+              text: [
+                { text: 'Customer Name:\n', bold: true },
+                { text: `${userAddress.firstname} ${userAddress.lastname}` }
+              ]
+            },
+            {
+              width: '33%',
+              text: [
+                { text: 'Delivery Address:\n', bold: true },
+                { text: `Country: ${userAddress.country}, Town: ${userAddress.town}, Zipcode: ${userAddress.zipCode}, Street: ${userAddress.street_address}, Unit: ${userAddress.appartment}` }
+              ]
+            },
+            {
+              width: '33%',
+              text: [
+                { text: 'Date:\n', bold: true },
+                { text: new Date(order.created_at).toLocaleDateString() }
+              ]
+            }
+          ]
+        },
+        { text: '\nOrder Summary', style: 'subheader' },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', 'auto', 'auto', 'auto'],
+            body: itemTableBody,
+          },
+          layout: 'lightHorizontalLines'
+        },
+        { text: `\nTotal Net: £${order.total_price.toFixed(2)}` },
+        { text: `Total VAT (20%): £${vat.toFixed(2)}` },
+        { text: `Total Amount: £${total.toFixed(2)}`, bold: true },
+        {
+          text: '\nIf you have any questions, feel free to contact us.\n\nBest regards,\nLondon Glass Fittings',
+          style: 'footer'
         }
-      ]
+      ],
+      styles: {
+        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+        subheader: { fontSize: 15, bold: true, margin: [0, 10, 0, 5] },
+        footer: { fontSize: 10, margin: [0, 20, 0, 0] }
+      }
+    };
+
+    const chunks: any[] = [];
+    const pdfDoc = printer.createPdfKitDocument(docDefinition);
+    pdfDoc.on('data', chunk => chunks.push(chunk));
+
+    pdfDoc.on('end', async () => {
+      const pdfBuffer = Buffer.concat(chunks);
+
+      await transporter.sendMail({
+        from: this.configService.get<string>('EMAIL_OWNER'),
+        to: this.configService.get<string>('EMAIL_OWNER'),
+        subject: 'New Order',
+        html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
+        attachments: [
+          {
+            filename: `order-${order.id}.pdf`,
+            content: pdfBuffer,
+            contentType: 'application/pdf'
+          }
+        ]
+      });
     });
 
-    unlinkSync(pdfPath);
+    pdfDoc.end();
+
   }
 }
