@@ -3,13 +3,14 @@ import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useOrderContext } from "../../context/OrderContext";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container, Row, Col, Table, Button, Badge, Form } from "react-bootstrap";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEye, FiPlus } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEye } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
 import OrderModal from "./OrderModal";
 
 const Orders = () => {
 	const { authUser, logout } = useAuthenticateContext();
 	const { orders, updateOrderStatus } = useOrderContext();
+	const [orderId, setOrderId] = useState(0);
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 
@@ -18,7 +19,12 @@ const Orders = () => {
 		navigate("/");
 	}
 
-	const handleOpen = () => {
+	const handleOpen = (id) => {
+		setOrderId(id);
+		setOpen(!open);
+	}
+
+	const handleClose = () => {
 		setOpen(!open);
 	}
 
@@ -97,7 +103,7 @@ const Orders = () => {
 								<div className="sidebar-stats mt-5 px-3">
 									<div className="stat-item mb-3">
 										<small className="text-muted">Total Products</small>
-										<h3 className="text-primary"></h3>
+										<h3 className="text-primary">hello</h3>
 									</div>
 									<div className="stat-item">
 										<small className="text-muted">Active Orders</small>
@@ -110,10 +116,6 @@ const Orders = () => {
 						<Col md={9} xl={10} className="p-4 main-content-area">
 							<div className="d-flex justify-content-between align-items-center mb-4">
 								<h2 className="page-title">Order Management</h2>
-								<Button variant="primary" className="rounded-pill">
-									<FiPlus className="me-2" />
-									Add New Order
-								</Button>
 							</div>
 
 							<div className="custom-card p-4 shadow-sm">
@@ -147,7 +149,7 @@ const Orders = () => {
 																					className="product-img rounded-circle me-3"
 																				/>
 																				<div>
-																					<h6 className="mb-0"></h6>
+																					<h6 className="mb-0">hello</h6>
 																					<small className="text-muted">
 																						{product.product.title}
 																					</small>
@@ -181,7 +183,7 @@ const Orders = () => {
 																variant="outline-primary"
 																size="sm"
 																className="me-2 action-btn"
-																onClick={() => { return handleOpen() }}
+																onClick={() => { return handleOpen(order.id) }}
 
 															>
 																<FiEye />
@@ -214,15 +216,8 @@ const Orders = () => {
 						</Col>
 					</Row>
 				</Container>
-				<Button
-					variant="primary"
-					className="floating-action-btn rounded-circle"
-				>
-					<FiPlus size={24} />
-				</Button>
 			</div>
-
-			<OrderModal open={open} close={handleOpen} orders={orders} />
+			<OrderModal open={open} close={handleClose} orders={orders} id={orderId} />
 		</>
 	)
 }

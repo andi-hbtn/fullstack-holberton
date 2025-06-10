@@ -3,6 +3,8 @@ import { OrderService } from './order.service';
 import { OrderDto } from "./dto/order.dto";
 import { OrderEntity } from './entity/order.entity';
 import { Response } from 'express';
+import { ServiceHandler } from "../errorHandler/service.error";
+import { OrderByIdResposne } from './responseType/response.interface';
 
 @Controller('order')
 export class OrderController {
@@ -14,8 +16,13 @@ export class OrderController {
   }
 
   @Get(':id')
-  public async findOne(@Param('id') id: number): Promise<OrderEntity> {
-    return await this.orderService.findOne(id);
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<OrderByIdResposne> {
+    try {
+      const result = await this.orderService.findOne(id);
+      return result;
+    } catch (error) {
+      throw new ServiceHandler(error.message, error.status);
+    }
   }
 
   @Post('create')

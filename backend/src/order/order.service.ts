@@ -5,16 +5,14 @@ import { OrderEntity } from './entity/order.entity';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { ProductEntity } from 'src/product/entity/products.entity';
 import { OrderItemEntity } from './entity/order_item.entity';
-import { UserAddress } from './entity/user_address.entity';
-import { UserAddressDto } from './dto/userAddress.dto';
 import { OrderDto } from './dto/order.dto';
 import { ServiceHandler } from 'src/errorHandler/service.error';
+import { OrderByIdResposne } from './responseType/response.interface';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import * as PdfPrinter from 'pdfmake/src/printer';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
-import * as fs from 'fs';
-import { join } from 'path';
+
 
 @Injectable()
 export class OrderService {
@@ -23,7 +21,6 @@ export class OrderService {
     @InjectRepository(OrderEntity) private readonly ordersRepository: Repository<OrderEntity>,
     @InjectRepository(ProductEntity) private readonly productsRepository: Repository<ProductEntity>,
     @InjectRepository(OrderItemEntity) private readonly orderItemsRepository: Repository<OrderItemEntity>,
-    @InjectRepository(UserAddress) private readonly userAddress: Repository<UserAddress>,
     private configService: ConfigService
   ) { }
 
@@ -63,11 +60,7 @@ export class OrderService {
         })
       );
 
-      const userAddress = this.userAddress.create({
-        firstname,
-        lastname,
-        email,
-        phone,
+      const userAddress = await this.usersRepository.update(user.id,{
         country,
         town,
         zipCode,
@@ -79,7 +72,6 @@ export class OrderService {
       // Save all order items
       const orderItem = await this.orderItemsRepository.save(orderItems);
       await this.sendOrderWithEmail(savedOrder, orderItem, userAddress);
-      await this.userAddress.save(userAddress);
 
       return {
         statusCode: HttpStatus.CREATED,
@@ -117,17 +109,30 @@ export class OrderService {
     }
   }
 
-  public async findOne(id: number): Promise<OrderEntity> {
-    return this.ordersRepository.findOne({
-      where: { id }, relations: {
-        user: true,
-        orderItems: {
-          product: {
-            category: true
-          },
+  public async findOne(id: number): Promise<OrderByIdResposne> {
+
+    try {
+      const result = await this.ordersRepository.findOne({
+        where: { id }, relations: {
+          user: true,
+          orderItems: {
+            product: {
+              category: true
+            },
+          }
         }
+      });
+      if (!result) {
+        throw new ServiceHandler("This order was not found", HttpStatus.NOT_FOUND);
       }
-    })
+      return {
+        statusCode: 200,
+        message: "Order By Id",
+        data: result
+      };
+    } catch (error) {
+      throw new ServiceHandler(error.message, error.status);
+    }
   }
 
   public async findAll(): Promise<OrderEntity[]> {
@@ -143,7 +148,7 @@ export class OrderService {
     });
   }
 
-  public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: UserAddressDto): Promise<any> {
+  public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: any): Promise<any> {
 
     const printer = new PdfPrinter({
       Roboto: {
@@ -237,8 +242,8 @@ export class OrderService {
       const pdfBuffer = Buffer.concat(chunks);
 
       await transporter.sendMail({
-        from: this.configService.get<string>('EMAIL_OWNER'),
-        to: this.configService.get<string>('EMAIL_OWNER'),
+        from: this.configService.get<string>('EMAIL_USER'),
+        to: this.configService.get<string>('EMAIL_USER'),
         subject: 'New Order',
         html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
         attachments: [

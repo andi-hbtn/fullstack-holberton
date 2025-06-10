@@ -6,11 +6,9 @@ import { UserEntity } from 'src/user/entity/user.entity';
 import { OrderEntity } from "./entity/order.entity";
 import { ProductEntity } from 'src/product/entity/products.entity';
 import { OrderItemEntity } from './entity/order_item.entity';
-import { UserAddress } from './entity/user_address.entity';
-
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, OrderEntity, ProductEntity, OrderItemEntity, UserAddress])],
+  imports: [TypeOrmModule.forFeature([UserEntity, OrderEntity, ProductEntity, OrderItemEntity])],
   controllers: [OrderController],
   providers: [OrderService],
   exports: [OrderService]

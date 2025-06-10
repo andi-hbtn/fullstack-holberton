@@ -24,6 +24,26 @@ export class UserEntity {
 	@Column()
 	password: string;
 
+	//****************here**************** 
+	@Column({ nullable: true })
+	country: string | null;
+
+	@Column({ nullable: true })
+	town: string | null;
+
+	@Column({ nullable: true })
+	zipCode: string | null;
+
+	@Column({ nullable: true })
+	street_address: string | null;
+
+	@Column({ nullable: true })
+	appartment: string | null;
+
+	@Column({ nullable: true })
+	message: string | null;
+	//****************here**************** 
+
 	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
 	createdAt: Date;
 
