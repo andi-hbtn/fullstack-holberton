@@ -26,10 +26,18 @@ export class OrderService {
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      const { user_id, items, total_price, status, created_at, firstname, lastname, email, phone, country, town, zipCode, street_address, appartment, message } = orderData;
+      const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, country, town, zipCode, street_address, appartment, message } = orderData;
       let user: UserEntity | null = null;
       if (user_id) {
         user = await this.usersRepository.findOne({ where: { id: user_id } });
+        await this.usersRepository.update(user.id, {
+          country,
+          town,
+          zipCode,
+          street_address,
+          appartment,
+          message,
+        });
       }
 
       // Create OrderEntity instance
@@ -60,18 +68,22 @@ export class OrderService {
         })
       );
 
-      const userAddress = await this.usersRepository.update(user.id,{
+      const userLocation = {
+        phone,
+        email,
+        firstname,
+        lastname,
         country,
         town,
         zipCode,
         street_address,
         appartment,
         message,
-      });
+      }
 
       // Save all order items
       const orderItem = await this.orderItemsRepository.save(orderItems);
-      await this.sendOrderWithEmail(savedOrder, orderItem, userAddress);
+      await this.sendOrderWithEmail(savedOrder, orderItem, userLocation);
 
       return {
         statusCode: HttpStatus.CREATED,
@@ -182,6 +194,7 @@ export class OrderService {
     const vat = order.total_price * 0.2;
     const total = order.total_price + vat;
 
+
     const docDefinition: TDocumentDefinitions = {
       content: [
         { text: 'Quote Summary', style: 'header' },
@@ -190,15 +203,20 @@ export class OrderService {
             {
               width: '33%',
               text: [
-                { text: 'Customer Name:\n', bold: true },
-                { text: `${userAddress.firstname} ${userAddress.lastname}` }
+                { text: `Customer Name:${userAddress.firstname} ${userAddress.lastname}\n`, bold: true },
+                { text: `Customer Email: ${userAddress.email}\n` },
+                { text: `Customer Phone: ${userAddress.phone}\n` },
               ]
             },
             {
               width: '33%',
               text: [
                 { text: 'Delivery Address:\n', bold: true },
-                { text: `Country: ${userAddress.country}, Town: ${userAddress.town}, Zipcode: ${userAddress.zipCode}, Street: ${userAddress.street_address}, Unit: ${userAddress.appartment}` }
+                { text: `Country: ${userAddress.country}\n` },
+                { text: `Town: ${userAddress.town}\n` },
+                { text: `Zipcode: ${userAddress.zipCode}\n` },
+                { text: `Street: ${userAddress.street_address}\n` },
+                { text: `Unit: ${userAddress.appartment}\n` }
               ]
             },
             {
@@ -219,9 +237,9 @@ export class OrderService {
           },
           layout: 'lightHorizontalLines'
         },
-        { text: `\nTotal Net: £${order.total_price.toFixed(2)}` },
-        { text: `Total VAT (20%): £${vat.toFixed(2)}` },
-        { text: `Total Amount: £${total.toFixed(2)}`, bold: true },
+        { text: `\nTotal Net: £${order.total_price.toFixed(2)}`, margin: [10, 0, 10, 0] },
+        { text: `Total VAT(20 %): £${vat.toFixed(2)}`, margin: [10, 0, 10, 0] },
+        { text: `Total Amount: £${total.toFixed(2)}`, bold: true, margin: [10, 0, 10, 0] },
         {
           text: '\nIf you have any questions, feel free to contact us.\n\nBest regards,\nLondon Glass Fittings',
           style: 'footer'
@@ -242,13 +260,13 @@ export class OrderService {
       const pdfBuffer = Buffer.concat(chunks);
 
       await transporter.sendMail({
-        from: this.configService.get<string>('EMAIL_USER'),
-        to: this.configService.get<string>('EMAIL_USER'),
+        from: this.configService.get<string>('EMAIL_OWNER'),
+        to: this.configService.get<string>('EMAIL_OWNER'),
         subject: 'New Order',
         html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
         attachments: [
           {
-            filename: `order-${order.id}.pdf`,
+            filename: `order - ${order.id}.pdf`,
             content: pdfBuffer,
             contentType: 'application/pdf'
           }
