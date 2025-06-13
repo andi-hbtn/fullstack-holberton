@@ -23,10 +23,6 @@ const OrdersModal = ({ open, close, id }) => {
         if (id) fetchOrder();
     }, [id, getOrderById]);
 
-
-    console.log("orders-----", orders);
-
-
     return (
         <Modal show={open} onHide={close} backdrop="static" keyboard={false} size="lg">
             <Modal.Header closeButton className="border-bottom-0">

@@ -2,7 +2,6 @@ import axios from "axios";
 const url = `${process.env.REACT_APP_API_URL}api/product`;
 
 const create_product_service = async (data) => {
-
 	const formData = new FormData();
 	formData.append("title", data.title);
 	formData.append("description", data.description);

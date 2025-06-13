@@ -46,7 +46,6 @@ const ProductProvider = (props) => {
 	const updateProduct = async (data) => {
 		try {
 			const result = await update_product_service(data);
-			console.log("result-----", result);
 			if (result.status === 200) {
 				await getProducts()
 				return result.data;

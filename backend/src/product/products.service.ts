@@ -49,7 +49,6 @@ export class ProductService {
 	}
 
 	public async updateProduct(data: ProductDto, id: number, file: string): Promise<any> {
-
 		try {
 			const product = {
 				title: data.title,

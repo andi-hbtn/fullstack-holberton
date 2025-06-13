@@ -63,8 +63,7 @@ export class ProductController {
 			}
 		}),
 	}))
-	public async update(@Body() bodyParam: any, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<ProductResponse> {
-
+	public async update(@Body() bodyParam: ProductDto, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<ProductResponse> {
 		try {
 			const productResponse = await this.productService.getProductById(id);
 			const product = productResponse.data;
