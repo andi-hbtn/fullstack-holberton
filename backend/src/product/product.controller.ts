@@ -11,7 +11,9 @@ import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
+import * as path from 'path';
 import { ServiceHandler } from 'src/errorHandler/service.error';
+
 
 @UseGuards(AuthGuard, PermissionGuard)
 @Controller('product')
@@ -67,16 +69,14 @@ export class ProductController {
 			const productResponse = await this.productService.getProductById(id);
 			const product = productResponse.data;
 			if (!file || !file?.filename) {
-				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
+				const imagePath = path.basename(product.image);
+				return await this.productService.updateProduct(bodyParam, id, imagePath);
+			} else {
+				const imagePath = path.basename(product.image);
+				fs.unlinkSync('uploads/' + imagePath);
+				return await this.productService.updateProduct(bodyParam, id, file.filename);
 			}
-			// Delete the old image
-			fs.unlinkSync('uploads/' + product.image);
-			// Proceed with the update
-			return await this.productService.updateProduct(bodyParam, id, file.filename);
 		} catch (error) {
-			if (file || file?.filename) {
-				fs.unlinkSync('uploads/' + file.filename);
-			}
 			throw new ServiceHandler(error.response, error.status);
 		}
 	}
@@ -100,7 +100,6 @@ export class ProductController {
 			throw new ServiceHandler(error.response, error.status);
 		}
 	}
-
 
 	@Roles('admin')
 	@Post('upload-colors/:productId')

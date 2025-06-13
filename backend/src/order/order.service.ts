@@ -87,7 +87,7 @@ export class OrderService {
 
       return {
         statusCode: HttpStatus.CREATED,
-        message: 'Order was successfully created',
+        message: 'Success! We’ve received your order and it’s being prepared.',
         data: savedOrder
       };
     } catch (error) {

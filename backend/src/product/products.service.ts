@@ -48,7 +48,7 @@ export class ProductService {
 		}
 	}
 
-	public async updateProduct(data: ProductDto, id: number, file?: string): Promise<any> {
+	public async updateProduct(data: ProductDto, id: number, file: string): Promise<any> {
 
 		try {
 			const product = {
@@ -62,7 +62,6 @@ export class ProductService {
 			}
 			await this.ProductEntity.update(id, product);
 			const result = await this.ProductEntity.findOne({ where: { id } });
-
 			return {
 				statusCode: HttpStatus.OK,
 				message: 'Product updated successfully',

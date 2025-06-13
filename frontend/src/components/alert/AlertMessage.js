@@ -5,7 +5,6 @@ const AlertMessage = ({status,message}) => {
 	return (
 		<Alert variant="info" className='alert-container'>
 			<Alert.Heading className='alert-message'>
-					<strong>{status}</strong>
 					{message}
 			</Alert.Heading>
 		</Alert>

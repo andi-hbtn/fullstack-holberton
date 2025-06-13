@@ -16,7 +16,7 @@ export class CategoryEntity {
 	@Column({ type: 'timestamp', default: () => { return 'CURRENT_TIMESTAMP' } })
 	created: Date;
 
-	@OneToMany(() => ProductEntity, product => product.category)
+	@OneToMany(() => ProductEntity, product => product.category, { cascade: true })
 	products: ProductEntity[];
 
 	@Column()

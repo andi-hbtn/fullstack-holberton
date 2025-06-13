@@ -25,7 +25,7 @@ export class ProductEntity {
 	@OneToMany(() => ProductColorImageEntity, (colorImage) => colorImage.product, { cascade: true })
 	colorImages: ProductColorImageEntity[];
 
-	@ManyToOne(() => CategoryEntity, (category) => category.products, { cascade: true })
+	@ManyToOne(() => CategoryEntity, (category) => category.products)
 	@JoinColumn({ name: 'category_id' })
 	category: CategoryEntity;
 
