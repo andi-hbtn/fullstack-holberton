@@ -12,6 +12,7 @@ import { ImageNameHelper } from 'src/helpers/imageName.helper';
 import { Response } from 'express';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import * as fs from "fs";
+import * as path from 'path';
 import { CategoryResponse, DeleteCategoryResponse } from './responseType/response.interface';
 
 @UseGuards(AuthGuard, PermissionGuard)
@@ -70,12 +71,15 @@ export class CategoryController {
 			const category = categoryResponse.data;
 
 			if (!file || !file?.filename) {
-				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
+				const imagePath = path.basename(category.image);
+				return await this.categoryService.updateCategory(bodyParam, id, imagePath);
+			} else {
+				// Delete the old image
+				const imagePath = path.basename(category.image);
+				fs.unlinkSync('uploads/' + imagePath);
+				// Proceed with the update
+				return await this.categoryService.updateCategory(bodyParam, id, file.filename);
 			}
-			// Delete the old image
-			fs.unlinkSync('uploads/' + category.image);
-			// Proceed with the update
-			return await this.categoryService.updateCategory(bodyParam, id, file.filename);
 		} catch (error) {
 			if (file || file?.filename) {
 				fs.unlinkSync('uploads/' + file.filename);

@@ -17,7 +17,7 @@ const Categories = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
-	const [formData, setFormData] = useState({ id: 0, title: "", description: "" });
+	const [formData, setFormData] = useState({ id: 0, title: "", description: "", image: "" });
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
@@ -27,8 +27,9 @@ const Categories = () => {
 	}
 
 	const handleEdit = (category) => {
+		console.log("category---", category);
 		setFormData(
-			{ id: category.id, title: category.title, description: category.description }
+			{ id: category.id, title: category.title, description: category.description , image:category.image }
 		);
 		setCaseModal({ title: "Edit Category", create: false, button: "Update" })
 		setOpen(!open);

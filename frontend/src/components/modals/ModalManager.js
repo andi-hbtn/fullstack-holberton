@@ -44,19 +44,12 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 
 	const isDisabled = fields.some(field => {
 		const value = data[field.name];
-
 		if (field.type === "file") {
-			return !value;
+			// Handle file field: check if it's a File object or non-empty string
+			return !value || value === "";
 		}
-		// Switch (boolean) can be false, so only undefined/null is invalid
-		if (field.type === "switch") {
-			return value === undefined || value === null;
-		}
-		// All others: text, number, options
-		return value === undefined || value === null || value === "";
-
+		return value === undefined || value === 0;
 	});
-
 	return (
 		<>
 			<Modal
@@ -87,6 +80,13 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 												</Form.Select>
 												: field.name === "image" ?
 													<>
+														{case_modal.create === false ?
+															<div>
+																<Form.Label>Current Image</Form.Label>
+																<img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${data.image}`} width={"80px"} />
+															</div>
+															: ""}
+
 														<Form.Label>{field.label}</Form.Label>
 														<Form.Control
 															type={field.type}
