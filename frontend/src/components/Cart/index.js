@@ -10,7 +10,6 @@ import "./index.css";
 const Cart = () => {
     const { authUser } = useAuthenticateContext();
     const { cart, setCart, setFinalCart } = useCartContext();
-    console.log("cart----", cart);
 
     useEffect(() => {
         const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
