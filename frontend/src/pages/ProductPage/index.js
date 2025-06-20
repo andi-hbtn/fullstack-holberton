@@ -125,6 +125,7 @@ const ProductPage = () => {
                                                         setSelectedColor(null);
                                                         setMainImage(product.image);
                                                     }}
+                                                    alt="product figure"
                                                 />
                                             </div>
                                         </div>
