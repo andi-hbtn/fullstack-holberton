@@ -108,10 +108,6 @@ const Categories = () => {
 								</Nav.Link>
 							</Nav>
 							<div className="sidebar-stats mt-5 px-3">
-								<div className="stat-item mb-3">
-									<small className="text-muted">Total Categories</small>
-									<h3 className="text-primary">{categories.length}</h3>
-								</div>
 								<div className="stat-item">
 									<small className="text-muted">Active Categories</small>
 									<h3 className="text-success">{categories.filter(c => c.status === 'active').length}</h3>
@@ -135,7 +131,6 @@ const Categories = () => {
 									<tr>
 										<th>ID</th>
 										<th>Category</th>
-										<th>Description</th>
 										<th>Created At</th>
 										<th>Actions</th>
 									</tr>
@@ -153,11 +148,6 @@ const Categories = () => {
 													/>
 													<h6 className="mb-0">{category.title}</h6>
 												</div>
-											</td>
-											<td>
-												<small className="text-muted">
-													{category.description.substring(0, 50)}...
-												</small>
 											</td>
 											<td>
 												<Badge bg="secondary">

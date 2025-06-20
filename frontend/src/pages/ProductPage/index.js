@@ -97,8 +97,8 @@ const ProductPage = () => {
                                                             alt={colorImage.color}
                                                             className="img-fluid"
                                                             style={{
-                                                                width: '40px',
-                                                                height: '40px',
+                                                                width: '80px',
+                                                                height: '80px',
                                                                 objectFit: 'cover',
                                                                 borderRadius: '50%',
                                                                 cursor: 'pointer',
@@ -114,8 +114,8 @@ const ProductPage = () => {
                                                     src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
                                                     className="img-fluid"
                                                     style={{
-                                                        width: '40px',
-                                                        height: '40px',
+                                                        width: '80px',
+                                                        height: '80px',
                                                         objectFit: 'cover',
                                                         borderRadius: '50%',
                                                         cursor: 'pointer',

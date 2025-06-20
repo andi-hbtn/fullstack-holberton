@@ -31,7 +31,7 @@ import { ProductColorImageEntity } from './product/entity/productColors.entity';
 
       })
     })
-    , ProductModule, CategoryModule, UserModule, AuthModule, OrderModule],
+    , CategoryModule, ProductModule, UserModule, AuthModule, OrderModule],
   controllers: [],
   providers: [],
 })

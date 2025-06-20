@@ -30,7 +30,6 @@ const Contact = () => {
             setVariant('danger');
             setMessage('Error sending message. Please try again.');
         }
-
         setLoading(false);
     };
 

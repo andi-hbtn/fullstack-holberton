@@ -15,9 +15,11 @@ const Header = () => {
             </div>
             <Row>
                 <Col className='logo-container'>
-                    <img src={logo} alt='header brand logo' />
+                    <a href="/">
+                        <img src={logo} alt='header brand logo' />
+                    </a>
                 </Col>
-            </Row>
+            </Row >
             <Navigation />
         </>
     );

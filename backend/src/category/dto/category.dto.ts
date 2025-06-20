@@ -5,10 +5,6 @@ export class CategoryDto {
 	@IsNotEmpty()
 	title: string;
 
-	@IsString()
-	@IsNotEmpty()
-	description: string;
-
 	@IsOptional()
 	createdAt?: Date;
 }

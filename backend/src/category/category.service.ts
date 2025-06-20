@@ -40,7 +40,7 @@ export class CategoryService {
 
 	public async updateCategory(data: CategoryDto, id: number, file?: string): Promise<CategoryResponse> {
 		try {
-			const category = { title: data.title, description: data.description, image: file }
+			const category = { title: data.title, image: file }
 			await this.categoryRepository.update(id, category);
 			const result = await this.categoryRepository.findOne({ where: { id } });
 			return {

@@ -29,7 +29,7 @@
     top: 31px;
 }
 
-.logo-container>img {
+.logo-container>a>img {
     width: 300px;
     height: 51px;
     display: block;
@@ -40,13 +40,11 @@
     width: 100%;
 }
 
-.menu-cnt {
-    padding: 0px 11px;
-}
+
 
 .menu-cnt>a {
     margin-right: 10px;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.2em;
     font-family: 'Ubuntu', sans-serif;
     color: #a3aaad;

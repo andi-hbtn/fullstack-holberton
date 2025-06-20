@@ -10,9 +10,6 @@ export class CategoryEntity {
 	@Column()
 	title: string;
 
-	@Column()
-	description: string;
-
 	@Column({ type: 'timestamp', default: () => { return 'CURRENT_TIMESTAMP' } })
 	created: Date;
 

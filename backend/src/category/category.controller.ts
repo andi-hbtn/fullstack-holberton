@@ -44,7 +44,6 @@ export class CategoryController {
 			}
 			const category = {
 				title: bodyParam.title,
-				description: bodyParam.description,
 				image: file.filename
 			}
 			return await this.categoryService.createCategory(category);
