@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import { sendMessage } from "../../services/contact";
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer';
 import './index.css';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
-        name: '',
+        fullname: '',
         email: '',
         subject: '',
         message: ''
@@ -20,12 +21,17 @@ const Contact = () => {
         setLoading(true);
 
         try {
-            // Simulate API call
+
+            const result = await sendMessage(formData);
+
+            if (!result.data.status === 200) {
+                throw new Error(result.data.message || 'Request failed');
+            }
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             setVariant('success');
             setMessage('Your message has been sent successfully!');
-            setFormData({ name: '', email: '', subject: '', message: '' });
+            setFormData({ fullname: '', email: '', subject: '', message: '' });
         } catch (error) {
             setVariant('danger');
             setMessage('Error sending message. Please try again.');
@@ -62,11 +68,11 @@ const Contact = () => {
                                     <Row className="g-3">
                                         <Col md={6}>
                                             <Form.Group controlId="formName">
-                                                <Form.Label>Name</Form.Label>
+                                                <Form.Label>Fullname</Form.Label>
                                                 <Form.Control
                                                     type="text"
-                                                    name="name"
-                                                    value={formData.name}
+                                                    name="fullname"
+                                                    value={formData.fullname}
                                                     onChange={handleChange}
                                                     required
                                                     style={{ borderColor: '#d5dee3' }}

@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Card, Badge } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import NotFount from "../../components/NotFount";
-import { PiMinusLight, PiPlusLight } from "react-icons/pi";
+import { PiMinusLight, PiPlusLight, PiCaretLeftLight, PiCaretRightLight } from "react-icons/pi";
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
 import "./index.css";
@@ -16,6 +16,7 @@ const ProductPage = () => {
     const [error, setError] = useState({ message: "", status: 0 });
     const [selectedColor, setSelectedColor] = useState(null);
     const [mainImage, setMainImage] = useState('');
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
         const getById = async (id) => {
@@ -35,6 +36,7 @@ const ProductPage = () => {
         if (product?.image) {
             setMainImage(product.image);
             setSelectedColor(null);
+            setCurrentImageIndex(0);
         }
     }, [product]);
 
@@ -42,6 +44,58 @@ const ProductPage = () => {
         const item = cart.items?.find(el => el.id === productId);
         return item?.quantity || 0;
     };
+
+    const getAvailableImages = () => {
+        const images = [];
+        // Add main product image
+        if (product.image) {
+            images.push({
+                type: 'main',
+                src: `${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`
+            });
+        }
+        // Add color variant images if available
+        if (product.colorImages && product.colorImages.length > 0) {
+            product.colorImages.forEach(colorImage => {
+                images.push({
+                    type: 'color',
+                    src: `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${colorImage.product_color_image}`,
+                    colorId: colorImage.id
+                });
+            });
+        }
+        return images;
+    };
+
+    const handleNextImage = () => {
+        const images = getAvailableImages();
+        setCurrentImageIndex((prevIndex) =>
+            prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+        const nextImage = images[currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1];
+        if (nextImage.type === 'color') {
+            setSelectedColor(nextImage.colorId);
+        } else {
+            setSelectedColor(null);
+        }
+        setMainImage(nextImage.src.split('/').pop());
+    };
+
+    const handlePrevImage = () => {
+        const images = getAvailableImages();
+        setCurrentImageIndex((prevIndex) =>
+            prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+        const prevImage = images[currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1];
+        if (prevImage.type === 'color') {
+            setSelectedColor(prevImage.colorId);
+        } else {
+            setSelectedColor(null);
+        }
+        setMainImage(prevImage.src.split('/').pop());
+    };
+
+    const images = getAvailableImages();
 
     return (
         <>
@@ -57,11 +111,30 @@ const ProductPage = () => {
                     ) : (
                         <Row className="prod-card-container g-5">
                             <Col lg={6} className="d-flex justify-content-center">
-                                <Card className="product-image-card">
+                                <Card className="product-image-card position-relative">
+                                    {images.length > 1 && (
+                                        <>
+                                            <Button
+                                                variant="light"
+                                                className="position-absolute start-0 top-50 translate-middle-y rounded-circle p-2 image-nav-btn"
+                                                onClick={handlePrevImage}
+                                            >
+                                                <PiCaretLeftLight size={24} />
+                                            </Button>
+                                            <Button
+                                                variant="light"
+                                                className="position-absolute end-0 top-50 translate-middle-y rounded-circle p-2 image-nav-btn"
+                                                onClick={handleNextImage}
+                                            >
+                                                <PiCaretRightLight size={24} />
+                                            </Button>
+                                        </>
+                                    )}
                                     <Card.Img
                                         variant="top"
-                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/` + (selectedColor ? `colors/${mainImage}` : `${mainImage}`)}
+                                        src={images[currentImageIndex]?.src}
                                         className="product-image"
+                                        alt={product.title}
                                     />
                                 </Card>
                             </Col>
@@ -69,8 +142,7 @@ const ProductPage = () => {
                             <Col lg={6}>
                                 <div className="product-details">
                                     <h1 className="product-title mb-3">{product.title}</h1>
-                                    <Badge bg="success" className="mb-3">In Stock</Badge>
-
+                                    <Badge bg={product.stock > 0 ? 'success' : 'secondary'} className="mb-3"> {product.stock > 0 ? 'In Stock' : 'Out of Stock '}</Badge>
                                     <div className="price-section mb-4">
                                         <h3 className="text-primary mb-0">
                                             £{product.price}
@@ -81,52 +153,55 @@ const ProductPage = () => {
                                     {/* Color Selector */}
                                     {product.colorImages && product.colorImages.length > 0 && (
                                         <div className="color-selector mb-4">
-                                            <h5 className="fw-medium">Color:</h5>
-                                            <div className="d-flex gap-2">
+                                            <h5 className="fw-medium mb-3">Select Color:</h5>
+                                            <div className="color-options-container">
                                                 {product.colorImages.map((colorImage) => (
                                                     <div
                                                         key={colorImage.id}
-                                                        className={`color-swatch ${selectedColor === colorImage.id ? 'selected' : ''}`}
+                                                        className={`color-option ${selectedColor === colorImage.id ? 'selected' : ''}`}
                                                         onClick={() => {
                                                             setSelectedColor(colorImage.id);
                                                             setMainImage(colorImage.product_color_image);
+                                                            const images = getAvailableImages();
+                                                            const foundIndex = images.findIndex(img =>
+                                                                img.type === 'color' && img.colorId === colorImage.id
+                                                            );
+                                                            if (foundIndex !== -1) setCurrentImageIndex(foundIndex);
                                                         }}
                                                     >
-                                                        <img
-                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${colorImage.color_image}`}
-                                                            alt={colorImage.color}
-                                                            className="img-fluid"
-                                                            style={{
-                                                                width: '80px',
-                                                                height: '80px',
-                                                                objectFit: 'cover',
-                                                                borderRadius: '50%',
-                                                                cursor: 'pointer',
-                                                                border: selectedColor === colorImage.id
-                                                                    ? '2px solid var(--bs-primary)'
-                                                                    : '1px solid #ddd'
-                                                            }}
-                                                        />
+                                                        <div className="color-swatch-container">
+                                                            <div
+                                                                className="color-swatch"
+                                                                style={{
+                                                                    backgroundImage: `url(${process.env.REACT_APP_API_URL}api/product/uploads/colors/${colorImage.color_image})`,
+                                                                    borderColor: selectedColor === colorImage.id ? '#3a5663' : '#e0e0e0'
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <span className="color-name">{colorImage.color}</span>
                                                     </div>
                                                 ))}
 
-                                                <img
-                                                    src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-                                                    className="img-fluid"
-                                                    style={{
-                                                        width: '80px',
-                                                        height: '80px',
-                                                        objectFit: 'cover',
-                                                        borderRadius: '50%',
-                                                        cursor: 'pointer',
-                                                        border: '1px solid #ddd'
-                                                    }}
+                                                {/* Default color option */}
+                                                <div
+                                                    className={`color-option ${selectedColor === null ? 'selected' : ''}`}
                                                     onClick={() => {
                                                         setSelectedColor(null);
                                                         setMainImage(product.image);
+                                                        setCurrentImageIndex(0);
                                                     }}
-                                                    alt="product figure"
-                                                />
+                                                >
+                                                    <div className="color-swatch-container">
+                                                        <div
+                                                            className="color-swatch"
+                                                            style={{
+                                                                backgroundImage: `url(${process.env.REACT_APP_API_URL}api/product/uploads/${product.image})`,
+                                                                borderColor: selectedColor === null ? '#3a5663' : '#e0e0e0'
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <span className="color-name">Default</span>
+                                                </div>
                                             </div>
                                         </div>
                                     )}
@@ -160,8 +235,8 @@ const ProductPage = () => {
                                         <p className="product-description">{product.description}</p>
                                     </div>
                                 </div>
-                            </Col >
-                        </Row >
+                            </Col>
+                        </Row>
                     )
                 }
             </Container >

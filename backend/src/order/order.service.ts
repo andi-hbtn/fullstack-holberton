@@ -50,7 +50,6 @@ export class OrderService {
 
       // Save order
       const savedOrder = await this.ordersRepository.save(order);
-
       // Create order items
       const orderItems = await Promise.all(
         items.map(async (item) => {
@@ -58,6 +57,13 @@ export class OrderService {
           if (!product) {
             throw new Error(`Product with ID ${item.product_id} not found`);
           }
+
+          if (product.stock < item.quantity) {
+            throw new Error(`Insufficient stock for product "${product.title}"`);
+          }
+
+          product.stock -= item.quantity;
+          await this.productsRepository.save(product);
 
           return this.orderItemsRepository.create({
             order: savedOrder,

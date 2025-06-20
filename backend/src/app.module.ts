@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { OrderItemEntity } from './order/entity/order_item.entity';
 import { ProductColorImageEntity } from './product/entity/productColors.entity';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { ProductColorImageEntity } from './product/entity/productColors.entity';
 
       })
     })
-    , CategoryModule, ProductModule, UserModule, AuthModule, OrderModule],
+    , CategoryModule, ProductModule, UserModule, AuthModule, OrderModule, ContactModule],
   controllers: [],
   providers: [],
 })

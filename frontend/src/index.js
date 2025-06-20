@@ -26,8 +26,6 @@ import Cart from './components/Cart/'
 import Checkout from './components/Checkout/';
 import AdminRoute from "./components/AdminRoute";
 
-import Test from "./pages/ProductPage/test.js"
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 axios.defaults.withCredentials = true;
@@ -76,7 +74,6 @@ root.render(
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
-                <Route path="/test/:id" element={<Test />} />
               </Routes>
             </BrowserRouter>
           </OrderProvider>
