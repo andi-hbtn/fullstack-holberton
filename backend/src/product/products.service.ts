@@ -5,7 +5,7 @@ import { ProductColorImageEntity } from './entity/productColors.entity';
 import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
-import { ProductResponse, ProductColorResponse } from './responseType/response.interface';
+import { ProductResponse, ProductColorResponse, DeleteProductResponse } from './responseType/response.interface';
 import * as fs from "fs"
 @Injectable()
 export class ProductService {
@@ -88,15 +88,33 @@ export class ProductService {
 		}
 	}
 
-	public async deleteProduct(id: number): Promise<any> {
+	public async deleteProduct(id: number): Promise<DeleteProductResponse> {
 		try {
-			const result = await this.ProductEntity.findOne({ where: { id } });
+			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['colorImages'] });
 			if (!result) {
 				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
 			}
-			fs.unlinkSync('uploads/' + result.image);
+
+			if (fs.existsSync(`uploads/${result.image}`)) {
+				// console.log("result.image--", result.image);
+				fs.unlinkSync(`uploads/${result.image}`);
+			}
+
+			if (result.colorImages.length > 0) {
+				result.colorImages.forEach((el) => {
+					// console.log("color_image--", el.color_image);
+					// console.log("product_color_image--", el.product_color_image);
+					if (fs.existsSync(`uploads/colors/${el.color_image}`) || fs.existsSync(`uploads/colors/${el.product_color_image}`)) {
+						fs.unlinkSync(`uploads/colors/${el.color_image}`);
+						fs.unlinkSync(`uploads/colors/${el.product_color_image}`);
+					}
+				})
+			}
 			await this.ProductEntity.delete(id);
-			return result;
+			return {
+				statusCode: 200,
+				message: "Product was successfully deleted"
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}
@@ -114,8 +132,8 @@ export class ProductService {
 			if (!product) {
 				// Clean up files if product not found
 				files.forEach(file => {
-					if (fs.existsSync(`uploads/colors/${file.filename}`)) {
-						fs.unlinkSync(`uploads/colors/${file.filename}`);
+					if (fs.existsSync(`uploads / colors / ${file.filename}`)) {
+						fs.unlinkSync(`uploads / colors / ${file.filename}`);
 					}
 				});
 				throw new ServiceHandler("Product not found", HttpStatus.NOT_FOUND);
@@ -136,8 +154,8 @@ export class ProductService {
 
 				// Skip if color already exists
 				if (existingColorSet.has(color)) {
-					if (colorImage) fs.existsSync(`uploads/colors/${colorImage.filename}`) && fs.unlinkSync(`uploads/colors/${colorImage.filename}`);
-					if (mainImage) fs.existsSync(`uploads/colors/${mainImage.filename}`) && fs.unlinkSync(`uploads/colors/${mainImage.filename}`);
+					if (colorImage) fs.existsSync(`uploads / colors / ${colorImage.filename}`) && fs.unlinkSync(`uploads / colors / ${colorImage.filename}`);
+					if (mainImage) fs.existsSync(`uploads / colors / ${mainImage.filename}`) && fs.unlinkSync(`uploads / colors / ${mainImage.filename}`);
 					continue;
 				}
 

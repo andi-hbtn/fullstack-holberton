@@ -14,6 +14,6 @@ export interface ProductColorResponse {
 }
 
 export interface DeleteProductResponse {
-  statusCode: 200,
+  statusCode: number,
   message: string,
 }

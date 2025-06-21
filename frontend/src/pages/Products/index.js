@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit, FiPlus } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit, FiTrash, FiPlus } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
 import { useProductContext } from "../../context/ProductContext";
 import { useCategoryContext } from "../../context/CategoryContext";
@@ -10,7 +10,7 @@ import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
 
 const ProductModal = () => {
-	const { products, createProduct, updateProduct } = useProductContext();
+	const { products, createProduct, updateProduct, deleteProduct } = useProductContext();
 	const { categories } = useCategoryContext();
 	const { authUser, logout } = useAuthenticateContext();
 	const navigate = useNavigate();
@@ -71,6 +71,10 @@ const ProductModal = () => {
 		);
 		setCaseModal({ title: "Edit product", create: false, button: "Update" })
 		setOpen(!open);
+	}
+
+	const handleDelete = async (id) => {
+		await deleteProduct(id);
 	}
 
 	const handleLogout = async () => {
@@ -156,7 +160,7 @@ const ProductModal = () => {
 
 						<Col md={9} xl={10} className="p-4 main-content-area">
 							<div className="d-flex justify-content-between align-items-center mb-4">
-								<h2 className="page-title">Product Color Management</h2>
+								<h2 className="page-title">Product Management</h2>
 								<Button variant="primary" className="rounded-pill" onClick={handleCreate}>
 									<FiPlus className="me-2" />
 									Add New Product
@@ -223,6 +227,14 @@ const ProductModal = () => {
 														onClick={() => handleEdit(product)}
 													>
 														<FiEdit />
+													</Button>
+													<Button
+														variant="outline-primary"
+														size="sm"
+														className="me-2 action-btn"
+														onClick={() => handleDelete(product.id)}
+													>
+														<FiTrash />
 													</Button>
 												</td>
 											</tr>

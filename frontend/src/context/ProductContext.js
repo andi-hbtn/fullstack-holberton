@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service } from "../services/product";
+import { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service, delete_product_service } from "../services/product";
 const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
@@ -69,19 +69,19 @@ const ProductProvider = (props) => {
 		}
 	}
 
-	// const deleteProduct = async (id) => {
-	// 	try {
-	// 		const result = await delete_product_service(id);
-	// 		if (result.status === 200) {
-	// 			await getProducts();
-	// 		}
-	// 	} catch (error) {
-	// 		console.log("error--in delete method--", error);
-	// 		return error
-	// 	}
-	// }
+	const deleteProduct = async (id) => {
+		try {
+			const result = await delete_product_service(id);
+			if (result.status === 200) {
+				await getProducts();
+			}
+		} catch (error) {
+			console.log("error--in delete method--", error);
+			return error
+		}
+	}
 
-	const values = { createProduct, updateProduct, getProduct, products, uploadColorProduct };
+	const values = { createProduct, updateProduct, getProduct, products, uploadColorProduct, deleteProduct };
 	return (
 		<ProductContext.Provider value={values}>
 			{props.children}

@@ -72,4 +72,9 @@ const upload_color_images_service = async (data) => {
 	return result.data;
 };
 
-export { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service }
+const delete_product_service = async (id) => {
+	const result = await axios.delete(`${url}/delete/${id}`);
+	return result;
+}
+
+export { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service, delete_product_service }

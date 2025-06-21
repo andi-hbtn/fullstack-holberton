@@ -83,7 +83,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 														{case_modal.create === false ?
 															<div>
 																<Form.Label>Current Image</Form.Label>
-																<img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${data.image}`} width={"80px"} />
+																<img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${data.image}`} width={"80px"} alt="figure" />
 															</div>
 															: ""}
 

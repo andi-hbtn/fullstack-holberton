@@ -37,7 +37,10 @@ export class ContactService {
 
         await transporter.sendMail({
             from: this.configService.get<string>('EMAIL_INFO'),
-            to: this.configService.get<string>('EMAIL_INFO'),
+            to: [
+                this.configService.get<string>('EMAIL_INFO'),
+                this.configService.get<string>('EMAIL_SALES')
+            ],
             subject: `New Contact Message from ${data.fullname}`,
             html: emailHtml,
         });

@@ -5,7 +5,7 @@ import { IsPublic } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ProductService } from './products.service';
 import { ProductDto } from './dto/product.dto';
-import { ProductResponse } from './responseType/response.interface';
+import { ProductResponse, DeleteProductResponse } from './responseType/response.interface';
 import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
@@ -92,7 +92,7 @@ export class ProductController {
 
 	@Roles('admin')
 	@Delete('delete/:id')
-	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<ProductResponse> {
+	public async deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<DeleteProductResponse> {
 		try {
 			return await this.productService.deleteProduct(id);
 		} catch (error) {
@@ -117,7 +117,6 @@ export class ProductController {
 		@Body('colors') colors: string
 	) {
 		try {
-
 			if (!colors) {
 				// Clean up any uploaded files
 				files.forEach(file => {
@@ -126,14 +125,11 @@ export class ProductController {
 				});
 				throw new ServiceHandler("Colors field is required", HttpStatus.BAD_REQUEST);
 			}
-
 			const parsedColors = JSON.parse(colors);
-			console.log("parsedColors---", parsedColors);
 			if (!Array.isArray(parsedColors)) {
 				files.map(file => fs.unlinkSync('uploads/colors/' + file.filename));
 				throw new ServiceHandler("Number of colors and images must match", HttpStatus.BAD_REQUEST);
 			}
-
 			return await this.productService.uploadColorImages(productId, files, parsedColors);
 		} catch (error) {
 			throw new ServiceHandler(error.message, error.status);
