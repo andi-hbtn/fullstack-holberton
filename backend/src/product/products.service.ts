@@ -96,14 +96,11 @@ export class ProductService {
 			}
 
 			if (fs.existsSync(`uploads/${result.image}`)) {
-				// console.log("result.image--", result.image);
 				fs.unlinkSync(`uploads/${result.image}`);
 			}
 
 			if (result.colorImages.length > 0) {
 				result.colorImages.forEach((el) => {
-					// console.log("color_image--", el.color_image);
-					// console.log("product_color_image--", el.product_color_image);
 					if (fs.existsSync(`uploads/colors/${el.color_image}`) || fs.existsSync(`uploads/colors/${el.product_color_image}`)) {
 						fs.unlinkSync(`uploads/colors/${el.color_image}`);
 						fs.unlinkSync(`uploads/colors/${el.product_color_image}`);
