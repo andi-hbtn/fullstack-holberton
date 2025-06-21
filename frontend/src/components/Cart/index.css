@@ -1,3 +1,11 @@
+.prod-cart-cnt {
+    margin-top: 50px !important;
+}
+
+.cart-table-total-cnt {
+    margin-top: 50px !important;
+}
+
 .item-img-cnt {
     float: left;
     width: 30%;
@@ -34,6 +42,92 @@
 .subtotal-quantity {
     margin-top: 50px !important;
 }
+
+
+
+/**************************************elipse button styles ***************************************/
+
+
+.ellips-quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    border-radius: 50px;
+    padding: 5px 15px;
+    width: 120px;
+    height: 40px;
+    border: 1px solid #e2edef;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.ellips-quantity-control:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #294d50;
+}
+
+.quantity-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+}
+
+.quantity-btn:hover {
+    background-color: #e8edef !important;
+}
+
+.quantity-btn:active {
+    transform: scale(0.95);
+}
+
+.quantity-icon {
+    color: #012440;
+    font-size: 10px;
+}
+
+.quantity-btn:hover .quantity-icon {
+    color: #3a5663;
+    transform: scale(1.1);
+}
+
+.quantity-number {
+    font-size: 15px;
+    font-weight: 500;
+    color: #012440;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Remove button borders and focus states */
+.quantity-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ellips-quantity-control {
+        width: 100px;
+        height: 36px;
+        padding: 5px 12px;
+    }
+
+    .quantity-number {
+        font-size: 1rem;
+    }
+
+    .quantity-icon {
+        font-size: 0.7rem;
+    }
+}
+
+
+/**************************************elipse button styles ***************************************/
+
 
 .remove-item {
     cursor: pointer;

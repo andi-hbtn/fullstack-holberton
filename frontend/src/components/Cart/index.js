@@ -4,7 +4,7 @@ import { useCartContext } from '../../context/CartContext';
 import Header from "../Header/Header";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import EmptyCart from '../EmptyCart';
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaMinus, FaPlus } from "react-icons/fa";
 import "./index.css";
 
 const Cart = () => {
@@ -124,7 +124,7 @@ const Cart = () => {
                                     <h4>Cart</h4>
                                 </Col>
                             </Row>
-                            <Row>
+                            <Row className='cart-table-total-cnt'>
                                 <Col sm={12} md={7} lg={7}>
                                     <Table>
                                         <thead>
@@ -153,15 +153,27 @@ const Cart = () => {
                                                             </Row>
                                                         </td>
                                                         <td className='td-p'>
-                                                            <Row className='quantity-cnt'>
-                                                                <Col sm={3} md={3} lg={3} className="p-0 c-b">
-                                                                    <Button variant="dark" onClick={() => removeQuantity(item)}>-</Button>
-                                                                </Col>
-                                                                <Col sm={3} md={3} lg={3} className="c-b">
-                                                                    <span>{item.quantity}</span>
-                                                                </Col>
-                                                                <Col sm={3} md={3} lg={3} className="p-0 c-b">
-                                                                    <Button variant="dark" onClick={() => addQuantity(item)}>+</Button>
+                                                            <Row className='quantity-cnt justify-content-center'>
+                                                                <Col className="position-relative d-flex align-items-center justify-content-center">
+                                                                    <div className="ellips-quantity-control">
+                                                                        <Button
+                                                                            variant="link"
+                                                                            className="quantity-btn minus-btn p-0"
+                                                                            onClick={() => removeQuantity(item)}
+                                                                        >
+                                                                            <FaMinus className="quantity-icon" />
+                                                                        </Button>
+
+                                                                        <span className="quantity-number">{item.quantity}</span>
+
+                                                                        <Button
+                                                                            variant="link"
+                                                                            className="quantity-btn plus-btn p-0"
+                                                                            onClick={() => addQuantity(item)}
+                                                                        >
+                                                                            <FaPlus className="quantity-icon" />
+                                                                        </Button>
+                                                                    </div>
                                                                 </Col>
                                                             </Row>
                                                         </td>
