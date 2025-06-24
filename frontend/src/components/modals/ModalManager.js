@@ -10,9 +10,6 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 		title: "",
 		description: "",
 		category_id: 0,
-		price: 0,
-		stock: 0,
-		image: "",
 		is_active: true
 	};
 

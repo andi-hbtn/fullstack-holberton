@@ -13,12 +13,6 @@ export class ProductEntity {
 	@Column()
 	description: string;
 
-	@Column()
-	price: number;
-
-	@Column()
-	stock: number;
-
 	@Column({ default: true })
 	is_active: boolean;
 
@@ -28,9 +22,6 @@ export class ProductEntity {
 	@ManyToOne(() => CategoryEntity, (category) => category.products)
 	@JoinColumn({ name: 'category_id' })
 	category: CategoryEntity;
-
-	@Column()
-	image: string;
 
 	@Column({ name: 'category_id', nullable: false })
 	category_id: number;

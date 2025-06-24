@@ -32,15 +32,11 @@ const ProductModal = () => {
 		description: "",
 		image: "",
 	};
-
 	const [formData, setFormData] = useState(
 		{
 			title: "",
 			description: "",
 			category_id: 0,
-			price: 0,
-			stock: 0,
-			image: "",
 			is_active: true
 		}
 	);
@@ -63,9 +59,6 @@ const ProductModal = () => {
 				title: product.title,
 				description: product.description,
 				category_id: product.category_id,
-				price: product.price,
-				stock: product.stock,
-				image: product.image,
 				is_active: product.is_active
 			}
 		);
@@ -174,8 +167,6 @@ const ProductModal = () => {
 											<th>ID</th>
 											<th>Product</th>
 											<th>Category</th>
-											<th>Price</th>
-											<th>Stock</th>
 											<th>Status</th>
 											<th>Actions</th>
 										</tr>
@@ -186,11 +177,6 @@ const ProductModal = () => {
 												<td className="text-muted">#{product.id}</td>
 												<td>
 													<div className="d-flex align-items-center">
-														<img
-															src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-															alt="product"
-															className="product-img rounded-circle me-3"
-														/>
 														<div>
 															<h6 className="mb-0">{product.title}</h6>
 															<small className="text-muted">
@@ -203,16 +189,6 @@ const ProductModal = () => {
 													<Badge bg="secondary" className="category-badge">
 														{product.category.title}
 													</Badge>
-												</td>
-												<td>
-													<div className="color-options">
-														<h6 className="mb-0">{product.price}</h6>
-													</div>
-												</td>
-												<td>
-													<div className="color-options">
-														<h6 className="mb-0">{product.stock}</h6>
-													</div>
 												</td>
 												<td>
 													<Badge bg={product.is_active === true ? 'success' : 'secondary'}>

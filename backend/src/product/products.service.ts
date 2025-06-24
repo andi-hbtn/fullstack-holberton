@@ -25,16 +25,13 @@ export class ProductService {
 		}
 	}
 
-	public async createProduct(data: ProductDto, file: string): Promise<ProductResponse> {
+	public async createProduct(data: ProductDto): Promise<ProductResponse> {
 		try {
 			const product = {
 				title: data.title,
 				description: data.description,
-				price: data.price,
-				stock: data.stock,
 				category_id: data.category_id,
 				is_active: data.is_active,
-				image: file
 			};
 			const result = await this.ProductEntity.save(product);
 			return {
@@ -48,16 +45,13 @@ export class ProductService {
 		}
 	}
 
-	public async updateProduct(data: ProductDto, id: number, file: string): Promise<any> {
+	public async updateProduct(data: ProductDto, id: number): Promise<any> {
 		try {
 			const product = {
 				title: data.title,
 				description: data.description,
-				price: data.price,
-				stock: data.stock,
 				is_active: data.is_active,
 				category_id: data.category_id,
-				image: file
 			}
 			await this.ProductEntity.update(id, product);
 			const result = await this.ProductEntity.findOne({ where: { id } });
@@ -92,11 +86,7 @@ export class ProductService {
 		try {
 			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['colorImages'] });
 			if (!result) {
-				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
-			}
-
-			if (fs.existsSync(`uploads/${result.image}`)) {
-				fs.unlinkSync(`uploads/${result.image}`);
+				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}
 
 			if (result.colorImages.length > 0) {

@@ -58,18 +58,17 @@ export class OrderService {
             throw new Error(`Product with ID ${item.product_id} not found`);
           }
 
-          if (product.stock < item.quantity) {
-            throw new Error(`Insufficient stock for product "${product.title}"`);
-          }
+          // if (product.stock < item.quantity) {
+          //   throw new Error(`Insufficient stock for product "${product.title}"`);
+          // }
 
-          product.stock -= item.quantity;
+          // product.stock -= item.quantity;
           await this.productsRepository.save(product);
 
           return this.orderItemsRepository.create({
             order: savedOrder,
             product,
             quantity: item.quantity,
-            price: product.price, // Ensure price is fetched from the product
           });
         })
       );
@@ -266,8 +265,8 @@ export class OrderService {
       const pdfBuffer = Buffer.concat(chunks);
 
       await transporter.sendMail({
-        from: this.configService.get<string>('EMAIL_SALES'),
-        to: this.configService.get<string>('EMAIL_SALES'),
+        from: this.configService.get<string>('EMAIL_USER'),
+        to: this.configService.get<string>('EMAIL_USER'),
         subject: 'New Order',
         html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
         attachments: [
