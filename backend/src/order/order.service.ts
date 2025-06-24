@@ -265,8 +265,8 @@ export class OrderService {
       const pdfBuffer = Buffer.concat(chunks);
 
       await transporter.sendMail({
-        from: this.configService.get<string>('EMAIL_SALES'),
-        to: this.configService.get<string>('EMAIL_SALES'),
+        from: this.configService.get<string>('EMAIL_USER'),
+        to: this.configService.get<string>('EMAIL_USER'),
         subject: 'New Order',
         html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
         attachments: [

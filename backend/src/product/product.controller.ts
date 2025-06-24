@@ -32,21 +32,10 @@ export class ProductController {
 
 	@Roles('admin')
 	@Post('create')
-	@UseInterceptors(FileInterceptor('image', {
-		storage: diskStorage({
-			destination: './uploads',
-			filename: (req, image, cb) => {
-				const imageName = new ImageNameHelper(image.originalname).getImageName();
-				cb(null, imageName);
-			}
-		}),
-	}))
-	public async cretePost(@Body() bodyParam: ProductDto, @UploadedFile() file: Express.Multer.File) {
+	public async cretePost(@Body() bodyParam: ProductDto) {
+		console.log("bodyParam--", bodyParam)
 		try {
-			if (!file || !file.filename) {
-				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
-			}
-			return await this.productService.createProduct(bodyParam, file.filename);
+			return await this.productService.createProduct(bodyParam);
 		} catch (error) {
 			throw new ServiceHandler(error.response, error.status);
 		}
@@ -54,27 +43,11 @@ export class ProductController {
 
 	@Roles('admin')
 	@Put('update/:id')
-	@UseInterceptors(FileInterceptor('image', {
-		storage: diskStorage({
-			destination: './uploads',
-			filename: (req, image, cb) => {
-				const imageName = new ImageNameHelper(image.originalname).getImageName();
-				cb(null, imageName);
-			}
-		}),
-	}))
-	public async update(@Body() bodyParam: ProductDto, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<ProductResponse> {
+	public async update(@Body() bodyParam: ProductDto, @Param('id', ParseIntPipe) id: number): Promise<ProductResponse> {
 		try {
 			const productResponse = await this.productService.getProductById(id);
 			const product = productResponse.data;
-			if (!file || !file?.filename) {
-				const imagePath = path.basename(product.image);
-				return await this.productService.updateProduct(bodyParam, id, imagePath);
-			} else {
-				const imagePath = path.basename(product.image);
-				fs.unlinkSync('uploads/' + imagePath);
-				return await this.productService.updateProduct(bodyParam, id, file.filename);
-			}
+			return await this.productService.updateProduct(bodyParam, id);
 		} catch (error) {
 			throw new ServiceHandler(error.response, error.status);
 		}

@@ -32,7 +32,6 @@ const ProductModal = () => {
 		description: "",
 		image: "",
 	};
-
 	const [formData, setFormData] = useState(
 		{
 			title: "",
@@ -61,9 +60,6 @@ const ProductModal = () => {
 				title: product.title,
 				description: product.description,
 				category_id: product.category_id,
-				price: product.price,
-				stock: product.stock,
-				image: product.image,
 				is_active: product.is_active
 			}
 		);
@@ -182,11 +178,6 @@ const ProductModal = () => {
 												<td className="text-muted">#{product.id}</td>
 												<td>
 													<div className="d-flex align-items-center">
-														<img
-															src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-															alt="product"
-															className="product-img rounded-circle me-3"
-														/>
 														<div>
 															<h6 className="mb-0">{product.title}</h6>
 															<small className="text-muted">

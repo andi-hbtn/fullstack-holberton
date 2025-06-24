@@ -25,7 +25,4 @@ export class ProductDto {
 	@IsNumber()
 	@Type(() => Number)
 	category_id: number;
-
-
-	image: string
 }

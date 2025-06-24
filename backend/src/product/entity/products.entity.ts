@@ -23,9 +23,6 @@ export class ProductEntity {
 	@JoinColumn({ name: 'category_id' })
 	category: CategoryEntity;
 
-	@Column()
-	image: string;
-
 	@Column({ name: 'category_id', nullable: false })
 	category_id: number;
 

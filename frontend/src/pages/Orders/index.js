@@ -144,14 +144,14 @@ const Orders = () => {
 																		return (
 																			<div key={pkey}>
 																				<img
-																					src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.product.image}`}
+																					src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.product?.image}`}
 																					alt="product"
 																					className="product-img rounded-circle me-3"
 																				/>
 																				<div>
 																					<h6 className="mb-0">hello</h6>
 																					<small className="text-muted">
-																						{product.product.title}
+																						{product.product?.title}
 																					</small>
 																				</div>
 
