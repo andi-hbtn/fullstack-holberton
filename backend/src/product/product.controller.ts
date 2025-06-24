@@ -111,7 +111,7 @@ export class ProductController {
 			}
 		}),
 	}))
-	public async uploadProductColors(
+	public async createProductWithColors(
 		@Param('productId', ParseIntPipe) productId: number,
 		@UploadedFiles() files: Express.Multer.File[],
 		@Body('colors') colors: string

@@ -38,8 +38,6 @@ const ProductModal = () => {
 			title: "",
 			description: "",
 			category_id: 0,
-			price: 0,
-			stock: 0,
 			image: "",
 			is_active: true
 		}
@@ -174,8 +172,6 @@ const ProductModal = () => {
 											<th>ID</th>
 											<th>Product</th>
 											<th>Category</th>
-											<th>Price</th>
-											<th>Stock</th>
 											<th>Status</th>
 											<th>Actions</th>
 										</tr>
@@ -203,16 +199,6 @@ const ProductModal = () => {
 													<Badge bg="secondary" className="category-badge">
 														{product.category.title}
 													</Badge>
-												</td>
-												<td>
-													<div className="color-options">
-														<h6 className="mb-0">{product.price}</h6>
-													</div>
-												</td>
-												<td>
-													<div className="color-options">
-														<h6 className="mb-0">{product.stock}</h6>
-													</div>
 												</td>
 												<td>
 													<Badge bg={product.is_active === true ? 'success' : 'secondary'}>

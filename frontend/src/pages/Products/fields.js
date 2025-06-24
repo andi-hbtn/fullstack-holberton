@@ -12,17 +12,6 @@ const fields = [
         placeholder: "Insert description..."
     },
     {
-        type: "number",
-        name: "price",
-        label: "Price",
-        placeholder: "Insert price..."
-    },
-    {
-        type: "number",
-        name: "stock",
-        label: "Stock",
-    },
-    {
         type: "options",
         name: "category_id",
         label: "Category",

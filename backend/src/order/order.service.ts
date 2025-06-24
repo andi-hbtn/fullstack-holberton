@@ -58,18 +58,17 @@ export class OrderService {
             throw new Error(`Product with ID ${item.product_id} not found`);
           }
 
-          if (product.stock < item.quantity) {
-            throw new Error(`Insufficient stock for product "${product.title}"`);
-          }
+          // if (product.stock < item.quantity) {
+          //   throw new Error(`Insufficient stock for product "${product.title}"`);
+          // }
 
-          product.stock -= item.quantity;
+          // product.stock -= item.quantity;
           await this.productsRepository.save(product);
 
           return this.orderItemsRepository.create({
             order: savedOrder,
             product,
-            quantity: item.quantity,
-            price: product.price, // Ensure price is fetched from the product
+            quantity: item.quantity
           });
         })
       );

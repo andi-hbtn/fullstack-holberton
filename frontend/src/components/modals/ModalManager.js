@@ -4,14 +4,11 @@ import AlertMessage from "../alert/AlertMessage";
 
 const ModalManager = ({ open, categories, close, case_modal, fields, create, update, data, setData }) => {
 
-
 	const [resMsg, setResMsg] = useState({ error: false, message: "", status: 0 });
 	const initialProductData = {
 		title: "",
 		description: "",
 		category_id: 0,
-		price: 0,
-		stock: 0,
 		image: "",
 		is_active: true
 	};

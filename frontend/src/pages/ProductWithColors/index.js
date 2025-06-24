@@ -12,24 +12,17 @@ import "./index.css";
 
 const ProductWithColorOptions = () => {
     const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        product_id: '',
-        colorVariants: [{ colorName: '', color_image: null, main_image: null }]
-    });
     const { products } = useProductContext();
     const { authUser, logout } = useAuthenticateContext();
+    const [id, setId] = useState(0);
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         await logout();
         navigate("/");
     }
-
     const handleModal = (data) => {
-        setFormData({
-            product_id: data?.id,
-            colorVariants: [{ colorName: '', color_image: null, main_image: null }]
-        });
+        setId(data.id)
         setOpen(!open);
     }
 
@@ -186,7 +179,7 @@ const ProductWithColorOptions = () => {
                     </Col>
                 </Row>
             </Container>
-            <ProductColorModal show={open} close={handleModal} data={formData} setData={setFormData} />
+            <ProductColorModal show={open} close={handleModal} productId={id} />
         </div>
     )
 }

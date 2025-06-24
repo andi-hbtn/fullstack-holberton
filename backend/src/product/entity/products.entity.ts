@@ -13,12 +13,6 @@ export class ProductEntity {
 	@Column()
 	description: string;
 
-	@Column()
-	price: number;
-
-	@Column()
-	stock: number;
-
 	@Column({ default: true })
 	is_active: boolean;
 

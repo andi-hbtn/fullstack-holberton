@@ -7,6 +7,12 @@ export class ProductColorImageEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column('decimal', { precision: 10, scale: 2 })
+    price: number;
+
+    @Column()
+    stock: number;
+
     @Column()
     color: string;
 

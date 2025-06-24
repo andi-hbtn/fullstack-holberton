@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service, delete_product_service } from "../services/product";
+import { create_product_service, get_products_service, get_product_service, create_product_colors_service, upload_color_images_service, delete_product_service } from "../services/product";
 const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
@@ -45,7 +45,7 @@ const ProductProvider = (props) => {
 
 	const updateProduct = async (data) => {
 		try {
-			const result = await update_product_service(data);
+			const result = await create_product_colors_service(data);
 			if (result.status === 200) {
 				await getProducts()
 				return result.data;

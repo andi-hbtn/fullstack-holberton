@@ -29,7 +29,7 @@ const get_product_service = async (id) => {
 	return result;
 }
 
-const update_product_service = async (data) => {
+const create_product_colors_service = async (data) => {
 	const formData = new FormData();
 	formData.append("title", data.title);
 	formData.append("description", data.description);
@@ -77,4 +77,4 @@ const delete_product_service = async (id) => {
 	return result;
 }
 
-export { create_product_service, get_products_service, get_product_service, update_product_service, upload_color_images_service, delete_product_service }
+export { create_product_service, get_products_service, get_product_service, create_product_colors_service, upload_color_images_service, delete_product_service }
