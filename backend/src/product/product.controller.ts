@@ -32,10 +32,28 @@ export class ProductController {
 
 	@Roles('admin')
 	@Post('create')
-	public async cretePost(@Body() bodyParam: ProductDto) {
-		console.log("bodyParam--", bodyParam)
+	@UseInterceptors(FileInterceptor('image', {
+		storage: diskStorage({
+			destination: './uploads',
+			filename: (req, image, cb) => {
+				const imageName = new ImageNameHelper(image.originalname).getImageName();
+				cb(null, imageName);
+			}
+		}),
+	}))
+	public async cretePost(@Body() bodyParam: ProductDto, @UploadedFile() file: Express.Multer.File) {
 		try {
-			return await this.productService.createProduct(bodyParam);
+			if (!file || !file.filename) {
+				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
+			}
+			const product = {
+				title: bodyParam.title,
+				description: bodyParam.description,
+				is_active: bodyParam.is_active,
+				category_id: bodyParam.category_id,
+				image: file.filename
+			}
+			return await this.productService.createProduct(product);
 		} catch (error) {
 			throw new ServiceHandler(error.response, error.status);
 		}
@@ -43,11 +61,30 @@ export class ProductController {
 
 	@Roles('admin')
 	@Put('update/:id')
-	public async update(@Body() bodyParam: ProductDto, @Param('id', ParseIntPipe) id: number): Promise<ProductResponse> {
+	@UseInterceptors(FileInterceptor('image', {
+		storage: diskStorage({
+			destination: './uploads',
+			filename: (req, image, cb) => {
+				const imageName = new ImageNameHelper(image.originalname).getImageName();
+				cb(null, imageName);
+			}
+		})
+	}))
+	public async update(@Body() bodyParam: ProductDto, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<ProductResponse> {
 		try {
 			const productResponse = await this.productService.getProductById(id);
 			const product = productResponse.data;
-			return await this.productService.updateProduct(bodyParam, id);
+
+			if (!file || !file?.filename) {
+				const imagePath = path.basename(product.image);
+				return await this.productService.updateProduct(bodyParam, id, imagePath);
+			} else {
+				// Delete the old image
+				const imagePath = path.basename(product.image);
+				fs.unlinkSync('uploads/' + imagePath);
+				// Proceed with the update
+				return await this.productService.updateProduct(bodyParam, id, file.filename);
+			}
 		} catch (error) {
 			throw new ServiceHandler(error.response, error.status);
 		}

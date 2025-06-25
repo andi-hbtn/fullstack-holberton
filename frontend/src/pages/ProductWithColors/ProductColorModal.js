@@ -4,7 +4,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useProductContext } from "../../context/ProductContext";
 
 const ProductColorModal = ({ show, close, productId }) => {
-    const { uploadColorProduct } = useProductContext();
+    const { createProductWithColors } = useProductContext();
     const [resMsg, setResMsg] = useState({ error: false, message: "", status: 0 });
 
     const [data, setData] = useState({
@@ -57,24 +57,8 @@ const ProductColorModal = ({ show, close, productId }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        const formData = new FormData();
-        formData.append("productId", data.product_id);
-
-        const colors = data.colorVariants.map(variant => ({
-            color: variant.colorName,
-            price: parseFloat(variant.price),
-            stock: parseInt(variant.stock, 10)
-        }));
-
-        data.colorVariants.forEach(variant => {
-            formData.append("files", variant.color_image);
-            formData.append("files", variant.main_image);
-        });
-
-        formData.append("colors", JSON.stringify(colors));
         try {
-            const response = await uploadColorProduct(formData);
+            const response = await createProductWithColors(data);
             setResMsg({ error: false, message: response.message, status: response.statusCode });
             close();
         } catch (error) {

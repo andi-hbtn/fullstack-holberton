@@ -26,4 +26,7 @@ export class ProductEntity {
 	@Column({ name: 'category_id', nullable: false })
 	category_id: number;
 
+	@Column()
+	image: string;
+
 }

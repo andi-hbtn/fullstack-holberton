@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { create_product_service, get_products_service, get_product_service, create_product_colors_service, upload_color_images_service, delete_product_service } from "../services/product";
+import { create_product_with_color_service, create_product_service, get_products_service, get_product_service, update_product, delete_product_service } from "../services/product";
 const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
@@ -11,20 +11,35 @@ const ProductProvider = (props) => {
 	const createProduct = async (data) => {
 		try {
 			const result = await create_product_service(data);
-			if (result.status === 201) {
+			console.log("result---", result);
+			if (result.status === 200) {
 				await getProducts();
 				return result.data;
 			}
 		} catch (error) {
+			console.log("error--in update--", error);
+			throw error.response.data;
+		}
+	}
+
+	const createProductWithColors = async (data) => {
+		try {
+			const result = await create_product_with_color_service(data);
+			if (result.status === 200) {
+				// await getProducts();
+				// return result.data;
+			}
+		} catch (error) {
+			console.log("error--in update--", error);
 			throw error.response.data;
 		}
 	}
 
 	const getProducts = async () => {
 		try {
-			const products = await get_products_service();
-			if (products.status === 200) {
-				setProducts(products.data);
+			const result = await get_products_service();
+			if (result.status === 200) {
+				setProducts(result.data);
 			}
 		} catch (error) {
 			throw error.response.data;
@@ -45,20 +60,7 @@ const ProductProvider = (props) => {
 
 	const updateProduct = async (data) => {
 		try {
-			const result = await create_product_colors_service(data);
-			if (result.status === 200) {
-				await getProducts()
-				return result.data;
-			}
-		} catch (error) {
-			console.log("error--in update--", error);
-			throw error.response.data;
-		}
-	}
-
-	const uploadColorProduct = async (data) => {
-		try {
-			const result = await upload_color_images_service(data);
+			const result = await update_product(data);
 			if (result.status === 200) {
 				await getProducts()
 				return result.data;
@@ -81,7 +83,7 @@ const ProductProvider = (props) => {
 		}
 	}
 
-	const values = { createProduct, updateProduct, getProduct, products, uploadColorProduct, deleteProduct };
+	const values = { createProduct, createProductWithColors, updateProduct, getProduct, products, deleteProduct };
 	return (
 		<ProductContext.Provider value={values}>
 			{props.children}

@@ -5,7 +5,7 @@ import { ProductColorImageEntity } from './entity/productColors.entity';
 import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
-import { ProductResponse, ProductColorResponse, DeleteProductResponse } from './responseType/response.interface';
+import { ProductResponse, AllProductResponse, ProductColorResponse, DeleteProductResponse } from './responseType/response.interface';
 import * as fs from "fs"
 @Injectable()
 export class ProductService {
@@ -14,12 +14,16 @@ export class ProductService {
 		@InjectRepository(ProductColorImageEntity) private readonly ColorImageRepo: Repository<ProductColorImageEntity>
 	) { }
 
-	public async getAllProducts(): Promise<any> {
+	public async getAllProducts(): Promise<AllProductResponse> {
 		try {
 			const result = await this.ProductEntity.find({
 				relations: ['category', 'colorImages']
 			});
-			return result;
+			return {
+				status: HttpStatus.OK,
+				message: 'Product created successfully',
+				data: result
+			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -27,15 +31,9 @@ export class ProductService {
 
 	public async createProduct(data: ProductDto): Promise<ProductResponse> {
 		try {
-			const product = {
-				title: data.title,
-				description: data.description,
-				category_id: data.category_id,
-				is_active: data.is_active,
-			};
-			const result = await this.ProductEntity.save(product);
+			const result = await this.ProductEntity.save(data);
 			return {
-				statusCode: HttpStatus.CREATED,
+				status: HttpStatus.OK,
 				message: 'Product created successfully',
 				data: result
 			};
@@ -45,18 +43,19 @@ export class ProductService {
 		}
 	}
 
-	public async updateProduct(data: ProductDto, id: number): Promise<any> {
+	public async updateProduct(data: ProductDto, id: number, image: string): Promise<any> {
 		try {
 			const product = {
 				title: data.title,
 				description: data.description,
 				is_active: data.is_active,
 				category_id: data.category_id,
+				image: image
 			}
 			await this.ProductEntity.update(id, product);
 			const result = await this.ProductEntity.findOne({ where: { id } });
 			return {
-				statusCode: HttpStatus.OK,
+				status: HttpStatus.OK,
 				message: 'Product updated successfully',
 				data: result
 			};
@@ -73,7 +72,7 @@ export class ProductService {
 				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}
 			return {
-				statusCode: HttpStatus.OK,
+				status: HttpStatus.OK,
 				message: 'Product exists',
 				data: result
 			};
@@ -97,16 +96,22 @@ export class ProductService {
 					}
 				})
 			}
+
+			if (result.image) {
+				if (fs.existsSync(`uploads/${result.image}`)) {
+					fs.unlinkSync(`uploads/${result.image}`);
+				}
+			}
+
 			await this.ProductEntity.delete(id);
 			return {
-				statusCode: 200,
+				status: 200,
 				message: "Product was successfully deleted"
 			};
 		} catch (error) {
 			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}
 	}
-
 
 	public async uploadColorImages(
 		productId: number,
@@ -165,6 +170,5 @@ export class ProductService {
 			throw new ServiceHandler(error.message, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
 
 }

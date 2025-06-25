@@ -33,20 +33,11 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 
 			setData(initialProductData || initialCategorytData);
 			close();
-			setResMsg({ error: true, message: response.message, status: response.statusCode });
+			setResMsg({ error: true, message: response.message, status: response.status });
 		} catch (error) {
 			setResMsg({ error: true, message: error.message, status: error.statusCode })
 		}
 	}
-
-	const isDisabled = fields.some(field => {
-		const value = data[field.name];
-		if (field.type === "file") {
-			// Handle file field: check if it's a File object or non-empty string
-			return !value || value === "";
-		}
-		return value === undefined || value === 0;
-	});
 	return (
 		<>
 			<Modal
@@ -77,13 +68,6 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 												</Form.Select>
 												: field.name === "image" ?
 													<>
-														{case_modal.create === false ?
-															<div>
-																<Form.Label>Current Image</Form.Label>
-																<img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${data.image}`} width={"80px"} alt="figure" />
-															</div>
-															: ""}
-
 														<Form.Label>{field.label}</Form.Label>
 														<Form.Control
 															type={field.type}
@@ -122,7 +106,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 						<Button variant="secondary" onClick={close}>
 							Close
 						</Button>
-						<Button variant="primary" type="submit" disabled={isDisabled}>{case_modal.button}</Button>
+						<Button variant="primary" type="submit">{case_modal.button}</Button>
 					</Modal.Footer>
 				</Form>
 				{resMsg.error &&

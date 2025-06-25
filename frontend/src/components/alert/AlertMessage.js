@@ -1,11 +1,11 @@
 import { Alert } from 'react-bootstrap';
 import "./AlertMessage.css";
 
-const AlertMessage = ({status,message}) => {
+const AlertMessage = ({ status, message }) => {
 	return (
 		<Alert variant="info" className='alert-container'>
 			<Alert.Heading className='alert-message'>
-					{"jkadshjkdsahjkdsahjkdsahjkdsahjkdashjk"}
+				{message}
 			</Alert.Heading>
 		</Alert>
 	)

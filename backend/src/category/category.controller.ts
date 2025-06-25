@@ -107,7 +107,6 @@ export class CategoryController {
 		}
 	}
 
-
 	@IsPublic()
 	@Get('uploads/:path')
 	public getImage(@Param() path: any, @Res() res: Response) {

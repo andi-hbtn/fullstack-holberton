@@ -27,7 +27,6 @@ const Categories = () => {
 	}
 
 	const handleEdit = (category) => {
-		console.log("category---", category);
 		setFormData(
 			{ id: category.id, title: category.title, description: category.description , image:category.image }
 		);

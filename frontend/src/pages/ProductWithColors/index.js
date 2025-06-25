@@ -21,8 +21,13 @@ const ProductWithColorOptions = () => {
         await logout();
         navigate("/");
     }
+
     const handleModal = (data) => {
-        setId(data.id)
+        setId(data.id);
+        setOpen(!open);
+    }
+
+    const handleClose = () => {
         setOpen(!open);
     }
 
@@ -125,11 +130,15 @@ const ProductWithColorOptions = () => {
                                             <td className="text-muted">#{product.id}</td>
                                             <td>
                                                 <div className="d-flex align-items-center">
-                                                    <img
-                                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-                                                        alt="product"
-                                                        className="product-img rounded-circle me-3"
-                                                    />
+                                                    {
+                                                        product.image ?
+                                                            <img
+                                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                                                alt="product"
+                                                                className="product-img rounded-circle me-3"
+                                                            />
+                                                            : ""
+                                                    }
                                                     <div>
                                                         <h6 className="mb-0">{product.title}</h6>
                                                         <small className="text-muted">
@@ -179,7 +188,7 @@ const ProductWithColorOptions = () => {
                     </Col>
                 </Row>
             </Container>
-            <ProductColorModal show={open} close={handleModal} productId={id} />
+            <ProductColorModal show={open} close={handleClose} productId={id} />
         </div>
     )
 }

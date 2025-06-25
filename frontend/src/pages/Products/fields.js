@@ -16,6 +16,12 @@ const fields = [
         name: "category_id",
         label: "Category",
     },
+    ,
+    {
+        type: "file",
+        name: "image",
+        label: "Upload Image"
+    },
     {
         type: "switch",
         name: "is_active",

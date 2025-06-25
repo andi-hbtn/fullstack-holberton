@@ -16,6 +16,7 @@ const ProductModal = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
+
 	const initialProductData = {
 		title: "",
 		description: "",
@@ -32,6 +33,7 @@ const ProductModal = () => {
 		description: "",
 		image: "",
 	};
+
 	const [formData, setFormData] = useState(
 		{
 			title: "",
@@ -169,6 +171,7 @@ const ProductModal = () => {
 											<th>Product</th>
 											<th>Category</th>
 											<th>Status</th>
+											<th>Image</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -195,6 +198,9 @@ const ProductModal = () => {
 													<Badge bg={product.is_active === true ? 'success' : 'secondary'}>
 														{product.is_active === true ? 'Active' : 'Not Active'}
 													</Badge>
+												</td>
+												<td>
+													<img src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`} alt="figure" width={"100px"} height={"100px"} />
 												</td>
 												<td>
 													<Button
