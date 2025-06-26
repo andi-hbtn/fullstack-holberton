@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './entity/products.entity';
-import { ProductColorImageEntity } from './entity/productColors.entity';
+import { ProductColorVariant } from './entity/productColorVariants.entity';
 import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
@@ -11,17 +11,17 @@ import * as fs from "fs"
 export class ProductService {
 	constructor(
 		@InjectRepository(ProductEntity) private readonly ProductEntity: Repository<ProductEntity>,
-		@InjectRepository(ProductColorImageEntity) private readonly ColorImageRepo: Repository<ProductColorImageEntity>
+		@InjectRepository(ProductColorVariant) private readonly ColorImageRepo: Repository<ProductColorVariant>
 	) { }
 
 	public async getAllProducts(): Promise<AllProductResponse> {
 		try {
 			const result = await this.ProductEntity.find({
-				relations: ['category', 'colorImages']
+				relations: ['category', 'colorVariants']
 			});
 			return {
 				status: HttpStatus.OK,
-				message: 'Product created successfully',
+				message: 'Product list',
 				data: result
 			};
 		} catch (error) {
@@ -67,7 +67,7 @@ export class ProductService {
 
 	public async getProductById(id: number): Promise<ProductResponse> {
 		try {
-			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['category', 'colorImages'] });
+			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['category', 'colorVariants'] });
 			if (!result) {
 				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}
@@ -83,13 +83,13 @@ export class ProductService {
 
 	public async deleteProduct(id: number): Promise<DeleteProductResponse> {
 		try {
-			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['colorImages'] });
+			const result = await this.ProductEntity.findOne({ where: { id }, relations: ['colorVariants'] });
 			if (!result) {
 				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}
 
-			if (result.colorImages.length > 0) {
-				result.colorImages.forEach((el) => {
+			if (result.colorVariants.length > 0) {
+				result.colorVariants.forEach((el) => {
 					if (fs.existsSync(`uploads/colors/${el.color_image}`) || fs.existsSync(`uploads/colors/${el.product_color_image}`)) {
 						fs.unlinkSync(`uploads/colors/${el.color_image}`);
 						fs.unlinkSync(`uploads/colors/${el.product_color_image}`);
@@ -113,7 +113,7 @@ export class ProductService {
 		}
 	}
 
-	public async uploadColorImages(
+	public async uploadColorVariants(
 		productId: number,
 		files: Express.Multer.File[],
 		colors: { color: string, price: number, stock: number }[]

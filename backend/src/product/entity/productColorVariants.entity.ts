@@ -2,8 +2,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { ProductEntity } from './products.entity';
 
-@Entity('product_color_images')
-export class ProductColorImageEntity {
+@Entity('product_color_variants')
+export class ProductColorVariant {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -22,7 +22,7 @@ export class ProductColorImageEntity {
     @Column()
     product_color_image: string;
 
-    @ManyToOne(() => ProductEntity, (product) => product.colorImages, { onDelete: 'CASCADE' })
+    @ManyToOne(() => ProductEntity, (product) => product.colorVariants, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'product_id' })
     product: ProductEntity;
 

@@ -3,20 +3,20 @@ import { Modal, Button, Form, Row, Col, Image } from 'react-bootstrap';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useProductContext } from "../../context/ProductContext";
 
-const ProductColorModal = ({ show, close, productId }) => {
-    const { createProductWithColors } = useProductContext();
+const ProductVariantModal = ({ show, close, productId }) => {
+    const { createProductVariants } = useProductContext();
     const [resMsg, setResMsg] = useState({ error: false, message: "", status: 0 });
 
     const [data, setData] = useState({
         product_id: 0,
-        colorVariants: [{ colorName: '', price: '', stock: '', color_image: null, main_image: null }]
+        productVariants: [{ colorName: '', price: '', stock: '', color_image: null, main_image: null }]
     });
 
     useEffect(() => {
         if (show && productId) {
             setData({
                 product_id: productId,
-                colorVariants: [{ colorName: '', price: '', stock: '', color_image: null, main_image: null }]
+                productVariants: [{ colorName: '', price: '', stock: '', color_image: null, main_image: null }]
             });
         }
     }, [productId, show]);
@@ -24,9 +24,9 @@ const ProductColorModal = ({ show, close, productId }) => {
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
         if (index !== undefined) {
-            const updatedVariants = [...data.colorVariants];
+            const updatedVariants = [...data.productVariants];
             updatedVariants[index][name] = value;
-            setData({ ...data, colorVariants: updatedVariants });
+            setData({ ...data, productVariants: updatedVariants });
         } else {
             setData({ ...data, [name]: value });
         }
@@ -35,9 +35,9 @@ const ProductColorModal = ({ show, close, productId }) => {
     const handleFileChange = (e, index, field) => {
         const file = e.target.files[0];
         if (index !== undefined) {
-            const updatedVariants = [...data.colorVariants];
+            const updatedVariants = [...data.productVariants];
             updatedVariants[index][field] = file;
-            setData({ ...data, colorVariants: updatedVariants });
+            setData({ ...data, productVariants: updatedVariants });
         } else {
             setData({ ...data, main_image: file });
         }
@@ -46,19 +46,19 @@ const ProductColorModal = ({ show, close, productId }) => {
     const addColorVariant = () => {
         setData({
             ...data,
-            colorVariants: [...data.colorVariants, { colorName: '', price: '', stock: '', color_image: null, main_image: null }]
+            productVariants: [...data.productVariants, { colorName: '', price: '', stock: '', color_image: null, main_image: null }]
         });
     };
 
     const removeColorVariant = (index) => {
-        const filteredVariants = data.colorVariants.filter((_, i) => i !== index);
-        setData({ ...data, colorVariants: filteredVariants });
+        const filteredVariants = data.productVariants.filter((_, i) => i !== index);
+        setData({ ...data, productVariants: filteredVariants });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await createProductWithColors(data);
+            const response = await createProductVariants(data);
             setResMsg({ error: false, message: response.message, status: response.statusCode });
             close();
         } catch (error) {
@@ -83,11 +83,11 @@ const ProductColorModal = ({ show, close, productId }) => {
                                     </Button>
                                 </div>
 
-                                {data.colorVariants.map((variant, index) => (
+                                {data.productVariants.map((variant, index) => (
                                     <div key={index} className="mb-3 border-bottom pb-3">
                                         <div className="d-flex justify-content-between align-items-center mb-2">
                                             <h6 className="mb-0">Color #{index + 1}</h6>
-                                            <Button variant="link" size="sm" className="text-danger" onClick={() => removeColorVariant(index)} disabled={data.colorVariants.length === 1}>
+                                            <Button variant="link" size="sm" className="text-danger" onClick={() => removeColorVariant(index)} disabled={data.productVariants.length === 1}>
                                                 <FaTrash />
                                             </Button>
                                         </div>
@@ -168,4 +168,4 @@ const ProductColorModal = ({ show, close, productId }) => {
     );
 };
 
-export default ProductColorModal;
+export default ProductVariantModal;

@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import { CategoryEntity } from "src/category/entity/category.entity";
-import { ProductColorImageEntity } from "./productColors.entity";
+import { ProductColorVariant } from "./productColorVariants.entity";
 
 @Entity('products')
 export class ProductEntity {
@@ -16,8 +16,8 @@ export class ProductEntity {
 	@Column({ default: true })
 	is_active: boolean;
 
-	@OneToMany(() => ProductColorImageEntity, (colorImage) => colorImage.product, { cascade: true })
-	colorImages: ProductColorImageEntity[];
+	@OneToMany(() => ProductColorVariant, (colorVariant) => colorVariant.product, { cascade: true })
+	colorVariants: ProductColorVariant[];
 
 	@ManyToOne(() => CategoryEntity, (category) => category.products)
 	@JoinColumn({ name: 'category_id' })

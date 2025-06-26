@@ -55,8 +55,8 @@ const ProductPage = () => {
             });
         }
         // Add color variant images if available
-        if (product.colorImages && product.colorImages.length > 0) {
-            product.colorImages.forEach(colorImage => {
+        if (product.productVariants && product.productVariants.length > 0) {
+            product.productVariants.forEach(colorImage => {
                 images.push({
                     type: 'color',
                     src: `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${colorImage.product_color_image}`,
@@ -151,11 +151,11 @@ const ProductPage = () => {
                                     </div>
 
                                     {/* Color Selector */}
-                                    {product.colorImages && product.colorImages.length > 0 && (
+                                    {product.productVariants && product.productVariants.length > 0 && (
                                         <div className="color-selector mb-4">
                                             <h5 className="fw-medium mb-3">Select Color:</h5>
                                             <div className="color-options-container">
-                                                {product.colorImages.map((colorImage) => (
+                                                {product.productVariants.map((colorImage) => (
                                                     <div
                                                         key={colorImage.id}
                                                         className={`color-option ${selectedColor === colorImage.id ? 'selected' : ''}`}

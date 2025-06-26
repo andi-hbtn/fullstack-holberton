@@ -1,5 +1,5 @@
 import { ProductEntity } from "../entity/products.entity";
-import { ProductColorImageEntity } from "../entity/productColors.entity";
+import { ProductColorVariant } from "../entity/productColorVariants.entity";
 
 export interface ProductResponse {
   status: number;
@@ -16,7 +16,7 @@ export interface AllProductResponse {
 export interface ProductColorResponse {
   status: number;
   message: string;
-  data: ProductColorImageEntity
+  data: ProductColorVariant
 }
 
 export interface DeleteProductResponse {

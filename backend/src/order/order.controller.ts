@@ -41,7 +41,7 @@ export class OrderController {
   }
 
   @Get('uploads/colors/:path')
-  public getColorImages(@Param('path') path: any, @Res() res: Response) {
+  public getColorVariants(@Param('path') path: any, @Res() res: Response) {
     res.sendFile(path, { root: 'uploads/colors' });
   }
 

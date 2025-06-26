@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
-import { useProductContext } from "../../context/ProductContext";
-import { useAuthenticateContext } from "../../context/AuthenticateContext";
+import { useProductContext } from "../../context/ProductContext.js";
+import { useAuthenticateContext } from "../../context/AuthenticateContext.js";
 import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
 
-import ProductColorModal from "./ProductColorModal.js";
+import ProductVariantsModal from "./ProductVariantsModal.js";
 import "./index.css";
 
-const ProductWithColorOptions = () => {
+const ProductVariants = () => {
     const [open, setOpen] = useState(false);
     const { products } = useProductContext();
     const { authUser, logout } = useAuthenticateContext();
@@ -149,7 +149,7 @@ const ProductWithColorOptions = () => {
                                             </td>
                                             <td>
                                                 <div className="color-options">
-                                                    {product.colorImages?.map((property, i) => (
+                                                    {product.productVariants?.map((property, i) => (
                                                         <span
                                                             key={i}
                                                             className="color-dot"
@@ -160,7 +160,7 @@ const ProductWithColorOptions = () => {
                                             </td>
                                             <td>
                                                 <div className="d-flex align-items-center">
-                                                    {product.colorImages?.map((property, i) => (
+                                                    {product.productVariants?.map((property, i) => (
                                                         <img
                                                             key={i}
                                                             src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${property.product_color_image}`}
@@ -188,9 +188,9 @@ const ProductWithColorOptions = () => {
                     </Col>
                 </Row>
             </Container>
-            <ProductColorModal show={open} close={handleClose} productId={id} />
+            <ProductVariantsModal show={open} close={handleClose} productId={id} />
         </div>
     )
 }
 
-export default ProductWithColorOptions;
+export default ProductVariants;

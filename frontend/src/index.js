@@ -12,7 +12,7 @@ import { OrderProvider } from './context/OrderContext.js';
 import Categories from "./pages/Categories";
 import Products from "./pages/Products";
 import Orders from './pages/Orders/';
-import ProductWithColorOptions from "./pages/ProductWithColors";
+import ProductWithColorOptions from "./pages/ProductVariants/index.js";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';

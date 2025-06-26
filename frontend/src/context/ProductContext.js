@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { create_product_with_color_service, create_product_service, get_products_service, get_product_service, update_product, delete_product_service } from "../services/product";
+import { create_product_variants_service, create_product_service, get_products_service, get_product_service, update_product, delete_product_service } from "../services/product";
 const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
@@ -22,9 +22,9 @@ const ProductProvider = (props) => {
 		}
 	}
 
-	const createProductWithColors = async (data) => {
+	const createProductVariants = async (data) => {
 		try {
-			const result = await create_product_with_color_service(data);
+			const result = await create_product_variants_service(data);
 			if (result.status === 200) {
 				// await getProducts();
 				// return result.data;
@@ -83,7 +83,7 @@ const ProductProvider = (props) => {
 		}
 	}
 
-	const values = { createProduct, createProductWithColors, updateProduct, getProduct, products, deleteProduct };
+	const values = { createProduct, createProductVariants, updateProduct, getProduct, products, deleteProduct };
 	return (
 		<ProductContext.Provider value={values}>
 			{props.children}

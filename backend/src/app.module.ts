@@ -10,7 +10,7 @@ import { UserEntity } from './user/entity/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { OrderItemEntity } from './order/entity/order_item.entity';
-import { ProductColorImageEntity } from './product/entity/productColors.entity';
+import { ProductColorVariant } from './product/entity/productColorVariants.entity';
 import { ContactModule } from './contact/contact.module';
 
 @Module({
@@ -26,7 +26,7 @@ import { ContactModule } from './contact/contact.module';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [CategoryEntity, ProductEntity, ProductColorImageEntity, UserEntity, OrderItemEntity],
+        entities: [CategoryEntity, ProductEntity, ProductColorVariant, UserEntity, OrderItemEntity],
         synchronize: true,
         autoLoadEntities: true,
 
