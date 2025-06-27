@@ -10,6 +10,11 @@ export class OrderDto {
 	items: {
 		product_id: number;
 		quantity: number;
+		variantId: number
+		color: string
+		color_image: string
+		main_image: string
+		price: number
 	}[];
 
 	@IsNumber()

@@ -26,75 +26,75 @@ export class OrderService {
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      // const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, country, town, zipCode, street_address, appartment, message } = orderData;
-      // let user: UserEntity | null = null;
-      // if (user_id) {
-      //   user = await this.usersRepository.findOne({ where: { id: user_id } });
-      //   await this.usersRepository.update(user.id, {
-      //     country,
-      //     town,
-      //     zipCode,
-      //     street_address,
-      //     appartment,
-      //     message,
-      //   });
-      // }
+      const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, country, town, zipCode, street_address, appartment, message } = orderData;
+      let user: UserEntity | null = null;
+      if (user_id) {
+        user = await this.usersRepository.findOne({ where: { id: user_id } });
+        await this.usersRepository.update(user.id, {
+          country,
+          town,
+          zipCode,
+          street_address,
+          appartment,
+          message,
+        });
+      }
 
-      // // Create OrderEntity instance
-      // const order = this.ordersRepository.create({
-      //   user, // Assign the full entity, not just the ID
-      //   total_price,
-      //   status,
-      //   created_at,
-      // });
+      // Create OrderEntity instance
+      const order = this.ordersRepository.create({
+        user, // Assign the full entity, not just the ID
+        total_price,
+        status,
+        created_at,
+      });
 
-      // // Save order
-      // const savedOrder = await this.ordersRepository.save(order);
-      // // Create order items
-      // const orderItems = await Promise.all(
-      //   items.map(async (item) => {
-      //     const product = await this.productsRepository.findOne({ where: { id: item.product_id } });
-      //     if (!product) {
-      //       throw new Error(`Product with ID ${item.product_id} not found`);
-      //     }
+      // Save order
+      const savedOrder = await this.ordersRepository.save(order);
+      // Create order items
+      const orderItems = await Promise.all(
+        items.map(async (item) => {
+          const product = await this.productsRepository.findOne({ where: { id: item.product_id } });
+          if (!product) {
+            throw new Error(`Product with ID ${item.product_id} not found`);
+          }
 
-      //     // if (product.stock < item.quantity) {
-      //     //   throw new Error(`Insufficient stock for product "${product.title}"`);
-      //     // }
+          // if (product.stock < item.quantity) {
+          //   throw new Error(`Insufficient stock for product "${product.title}"`);
+          // }
 
-      //     // product.stock -= item.quantity;
-      //     await this.productsRepository.save(product);
+          // product.stock -= item.quantity;
+          await this.productsRepository.save(product);
 
-      //     return this.orderItemsRepository.create({
-      //       order: savedOrder,
-      //       product,
-      //       quantity: item.quantity
-      //     });
-      //   })
-      // );
+          return this.orderItemsRepository.create({
+            order: savedOrder,
+            product,
+            quantity: item.quantity
+          });
+        })
+      );
 
-      // const userLocation = {
-      //   phone,
-      //   email,
-      //   firstname,
-      //   lastname,
-      //   country,
-      //   town,
-      //   zipCode,
-      //   street_address,
-      //   appartment,
-      //   message,
-      // }
+      const userLocation = {
+        phone,
+        email,
+        firstname,
+        lastname,
+        country,
+        town,
+        zipCode,
+        street_address,
+        appartment,
+        message,
+      }
 
-      // // Save all order items
-      // const orderItem = await this.orderItemsRepository.save(orderItems);
-      // await this.sendOrderWithEmail(savedOrder, orderItem, userLocation);
+      // Save all order items
+      const orderItem = await this.orderItemsRepository.save(orderItems);
+      //await this.sendOrderWithEmail(savedOrder, orderItem, userLocation);
 
-      // return {
-      //   statusCode: HttpStatus.CREATED,
-      //   message: 'Success! We’ve received your order and it’s being prepared.',
-      //   data: savedOrder
-      // };
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'Success! We’ve received your order and it’s being prepared.',
+        data: savedOrder
+      };
     } catch (error) {
       console.log("error--in crete order---", error);
       throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

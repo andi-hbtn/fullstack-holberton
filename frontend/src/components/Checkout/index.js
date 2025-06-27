@@ -34,12 +34,13 @@ const Checkout = () => {
     const loadItems = (items) => {
         const result = items.items.map((el, index) => {
             return {
-                id: el.id,
-                product_id: el.id,
-                title: el.title,
-                image: el.image,
+                product_id: el.productId,
+                variantId: el.variantId,
+                color: el.color,
+                color_image: el.color_image,
+                main_image: el.main_image,
                 price: el.price,
-                quantity: el.quantity
+                quantity: el.quantity,
             };
         });
         setOrder(result);
@@ -63,9 +64,14 @@ const Checkout = () => {
                 return total + (item.price * item.quantity);
             }, 0);
 
-            const items = order.map(item => ({
-                product_id: item.product_id,
-                quantity: item.quantity
+            const items = order.map(el => ({
+                product_id: el.product_id,
+                variantId: el.variantId,
+                color: el.color,
+                color_image: el.color_image,
+                main_image: el.main_image,
+                price: el.price,
+                quantity: el.quantity,
             }));
 
             const order_product = {
@@ -75,20 +81,19 @@ const Checkout = () => {
                 status: "pending",
                 created_at: dateTime.formatDate()
             }
-
             await createOrder(order_product, values);
-            setOrderSuccess(true);
-            setFinalCart(0);
-            setCart({
-                items: [],
-                total_price: 0,
-                user_id: authUser.id || null
-            });
-            localStorage.setItem("cart", JSON.stringify({
-                items: [],
-                total_price: 0,
-                user_id: authUser.id || null
-            }));
+            // setOrderSuccess(true);
+            // setFinalCart(0);
+            // setCart({
+            //     items: [],
+            //     total_price: 0,
+            //     user_id: authUser.id || null
+            // });
+            // localStorage.setItem("cart", JSON.stringify({
+            //     items: [],
+            //     total_price: 0,
+            //     user_id: authUser.id || null
+            // }));
         } catch (error) {
             console.error("Order submission failed:", error);
         }
@@ -99,7 +104,6 @@ const Checkout = () => {
         return (value || "").toString().trim().length === 0;
     });
 
-    //&& cart.items.length === 0
     return (
         <>
             <Header />
@@ -290,7 +294,7 @@ const Checkout = () => {
                                                             <Row key={index} className='each-order border-bottom'>
                                                                 <Col sm={12} md={5} lg={5} className='checkout-img-title'>
                                                                     <img
-                                                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/${el.image}`}
+                                                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${el.main_image}`}
                                                                         alt={el.title}
                                                                     />
                                                                     <span>{el.title}</span>
