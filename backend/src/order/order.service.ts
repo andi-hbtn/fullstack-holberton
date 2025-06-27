@@ -26,75 +26,75 @@ export class OrderService {
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, country, town, zipCode, street_address, appartment, message } = orderData;
-      let user: UserEntity | null = null;
-      if (user_id) {
-        user = await this.usersRepository.findOne({ where: { id: user_id } });
-        await this.usersRepository.update(user.id, {
-          country,
-          town,
-          zipCode,
-          street_address,
-          appartment,
-          message,
-        });
-      }
+      // const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, country, town, zipCode, street_address, appartment, message } = orderData;
+      // let user: UserEntity | null = null;
+      // if (user_id) {
+      //   user = await this.usersRepository.findOne({ where: { id: user_id } });
+      //   await this.usersRepository.update(user.id, {
+      //     country,
+      //     town,
+      //     zipCode,
+      //     street_address,
+      //     appartment,
+      //     message,
+      //   });
+      // }
 
-      // Create OrderEntity instance
-      const order = this.ordersRepository.create({
-        user, // Assign the full entity, not just the ID
-        total_price,
-        status,
-        created_at,
-      });
+      // // Create OrderEntity instance
+      // const order = this.ordersRepository.create({
+      //   user, // Assign the full entity, not just the ID
+      //   total_price,
+      //   status,
+      //   created_at,
+      // });
 
-      // Save order
-      const savedOrder = await this.ordersRepository.save(order);
-      // Create order items
-      const orderItems = await Promise.all(
-        items.map(async (item) => {
-          const product = await this.productsRepository.findOne({ where: { id: item.product_id } });
-          if (!product) {
-            throw new Error(`Product with ID ${item.product_id} not found`);
-          }
+      // // Save order
+      // const savedOrder = await this.ordersRepository.save(order);
+      // // Create order items
+      // const orderItems = await Promise.all(
+      //   items.map(async (item) => {
+      //     const product = await this.productsRepository.findOne({ where: { id: item.product_id } });
+      //     if (!product) {
+      //       throw new Error(`Product with ID ${item.product_id} not found`);
+      //     }
 
-          // if (product.stock < item.quantity) {
-          //   throw new Error(`Insufficient stock for product "${product.title}"`);
-          // }
+      //     // if (product.stock < item.quantity) {
+      //     //   throw new Error(`Insufficient stock for product "${product.title}"`);
+      //     // }
 
-          // product.stock -= item.quantity;
-          await this.productsRepository.save(product);
+      //     // product.stock -= item.quantity;
+      //     await this.productsRepository.save(product);
 
-          return this.orderItemsRepository.create({
-            order: savedOrder,
-            product,
-            quantity: item.quantity
-          });
-        })
-      );
+      //     return this.orderItemsRepository.create({
+      //       order: savedOrder,
+      //       product,
+      //       quantity: item.quantity
+      //     });
+      //   })
+      // );
 
-      const userLocation = {
-        phone,
-        email,
-        firstname,
-        lastname,
-        country,
-        town,
-        zipCode,
-        street_address,
-        appartment,
-        message,
-      }
+      // const userLocation = {
+      //   phone,
+      //   email,
+      //   firstname,
+      //   lastname,
+      //   country,
+      //   town,
+      //   zipCode,
+      //   street_address,
+      //   appartment,
+      //   message,
+      // }
 
-      // Save all order items
-      const orderItem = await this.orderItemsRepository.save(orderItems);
-      await this.sendOrderWithEmail(savedOrder, orderItem, userLocation);
+      // // Save all order items
+      // const orderItem = await this.orderItemsRepository.save(orderItems);
+      // await this.sendOrderWithEmail(savedOrder, orderItem, userLocation);
 
-      return {
-        statusCode: HttpStatus.CREATED,
-        message: 'Success! We’ve received your order and it’s being prepared.',
-        data: savedOrder
-      };
+      // return {
+      //   statusCode: HttpStatus.CREATED,
+      //   message: 'Success! We’ve received your order and it’s being prepared.',
+      //   data: savedOrder
+      // };
     } catch (error) {
       console.log("error--in crete order---", error);
       throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -129,16 +129,7 @@ export class OrderService {
   public async findOne(id: number): Promise<OrderByIdResposne> {
 
     try {
-      const result = await this.ordersRepository.findOne({
-        where: { id }, relations: {
-          user: true,
-          orderItems: {
-            product: {
-              category: true
-            },
-          }
-        }
-      });
+      const result = await this.ordersRepository.findOne({ where: { id } });
       if (!result) {
         throw new ServiceHandler("This order was not found", HttpStatus.NOT_FOUND);
       }
@@ -153,133 +144,124 @@ export class OrderService {
   }
 
   public async findAll(): Promise<OrderEntity[]> {
-    return this.ordersRepository.find({
-      relations: {
-        user: true,
-        orderItems: {
-          product: {
-            category: true
-          },
-        }
-      }
-    });
+    return this.ordersRepository.find();
   }
 
-  public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: any): Promise<any> {
+  // public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: any): Promise<any> {
 
-    const printer = new PdfPrinter({
-      Roboto: {
-        normal: 'Helvetica',
-        bold: 'Helvetica-Bold',
-        italics: 'Helvetica-Oblique',
-        bolditalics: 'Helvetica-BoldOblique'
-      }
-    })
+  //   const printer = new PdfPrinter({
+  //     Roboto: {
+  //       normal: 'Helvetica',
+  //       bold: 'Helvetica-Bold',
+  //       italics: 'Helvetica-Oblique',
+  //       bolditalics: 'Helvetica-BoldOblique'
+  //     }
+  //   })
 
-    const transporter = nodemailer.createTransport({
-      service: this.configService.get<string>('EMAIL_SERVICE'),
-      host: this.configService.get<string>('EMAIL_HOST'),
-      port: parseInt(this.configService.get<string>('EMAIL_PORT')),
-      auth: {
-        user: this.configService.get<string>('EMAIL_USER'),
-        pass: this.configService.get<string>('EMAIL_PASS'),
-      },
-    });
+  //   const transporter = nodemailer.createTransport({
+  //     service: this.configService.get<string>('EMAIL_SERVICE'),
+  //     host: this.configService.get<string>('EMAIL_HOST'),
+  //     port: parseInt(this.configService.get<string>('EMAIL_PORT')),
+  //     auth: {
+  //       user: this.configService.get<string>('EMAIL_USER'),
+  //       pass: this.configService.get<string>('EMAIL_PASS'),
+  //     },
+  //   });
 
-    const itemTableBody = [
-      ['Product', 'Quantity', 'Unit Price', 'Price'], // header
-      ...items.map(item => [
-        item.product.title,
-        item.quantity.toString(),
-        `£${item.price.toFixed(2)}`,
-        `£${(item.quantity * item.price).toFixed(2)}`
-      ])
-    ];
+  //   const itemTableBody = [
+  //     ['Product', 'Quantity', 'Unit Price', 'Price'], // header
+  //     ...items.map(item => [
+  //       item.product.title,
+  //       item.quantity.toString(),
+  //       `£${item.price.toFixed(2)}`,
+  //       `£${(item.quantity * item.price).toFixed(2)}`
+  //     ])
+  //   ];
 
-    const vat = order.total_price * 0.2;
-    const total = order.total_price + vat;
+  //   const vat = order.total_price * 0.2;
+  //   const total = order.total_price + vat;
 
 
-    const docDefinition: TDocumentDefinitions = {
-      content: [
-        { text: 'Quote Summary', style: 'header' },
-        {
-          columns: [
-            {
-              width: '33%',
-              text: [
-                { text: `Customer Name:${userAddress.firstname} ${userAddress.lastname}\n`, bold: true },
-                { text: `Customer Email: ${userAddress.email}\n` },
-                { text: `Customer Phone: ${userAddress.phone}\n` },
-              ]
-            },
-            {
-              width: '33%',
-              text: [
-                { text: 'Delivery Address:\n', bold: true },
-                { text: `Country: ${userAddress.country}\n` },
-                { text: `Town: ${userAddress.town}\n` },
-                { text: `Zipcode: ${userAddress.zipCode}\n` },
-                { text: `Street: ${userAddress.street_address}\n` },
-                { text: `Unit: ${userAddress.appartment}\n` }
-              ]
-            },
-            {
-              width: '33%',
-              text: [
-                { text: 'Date:\n', bold: true },
-                { text: new Date(order.created_at).toLocaleDateString() }
-              ]
-            }
-          ]
-        },
-        { text: '\nOrder Summary', style: 'subheader' },
-        {
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto'],
-            body: itemTableBody,
-          },
-          layout: 'lightHorizontalLines'
-        },
-        { text: `\nTotal Net: £${order.total_price.toFixed(2)}`, margin: [10, 0, 10, 0] },
-        { text: `Total VAT(20 %): £${vat.toFixed(2)}`, margin: [10, 0, 10, 0] },
-        { text: `Total Amount: £${total.toFixed(2)}`, bold: true, margin: [10, 0, 10, 0] },
-        {
-          text: '\nIf you have any questions, feel free to contact us.\n\nBest regards,\nLondon Glass Fittings',
-          style: 'footer'
-        }
-      ],
-      styles: {
-        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
-        subheader: { fontSize: 15, bold: true, margin: [0, 10, 0, 5] },
-        footer: { fontSize: 10, margin: [0, 20, 0, 0] }
-      }
-    };
+  //   const docDefinition: TDocumentDefinitions = {
+  //     content: [
+  //       { text: 'Quote Summary', style: 'header' },
+  //       {
+  //         columns: [
+  //           {
+  //             width: '33%',
+  //             text: [
+  //               { text: `Customer Name:${userAddress.firstname} ${userAddress.lastname}\n`, bold: true },
+  //               { text: `Customer Email: ${userAddress.email}\n` },
+  //               { text: `Customer Phone: ${userAddress.phone}\n` },
+  //             ]
+  //           },
+  //           {
+  //             width: '33%',
+  //             text: [
+  //               { text: 'Delivery Address:\n', bold: true },
+  //               { text: `Country: ${userAddress.country}\n` },
+  //               { text: `Town: ${userAddress.town}\n` },
+  //               { text: `Zipcode: ${userAddress.zipCode}\n` },
+  //               { text: `Street: ${userAddress.street_address}\n` },
+  //               { text: `Unit: ${userAddress.appartment}\n` }
+  //             ]
+  //           },
+  //           {
+  //             width: '33%',
+  //             text: [
+  //               { text: 'Date:\n', bold: true },
+  //               { text: new Date(order.created_at).toLocaleDateString() }
+  //             ]
+  //           }
+  //         ]
+  //       },
+  //       { text: '\nOrder Summary', style: 'subheader' },
+  //       {
+  //         table: {
+  //           headerRows: 1,
+  //           widths: ['*', 'auto', 'auto', 'auto'],
+  //           body: itemTableBody,
+  //         },
+  //         layout: 'lightHorizontalLines'
+  //       },
+  //       { text: `\nTotal Net: £${order.total_price.toFixed(2)}`, margin: [10, 0, 10, 0] },
+  //       { text: `Total VAT(20 %): £${vat.toFixed(2)}`, margin: [10, 0, 10, 0] },
+  //       { text: `Total Amount: £${total.toFixed(2)}`, bold: true, margin: [10, 0, 10, 0] },
+  //       {
+  //         text: '\nIf you have any questions, feel free to contact us.\n\nBest regards,\nLondon Glass Fittings',
+  //         style: 'footer'
+  //       }
+  //     ],
+  //     styles: {
+  //       header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+  //       subheader: { fontSize: 15, bold: true, margin: [0, 10, 0, 5] },
+  //       footer: { fontSize: 10, margin: [0, 20, 0, 0] }
+  //     }
+  //   };
 
-    const chunks: any[] = [];
-    const pdfDoc = printer.createPdfKitDocument(docDefinition);
-    pdfDoc.on('data', chunk => chunks.push(chunk));
+  //   const chunks: any[] = [];
+  //   const pdfDoc = printer.createPdfKitDocument(docDefinition);
+  //   pdfDoc.on('data', chunk => chunks.push(chunk));
 
-    pdfDoc.on('end', async () => {
-      const pdfBuffer = Buffer.concat(chunks);
+  //   pdfDoc.on('end', async () => {
+  //     const pdfBuffer = Buffer.concat(chunks);
 
-      await transporter.sendMail({
-        from: this.configService.get<string>('EMAIL_USER'),
-        to: this.configService.get<string>('EMAIL_USER'),
-        subject: 'New Order',
-        html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
-        attachments: [
-          {
-            filename: `order - ${order.id}.pdf`,
-            content: pdfBuffer,
-            contentType: 'application/pdf'
-          }
-        ]
-      });
-    });
+  //     await transporter.sendMail({
+  //       from: this.configService.get<string>('EMAIL_USER'),
+  //       to: this.configService.get<string>('EMAIL_USER'),
+  //       subject: 'New Order',
+  //       html: '<p>Thank you for your order! Please find the receipt attached as a PDF.</p>',
+  //       attachments: [
+  //         {
+  //           filename: `order - ${order.id}.pdf`,
+  //           content: pdfBuffer,
+  //           contentType: 'application/pdf'
+  //         }
+  //       ]
+  //     });
+  //   });
 
-    pdfDoc.end();
+  //   pdfDoc.end();
 
-  }
+  // }
 }

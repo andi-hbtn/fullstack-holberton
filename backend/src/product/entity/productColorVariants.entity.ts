@@ -2,7 +2,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { ProductEntity } from './products.entity';
 
-@Entity('product_color_variants')
+@Entity('product_variants')
 export class ProductColorVariant {
     @PrimaryGeneratedColumn()
     id: number;

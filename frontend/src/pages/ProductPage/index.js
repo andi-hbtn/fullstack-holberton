@@ -45,8 +45,10 @@ const ProductPage = () => {
 
     const selectedVariant = product?.colorVariants.find(v => v.id === selectedVariantId);
 
-    const getQuantity = (productId) => {
-        const item = cart.items?.find(el => el.id === productId);
+    const getQuantity = (productId, variantId) => {
+        const item = cart.items?.find(
+            (el) => el.productId === productId && el.variantId === variantId
+        );
         return item?.quantity || 0;
     };
 
@@ -177,11 +179,11 @@ const ProductPage = () => {
                                 <div className="d-flex align-items-center gap-3">
                                     <span className="fw-medium">Quantity:</span>
                                     <div className="d-flex align-items-center border rounded-pill">
-                                        <Button variant="link" onClick={() => removeQuantity(product)}>
+                                        <Button variant="link" onClick={() => removeQuantity(selectedVariant)}>
                                             <PiMinusLight />
                                         </Button>
-                                        <span className="px-3 fs-5">{getQuantity(product.id)}</span>
-                                        <Button variant="link" onClick={() => addQuantity(product)}>
+                                        <span className="px-3 fs-5">{getQuantity(product.id, selectedVariantId)}</span>
+                                        <Button variant="link" onClick={() => addQuantity(selectedVariant)}>
                                             <PiPlusLight />
                                         </Button>
                                     </div>
@@ -192,7 +194,7 @@ const ProductPage = () => {
                                 variant="primary"
                                 size="lg"
                                 className="w-100 mb-4"
-                                onClick={() => addToCart(product)}
+                                onClick={() => addToCart(product, selectedVariant)}
                             >
                                 Add to Cart
                             </Button>

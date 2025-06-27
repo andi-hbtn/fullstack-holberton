@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { OrderEntity } from './order.entity';
-import { ProductEntity } from '../../product/entity/products.entity';
+import { ProductColorVariant } from 'src/product/entity/productColorVariants.entity';
 
 @Entity('order_item')
 export class OrderItemEntity {
@@ -11,9 +11,9 @@ export class OrderItemEntity {
   @JoinColumn({ name: 'order_id' })
   order: OrderEntity;
 
-  @ManyToOne(() => ProductEntity, (product) => product.id, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'product_id' })
-  product: ProductEntity;
+  @ManyToOne(() => ProductColorVariant, { onDelete: 'SET NULL', eager: true })
+  @JoinColumn({ name: 'variant_id' })
+  variant: ProductColorVariant;
 
   @Column()
   quantity: number;

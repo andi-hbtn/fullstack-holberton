@@ -2,8 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { create_order_service } from "../services/cart";
 
 const CartContext = createContext({});
-const CartProvider = (props) => {
 
+const CartProvider = (props) => {
 	const [cart, setCart] = useState(() => {
 		// Load cart from localStorage on initial state
 		const savedCart = localStorage.getItem('cart');
@@ -21,86 +21,34 @@ const CartProvider = (props) => {
 		setFinalCart(newQtu);
 	}, [cart]);
 
-	const addQuantity = (product) => {
+
+	const addQuantity = (variant) => {
 		setCart((prevState) => {
-			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
-			const existingIndex = newItems.findIndex(item => item.id === product.id);
+			const newItems = [...prevState.items];
+			const existingIndex = newItems.findIndex(
+				(item) => item.variantId === variant.id
+			);
+
 			if (existingIndex !== -1) {
-				// Update quantity
+				// Increase quantity of existing item
 				newItems[existingIndex] = {
 					...newItems[existingIndex],
 					quantity: newItems[existingIndex].quantity + 1,
 				};
 			} else {
-				// Add new item
+				// Add new item if it doesn't exist in the cart
 				newItems.push({
-					id: product.id,
-					title: product.title,
-					image: product.image,
-					price: product.price,
-					quantity: 2,
-				});
-			}
-			const newTotalPrice = newItems.reduce(
-				(total, item) => total + item.price * item.quantity,
-				0
-			);
-
-			const updatedCart = {
-				...prevState,
-				items: newItems,
-				total_price: newTotalPrice
-			};
-			return updatedCart;
-		});
-	};
-
-	const removeQuantity = (product) => {
-		setCart((prevState) => {
-			const prevItems = Array.isArray(prevState.items) ? prevState.items : [];
-			const existingItem = prevItems.find(item => item.id === product.id);
-			if (!existingItem) return prevState;
-
-			let newItems;
-			if (existingItem.quantity === 1) {
-				newItems = prevState.items.filter(item => item.id !== product.id);
-			} else {
-				newItems = prevState.items.map(item =>
-					item.id === product.id
-						? { ...item, quantity: item.quantity - 1 }
-						: item
-				);
-			}
-			const newTotalPrice = newItems.reduce(
-				(total, item) => total + item.price * item.quantity,
-				0
-			);
-
-			const updatedCart = {
-				...prevState,
-				items: newItems,
-				total_price: newTotalPrice,
-			};
-			return updatedCart;
-		});
-	};
-
-	const addToCart = (product) => {
-		setCart((prevState) => {
-			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
-			const existingIndex = newItems.findIndex(item => item.id === product.id);
-
-			if (existingIndex === -1) {
-				// Add new item with quantity = 1
-				newItems.push({
-					id: product.id,
-					title: product.title,
-					image: product.image,
-					price: product.price,
+					productId: variant.product_id,
+					variantId: variant.id,
+					color: variant.color,
+					color_image: variant.color_image,
+					main_image: variant.main_image,
+					price: variant.price,
 					quantity: 1,
 				});
 			}
 
+			// Recalculate the total price
 			const newTotalPrice = newItems.reduce(
 				(total, item) => total + item.price * item.quantity,
 				0
@@ -116,6 +64,91 @@ const CartProvider = (props) => {
 		});
 	};
 
+	const removeQuantity = (variant) => {
+		setCart((prevState) => {
+			const newItems = [...prevState.items];
+			const existingIndex = newItems.findIndex(
+				(item) => item.variantId === variant.id
+			);
+
+			if (existingIndex === -1) return prevState;
+
+			let updatedItems;
+			if (newItems[existingIndex].quantity === 1) {
+				updatedItems = newItems.filter(
+					(item) => item.variantId !== variant.id
+				);
+			} else {
+				updatedItems = newItems.map((item) =>
+					item.variantId === variant.id
+						? { ...item, quantity: item.quantity - 1 }
+						: item
+				);
+			}
+
+			// Recalculate the total price
+			const newTotalPrice = updatedItems.reduce(
+				(total, item) => total + item.price * item.quantity,
+				0
+			);
+
+			const updatedCart = {
+				...prevState,
+				items: updatedItems,
+				total_price: newTotalPrice,
+			};
+			localStorage.setItem("cart", JSON.stringify(updatedCart));
+			return updatedCart;
+		});
+	};
+
+	const addToCart = (product, variant) => {
+		setCart((prevState) => {
+			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
+
+			// Check if the variant is already in the cart
+			const existingIndex = newItems.findIndex(item => item.variantId === variant.id);
+
+			if (existingIndex === -1) {
+				// If the variant is not in the cart, add it with all necessary properties
+				newItems.push({
+					variantId: variant.id,
+					productId: product.id,
+					title: product.title,
+					color: variant.color, // Added color
+					image: product.image, // Added product image
+					variantColorImage: variant.color_image, // Added color image
+					variantMainImage: variant.main_image, // Added main image
+					price: variant.price,
+					quantity: 1,
+				});
+			} else {
+				// If the variant already exists, just update the quantity
+				newItems[existingIndex] = {
+					...newItems[existingIndex],
+					quantity: newItems[existingIndex].quantity + 1,
+				};
+			}
+			// Recalculate the total price
+			const newTotalPrice = newItems.reduce(
+				(total, item) => total + item.price * item.quantity,
+				0
+			);
+
+			// Create the updated cart state
+			const updatedCart = {
+				...prevState,
+				items: newItems,
+				total_price: newTotalPrice,
+			};
+
+			// Save the updated cart to localStorage
+			localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+			return updatedCart;
+		});
+	};
+
 	const createOrder = async (order, userInfo) => {
 		try {
 			const result = await create_order_service(order, userInfo);
@@ -123,17 +156,30 @@ const CartProvider = (props) => {
 				return result.data;
 			}
 		} catch (error) {
-			return error
+			return error;
 		}
-	}
+	};
 
-	const values = { cart, setCart, addQuantity, addToCart, removeQuantity, createOrder, finalCart, setFinalCart };
+	const values = {
+		cart,
+		setCart,
+		addQuantity,
+		addToCart,
+		removeQuantity,
+		createOrder,
+		finalCart,
+		setFinalCart
+	};
+
 	return (
 		<CartContext.Provider value={values}>
 			{props.children}
 		</CartContext.Provider>
-	)
-}
+	);
+};
 
-const useCartContext = () => { return useContext(CartContext) }
-export { CartProvider, useCartContext }
+const useCartContext = () => {
+	return useContext(CartContext);
+};
+
+export { CartProvider, useCartContext };
