@@ -96,36 +96,14 @@
     border-radius: 50%;
     background-size: cover;
     background-position: center;
-    border: 2px solid;
     transition: all 0.3s ease;
 }
 
-.color-name {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #333;
-    text-align: center;
-    text-transform: capitalize;
+.color-name{
+    margin-top: 10px;
 }
 
-.color-option.selected .color-name {
+.color-option.selected {
     color: #3a5663;
     font-weight: 600;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .color-option {
-        width: 80px;
-    }
-
-    .color-swatch-container {
-        width: 60px;
-        height: 60px;
-    }
-
-    .color-name {
-        font-size: 0.75rem;
-    }
 }

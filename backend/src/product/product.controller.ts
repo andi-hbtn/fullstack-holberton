@@ -13,7 +13,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 import * as path from 'path';
 import { ServiceHandler } from 'src/errorHandler/service.error';
-import { ProductVariantDto } from './dto/productVariant.dto';
+
 
 @UseGuards(AuthGuard, PermissionGuard)
 @Controller('product')
@@ -112,39 +112,24 @@ export class ProductController {
 
 	@Roles('admin')
 	@Post('product-variants/:productId')
-	// @UseInterceptors(FilesInterceptor('images', 10, {
-	// 	storage: diskStorage({
-	// 		destination: './uploads/colors',
-	// 		filename: (req, file, cb) => {
-	// 			const imageName = new ImageNameHelper(file.originalname).getImageName();
-	// 			cb(null, imageName);
-	// 		}
-	// 	}),
-	// }))
+	@UseInterceptors(FilesInterceptor('images', 10, {
+		storage: diskStorage({
+			destination: './uploads/colors',
+			filename: (req, file, cb) => {
+				// console.log("file---", file);
+				const imageName = new ImageNameHelper(file.originalname).getImageName();
+				cb(null, imageName);
+			}
+		}),
+	}))
 	public async createProductVariants(
 		@Param('productId', ParseIntPipe) productId: number,
 		@UploadedFiles() files: Express.Multer.File[],
-		@Body() bodyParam: ProductVariantDto
+		@Body() bodyParam: any
 	) {
 		try {
-
-
-
-			console.log("dto----", bodyParam);
-			// if (!colors) {
-			// 	// Clean up any uploaded files
-			// 	files.forEach(file => {
-			// 		fs.existsSync(`uploads/colors/${file.filename}`) &&
-			// 			fs.unlinkSync(`uploads/colors/${file.filename}`);
-			// 	});
-			// 	throw new ServiceHandler("Colors field is required", HttpStatus.BAD_REQUEST);
-			// }
-			// const parsedColors = JSON.parse(colors);
-			// if (!Array.isArray(parsedColors)) {
-			// 	files.map(file => fs.unlinkSync('uploads/colors/' + file.filename));
-			// 	throw new ServiceHandler("Number of colors and images must match", HttpStatus.BAD_REQUEST);
-			// }
-			// return await this.productService.uploadColorVariants(productId, files, parsedColors);
+			const parsed = JSON.parse(bodyParam.productVariants);
+			return await this.productService.uploadColorVariants(productId, files, parsed);
 		} catch (error) {
 			throw new ServiceHandler(error.message, error.status);
 		}

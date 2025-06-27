@@ -18,30 +18,28 @@ const create_product_service = async (data) => {
 
 const create_product_variants_service = async (data) => {
 
-	console.log("data---", data);
-
 	const formData = new FormData();
-	// Collect colors and files
-	const colorNames = [];
-	data.productVariants.forEach((variant) => {
-		// Append the two image files per variant
+
+	data.productVariants.forEach((variant, index) => {
 		formData.append('images', variant.color_image);
 		formData.append('images', variant.main_image);
-		formData.append('price', variant.price);
-		formData.append('stock', variant.stock);
-		colorNames.push(variant.colorName);
 	});
 
-	formData.append('colors', JSON.stringify(colorNames));
-	const result = await axios.post(
-		`${url}/product-variants/${data.product_id}`,
+	const cleanedVariants = data.productVariants.map(variant => {
+		const cleanVariant = { ...variant };
+		delete cleanVariant.color_image;
+		delete cleanVariant.main_image;
+		return cleanVariant;
+	});
+
+	formData.append("productVariants", JSON.stringify(cleanedVariants));
+	const result = await axios.post(`${url}/product-variants/${data.product_id}`,
 		formData,
 		{
 			headers: {
-				"Content-Type": "multipart/form-data"
+				'Content-Type': 'multipart/form-data',
 			}
-		}
-	);
+		});
 	return result.data;
 };
 

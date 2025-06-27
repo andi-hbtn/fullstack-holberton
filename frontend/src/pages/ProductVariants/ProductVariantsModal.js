@@ -9,14 +9,14 @@ const ProductVariantModal = ({ show, close, productId }) => {
 
     const [data, setData] = useState({
         product_id: 0,
-        productVariants: [{ colorName: '', price: '', stock: '', color_image: null, main_image: null }]
+        productVariants: [{ colorName: '', price: 0, stock: 0, color_image: null, main_image: null }]
     });
 
     useEffect(() => {
         if (show && productId) {
             setData({
                 product_id: productId,
-                productVariants: [{ colorName: '', price: '', stock: '', color_image: null, main_image: null }]
+                productVariants: [{ colorName: '', price: 0, stock: 0, color_image: null, main_image: null }]
             });
         }
     }, [productId, show]);
@@ -46,7 +46,7 @@ const ProductVariantModal = ({ show, close, productId }) => {
     const addColorVariant = () => {
         setData({
             ...data,
-            productVariants: [...data.productVariants, { colorName: '', price: '', stock: '', color_image: null, main_image: null }]
+            productVariants: [...data.productVariants, { colorName: '', price: 0, stock: 0, color_image: null, main_image: null }]
         });
     };
 
@@ -108,7 +108,7 @@ const ProductVariantModal = ({ show, close, productId }) => {
                                             <Form.Control
                                                 type="number"
                                                 name="price"
-                                                value={variant.price || ''}
+                                                value={variant.price || 0}
                                                 onChange={(e) => handleInputChange(e, index)}
                                                 step="0.01"
                                                 min="0"
@@ -121,7 +121,7 @@ const ProductVariantModal = ({ show, close, productId }) => {
                                             <Form.Control
                                                 type="number"
                                                 name="stock"
-                                                value={variant.stock || ''}
+                                                value={variant.stock || 0}
                                                 onChange={(e) => handleInputChange(e, index)}
                                                 min="0"
                                                 required

@@ -149,7 +149,7 @@ const ProductVariants = () => {
                                             </td>
                                             <td>
                                                 <div className="color-options">
-                                                    {product.productVariants?.map((property, i) => (
+                                                    {product.colorVariants?.map((property, i) => (
                                                         <span
                                                             key={i}
                                                             className="color-dot"
@@ -160,10 +160,10 @@ const ProductVariants = () => {
                                             </td>
                                             <td>
                                                 <div className="d-flex align-items-center">
-                                                    {product.productVariants?.map((property, i) => (
+                                                    {product.colorVariants?.map((property, i) => (
                                                         <img
                                                             key={i}
-                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${property.product_color_image}`}
+                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${property.main_image}`}
                                                             alt="product"
                                                             className="product-img rounded-circle me-3"
                                                         />

@@ -7,7 +7,7 @@ export class ProductColorVariant {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('decimal', { precision: 10, scale: 2 })
+    @Column()
     price: number;
 
     @Column()
@@ -20,7 +20,7 @@ export class ProductColorVariant {
     color_image: string;
 
     @Column()
-    product_color_image: string;
+    main_image: string;
 
     @ManyToOne(() => ProductEntity, (product) => product.colorVariants, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'product_id' })

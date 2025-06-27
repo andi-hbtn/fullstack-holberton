@@ -5,13 +5,14 @@ import { ProductColorVariant } from './entity/productColorVariants.entity';
 import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
-import { ProductResponse, AllProductResponse, ProductColorResponse, DeleteProductResponse } from './responseType/response.interface';
+import { ProductResponse, AllProductResponse, DeleteProductResponse } from './responseType/response.interface';
 import * as fs from "fs"
+import { ProductVariantDto } from './dto/productVariant.dto';
 @Injectable()
 export class ProductService {
 	constructor(
 		@InjectRepository(ProductEntity) private readonly ProductEntity: Repository<ProductEntity>,
-		@InjectRepository(ProductColorVariant) private readonly ColorImageRepo: Repository<ProductColorVariant>
+		@InjectRepository(ProductColorVariant) private readonly ProductVariant: Repository<ProductColorVariant>
 	) { }
 
 	public async getAllProducts(): Promise<AllProductResponse> {
@@ -90,9 +91,9 @@ export class ProductService {
 
 			if (result.colorVariants.length > 0) {
 				result.colorVariants.forEach((el) => {
-					if (fs.existsSync(`uploads/colors/${el.color_image}`) || fs.existsSync(`uploads/colors/${el.product_color_image}`)) {
+					if (fs.existsSync(`uploads/colors/${el.color_image}`) || fs.existsSync(`uploads/colors/${el.main_image}`)) {
 						fs.unlinkSync(`uploads/colors/${el.color_image}`);
-						fs.unlinkSync(`uploads/colors/${el.product_color_image}`);
+						fs.unlinkSync(`uploads/colors/${el.main_image}`);
 					}
 				})
 			}
@@ -116,49 +117,36 @@ export class ProductService {
 	public async uploadColorVariants(
 		productId: number,
 		files: Express.Multer.File[],
-		colors: { color: string, price: number, stock: number }[]
+		variants: ProductVariantDto[]
 	): Promise<any> {
 		try {
-			const product = await this.ProductEntity.findOne({ where: { id: productId } });
+			const product = await this.ProductEntity.findOne({
+				where: { id: productId },
+				relations: ['colorVariants']
+			});
+
 			if (!product) {
-				files.forEach(file => {
-					if (fs.existsSync(`uploads/colors/${file.filename}`)) {
-						fs.unlinkSync(`uploads/colors/${file.filename}`);
-					}
-				});
 				throw new ServiceHandler("Product not found", HttpStatus.NOT_FOUND);
 			}
 
-			const existingColors = await this.ColorImageRepo.find({ where: { product_id: productId } });
-			const existingColorSet = new Set(existingColors.map(c => c.color));
-			const newColorImageEntities = [];
-
-			for (let i = 0; i < colors.length; i++) {
-				const { color, price, stock } = colors[i];
-				const colorImage = files[i * 2];
-				const mainImage = files[i * 2 + 1];
-
-				if (existingColorSet.has(color)) {
-					if (colorImage) fs.existsSync(`uploads/colors/${colorImage.filename}`) && fs.unlinkSync(`uploads/colors/${colorImage.filename}`);
-					if (mainImage) fs.existsSync(`uploads/colors/${mainImage.filename}`) && fs.unlinkSync(`uploads/colors/${mainImage.filename}`);
-					continue;
-				}
-
-				newColorImageEntities.push({
-					color,
-					color_image: colorImage.filename,
-					product_color_image: mainImage.filename,
-					product_id: productId,
-					price,
-					stock,
-				});
-			}
-
-			if (newColorImageEntities.length === 0) {
-				throw new ServiceHandler('All provided colors already exist for this product.', HttpStatus.CONFLICT);
-			}
-
-			const result = await this.ColorImageRepo.save(newColorImageEntities);
+			await this.ProductVariant.save(
+				variants.map((variant, index) => {
+					const color_image = files[index].filename;
+					const main_image = files[index + 1].filename;
+					return {
+						product_id: productId,
+						color: variant.colorName,
+						price: variant.price,
+						stock: variant.stock,
+						color_image: color_image,
+						main_image: main_image
+					}
+				})
+			);
+			const result = await this.ProductEntity.findOne({
+				where: { id: productId },
+				relations: ['colorVariants']
+			});
 
 			return {
 				status: HttpStatus.OK,

@@ -13,12 +13,6 @@ export interface AllProductResponse {
   data: ProductEntity[];
 }
 
-export interface ProductColorResponse {
-  status: number;
-  message: string;
-  data: ProductColorVariant
-}
-
 export interface DeleteProductResponse {
   status: number,
   message: string,

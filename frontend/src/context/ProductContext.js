@@ -26,11 +26,11 @@ const ProductProvider = (props) => {
 		try {
 			const result = await create_product_variants_service(data);
 			if (result.status === 200) {
-				// await getProducts();
-				// return result.data;
+				await getProducts();
+				return result.data;
 			}
 		} catch (error) {
-			console.log("error--in update--", error);
+			console.log("error--in update--", error.response.data);
 			throw error.response.data;
 		}
 	}
@@ -50,7 +50,7 @@ const ProductProvider = (props) => {
 		try {
 			const result = await get_product_service(id);
 			if (result.status === 200) {
-				return result.data;
+				return result;
 			}
 
 		} catch (error) {
