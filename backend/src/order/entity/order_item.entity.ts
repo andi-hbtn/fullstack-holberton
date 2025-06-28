@@ -15,6 +15,15 @@ export class OrderItemEntity {
   @JoinColumn({ name: 'variant_id' })
   variant: ProductColorVariant;
 
+  @Column({ nullable: true })
+  color: string;
+
+  @Column({ nullable: true })
+  color_image: string;
+
+  @Column({ nullable: true })
+  main_image: string;
+
   @Column()
   quantity: number;
 

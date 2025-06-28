@@ -131,16 +131,16 @@ export class ProductService {
 
 			await this.ProductVariant.save(
 				variants.map((variant, index) => {
-					const color_image = files[index].filename;
-					const main_image = files[index + 1].filename;
+					const color_image = files[index * 2]?.filename;
+					const main_image = files[index * 2 + 1]?.filename;
 					return {
 						product_id: productId,
 						color: variant.colorName,
-						price: variant.price,
-						stock: variant.stock,
-						color_image: color_image,
-						main_image: main_image
-					}
+						price: +variant.price,
+						stock: +variant.stock,
+						color_image,
+						main_image
+					};
 				})
 			);
 			const result = await this.ProductEntity.findOne({
