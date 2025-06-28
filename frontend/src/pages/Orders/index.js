@@ -144,7 +144,7 @@ const Orders = () => {
 																		return (
 																			<div key={pkey}>
 																				<img
-																					src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.product?.image}`}
+																					src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${product?.main_image}`}
 																					alt="product"
 																					className="product-img rounded-circle me-3"
 																				/>

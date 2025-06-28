@@ -23,6 +23,8 @@ const OrdersModal = ({ open, close, id }) => {
         if (id) fetchOrder();
     }, [id, getOrderById]);
 
+    console.log("orders---", orders);
+
     return (
         <Modal show={open} onHide={close} backdrop="static" keyboard={false} size="lg">
             <Modal.Header closeButton className="border-bottom-0">
@@ -95,7 +97,7 @@ const OrdersModal = ({ open, close, id }) => {
                                     <Row className="align-items-center">
                                         <Col xs={3} md={2}>
                                             <img
-                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/${item.product?.image}`}
+                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item?.main_image}`}
                                                 alt={item.product?.title}
                                                 className="img-fluid rounded"
                                                 style={{

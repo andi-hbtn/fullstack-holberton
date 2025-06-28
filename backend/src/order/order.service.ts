@@ -137,7 +137,7 @@ export class OrderService {
   public async findOne(id: number): Promise<OrderByIdResposne> {
 
     try {
-      const result = await this.ordersRepository.findOne({ where: { id } });
+      const result = await this.ordersRepository.findOne({ where: { id },relations:['orderItems'] });
       if (!result) {
         throw new ServiceHandler("This order was not found", HttpStatus.NOT_FOUND);
       }
@@ -152,7 +152,7 @@ export class OrderService {
   }
 
   public async findAll(): Promise<OrderEntity[]> {
-    return this.ordersRepository.find();
+    return this.ordersRepository.find({ relations: ['orderItems'] });
   }
 
   public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: any): Promise<any> {
