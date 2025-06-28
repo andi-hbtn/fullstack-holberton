@@ -82,18 +82,18 @@ const Checkout = () => {
                 created_at: dateTime.formatDate()
             }
             await createOrder(order_product, values);
-            // setOrderSuccess(true);
-            // setFinalCart(0);
-            // setCart({
-            //     items: [],
-            //     total_price: 0,
-            //     user_id: authUser.id || null
-            // });
-            // localStorage.setItem("cart", JSON.stringify({
-            //     items: [],
-            //     total_price: 0,
-            //     user_id: authUser.id || null
-            // }));
+            setOrderSuccess(true);
+            setFinalCart(0);
+            setCart({
+                items: [],
+                total_price: 0,
+                user_id: authUser.id || null
+            });
+            localStorage.setItem("cart", JSON.stringify({
+                items: [],
+                total_price: 0,
+                user_id: authUser.id || null
+            }));
         } catch (error) {
             console.error("Order submission failed:", error);
         }
