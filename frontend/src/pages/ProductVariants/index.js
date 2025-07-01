@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useProductContext } from "../../context/ProductContext.js";
 import { useAuthenticateContext } from "../../context/AuthenticateContext.js";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiPlus, FiEdit } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
 
 import ProductVariantsModal from "./ProductVariantsModal.js";
+import EditProductVariants from "./EditProductVariants.js";
 import "./index.css";
 
 const ProductVariants = () => {
@@ -15,6 +16,9 @@ const ProductVariants = () => {
     const { products } = useProductContext();
     const { authUser, logout } = useAuthenticateContext();
     const [id, setId] = useState(0);
+
+    const [openEdit, setOpenEdit] = useState(false);
+    const [productVariant, setProductVariant] = useState(null);
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -22,13 +26,15 @@ const ProductVariants = () => {
         navigate("/");
     }
 
-    const handleModal = (data) => {
+    const handleCreate = (data) => {
         setId(data.id);
         setOpen(!open);
     }
 
-    const handleClose = () => {
-        setOpen(!open);
+    const handleClose = () => { setOpen(!open); }
+    const handleEdit = (product) => {
+        setProductVariant(product);
+        setOpenEdit(!openEdit);
     }
 
     return (
@@ -172,11 +178,11 @@ const ProductVariants = () => {
                                             </td>
                                             <td>
                                                 <Button
-                                                    variant="outline-primary"
-                                                    size="sm"
-                                                    className="me-2 action-btn"
-                                                    onClick={() => handleModal(product)}
-                                                >
+                                                    variant="outline-primary" size="sm" className="me-2 action-btn" onClick={() => handleCreate(product)}>
+                                                    <FiPlus/>
+                                                </Button>
+
+                                                <Button variant="outline-primary" size="sm" className="me-2 action-btn" onClick={() => { handleEdit(product) }}>
                                                     <FiEdit />
                                                 </Button>
                                             </td>
@@ -189,6 +195,7 @@ const ProductVariants = () => {
                 </Row>
             </Container>
             <ProductVariantsModal show={open} close={handleClose} productId={id} />
+            <EditProductVariants show={openEdit} close={() => { return setOpenEdit(!openEdit) }} product={productVariant} />
         </div>
     )
 }

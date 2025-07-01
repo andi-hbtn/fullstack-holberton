@@ -1,5 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { create_product_variants_service, create_product_service, get_products_service, get_product_service, update_product, delete_product_service } from "../services/product";
+import {
+	create_product_variants_service,
+	update_product_variants_service,
+	create_product_service,
+	get_products_service,
+	get_product_service,
+	update_product,
+	delete_product_service
+} from "../services/product";
 const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
@@ -31,6 +39,19 @@ const ProductProvider = (props) => {
 			}
 		} catch (error) {
 			console.log("error--in update--", error.response.data);
+			throw error.response.data;
+		}
+	}
+
+	const updateProductVariants = async (data) => {
+		try {
+			const result = await update_product_variants_service(data);
+			if (result.status === 200) {
+				await getProducts();
+				return result.data;
+			}
+		} catch (error) {
+			console.log("error--in update--", error);
 			throw error.response.data;
 		}
 	}
@@ -83,7 +104,7 @@ const ProductProvider = (props) => {
 		}
 	}
 
-	const values = { createProduct, createProductVariants, updateProduct, getProduct, products, deleteProduct };
+	const values = { createProduct, createProductVariants, updateProductVariants, updateProduct, getProduct, products, deleteProduct };
 	return (
 		<ProductContext.Provider value={values}>
 			{props.children}

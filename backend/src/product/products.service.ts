@@ -159,4 +159,30 @@ export class ProductService {
 		}
 	}
 
+
+	public async updatecolorVariants(productId: number,
+		
+		variants: ProductVariantDto[]): Promise<any> {
+		try {
+			const product = await this.ProductEntity.findOne({
+				where: { id: productId },
+				relations: ['colorVariants']
+			});
+
+			if (!product) {
+				throw new ServiceHandler("Product not found", HttpStatus.NOT_FOUND);
+			}
+
+
+			return {
+				status: HttpStatus.OK,
+				message: 'Color images uploaded successfully',
+				data: null,
+			};
+		} catch (error) {
+			console.error("Error in uploadProductColors:", error);
+			throw new ServiceHandler(error.message, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }
