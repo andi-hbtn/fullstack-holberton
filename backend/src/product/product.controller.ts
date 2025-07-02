@@ -5,7 +5,7 @@ import { IsPublic } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ProductService } from './products.service';
 import { ProductDto } from './dto/product.dto';
-import { ProductResponse, DeleteProductResponse } from './responseType/response.interface';
+import { ProductResponse, DeleteProductResponse, DeleteProductVariantResponse } from './responseType/response.interface';
 import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
@@ -135,7 +135,6 @@ export class ProductController {
 		}
 	}
 
-
 	@Roles('admin')
 	@Put('product-variants/:productId')
 	@UseInterceptors(FilesInterceptor('images', 10, {
@@ -167,6 +166,16 @@ export class ProductController {
 
 		} catch (error) {
 			throw new ServiceHandler(error.message, error.status);
+		}
+	}
+
+	@Roles('admin')
+	@Delete('product-variants/:id')
+	public async deleteProductVariant(@Param('id', ParseIntPipe) id: number): Promise<DeleteProductVariantResponse> {
+		try {
+			return await this.productService.deleteProductVariant(id);
+		} catch (error) {
+			throw new ServiceHandler(error.response, error.status);
 		}
 	}
 

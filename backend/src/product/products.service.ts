@@ -5,7 +5,7 @@ import { ProductColorVariant } from './entity/productColorVariants.entity';
 import { Repository } from 'typeorm';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
-import { ProductResponse, AllProductResponse, DeleteProductResponse } from './responseType/response.interface';
+import { ProductResponse, AllProductResponse, DeleteProductResponse, DeleteProductVariantResponse } from './responseType/response.interface';
 import * as fs from "fs"
 import { ProductVariantDto } from './dto/productVariant.dto';
 @Injectable()
@@ -161,7 +161,6 @@ export class ProductService {
 
 
 	public async updatecolorVariants(productId: number,
-		
 		variants: ProductVariantDto[]): Promise<any> {
 		try {
 			const product = await this.ProductEntity.findOne({
@@ -182,6 +181,31 @@ export class ProductService {
 		} catch (error) {
 			console.error("Error in uploadProductColors:", error);
 			throw new ServiceHandler(error.message, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public async deleteProductVariant(id: number): Promise<DeleteProductVariantResponse> {
+		try {
+			const result = await this.ProductVariant.findOne({ where: { id } });
+			if (!result) {
+				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
+			}
+
+			console.log("result----", result);
+
+
+			// if (fs.existsSync(`uploads/colors/${el.color_image}`) || fs.existsSync(`uploads/colors/${el.main_image}`)) {
+			// 	fs.unlinkSync(`uploads/colors/${el.color_image}`);
+			// 	fs.unlinkSync(`uploads/colors/${el.main_image}`);
+			// }
+
+			//await this.ProductEntity.delete(id);
+			return {
+				status: 200,
+				message: "Product Variant was successfully deleted"
+			};
+		} catch (error) {
+			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
 		}
 	}
 

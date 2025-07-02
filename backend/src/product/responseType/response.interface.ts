@@ -17,3 +17,8 @@ export interface DeleteProductResponse {
   status: number,
   message: string,
 }
+
+export interface DeleteProductVariantResponse {
+  status: number,
+  message: string,
+}

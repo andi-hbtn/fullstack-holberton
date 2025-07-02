@@ -4,7 +4,7 @@ import { Modal, Button, Form, Row, Col, Image } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
 
 const EditProductVariants = ({ show, close, product }) => {
-    const { updateProductVariants } = useProductContext();
+    const { updateProductVariants, deleteProductVariant } = useProductContext();
 
     const [productVarian, setProductVariant] = useState([]);
 
@@ -31,12 +31,16 @@ const EditProductVariants = ({ show, close, product }) => {
         })
     }
 
-    const removeColorVariant = (index) => {
+    const removeColorVariant = async (index, id) => {
 
-        setProductVariant((prevState) => {
-            const updatedVariant = prevState.filter((el, i) => { return i !== index });
-            return updatedVariant;
-        })
+        const result = await deleteProductVariant(id);
+        if (result.status === 200) {
+            setProductVariant((prevState) => {
+                const updatedVariant = prevState.filter((el, i) => { return i !== index });
+                return updatedVariant;
+            });
+        }
+        return;
     }
 
     const handleSubmit = async (event) => {
@@ -64,7 +68,7 @@ const EditProductVariants = ({ show, close, product }) => {
                                         <div key={index} className="mb-3 border-bottom pb-3">
                                             <div className="d-flex justify-content-between align-items-center mb-2">
                                                 <h6 className="mb-0">Color #{index + 1}</h6>
-                                                <Button variant="link" size="sm" className="text-danger" onClick={() => removeColorVariant(index)} disabled={variant.length === 1}>
+                                                <Button variant="link" size="sm" className="text-danger" onClick={() => removeColorVariant(index, variant.id)} disabled={variant.length === 1}>
                                                     <FaTrash />
                                                 </Button>
                                             </div>

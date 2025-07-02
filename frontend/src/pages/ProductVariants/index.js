@@ -179,7 +179,7 @@ const ProductVariants = () => {
                                             <td>
                                                 <Button
                                                     variant="outline-primary" size="sm" className="me-2 action-btn" onClick={() => handleCreate(product)}>
-                                                    <FiPlus/>
+                                                    <FiPlus />
                                                 </Button>
 
                                                 <Button variant="outline-primary" size="sm" className="me-2 action-btn" onClick={() => { handleEdit(product) }}>

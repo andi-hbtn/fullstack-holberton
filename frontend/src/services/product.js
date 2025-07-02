@@ -45,22 +45,29 @@ const create_product_variants_service = async (data) => {
 
 const update_product_variants_service = async (data) => {
 
-	const formData = new FormData();
 
-	data.productVariants.forEach((variant, index) => {
-		formData.append('images', variant.color_image);
-		formData.append('images', variant.main_image);
-	});
-	formData.append("productVariants", JSON.stringify(cleanedVariants));
-	const result = await axios.put(`${url}/product-variants/${data.id}`,
-		formData,
-		{
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			}
-		});
-	return result.data;
+	console.log("data----", data);
+
+	// const formData = new FormData();
+	// data.productVariants.forEach((variant, index) => {
+	// 	formData.append('images', variant.color_image);
+	// 	formData.append('images', variant.main_image);
+	// });
+	// formData.append("productVariants", JSON.stringify(cleanedVariants));
+	// const result = await axios.put(`${url}/product-variants/${data.id}`,
+	// 	formData,
+	// 	{
+	// 		headers: {
+	// 			'Content-Type': 'multipart/form-data',
+	// 		}
+	// 	});
+	// return result.data;
 };
+
+const delete_product_variants_service = async (id) => {
+	const result = await axios.delete(`${url}/product-variants/${id}`);
+	return result.data;
+}
 
 const get_products_service = async () => {
 	const result = await axios.get(`${url}/all`);
@@ -96,6 +103,7 @@ export {
 	create_product_service,
 	create_product_variants_service,
 	update_product_variants_service,
+	delete_product_variants_service,
 	get_products_service,
 	get_product_service,
 	update_product,
