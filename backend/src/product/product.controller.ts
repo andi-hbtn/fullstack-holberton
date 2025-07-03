@@ -14,7 +14,6 @@ import * as fs from "fs";
 import * as path from 'path';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 
-
 @UseGuards(AuthGuard, PermissionGuard)
 @Controller('product')
 export class ProductController {
@@ -136,7 +135,7 @@ export class ProductController {
 	}
 
 	@Roles('admin')
-	@Put('product-variants/:productId')
+	@Put('product-variants/')
 	@UseInterceptors(FilesInterceptor('images', 10, {
 		storage: diskStorage({
 			destination: './uploads/colors',
@@ -147,23 +146,12 @@ export class ProductController {
 		}),
 	}))
 	public async updateProductVariants(
-		@Param('id', ParseIntPipe) id: number,
 		@UploadedFiles() files: Express.Multer.File[],
 		@Body() bodyParam: any
 	) {
 		try {
-			const productResponse = await this.productService.getProductById(id);
-			const product = productResponse.data;
 			const parsed = JSON.parse(bodyParam.productVariants);
-
-			console.log("productResponse--", productResponse);
-			// if (!files) {
-			// 	const imagePath = path.basename(product.image);
-			// 	return await this.productService.uploadColorVariants(productId, files, parsed);
-			// } else {
-			// 	//return await this.productService.uploadColorVariants(productId, files, parsed);
-			// }
-
+			return await this.productService.updateColorVariants(files, parsed);
 		} catch (error) {
 			throw new ServiceHandler(error.message, error.status);
 		}

@@ -20,12 +20,12 @@ const EditProductVariants = ({ show, close, product }) => {
     }
 
     const handleChange = (event, index) => {
-        const { name, value } = event.target;
+        const { name, value, files, type } = event.target;
         setProductVariant((prevState) => {
             const updatedVariants = [...prevState];
             updatedVariants[index] = {
                 ...updatedVariants[index],
-                [name]: value
+                [name]: type === "file" ? files[0] : value
             }
             return updatedVariants;
         })
@@ -52,7 +52,7 @@ const EditProductVariants = ({ show, close, product }) => {
     return (
         <Modal show={show} onHide={close} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>Add products with colors</Modal.Title>
+                <Modal.Title>Update products with colors</Modal.Title>
             </Modal.Header>
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Modal.Body>
@@ -111,6 +111,7 @@ const EditProductVariants = ({ show, close, product }) => {
                                                 <Form.Control
                                                     type="file"
                                                     accept="image/*"
+                                                    name="color_image"
                                                     onChange={(e) => handleChange(e, index)}
                                                 />
                                                 <Image
@@ -125,6 +126,7 @@ const EditProductVariants = ({ show, close, product }) => {
                                                 <Form.Control
                                                     type="file"
                                                     accept="image/*"
+                                                    name="main_image"
                                                     onChange={(e) => handleChange(e, index)}
                                                 />
                                                 <Image
@@ -142,7 +144,7 @@ const EditProductVariants = ({ show, close, product }) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={close}>Cancel</Button>
-                    <Button variant="primary" type="submit" onClick={handleAddVariant}>Add Color Variants</Button>
+                    <Button variant="primary" type="submit" onClick={handleAddVariant}>Update</Button>
                 </Modal.Footer>
             </Form>
         </Modal >

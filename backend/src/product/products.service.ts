@@ -7,7 +7,10 @@ import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
 import { ProductResponse, AllProductResponse, DeleteProductResponse, DeleteProductVariantResponse } from './responseType/response.interface';
 import * as fs from "fs"
+import * as path from 'path';
 import { ProductVariantDto } from './dto/productVariant.dto';
+import { ProductVariantArrayDto } from './dto/arrayProductVariant.dto';
+import { UpdateProductVariantDto } from './dto/updateProductVariant.dto';
 @Injectable()
 export class ProductService {
 	constructor(
@@ -159,20 +162,43 @@ export class ProductService {
 		}
 	}
 
-
-	public async updatecolorVariants(productId: number,
-		variants: ProductVariantDto[]): Promise<any> {
+	public async updateColorVariants(
+		files: any,
+		variants: UpdateProductVariantDto[]): Promise<any> {
 		try {
-			const product = await this.ProductEntity.findOne({
-				where: { id: productId },
-				relations: ['colorVariants']
-			});
+			for (const variant of variants) {
 
-			if (!product) {
-				throw new ServiceHandler("Product not found", HttpStatus.NOT_FOUND);
+				const existingVariant = await this.ProductVariant.findOne({
+					where: { id: variant.id }
+				});
+
+				if (!existingVariant) {
+					throw new Error(`Variant with id ${variant.id} not found`);
+				}
+
+				existingVariant.color = variant.color;
+				existingVariant.price = variant.price;
+				existingVariant.stock = variant.stock;
+
+				console.log("files-----", files);
+
+				if (files || files.length > 0) {
+					const color_image = path.basename(variant.color_image);
+					const main_image = path.basename(variant.main_image);
+					if (fs.existsSync(color_image)) {
+						fs.unlinkSync('uploads/colors' + color_image);
+					}
+					if (fs.existsSync(main_image)) {
+						fs.unlinkSync('uploads/colors' + main_image);
+					}
+				}
+
+				console.log("fiels-----", files);
+
+				//existingVariant.color_image = files.
+
+				// await this.ProductVariant.save(existingVariant);
 			}
-
-
 			return {
 				status: HttpStatus.OK,
 				message: 'Color images uploaded successfully',
