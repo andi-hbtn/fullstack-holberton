@@ -190,16 +190,11 @@ export class ProductService {
 			if (!result) {
 				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
 			}
-
-			console.log("result----", result);
-
-
-			// if (fs.existsSync(`uploads/colors/${el.color_image}`) || fs.existsSync(`uploads/colors/${el.main_image}`)) {
-			// 	fs.unlinkSync(`uploads/colors/${el.color_image}`);
-			// 	fs.unlinkSync(`uploads/colors/${el.main_image}`);
-			// }
-
-			//await this.ProductEntity.delete(id);
+			if (fs.existsSync(`uploads/colors/${result.color_image}`) || fs.existsSync(`uploads/colors/${result.main_image}`)) {
+				fs.unlinkSync(`uploads/colors/${result.color_image}`);
+				fs.unlinkSync(`uploads/colors/${result.main_image}`);
+			}
+			await this.ProductVariant.delete(id);
 			return {
 				status: 200,
 				message: "Product Variant was successfully deleted"
