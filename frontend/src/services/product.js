@@ -44,7 +44,6 @@ const create_product_variants_service = async (data) => {
 };
 
 const update_product_variants_service = async (data) => {
-
 	const formData = new FormData();
 
 	const variants = data.map((el, index) => {
@@ -75,6 +74,7 @@ const update_product_variants_service = async (data) => {
 };
 
 const delete_product_variants_service = async (id) => {
+	console.log("id---",id);
 	const result = await axios.delete(`${url}/product-variants/${id}`);
 	return result.data;
 }

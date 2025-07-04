@@ -163,42 +163,23 @@ export class ProductService {
 	}
 
 	public async updateColorVariants(
-		files: any,
-		variants: UpdateProductVariantDto[]): Promise<any> {
+		file: any,
+		variant: UpdateProductVariantDto): Promise<any> {
 		try {
-			for (const variant of variants) {
 
-				const existingVariant = await this.ProductVariant.findOne({
-					where: { id: variant.id }
-				});
 
-				if (!existingVariant) {
-					throw new Error(`Variant with id ${variant.id} not found`);
-				}
+			const existingVariant = await this.ProductVariant.findOne({
+				where: { id: variant.id }
+			});
 
-				existingVariant.color = variant.color;
-				existingVariant.price = variant.price;
-				existingVariant.stock = variant.stock;
-
-				console.log("files-----", files);
-
-				if (files || files.length > 0) {
-					const color_image = path.basename(variant.color_image);
-					const main_image = path.basename(variant.main_image);
-					if (fs.existsSync(color_image)) {
-						fs.unlinkSync('uploads/colors' + color_image);
-					}
-					if (fs.existsSync(main_image)) {
-						fs.unlinkSync('uploads/colors' + main_image);
-					}
-				}
-
-				console.log("fiels-----", files);
-
-				//existingVariant.color_image = files.
-
-				// await this.ProductVariant.save(existingVariant);
+			if (!existingVariant) {
+				throw new Error(`Variant with id ${variant.id} not found`);
 			}
+
+			existingVariant.price = variant.price;
+			existingVariant.stock = variant.stock;
+			existingVariant.color = variant.color;
+
 			return {
 				status: HttpStatus.OK,
 				message: 'Color images uploaded successfully',

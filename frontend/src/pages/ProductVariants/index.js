@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Row, Col, Table, Button } from "react-bootstrap";
+import { Navbar, Nav, Container, Row, Col, Table, Button, Collapse } from "react-bootstrap";
 import { useProductContext } from "../../context/ProductContext.js";
 import { useAuthenticateContext } from "../../context/AuthenticateContext.js";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiPlus, FiEdit } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiPlus, FiEdit, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FaTrash } from 'react-icons/fa';
 import { CiLock } from "react-icons/ci";
 
 import ProductVariantsModal from "./ProductVariantsModal.js";
@@ -12,10 +13,12 @@ import EditProductVariants from "./EditProductVariants.js";
 import "./index.css";
 
 const ProductVariants = () => {
+    const { deleteProductVariant } = useProductContext();
     const [open, setOpen] = useState(false);
     const { products } = useProductContext();
     const { authUser, logout } = useAuthenticateContext();
     const [id, setId] = useState(0);
+    const [expandedRows, setExpandedRows] = useState([]);
 
     const [openEdit, setOpenEdit] = useState(false);
     const [productVariant, setProductVariant] = useState(null);
@@ -36,6 +39,18 @@ const ProductVariants = () => {
         setProductVariant(product);
         setOpenEdit(!openEdit);
     }
+
+    const deleteVariantProduct = async (id,index) => {
+        return await deleteProductVariant(id);
+    }
+
+    const toggleRow = (productId) => {
+        if (expandedRows.includes(productId)) {
+            setExpandedRows(expandedRows.filter(id => id !== productId));
+        } else {
+            setExpandedRows([...expandedRows, productId]);
+        }
+    };
 
     return (
         <div className="admin-dashboard">
@@ -123,70 +138,145 @@ const ProductVariants = () => {
                             <Table hover responsive className="product-table">
                                 <thead className="table-header">
                                     <tr>
+                                        <th></th>
                                         <th>ID</th>
                                         <th>Product</th>
-                                        <th>Color Options</th>
-                                        <th>Images</th>
-                                        <th>Actions</th>
+                                        <th>Color Variants</th>
+                                        <th>Add Variant</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {products.map((product, index) => (
-                                        <tr key={index} className="table-row">
-                                            <td className="text-muted">#{product.id}</td>
-                                            <td>
-                                                <div className="d-flex align-items-center">
-                                                    {
-                                                        product.image ?
-                                                            <img
-                                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-                                                                alt="product"
-                                                                className="product-img rounded-circle me-3"
-                                                            />
-                                                            : ""
-                                                    }
-                                                    <div>
-                                                        <h6 className="mb-0">{product.title}</h6>
-                                                        <small className="text-muted">
-                                                            {product.description.substring(0, 40)}...
-                                                        </small>
+                                        <>
+                                            <tr key={index} className="table-row">
+                                                <td>
+                                                    <Button
+                                                        variant="link"
+                                                        size="sm"
+                                                        onClick={() => toggleRow(product.id)}
+                                                        aria-expanded={expandedRows.includes(product.id)}
+                                                    >
+                                                        {expandedRows.includes(product.id) ?
+                                                            <FiChevronUp /> : <FiChevronDown />}
+                                                    </Button>
+                                                </td>
+                                                <td className="text-muted">#{product.id}</td>
+                                                <td>
+                                                    <div className="d-flex align-items-center">
+                                                        {
+                                                            product.image ?
+                                                                <img
+                                                                    src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                                                    alt="product"
+                                                                    className="product-img rounded-circle me-3"
+                                                                />
+                                                                : ""
+                                                        }
+                                                        <div>
+                                                            <h6 className="mb-0">{product.title}</h6>
+                                                            <small className="text-muted">
+                                                                {product.description.substring(0, 40)}...
+                                                            </small>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="color-options">
-                                                    {product.colorVariants?.map((property, i) => (
-                                                        <span
-                                                            key={i}
-                                                            className="color-dot"
-                                                            style={{ backgroundColor: property.color }}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="d-flex align-items-center">
-                                                    {product.colorVariants?.map((property, i) => (
-                                                        <img
-                                                            key={i}
-                                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${property.main_image}`}
-                                                            alt="product"
-                                                            className="product-img rounded-circle me-3"
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <Button
-                                                    variant="outline-primary" size="sm" className="me-2 action-btn" onClick={() => handleCreate(product)}>
-                                                    <FiPlus />
-                                                </Button>
+                                                </td>
+                                                <td>
+                                                    {product.colorVariants?.length || 0} variants
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        variant="outline-primary"
+                                                        size="sm"
+                                                        className="me-2 action-btn"
+                                                        onClick={() => handleCreate(product)}
+                                                    >
+                                                        <FiPlus />
+                                                    </Button>
+                                                </td>
+                                            </tr>
 
-                                                <Button variant="outline-primary" size="sm" className="me-2 action-btn" onClick={() => { handleEdit(product) }}>
-                                                    <FiEdit />
-                                                </Button>
-                                            </td>
-                                        </tr>
+                                            <tr key={index + 1}>
+                                                <td colSpan={5} className="p-0">
+                                                    <Collapse in={expandedRows.includes(product.id)}>
+                                                        <div className="variant-details p-3 bg-light">
+                                                            {product.colorVariants?.length > 0 ? (
+                                                                <Table bordered size="sm" className="variant-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Color</th>
+                                                                            <th>Color Name</th>
+                                                                            <th>Price</th>
+                                                                            <th>Stock</th>
+                                                                            <th>Main Image</th>
+                                                                            <th>Action </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {product.colorVariants.map((variant, vIndex) => (
+                                                                            <tr key={vIndex}>
+                                                                                <td>
+                                                                                    <img
+                                                                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.color_image}`}
+                                                                                        alt="variant"
+                                                                                        className="variant-img"
+                                                                                        style={{ width: "80px" }}
+                                                                                    />
+                                                                                </td>
+                                                                                <td>{variant.color}</td>
+                                                                                <td>${variant.price}</td>
+                                                                                <td>{variant.stock}</td>
+                                                                                <td>
+                                                                                    <img
+                                                                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.main_image}`}
+                                                                                        alt="variant"
+                                                                                        className="variant-img"
+                                                                                        style={{ width: "80px" }}
+                                                                                    />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div className="d-flex flex-wrap">
+                                                                                        {variant.images?.map((img, imgIndex) => (
+                                                                                            <img
+                                                                                                key={imgIndex}
+                                                                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${img}`}
+                                                                                                alt="variant"
+                                                                                                className="variant-img me-2 mb-2"
+                                                                                            />
+                                                                                        ))}
+                                                                                    </div>
+                                                                                    <Button
+                                                                                        variant="outline-primary"
+                                                                                        size="sm"
+                                                                                        className="me-2 action-btn"
+                                                                                        onClick={() => { handleEdit(variant) }}
+                                                                                    >
+                                                                                        <FiEdit />
+                                                                                    </Button>
+
+
+                                                                                    <Button
+                                                                                        variant="outline-primary"
+                                                                                        size="sm"
+                                                                                        className="me-2 action-btn"
+                                                                                        onClick={() => { deleteVariantProduct(variant.id, vIndex) }}
+                                                                                    >
+                                                                                        <FaTrash />
+                                                                                    </Button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </Table>
+                                                            ) : (
+                                                                <div className="text-center text-muted py-3">
+                                                                    No color variants available for this product
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </Collapse>
+                                                </td>
+                                            </tr>
+                                        </>
                                     ))}
                                 </tbody>
                             </Table>

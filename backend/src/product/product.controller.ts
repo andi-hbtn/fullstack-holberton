@@ -136,7 +136,7 @@ export class ProductController {
 
 	@Roles('admin')
 	@Put('product-variants/')
-	@UseInterceptors(FilesInterceptor('images', 10, {
+	@UseInterceptors(FileInterceptor('image', {
 		storage: diskStorage({
 			destination: './uploads/colors',
 			filename: (req, file, cb) => {
@@ -146,12 +146,13 @@ export class ProductController {
 		}),
 	}))
 	public async updateProductVariants(
-		@UploadedFiles() files: Express.Multer.File[],
+		@UploadedFiles() file: Express.Multer.File,
 		@Body() bodyParam: any
 	) {
 		try {
-			const parsed = JSON.parse(bodyParam.productVariants);
-			return await this.productService.updateColorVariants(files, parsed);
+			console.log("bodyParam---", bodyParam);
+			// const parsed = JSON.parse(bodyParam.productVariants);
+			// return await this.productService.updateColorVariants(file, parsed);
 		} catch (error) {
 			throw new ServiceHandler(error.message, error.status);
 		}
