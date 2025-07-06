@@ -9,10 +9,11 @@ import { ProductResponse, DeleteProductResponse, DeleteProductVariantResponse } 
 import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
 import { Response } from 'express';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
 import * as path from 'path';
 import { ServiceHandler } from 'src/errorHandler/service.error';
+import { UpdateProductVariantDto } from './dto/updateProductVariant.dto';
 
 @UseGuards(AuthGuard, PermissionGuard)
 @Controller('product')
@@ -115,7 +116,6 @@ export class ProductController {
 		storage: diskStorage({
 			destination: './uploads/colors',
 			filename: (req, file, cb) => {
-				// console.log("file---", file);
 				const imageName = new ImageNameHelper(file.originalname).getImageName();
 				cb(null, imageName);
 			}
@@ -135,8 +135,11 @@ export class ProductController {
 	}
 
 	@Roles('admin')
-	@Put('product-variants/')
-	@UseInterceptors(FileInterceptor('image', {
+	@Put('product-variants/:id')
+	@UseInterceptors(FileFieldsInterceptor([
+		{ name: 'color_image', maxCount: 1 },
+		{ name: 'main_image', maxCount: 1 },
+	], {
 		storage: diskStorage({
 			destination: './uploads/colors',
 			filename: (req, file, cb) => {
@@ -146,13 +149,12 @@ export class ProductController {
 		}),
 	}))
 	public async updateProductVariants(
-		@UploadedFiles() file: Express.Multer.File,
-		@Body() bodyParam: any
+		@UploadedFiles() files: { color_image?: Express.Multer.File[]; main_image?: Express.Multer.File[] },
+		@Body() bodyParam: UpdateProductVariantDto,
+		@Param('id', ParseIntPipe) id: number
 	) {
 		try {
-			console.log("bodyParam---", bodyParam);
-			// const parsed = JSON.parse(bodyParam.productVariants);
-			// return await this.productService.updateColorVariants(file, parsed);
+			return await this.productService.updateColorVariants(files, bodyParam, id);
 		} catch (error) {
 			throw new ServiceHandler(error.message, error.status);
 		}

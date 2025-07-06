@@ -9,7 +9,6 @@ import { ProductResponse, AllProductResponse, DeleteProductResponse, DeleteProdu
 import * as fs from "fs"
 import * as path from 'path';
 import { ProductVariantDto } from './dto/productVariant.dto';
-import { ProductVariantArrayDto } from './dto/arrayProductVariant.dto';
 import { UpdateProductVariantDto } from './dto/updateProductVariant.dto';
 @Injectable()
 export class ProductService {
@@ -163,27 +162,46 @@ export class ProductService {
 	}
 
 	public async updateColorVariants(
-		file: any,
-		variant: UpdateProductVariantDto): Promise<any> {
+		files: any,
+		variant: UpdateProductVariantDto,
+		id: number
+	): Promise<any> {
 		try {
-
-
-			const existingVariant = await this.ProductVariant.findOne({
-				where: { id: variant.id }
-			});
-
+			const existingVariant = await this.ProductVariant.findOne({ where: { id: id } });
 			if (!existingVariant) {
-				throw new Error(`Variant with id ${variant.id} not found`);
+				throw new Error(`Variant with id not found`);
 			}
 
 			existingVariant.price = variant.price;
 			existingVariant.stock = variant.stock;
 			existingVariant.color = variant.color;
 
+			const color_image = files.color_image?.[0];
+			const main_image = files.main_image?.[0];
+
+
+			if (color_image) {
+				if (fs.existsSync(`uploads/colors/${existingVariant.color_image}`)) {
+					fs.unlinkSync(`uploads/colors/${existingVariant.color_image}`);
+				}
+				existingVariant.color_image = color_image.filename;
+			}
+
+			if (main_image) {
+				if (fs.existsSync(`uploads/colors/${existingVariant.main_image}`)) {
+					fs.unlinkSync(`uploads/colors/${existingVariant.main_image}`);
+				}
+				existingVariant.main_image = main_image.filename;
+			}
+
+
+			const updateProductVariant = this.ProductVariant.create(existingVariant);
+			const newProductVariant = await this.ProductVariant.save(updateProductVariant);
+
 			return {
 				status: HttpStatus.OK,
 				message: 'Color images uploaded successfully',
-				data: null,
+				data: newProductVariant,
 			};
 		} catch (error) {
 			console.error("Error in uploadProductColors:", error);

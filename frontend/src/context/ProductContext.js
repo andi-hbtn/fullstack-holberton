@@ -51,7 +51,7 @@ const ProductProvider = (props) => {
 				return result.data;
 			}
 		} catch (error) {
-			console.log("error--in update--", error);
+			console.log("error--in update--", error.response);
 			throw error.response.data;
 		}
 	}

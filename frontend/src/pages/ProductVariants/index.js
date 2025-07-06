@@ -40,7 +40,7 @@ const ProductVariants = () => {
         setOpenEdit(!openEdit);
     }
 
-    const deleteVariantProduct = async (id,index) => {
+    const deleteVariantProduct = async (id, index) => {
         return await deleteProductVariant(id);
     }
 

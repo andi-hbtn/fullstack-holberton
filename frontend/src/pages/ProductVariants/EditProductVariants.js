@@ -19,14 +19,12 @@ const EditProductVariants = ({ show, close, product }) => {
     }
 
     const handleChange = (event) => {
-        const { name, value, file, type } = event.target;
-        setProductVariant((prevState) => {
-            return {
-                prevState,
-                // [name]: type === "file" ? files[0] : value
-            }
-        })
-    }
+        const { name, value, files, type } = event.target;
+        setProductVariant((prevState) => ({
+            ...prevState,
+            [name]: type === "file" ? files[0] : value
+        }));
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -90,10 +88,15 @@ const EditProductVariants = ({ show, close, product }) => {
                                             onChange={(e) => handleChange(e)}
                                         />
                                         <Image
-                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${productVarian.color_image}`}
+                                            src={
+                                                productVarian.color_image instanceof File
+                                                    ? URL.createObjectURL(productVarian.color_image)
+                                                    : `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${productVarian.color_image}`
+                                            }
                                             thumbnail
                                             className="mt-2"
-                                            style={{ maxHeight: '80px' }} />
+                                            style={{ maxHeight: '80px' }}
+                                        />
                                     </Form.Group>
 
                                     <Form.Group className="mb-2">
@@ -105,10 +108,15 @@ const EditProductVariants = ({ show, close, product }) => {
                                             onChange={(e) => handleChange(e)}
                                         />
                                         <Image
-                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${productVarian.main_image}`}
+                                            src={
+                                                productVarian.main_image instanceof File
+                                                    ? URL.createObjectURL(productVarian.main_image)
+                                                    : `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${productVarian.main_image}`
+                                            }
                                             thumbnail
                                             className="mt-2"
-                                            style={{ maxHeight: '80px' }} />
+                                            style={{ maxHeight: '80px' }}
+                                        />
                                     </Form.Group>
                                 </div>
                             </div>
