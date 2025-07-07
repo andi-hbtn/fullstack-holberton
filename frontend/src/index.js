@@ -60,7 +60,7 @@ root.render(
 
                 <Route path="/admin-orders" element={
                   <AdminRoute>
-                    <Orders />
+                    <Orders/>
                   </AdminRoute>
                 }
                 />

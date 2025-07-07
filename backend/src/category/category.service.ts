@@ -57,7 +57,11 @@ export class CategoryService {
 		try {
 			const result = await this.categoryRepository.findOne({
 				where: { id },
-				relations: { products: true }
+				relations: {
+					products: {
+						colorVariants: true
+					}
+				}
 			})
 			if (!result) {
 				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);

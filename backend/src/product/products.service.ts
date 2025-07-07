@@ -211,9 +211,11 @@ export class ProductService {
 
 	public async deleteProductVariant(id: number): Promise<DeleteProductVariantResponse> {
 		try {
+
 			const result = await this.ProductVariant.findOne({ where: { id } });
+
 			if (!result) {
-				throw new ServiceHandler("this product does not exist", HttpStatus.NOT_FOUND);
+				throw new ServiceHandler("This product does not exist", HttpStatus.NOT_FOUND);
 			}
 			if (fs.existsSync(`uploads/colors/${result.color_image}`) || fs.existsSync(`uploads/colors/${result.main_image}`)) {
 				fs.unlinkSync(`uploads/colors/${result.color_image}`);

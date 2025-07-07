@@ -83,42 +83,52 @@ const CategoryPage = () => {
             <Header />
             <Container className="category-page py-5">
                 <Row className="g-4">
-                    {category.products.map((product) => (
-                        <Col xs={12} sm={6} lg={4} xl={3} key={product.id}>
-                            <Card
-                                className="product-card h-100"
-                            >
-                                <div className="card-image-container">
-                                    <Card.Img
-                                        variant="top"
-                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-                                        className="product-image"
-                                        alt={product.title}
-                                    />
-                                    <div className="card-overlay">
-                                        <Link to={`/product/${product.id}`}>
-                                            <div className="quick-view">
-                                                <FaSearchPlus size={20} />
-                                                <span>Quick View</span>
-                                            </div>
-                                        </Link>
+                    {category.products.map((product) => {
+                        const hasVariants = product.colorVariants && product.colorVariants.length > 0;
+                        return (
+                            <Col xs={12} sm={6} lg={4} xl={3} key={product.id}>
+                                <Card
+                                    className="product-card h-100"
+                                >
+                                    <div className="card-image-container">
+                                        <Card.Img
+                                            variant="top"
+                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                            className="product-image"
+                                            alt={product.title}
+                                        />
+                                        <div className="card-overlay">
+                                            {hasVariants ? (
+                                                <Link to={`/product/${product.id}`}>
+                                                    <div className="quick-view">
+                                                        <FaSearchPlus size={20} />
+                                                        <span>Quick View</span>
+                                                    </div>
+                                                </Link>
+                                            ) : (
+                                                <div className="quick-view disabled-view">
+                                                    <FaSearchPlus size={20} color="gray" />
+                                                    <span>No variants available</span>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                                <Card.Body className="d-flex flex-column">
-                                    <div className="d-flex justify-content-between align-items-start mb-2">
-                                        <Card.Title className="product-title mb-0">
-                                            {product.title}
-                                        </Card.Title>
-                                    </div>
-                                    <Card.Text className="product-description flex-grow-1">
-                                        {product.description.length > 100
-                                            ? `${product.description.substring(0, 100)}...`
-                                            : product.description}
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
+                                    <Card.Body className="d-flex flex-column">
+                                        <div className="d-flex justify-content-between align-items-start mb-2">
+                                            <Card.Title className="product-title mb-0">
+                                                {product.title}
+                                            </Card.Title>
+                                        </div>
+                                        <Card.Text className="product-description flex-grow-1">
+                                            {product.description.length > 100
+                                                ? `${product.description.substring(0, 100)}...`
+                                                : product.description}
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        )
+                    })}
                 </Row>
             </Container>
             <Footer />
