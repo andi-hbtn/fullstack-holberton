@@ -7,7 +7,6 @@ import { ServiceHandler } from 'src/errorHandler/service.error';
 import { ProductDto } from "./dto/product.dto";
 import { ProductResponse, AllProductResponse, DeleteProductResponse, DeleteProductVariantResponse } from './responseType/response.interface';
 import * as fs from "fs"
-import * as path from 'path';
 import { ProductVariantDto } from './dto/productVariant.dto';
 import { UpdateProductVariantDto } from './dto/updateProductVariant.dto';
 @Injectable()
@@ -211,9 +210,7 @@ export class ProductService {
 
 	public async deleteProductVariant(id: number): Promise<DeleteProductVariantResponse> {
 		try {
-
 			const result = await this.ProductVariant.findOne({ where: { id } });
-
 			if (!result) {
 				throw new ServiceHandler("This product does not exist", HttpStatus.NOT_FOUND);
 			}

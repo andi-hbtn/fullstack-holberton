@@ -28,14 +28,18 @@ const Categories = () => {
 
 	const handleEdit = (category) => {
 		setFormData(
-			{ id: category.id, title: category.title, description: category.description , image:category.image }
+			{ id: category.id, title: category.title, description: category.description, image: category.image }
 		);
 		setCaseModal({ title: "Edit Category", create: false, button: "Update" })
 		setOpen(!open);
 	}
 
 	const handleDelete = async (id) => {
-		await deleteCategorie(id);
+		try {
+			const result = await deleteCategorie(id);
+		} catch (error) {
+			console.log("error----", error);
+		}
 	}
 
 	const handleLogout = async () => {

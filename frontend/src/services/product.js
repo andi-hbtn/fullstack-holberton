@@ -44,7 +44,6 @@ const create_product_variants_service = async (data) => {
 };
 
 const update_product_variants_service = async (data) => {
-	console.log("id---", data);
 	const formData = new FormData();
 	formData.append('color', data.color);
 	formData.append('price', data.price);

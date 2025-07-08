@@ -78,11 +78,28 @@ export class CategoryService {
 
 	public async deleteCategory(id: number): Promise<DeleteCategoryResponse> {
 		try {
-			const result = await this.categoryRepository.findOne({ where: { id } });
+			const result = await this.categoryRepository.findOne({ where: { id }, relations: { products: { colorVariants: true } } });
 			if (!result) {
 				throw new ServiceHandler("this category does not exist", HttpStatus.NOT_FOUND);
 			}
-			fs.unlinkSync('uploads/' + result.image);
+
+			if (fs.existsSync(`uploads/${result.image}`)) {
+				fs.unlinkSync('uploads/' + result.image);
+			}
+
+			for (const product of result.products) {
+				if (product.image && fs.existsSync(`uploads/${product.image}`)) {
+					fs.unlinkSync(`uploads/${product.image}`);
+				}
+				for (const variant of product.colorVariants) {
+					if (variant.color_image && fs.existsSync(`uploads/colors/${variant.color_image}`)) {
+						fs.unlinkSync(`uploads/${variant.color_image}`);
+					}
+					if (variant.main_image && fs.existsSync(`uploads/colors/${variant.main_image}`)) {
+						fs.unlinkSync(`uploads/colors/${variant.main_image}`);
+					}
+				}
+			}
 			await this.categoryRepository.delete(id);
 			return {
 				statusCode: 200,
