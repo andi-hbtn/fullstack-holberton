@@ -32,6 +32,7 @@ const Checkout = () => {
     }, [finalCart]);
 
     const loadItems = (items) => {
+        
         const result = items.items.map((el, index) => {
             return {
                 product_id: el.productId,
@@ -45,10 +46,6 @@ const Checkout = () => {
         });
         setOrder(result);
     }
-
-    const subtotal = order.reduce((acc, item) => {
-        return acc + (Number(item.price) * Number(item.quantity))
-    }, 0);
 
     const handleChange = (event) => {
         const { value, name } = event.target;
@@ -103,6 +100,13 @@ const Checkout = () => {
         if (key === "message" || key === "appartment") return false;
         return (value || "").toString().trim().length === 0;
     });
+
+    const subtotal = order.reduce((acc, item) => {
+        return acc + (Number(item.price) * Number(item.quantity))
+    }, 0);
+
+    const vat = +(subtotal * 0.20).toFixed(2);
+    const totalWithVat = +(subtotal + vat).toFixed(2);
 
     return (
         <>
@@ -313,6 +317,20 @@ const Checkout = () => {
                                                 <div className='checkout-total'>
                                                     <span>Subtotal</span>
                                                     <span>£{subtotal}</span>
+                                                </div>
+
+                                                <div className='checkout-total'>
+                                                    <span>VAT (20%)</span>
+                                                    <span>£{vat}</span>
+                                                </div>
+
+                                                <div className='checkout-total total-payable'>
+                                                    <span>
+                                                        <strong>Total</strong>
+                                                    </span>
+                                                    <span>
+                                                        <strong>£{totalWithVat}</strong>
+                                                    </span>
                                                 </div>
 
                                                 <Button

@@ -27,7 +27,7 @@ const OrdersModal = ({ open, close, id }) => {
             <Modal.Header closeButton className="border-bottom-0">
                 <Modal.Title className="fw-bold">
                     <FiPackage className="me-2" />
-                    Orders ({orders.length})
+                    Orders ({orders?.orderItems?.length})
                 </Modal.Title>
             </Modal.Header>
 
