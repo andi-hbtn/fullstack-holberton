@@ -174,7 +174,7 @@ const Orders = () => {
 															</div>
 														</td>
 														<td>
-															<Badge bg='success' >
+															<Badge bg='success'>
 																{order.status}
 															</Badge>
 														</td>
@@ -184,9 +184,8 @@ const Orders = () => {
 																size="sm"
 																className="me-2 action-btn"
 																onClick={() => { return handleOpen(order.id) }}
-
 															>
-																<FiEye />
+																<FiEye/>
 															</Button>
 														</td>
 														<td>

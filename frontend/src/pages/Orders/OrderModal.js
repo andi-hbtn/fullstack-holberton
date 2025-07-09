@@ -15,7 +15,6 @@ const OrdersModal = ({ open, close, id }) => {
                 if (result.statusCode === 200) {
                     setOrders(result.data);
                 }
-
             } catch (error) {
                 console.log("error in order modal");
             }
@@ -80,10 +79,46 @@ const OrdersModal = ({ open, close, id }) => {
                                     <div>
                                         <small className="text-muted">Customer</small>
                                         <h6 className="mb-0">
-                                            {orders?.user?.email || 'Guest Customer'}
+                                            {orders?.user ? `${orders.user.firstname} ${orders.user.lastname}` : 'Guest Customer'}
                                         </h6>
+
+                                        {orders?.user && (
+                                            <>
+                                                <ul className="list-unstyled mb-0">
+                                                    <li>
+                                                        <small className="text-muted">
+                                                            <strong>Email:</strong> {orders.user.email}
+                                                        </small>
+                                                    </li>
+                                                    <li>
+                                                        <small>
+                                                            <strong>Phone:</strong> {orders.user.phone}
+                                                        </small>
+                                                    </li>
+                                                    <li>
+                                                        <small>
+                                                            <strong>Street:</strong> {orders.user.street_address}
+                                                            {orders.user.appartment && `, ${orders.user.appartment}`}
+                                                        </small>
+                                                    </li>
+                                                    <li>
+                                                        <small>
+                                                            {orders.user.zipCode}, {orders.user.town}, {orders.user.country}
+                                                        </small>
+                                                    </li>
+                                                    {orders.user.message && (
+                                                        <li>
+                                                            <small className="text-muted">
+                                                                <strong>Message:</strong> {orders.user.message}
+                                                            </small>
+                                                        </li>
+                                                    )}
+                                                </ul>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
+
                             </Col>
                         </Row>
 
@@ -106,10 +141,10 @@ const OrdersModal = ({ open, close, id }) => {
                                             />
                                         </Col>
                                         <Col xs={6} md={7}>
-                                            <h6 className="mb-1">{item.product?.title}</h6>
+                                            <h6 className="mb-1">{item.variant?.product?.title}</h6>
                                             <div className="text-muted small">
-                                                <div>SKU: #{item.product?.id.toString().padStart(4, '0')}</div>
-                                                <div>Category: {item.product?.category?.title}</div>
+                                                <div>SKU: #{item.variant?.product?.id.toString().padStart(4, '0')}</div>
+                                                <div>Category: {item.variant?.product?.category?.title}</div>
                                                 <div>Stock: {item.product?.stock} available</div>
                                             </div>
                                             <div className="mt-1">

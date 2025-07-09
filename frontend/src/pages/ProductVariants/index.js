@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React ,{ useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button, Collapse } from "react-bootstrap";
@@ -147,7 +147,7 @@ const ProductVariants = () => {
                                 </thead>
                                 <tbody>
                                     {products.map((product, index) => (
-                                        <>
+                                        <React.Fragment key={product.id}>
                                             <tr key={index} className="table-row">
                                                 <td>
                                                     <Button
@@ -276,7 +276,7 @@ const ProductVariants = () => {
                                                     </Collapse>
                                                 </td>
                                             </tr>
-                                        </>
+                                        </React.Fragment>
                                     ))}
                                 </tbody>
                             </Table>

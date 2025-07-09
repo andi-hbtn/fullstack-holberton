@@ -137,7 +137,18 @@ export class OrderService {
   public async findOne(id: number): Promise<OrderByIdResposne> {
 
     try {
-      const result = await this.ordersRepository.findOne({ where: { id }, relations: ['orderItems'] });
+      const result = await this.ordersRepository.findOne({
+        where: { id }, relations: {
+          user: true,
+          orderItems: {
+            variant: {
+              product: {
+                category: true
+              }
+            }
+          }
+        }
+      });
       if (!result) {
         throw new ServiceHandler("This order was not found", HttpStatus.NOT_FOUND);
       }
