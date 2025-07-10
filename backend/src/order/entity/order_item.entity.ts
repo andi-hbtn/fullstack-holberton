@@ -11,7 +11,7 @@ export class OrderItemEntity {
   @JoinColumn({ name: 'order_id' })
   order: OrderEntity;
 
-  @ManyToOne(() => ProductColorVariant, { onDelete: 'SET NULL', eager: true })
+  @ManyToOne(() => ProductColorVariant, { onDelete: 'SET NULL', eager: true, nullable: true })
   @JoinColumn({ name: 'variant_id' })
   variant: ProductColorVariant;
 
