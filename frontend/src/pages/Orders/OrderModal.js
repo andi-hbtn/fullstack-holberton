@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useOrderContext } from "../../context/OrderContext";
 import { Modal, Row, Col, ListGroup, Badge, Button } from 'react-bootstrap';
-import { FiPackage, FiDollarSign, FiCalendar, FiUser } from 'react-icons/fi';
+import { FiPackage, FiCalendar, FiUser } from 'react-icons/fi';
+import { FaPoundSign } from "react-icons/fa";
+import { AiOutlinePercentage } from "react-icons/ai";
+
+
 
 const OrdersModal = ({ open, close, id }) => {
 
@@ -22,6 +26,11 @@ const OrdersModal = ({ open, close, id }) => {
         if (id) fetchOrder();
     }, [id, getOrderById]);
 
+    // Llogarit 20% të shumës dhe shtoje te total_price
+    const totalPrice = parseFloat(orders?.total_price || 0);
+    const vat_price = totalPrice * 0.20;
+    const totalWithVat = totalPrice + vat_price;
+
     return (
         <Modal show={open} onHide={close} backdrop="static" keyboard={false} size="lg">
             <Modal.Header closeButton className="border-bottom-0">
@@ -38,10 +47,18 @@ const OrdersModal = ({ open, close, id }) => {
                         <Row className="mb-4">
                             <Col md={6}>
                                 <div className="d-flex align-items-center mb-3">
-                                    <FiDollarSign className="me-2 text-muted" />
+                                    <FaPoundSign className="me-2 text-muted" />
                                     <div>
                                         <small className="text-muted">Total Amount</small>
-                                        <h4 className="mb-0">&#163;{parseFloat(orders?.total_price || 0).toFixed(2)}</h4>
+                                        <h4 className="mb-0">&#163;{totalPrice.toFixed(2)}</h4>
+                                    </div>
+                                </div>
+
+                                <div className="d-flex align-items-center mb-3">
+                                    <AiOutlinePercentage className="me-2 text-muted" />
+                                    <div>
+                                        <small className="text-muted">VAT</small>
+                                        <h4 className="mb-0">20%</h4>
                                     </div>
                                 </div>
 
@@ -163,9 +180,17 @@ const OrdersModal = ({ open, close, id }) => {
                                 </ListGroup.Item>
                             ))}
                         </ListGroup>
+
+                        {/* New Total Price with 20% */}
+                        <div className="mt-4 d-flex justify-content-between">
+                            <div>
+                                <small className="text-muted">Total + 20%</small>
+                            </div>
+                            <h5 className="mb-0">
+                                &#163;{totalWithVat.toFixed(2)}
+                            </h5>
+                        </div>
                     </div>
-
-
                 </div>
             </Modal.Body>
             <Modal.Footer className="border-top-0">
