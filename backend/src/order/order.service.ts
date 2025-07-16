@@ -28,7 +28,7 @@ export class OrderService {
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, country, town, zipCode, street_address, appartment, message } = orderData;
+      const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, password, country, town, zipCode, street_address, appartment, message } = orderData;
       let user: UserEntity | null = null;
       if (user_id) {
         user = await this.usersRepository.findOne({ where: { id: user_id } });
@@ -42,9 +42,25 @@ export class OrderService {
         });
       }
 
+      const user_without_id = this.usersRepository.create({
+        firstname,
+        lastname,
+        phone,
+        email,
+        password,
+        country,
+        town,
+        zipCode,
+        street_address,
+        appartment,
+        message
+      })
+
+      const savedUser = await this.usersRepository.save(user_without_id);
+
       // Create OrderEntity instance
       const order = this.ordersRepository.create({
-        user, // we assign the full entity, not just the ID
+        user: savedUser, // we assign the full entity, not just the ID
         total_price,
         status,
         created_at,

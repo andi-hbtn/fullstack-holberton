@@ -35,13 +35,15 @@ export class OrderDto {
 	@IsString()
 	lastname?: string;
 
-	@IsOptional()
 	@IsEmail()
-	email?: string;
+	email: string;
+
+	@IsString()
+	password: string;
 
 	@IsOptional()
 	@IsString()
-	phone?: string;
+	phone?: number;
 
 	@IsOptional()
 	@IsString()

@@ -17,6 +17,7 @@ const Checkout = () => {
         firstname: "",
         lastname: "",
         email: "",
+        password: "",
         phone: "",
         country: "united-kingdom",
         town: "",
@@ -32,7 +33,7 @@ const Checkout = () => {
     }, [finalCart]);
 
     const loadItems = (items) => {
-        
+
         const result = items.items.map((el, index) => {
             return {
                 product_id: el.productId,
@@ -160,7 +161,7 @@ const Checkout = () => {
                                                         </Form.Group>
                                                     </Col>
 
-                                                    <Col md={6}>
+                                                    <Col md={4}>
                                                         <Form.Group className="mb-3" controlId="email">
                                                             <Form.Label>Email address</Form.Label>
                                                             <Form.Control
@@ -175,7 +176,22 @@ const Checkout = () => {
                                                         </Form.Group>
                                                     </Col>
 
-                                                    <Col md={6}>
+                                                    <Col md={4}>
+                                                        <Form.Group className="mb-3" controlId="phoneNumber">
+                                                            <Form.Label>Password</Form.Label>
+                                                            <Form.Control
+                                                                name="password"
+                                                                value={values.password}
+                                                                onChange={handleChange}
+                                                                type="password"
+                                                                placeholder="Password"
+                                                                className='border-radius'
+                                                                required
+                                                            />
+                                                        </Form.Group>
+                                                    </Col>
+
+                                                    <Col md={4}>
                                                         <Form.Group className="mb-3" controlId="phoneNumber">
                                                             <Form.Label>Phone number</Form.Label>
                                                             <Form.Control

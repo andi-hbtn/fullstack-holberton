@@ -1,5 +1,8 @@
+.custom-col {
+	width: 20% !important;
+}
+
 .card-cnt {
-	width: 306px;
 	background-color: #f7f7f7 !important;
 	border: 0px !important;
 	text-align: center;
@@ -16,4 +19,30 @@
 .card-cnt>a>div>h4 {
 	font-size: 20px;
 	font-weight: bold;
+}
+
+
+@media (min-width: 320px) and (max-width: 425px) {
+	.custom-col {
+		width: 80% !important;
+		margin: 40px auto;
+	}
+
+	.card-cnt {
+		width: 60%;
+		margin: 0 auto;
+	}
+}
+
+
+@media (min-width: 426px) and (max-width: 768px) {
+	.custom-col {
+		width: 80% !important;
+		margin: 40px auto;
+	}
+
+	.card-cnt {
+		width: 60%;
+		margin: 0 auto;
+	}
 }

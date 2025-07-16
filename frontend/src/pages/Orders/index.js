@@ -149,10 +149,7 @@ const Orders = () => {
 																					className="product-img rounded-circle me-3"
 																				/>
 																				<div>
-																					<h6 className="mb-0">hello</h6>
-																					<small className="text-muted">
-																						{product.product?.title}
-																					</small>
+																					<h6 className="mb-0">{product.color}</h6>
 																				</div>
 
 																			</div>
@@ -185,7 +182,7 @@ const Orders = () => {
 																className="me-2 action-btn"
 																onClick={() => { return handleOpen(order.id) }}
 															>
-																<FiEye/>
+																<FiEye />
 															</Button>
 														</td>
 														<td>

@@ -41,7 +41,7 @@ const OrdersModal = ({ open, close, id }) => {
                                     <FiDollarSign className="me-2 text-muted" />
                                     <div>
                                         <small className="text-muted">Total Amount</small>
-                                        <h4 className="mb-0">${parseFloat(orders?.total_price || 0).toFixed(2)}</h4>
+                                        <h4 className="mb-0">&#163;{parseFloat(orders?.total_price || 0).toFixed(2)}</h4>
                                     </div>
                                 </div>
 
@@ -156,7 +156,7 @@ const OrdersModal = ({ open, close, id }) => {
 
                                         <Col xs={3} md={3} className="text-end">
                                             <div className="h6 mb-0">
-                                                ${(item.quantity * parseFloat(item.price)).toFixed(2)}
+                                                &#163;{(item.quantity * parseFloat(item.price)).toFixed(2)}
                                             </div>
                                         </Col>
                                     </Row>

@@ -18,9 +18,12 @@ const Cart = () => {
         setFinalCart(newQtu);
     }, [cart]);
 
-    const totalPrice = cart.items?.reduce((total, item) => {
+    const subTotal = cart.items?.reduce((total, item) => {
         return total + (item.price * item.quantity);
     }, 0);
+
+    const totalWithVat = +(subTotal * 0.20).toFixed(2);
+    const totalPrice = +(subTotal + totalWithVat).toFixed(2);
 
     // Update quantity in cart
     const addQuantity = (item) => {
@@ -196,12 +199,18 @@ const Cart = () => {
                                         <h4>Cart totals</h4>
                                         <div className="subtotal-cnt">
                                             <span>Subtotal</span>
-                                            <span>&#163; {totalPrice}</span>
+                                            <span>&#163; {subTotal}</span>
                                         </div>
+                                        <div className="total-cnt">
+                                            <span>Vat (20%)</span>
+                                            <span>&#163; {totalWithVat}</span>
+                                        </div>
+
                                         <div className="total-cnt">
                                             <span>Total</span>
                                             <span>&#163; {totalPrice}</span>
                                         </div>
+
                                         <Button variant="dark" className="checkout-btn">
                                             <a href="/checkout">Proceed to checkout</a>
                                         </Button>

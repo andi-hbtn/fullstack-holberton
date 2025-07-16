@@ -14,7 +14,7 @@ const Home = () => {
 					{
 						categories.map((category, index) => {
 							return (
-								<Col xs={12} sm={6} lg={4} xl={3} key={index}>
+								<Col key={index} xs={12} sm={6} className='custom-col'>
 									<Card className='card-cnt'>
 										<a href={`category/${category.id}`}>
 											<Card.Img variant="top" src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} />
