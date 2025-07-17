@@ -84,6 +84,7 @@ const CategoryPage = () => {
             <Container className="category-page py-5">
                 <Row className="g-4">
                     {category.products.map((product) => {
+                        console.log("product----", product.description.length);
                         const hasVariants = product.colorVariants && product.colorVariants.length > 0;
                         return (
                             <Col xs={12} sm={6} lg={4} xl={3} key={product.id}>
@@ -120,8 +121,8 @@ const CategoryPage = () => {
                                             </Card.Title>
                                         </div>
                                         <Card.Text className="product-description flex-grow-1">
-                                            {product.description.length > 100
-                                                ? `${product.description.substring(0, 100)}...`
+                                            {product.description.length > 40
+                                                ? `${product.description.substring(0, 50)}...`
                                                 : product.description}
                                         </Card.Text>
                                     </Card.Body>

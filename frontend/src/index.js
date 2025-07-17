@@ -25,6 +25,8 @@ import Contact from './pages/Contact';
 import Cart from './components/Cart/'
 import Checkout from './components/Checkout/';
 import AdminRoute from "./components/AdminRoute";
+import AuthUserRoute from './components/AuthUserRoute';
+import UserProfile from './pages/UserProfile';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
@@ -64,6 +66,14 @@ root.render(
                   </AdminRoute>
                 }
                 />
+
+                <Route path="/profile" element={
+                  // <AuthUserRoute>
+                  <UserProfile />
+                  //</AuthUserRoute>
+                }
+                />
+
                 <Route path="/" element={<Home />} />
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/product/:id" element={<ProductPage />} />

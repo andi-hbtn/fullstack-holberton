@@ -27,7 +27,7 @@ export class RegisterDto {
 	zipCode:string;
 
     @IsOptional()
-	streetAddr:string;
+    street_address:string;
 
     @IsOptional()
 	appartment:string;

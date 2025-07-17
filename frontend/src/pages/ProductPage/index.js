@@ -14,6 +14,7 @@ import { useCartContext } from "../../context/CartContext";
 import "./index.css";
 
 const ProductPage = () => {
+
     const { id } = useParams();
     const { getProduct } = useProductContext();
     const { addQuantity, removeQuantity, cart, addToCart } = useCartContext();
@@ -164,9 +165,6 @@ const ProductPage = () => {
                                                     className="color-swatch"
                                                     src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.color_image}`}
                                                     alt={variant.color}
-                                                    style={{
-                                                        border: `2px solid ${selectedVariantId === variant.id ? "#3a5663" : "#e0e0e0"}`
-                                                    }}
                                                 />
                                             </div>
                                             <span className="color-name">{variant.color}</span>

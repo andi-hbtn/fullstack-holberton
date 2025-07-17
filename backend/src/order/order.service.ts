@@ -7,6 +7,7 @@ import { ProductEntity } from 'src/product/entity/products.entity';
 import { ProductColorVariant } from 'src/product/entity/productColorVariants.entity';
 import { OrderItemEntity } from './entity/order_item.entity';
 import { OrderDto } from './dto/order.dto';
+import { AuthService } from '../auth/auth.service';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { OrderByIdResposne } from './responseType/response.interface';
 import { ConfigService } from '@nestjs/config';
@@ -23,7 +24,8 @@ export class OrderService {
     @InjectRepository(ProductColorVariant) private readonly productColorRepository: Repository<ProductColorVariant>,
     @InjectRepository(OrderEntity) private readonly ordersRepository: Repository<OrderEntity>,
     @InjectRepository(OrderItemEntity) private readonly orderItemsRepository: Repository<OrderItemEntity>,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private authService: AuthService
   ) { }
 
   public async create(orderData: OrderDto): Promise<any> {
@@ -42,7 +44,7 @@ export class OrderService {
         });
       }
 
-      const user_without_id = this.usersRepository.create({
+      const savedUser = await this.authService.registerUser({
         firstname,
         lastname,
         phone,
@@ -53,14 +55,13 @@ export class OrderService {
         zipCode,
         street_address,
         appartment,
-        message
-      })
-
-      const savedUser = await this.usersRepository.save(user_without_id);
+        message,
+        createdAt: new Date()
+      });
 
       // Create OrderEntity instance
       const order = this.ordersRepository.create({
-        user: savedUser, // we assign the full entity, not just the ID
+        user: savedUser.user, // we assign the full entity, not just the ID
         total_price,
         status,
         created_at,
