@@ -7,10 +7,7 @@ const AdminRoute = ({ children }) => {
 	if (!isAuthChecked) {
 		return <div>Loading...</div>; // Still checking token
 	}
-
 	const hasAccess = authUser?.roles === 'admin';
-
 	return hasAccess ? children : <Navigate to="/" />;
-
 }
 export default AdminRoute;

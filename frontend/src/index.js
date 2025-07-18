@@ -68,9 +68,9 @@ root.render(
                 />
 
                 <Route path="/profile" element={
-                  // <AuthUserRoute>
-                  <UserProfile />
-                  //</AuthUserRoute>
+                  <AuthUserRoute>
+                    <UserProfile />
+                  </AuthUserRoute>
                 }
                 />
 

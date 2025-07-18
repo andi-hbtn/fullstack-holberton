@@ -32,59 +32,80 @@ export class OrderService {
     try {
       const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, password, country, town, zipCode, street_address, appartment, message } = orderData;
       let user: UserEntity | null = null;
+
+      // Kontrolloni nëse përdoruesi është regjistruar dhe merrni informacionin nga databaza
       if (user_id) {
         user = await this.usersRepository.findOne({ where: { id: user_id } });
-        await this.usersRepository.update(user.id, {
+
+        // Përditësoni të dhënat e përdoruesit
+        if (user) {
+          await this.usersRepository.update(user.id, {
+            country,
+            town,
+            zipCode,
+            street_address,
+            appartment,
+            message,
+          });
+        }
+      }
+
+      // Nëse përdoruesi nuk është i regjistruar, e krijoni një të ri
+      if (!user) {
+        const savedUser = await this.authService.registerUser({
+          firstname,
+          lastname,
+          phone,
+          email,
+          password,
           country,
           town,
           zipCode,
           street_address,
           appartment,
           message,
+          createdAt: new Date(),
         });
+
+        // Përdorni të dhënat e përdoruesit të regjistruar për të krijuar një instancë të përdoruesit të plotë
+        user = savedUser.user;
       }
 
-      const savedUser = await this.authService.registerUser({
-        firstname,
-        lastname,
-        phone,
-        email,
-        password,
-        country,
-        town,
-        zipCode,
-        street_address,
-        appartment,
-        message,
-        createdAt: new Date()
-      });
-
-      // Create OrderEntity instance
+      // Krijo një instancë të porosisë
       const order = this.ordersRepository.create({
-        user: savedUser.user, // we assign the full entity, not just the ID
+        user: user, // Kjo tashmë është një instancë e plotë e `UserEntity`
         total_price,
         status,
         created_at,
       });
 
-      // Save order
+      // Ruaj porosinë
       const savedOrder = await this.ordersRepository.save(order);
-      // Create order items
+
+      // Krijo artikujt e porosisë
       const orderItems = await Promise.all(
         items.map(async (item) => {
           const product = await this.productsRepository.findOne({ where: { id: item.product_id } });
           const variant = await this.productColorRepository.findOne({ where: { id: item.variantId }, relations: ['product'] });
+
+          // Kontrollo nëse ekzistojnë produktet dhe variacionet
           if (!product) {
             throw new Error(`Product with ID ${item.product_id} not found`);
           }
           if (!variant) {
             throw new Error(`Product with this color and with ID ${item.variantId} not found`);
           }
+
+          // Kontrollo nëse ka mjaftueshëm stok
           if (item.quantity > variant.stock) {
             throw new Error(`Not enough stock.`);
           }
+
+          // Përditëso stoku i produktit
           variant.stock -= item.quantity;
           await this.productColorRepository.save(variant);
+
+          // Krijo artikujt e porosisë
           return this.orderItemsRepository.create({
             order: savedOrder,
             variant,
@@ -94,11 +115,14 @@ export class OrderService {
             price: item.price,
             quantity: item.quantity,
           });
-
         })
       );
 
-      const userLocation = {
+      // Ruaj artikujt e porosisë
+      const orderItem = await this.orderItemsRepository.save(orderItems);
+
+      // Dërgo një email me detajet e porosisë
+      await this.sendOrderWithEmail(savedOrder, orderItem, {
         phone,
         email,
         firstname,
@@ -109,22 +133,20 @@ export class OrderService {
         street_address,
         appartment,
         message,
-      }
-
-      // Save all order items
-      const orderItem = await this.orderItemsRepository.save(orderItems);
-      await this.sendOrderWithEmail(savedOrder, orderItem, userLocation);
+      });
 
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Success! We’ve received your order and it’s being prepared.',
-        data: savedOrder
+        data: savedOrder,
       };
     } catch (error) {
-      console.log("error--in crete order---", error);
+      console.log("error--in create order---", error);
       throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+
 
   public async updateStatus(id: number, status: string): Promise<any> {
     try {

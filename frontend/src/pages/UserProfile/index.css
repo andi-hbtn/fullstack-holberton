@@ -1,0 +1,228 @@
+/* Profile Container */
+.profile-container {
+    padding: 30px 0;
+    min-height: calc(100vh - 200px);
+}
+
+/* Profile Card */
+.profile-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: none;
+    height: 100%;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    background-color: #e8edef;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 36px;
+    font-weight: bold;
+    color: #475e68;
+}
+
+.profile-name {
+    color: #012440;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.profile-email {
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.profile-meta {
+    color: #a3aaad;
+    font-size: 0.9rem;
+}
+
+/* Orders Card */
+.orders-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: none;
+    height: 100%;
+}
+
+.orders-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #d5dee3;
+    padding: 15px 20px;
+}
+
+.orders-header h3 {
+    color: #475e68;
+    margin: 0;
+    font-weight: 600;
+}
+
+.orders-table-container {
+    overflow-x: auto;
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #d5dee3;
+    color: #475e68;
+    font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.order-link {
+    color: #012440;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.order-link:hover {
+    color: #475e68;
+    text-decoration: underline;
+}
+
+/* Order Summary */
+.order-summary {
+    margin-top: 2rem;
+}
+
+.summary-card {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.summary-header {
+    background-color: #f8f9fa;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.summary-header h5 {
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+}
+
+.summary-card .card-body {
+    padding: 1.5rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    align-items: center;
+}
+
+.summary-row span:first-child {
+    color: #666;
+}
+
+.summary-row span:last-child {
+    font-weight: 500;
+    color: #333;
+}
+
+.status-row {
+    padding-bottom: 0.75rem;
+}
+
+.status-row span:last-child {
+    font-weight: normal;
+}
+
+.total-row {
+    padding: 0.75rem 0;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0.5rem 0;
+}
+
+.total-row span {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #000;
+}
+
+.date-row {
+    padding-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.date-row span:last-child {
+    color: #666;
+}
+
+.summary-divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 0.5rem 0;
+}
+
+/* No Orders State */
+.no-orders {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.no-orders p {
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-transform: capitalize;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 15px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 28px;
+    }
+
+    .summary-card {
+        border-radius: 6px;
+    }
+
+    .summary-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .summary-card .card-body {
+        padding: 1rem;
+    }
+
+    .summary-row {
+        font-size: 0.9rem;
+    }
+
+    .total-row span {
+        font-size: 1rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    } }

@@ -27,13 +27,14 @@ const Checkout = () => {
         message: ""
     });
 
+    // Load items from cart when it is updated
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart")) || '{"items": []}';
         loadItems(storedCart);
     }, [finalCart]);
 
+    // Populate order items from cart data
     const loadItems = (items) => {
-
         const result = items.items.map((el, index) => {
             return {
                 product_id: el.productId,
@@ -48,6 +49,7 @@ const Checkout = () => {
         setOrder(result);
     }
 
+    // Handle form input change
     const handleChange = (event) => {
         const { value, name } = event.target;
         setValues((prev) => {
@@ -55,6 +57,7 @@ const Checkout = () => {
         });
     }
 
+    // Handle form submission to create order
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -97,17 +100,42 @@ const Checkout = () => {
         }
     }
 
-    const isDisabled = Object.entries(values).some(([key, value]) => {
-        if (key === "message" || key === "appartment") return false;
-        return (value || "").toString().trim().length === 0;
-    });
+    // Check if any field is missing
+    const isDisabled = (order.length === 0 ||
+        (Object.entries(values).some(([key, value]) => {
+            // Për përdoruesin që është i loguar, fushat e disa të dhënave do të jenë 'readOnly'
+            if (key === "message" || key === "appartment") return false; // Mos kontrollo këto fusha
+            // Kontrollo fushat e tjera vetëm nëse përdoruesi nuk është i loguar
+            return !authUser && (value || "").toString().trim().length === 0;
+        }))
+    );
 
+    // Calculate subtotal, VAT, and total price
     const subtotal = order.reduce((acc, item) => {
         return acc + (Number(item.price) * Number(item.quantity))
     }, 0);
 
     const vat = +(subtotal * 0.20).toFixed(2);
     const totalWithVat = +(subtotal + vat).toFixed(2);
+
+    // Pre-fill form with user data if available
+    useEffect(() => {
+        if (authUser) {
+            setValues((prev) => ({
+                ...prev,
+                firstname: authUser.firstname || "",
+                lastname: authUser.lastname || "",
+                email: authUser.email || "",
+                phone: authUser.phone || "",
+                country: authUser.country || "united-kingdom",
+                town: authUser.town || "",
+                zipCode: authUser.zipCode || "",
+                street_address: authUser.street_address || "",
+                appartment: authUser.appartment || "",
+                message: authUser.message || ""
+            }));
+        }
+    }, [authUser]);
 
     return (
         <>
@@ -142,6 +170,7 @@ const Checkout = () => {
                                                                 placeholder="Enter name"
                                                                 className='border-radius'
                                                                 required
+                                                                readOnly={!!authUser} // Make readonly if user is logged in
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -157,6 +186,7 @@ const Checkout = () => {
                                                                 placeholder="Enter lastname"
                                                                 className='border-radius'
                                                                 required
+                                                                readOnly={!!authUser}
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -172,21 +202,7 @@ const Checkout = () => {
                                                                 placeholder="Enter email"
                                                                 className='border-radius'
                                                                 required
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={4}>
-                                                        <Form.Group className="mb-3" controlId="phoneNumber">
-                                                            <Form.Label>Password</Form.Label>
-                                                            <Form.Control
-                                                                name="password"
-                                                                value={values.password}
-                                                                onChange={handleChange}
-                                                                type="password"
-                                                                placeholder="Password"
-                                                                className='border-radius'
-                                                                required
+                                                                readOnly={!!authUser}
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -202,6 +218,7 @@ const Checkout = () => {
                                                                 placeholder="Phone number"
                                                                 className='border-radius'
                                                                 required
+                                                                readOnly={!!authUser}
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -215,6 +232,7 @@ const Checkout = () => {
                                                                 value={values.country}
                                                                 onChange={handleChange}
                                                                 className='border-radius'
+                                                                disabled={!!authUser}
                                                             >
                                                                 <option value="united-kingdom">United Kingdom (UK)</option>
                                                                 <option value="united-states">United States (US)</option>
@@ -235,6 +253,7 @@ const Checkout = () => {
                                                                 placeholder="Enter Town/City"
                                                                 className='border-radius'
                                                                 required
+                                                                readOnly={!!authUser}
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -250,6 +269,7 @@ const Checkout = () => {
                                                                 placeholder="Enter ZIP Code"
                                                                 className='border-radius'
                                                                 required
+                                                                readOnly={!!authUser}
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -265,6 +285,7 @@ const Checkout = () => {
                                                                 placeholder="Enter street address"
                                                                 className='border-radius'
                                                                 required
+                                                                readOnly={!!authUser}
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -279,6 +300,7 @@ const Checkout = () => {
                                                                 type="text"
                                                                 placeholder="Enter appartment/suite/unit"
                                                                 className='border-radius'
+                                                                readOnly={!!authUser}
                                                             />
                                                         </Form.Group>
                                                     </Col>
@@ -363,7 +385,6 @@ const Checkout = () => {
                                 </Row>
                             </>
                 }
-
             </Container>
         </>
     )
