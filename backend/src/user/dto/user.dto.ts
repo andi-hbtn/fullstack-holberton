@@ -14,7 +14,7 @@ export class UserDto {
 
 	@IsNumber()
 	@IsNotEmpty()
-	phone: number;
+	phone: string;
 
 	@IsNotEmpty()
 	@IsEmail()

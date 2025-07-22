@@ -156,7 +156,7 @@ const CartProvider = (props) => {
 				return result.data;
 			}
 		} catch (error) {
-			return error;
+			throw error.response.data;
 		}
 	};
 

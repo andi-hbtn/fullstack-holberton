@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { Modal, Container, Row, Col, Form, Button } from 'react-bootstrap';
-import AlertMessage from '../alert/AlertMessage';
+import AlertMessage from '../AlertMessage';
 const Register = ({ openRegister, closeRegister }) => {
 
   const { register } = useAuthenticateContext();

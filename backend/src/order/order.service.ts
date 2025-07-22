@@ -15,7 +15,6 @@ import * as nodemailer from 'nodemailer';
 import * as PdfPrinter from 'pdfmake/src/printer';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
-
 @Injectable()
 export class OrderService {
   constructor(
@@ -33,11 +32,11 @@ export class OrderService {
       const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, password, country, town, zipCode, street_address, appartment, message } = orderData;
       let user: UserEntity | null = null;
 
-      // Kontrolloni nëse përdoruesi është regjistruar dhe merrni informacionin nga databaza
+      // Check if user is auth and gethis data from DB
       if (user_id) {
         user = await this.usersRepository.findOne({ where: { id: user_id } });
 
-        // Përditësoni të dhënat e përdoruesit
+        // Updata users data
         if (user) {
           await this.usersRepository.update(user.id, {
             country,
@@ -51,6 +50,7 @@ export class OrderService {
       }
 
       // Nëse përdoruesi nuk është i regjistruar, e krijoni një të ri
+      // If user is not registered create a new one
       if (!user) {
         const savedUser = await this.authService.registerUser({
           firstname,
@@ -146,8 +146,6 @@ export class OrderService {
     }
   }
 
-
-
   public async updateStatus(id: number, status: string): Promise<any> {
     try {
 
@@ -198,6 +196,41 @@ export class OrderService {
       };
     } catch (error) {
       throw new ServiceHandler(error.message, error.status);
+    }
+  }
+
+  public async getOrdersByUserId(userId: number): Promise<any> {
+    try {
+      const orders = await this.ordersRepository.find({
+        where: { user: { id: userId } },
+        relations: {
+          orderItems: {
+            variant: {
+              product: {
+                category: true
+              }
+            }
+          }
+        },
+        order: {
+          created_at: 'DESC'
+        }
+      });
+
+      const user = await this.usersRepository.findOne({
+        where: { id: userId },
+        select: ['id', 'firstname', 'lastname', 'email', 'phone', 'country', 'town', 'zipCode', 'street_address', 'appartment', 'message', 'createdAt', 'roles'] // mos merr password
+      });
+
+      return {
+        statusCode: 200,
+        user,
+        orders
+      };
+
+    } catch (error) {
+      console.log("error--in get all orders of auth user---", error);
+      throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

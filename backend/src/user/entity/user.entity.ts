@@ -13,7 +13,7 @@ export class UserEntity {
 	lastname: string;
 
 	@Column()
-	phone: number;
+	phone: string;
 
 	@Column()
 	email: string;

@@ -5,6 +5,7 @@ import OrderConfirmed from '../OrderConfirmed';
 import EmptyCart from '../EmptyCart';
 import dateTime from "../../helpers/dateTime";
 import Header from '../Header/Header';
+import AlertMessage from "../AlertMessage";
 import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
 import "./index.css";
 
@@ -26,6 +27,7 @@ const Checkout = () => {
         appartment: "",
         message: ""
     });
+    const [errors, setError] = useState({ status: false, message: "" });
 
     // Load items from cart when it is updated
     useEffect(() => {
@@ -60,6 +62,9 @@ const Checkout = () => {
     // Handle form submission to create order
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        console.log("phone:", values.phone);
+        console.log("phone", typeof values.phone);
         try {
             const total_price = order.reduce((total, item) => {
                 return total + (item.price * item.quantity);
@@ -96,7 +101,7 @@ const Checkout = () => {
                 user_id: authUser.id || null
             }));
         } catch (error) {
-            console.error("Order submission failed:", error);
+            setError({ status: true, message: error.message });
         }
     }
 
@@ -141,6 +146,12 @@ const Checkout = () => {
         <>
             <Header />
             <Container>
+
+                {
+                    errors.status && (
+                        <AlertMessage status={true} message={errors.message} />
+                    )
+                }
                 {
                     orderSuccess ?
                         <OrderConfirmed />
@@ -214,7 +225,7 @@ const Checkout = () => {
                                                                 name="phone"
                                                                 value={values.phone}
                                                                 onChange={handleChange}
-                                                                type="tel"
+                                                                type="text"
                                                                 placeholder="Phone number"
                                                                 className='border-radius'
                                                                 required

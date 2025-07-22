@@ -43,7 +43,7 @@ export class OrderDto {
 
 	@IsOptional()
 	@IsString()
-	phone?: number;
+	phone?: string;
 
 	@IsOptional()
 	@IsString()

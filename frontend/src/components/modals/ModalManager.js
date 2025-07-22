@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
-import AlertMessage from "../alert/AlertMessage";
+import AlertMessage from "../AlertMessage";
 
 const ModalManager = ({ open, categories, close, case_modal, fields, create, update, data, setData }) => {
 

@@ -1,7 +1,7 @@
 import { Alert } from 'react-bootstrap';
-import "./AlertMessage.css";
+import "./index.css";
 
-const AlertMessage = ({ status, message }) => {
+const AlertMessage = ({ message }) => {
 	return (
 		<Alert variant="info" className='alert-container'>
 			<Alert.Heading className='alert-message'>
