@@ -42,10 +42,17 @@ const UserProfile = () => {
         }
     };
 
-    const subtotal = orders.orderItems?.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const subtotal = orders.map((order, index) => {
+        return Number(order.total_price);
+    }).reduce((sum, item) => {
+        return sum + item;
+    }, 0);
+
     const tax = subtotal * 0.20;
     const deliveryFee = 4.99;
     const total = subtotal + tax + deliveryFee;
+
+    console.log("orders---", orders);
 
     return (
         <>
@@ -84,14 +91,15 @@ const UserProfile = () => {
                                                     <th>Quantity</th>
                                                     <th>Price</th>
                                                     <th>Subtotal</th>
+                                                    <th>Status</th>
+                                                    <th>Order Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {orders?.map((order, index) => (
                                                     order.orderItems.map((orderItem, itemIndex) => {
-                                                        console.log("orderItem---", orderItem);
                                                         return (
-                                                            <tr key={index}>
+                                                            <tr key={itemIndex}>
                                                                 <td>
                                                                     <a href={`/order/${orderItem.id}`} className="order-link">
                                                                         #{orderItem.id}
@@ -102,12 +110,44 @@ const UserProfile = () => {
                                                                 <td>{orderItem.quantity}</td>
                                                                 <td>${orderItem.price}</td>
                                                                 <td>${(orderItem.price * orderItem.quantity).toFixed(2)}</td>
+                                                                <td>{getStatusBadge(order.status)}</td>
+                                                                <td>{dateUtils.formatIsoDateTime(order.created_at)}</td>
                                                             </tr>
                                                         )
                                                     })
                                                 ))}
                                             </tbody>
                                         </Table>
+
+                                        <div className="order-summary">
+                                            <Card className="summary-card mt-3">
+                                                <Card.Header className="summary-header d-flex justify-content-between">
+                                                    {/* <span>Order #{order.id} Summary</span>
+                                                    <span>{getStatusBadge(order.status)}</span> */}
+                                                </Card.Header>
+                                                <Card.Body>
+
+                                                    <div className="d-flex justify-content-between">
+                                                        <span>Subtotal:</span>
+                                                        <span>£{subtotal.toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="d-flex justify-content-between">
+                                                        <span>VAT (20%):</span>
+                                                        <span>£{tax.toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="d-flex justify-content-between">
+                                                        <span>Delivery Fee:</span>
+                                                        <span>${deliveryFee.toFixed(2)}</span>
+                                                    </div>
+                                                    <hr />
+                                                    <div className="d-flex justify-content-between fw-bold">
+                                                        <span>Total:</span>
+                                                        <span>£{total.toFixed(2)}</span>
+                                                    </div>
+
+                                                </Card.Body>
+                                            </Card>
+                                        </div>
 
                                     </div>
                                 ) : (
