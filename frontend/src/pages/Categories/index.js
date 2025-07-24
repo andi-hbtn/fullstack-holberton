@@ -37,6 +37,7 @@ const Categories = () => {
 	const handleDelete = async (id) => {
 		try {
 			const result = await deleteCategorie(id);
+			return result;
 		} catch (error) {
 			console.log("error----", error);
 		}

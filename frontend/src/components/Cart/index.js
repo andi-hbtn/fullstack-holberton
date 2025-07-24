@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useCartContext } from '../../context/CartContext';
 import Header from "../Header/Header";
-import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import { Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
 import EmptyCart from '../EmptyCart';
-import { FaTrashAlt, FaMinus, FaPlus } from "react-icons/fa";
+import { FaTrashAlt, FaMinus, FaPlus, FaArrowRight } from "react-icons/fa";
+import { PiShoppingCart } from "react-icons/pi";
 import "./index.css";
 
 const Cart = () => {
     const { authUser } = useAuthenticateContext();
     const { cart, setCart, setFinalCart } = useCartContext();
+    const [isRemoving, setIsRemoving] = useState(false);
 
     useEffect(() => {
         const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
@@ -25,7 +27,6 @@ const Cart = () => {
     const totalWithVat = +(subTotal * 0.20).toFixed(2);
     const totalPrice = +(subTotal + totalWithVat).toFixed(2);
 
-    // Update quantity in cart
     const addQuantity = (item) => {
         setCart((prevState) => {
             const newItems = [...prevState.items];
@@ -33,14 +34,12 @@ const Cart = () => {
                 (cartItem) => cartItem.productId === item.productId && cartItem.variantId === item.variantId
             );
             if (existingIndex !== -1) {
-                // Update quantity for the matching item
                 newItems[existingIndex] = {
                     ...newItems[existingIndex],
                     quantity: newItems[existingIndex].quantity + 1,
                 };
             }
 
-            // Recalculate total price
             const newTotalPrice = newItems.reduce(
                 (total, item) => total + item.price * item.quantity,
                 0
@@ -56,7 +55,6 @@ const Cart = () => {
         });
     };
 
-    // Decrease quantity in cart
     const removeQuantity = (item) => {
         setCart((prevState) => {
             const newItems = [...prevState.items];
@@ -64,15 +62,13 @@ const Cart = () => {
                 (cartItem) => cartItem.productId === item.productId && cartItem.variantId === item.variantId
             );
             if (existingIndex !== -1) {
-                // Decrease quantity
                 if (newItems[existingIndex].quantity === 1) {
-                    newItems.splice(existingIndex, 1); // Remove item if quantity reaches 0
+                    newItems.splice(existingIndex, 1);
                 } else {
                     newItems[existingIndex].quantity -= 1;
                 }
             }
 
-            // Recalculate total price
             const newTotalPrice = newItems.reduce(
                 (total, item) => total + item.price * item.quantity,
                 0
@@ -88,134 +84,157 @@ const Cart = () => {
         });
     };
 
-    // Delete item from cart
     const deleteItem = (item) => {
-        setCart((prevState) => {
-            const newItems = prevState.items.filter(
-                (cartItem) => cartItem.productId !== item.productId || cartItem.variantId !== item.variantId
-            );
+        setIsRemoving(true);
+        setTimeout(() => {
+            setCart((prevState) => {
+                const newItems = prevState.items.filter(
+                    (cartItem) => cartItem.productId !== item.productId || cartItem.variantId !== item.variantId
+                );
 
-            const newTotalPrice = newItems.reduce(
-                (total, item) => total + item.price * item.quantity,
-                0
-            );
+                const newTotalPrice = newItems.reduce(
+                    (total, item) => total + item.price * item.quantity,
+                    0
+                );
 
-            const updatedCart = {
-                ...prevState,
-                items: newItems,
-                total_price: newTotalPrice,
-                user_id: authUser.id || null,
-            };
-            localStorage.setItem("cart", JSON.stringify(updatedCart));
-            return updatedCart;
-        });
+                const updatedCart = {
+                    ...prevState,
+                    items: newItems,
+                    total_price: newTotalPrice,
+                    user_id: authUser.id || null,
+                };
+                localStorage.setItem("cart", JSON.stringify(updatedCart));
+                setIsRemoving(false);
+                return updatedCart;
+            });
+        }, 300);
     };
 
     return (
         <>
             <Header />
-            <Container>
+            <Container className="cart-page-container">
                 {cart.items?.length === 0 ? (
                     <EmptyCart />
                 ) : (
                     <>
-                        <Row className="prod-cart-cnt">
+                        <Row className="cart-header">
                             <Col>
-                                <h4>Cart</h4>
+                                <h1 className="page-title">
+                                    <PiShoppingCart className="me-2" />
+                                    Your Shopping Cart
+                                    <Badge bg="primary" className="ms-3 item-count-badge">
+                                        {cart.items?.length} {cart.items?.length === 1 ? 'item' : 'items'}
+                                    </Badge>
+                                </h1>
                             </Col>
                         </Row>
-                        <Row className="cart-table-total-cnt">
-                            <Col sm={12} md={7} lg={7}>
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th className="text-center">Quantity</th>
-                                            <th className="text-center">Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {cart.items?.map((item, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td className="td-p">
-                                                        <div className="item-img-cnt">
-                                                            <img
-                                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item.main_image}`}
-                                                                alt="product name"
-                                                            />
-                                                        </div>
-                                                        <div className="item-desc-cnt">
-                                                            <a href="/">{item.title}</a>
-                                                            <p>{item.color}</p>
-                                                        </div>
-                                                    </td>
-                                                    <td className="td-p">
-                                                        <Row className="price-cnt">
-                                                            <span>&#163;{item.price}</span>
-                                                        </Row>
-                                                    </td>
-                                                    <td className="td-p">
-                                                        <Row className="quantity-cnt justify-content-center">
-                                                            <Col className="position-relative d-flex align-items-center justify-content-center">
-                                                                <div className="ellips-quantity-control">
-                                                                    <Button
-                                                                        variant="link"
-                                                                        className="quantity-btn minus-btn p-0"
-                                                                        onClick={() => removeQuantity(item)}
-                                                                    >
-                                                                        <FaMinus className="quantity-icon" />
-                                                                    </Button>
-                                                                    <span className="quantity-number">{item.quantity}</span>
-                                                                    <Button
-                                                                        variant="link"
-                                                                        className="quantity-btn plus-btn p-0"
-                                                                        onClick={() => addQuantity(item)}
-                                                                    >
-                                                                        <FaPlus className="quantity-icon" />
-                                                                    </Button>
+
+                        <Row className="cart-content">
+                            <Col lg={8} className="pe-lg-4">
+                                <div className="cart-items-container">
+                                    <Table borderless className="cart-table">
+                                        <thead>
+                                            <tr className="table-header">
+                                                <th className="product-col">Product</th>
+                                                <th className="price-col">Price</th>
+                                                <th className="quantity-col">Quantity</th>
+                                                <th className="subtotal-col">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {cart.items?.map((item, index) => (
+                                                <tr
+                                                    key={index}
+                                                    className={`cart-item ${isRemoving ? 'removing' : ''}`}
+                                                >
+                                                    <td className="product-cell">
+                                                        <div className="product-info">
+                                                            <div className="product-image">
+                                                                <img
+                                                                    src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item.main_image}`}
+                                                                    alt={item.title}
+                                                                    loading="lazy"
+                                                                />
+                                                            </div>
+                                                            <div className="product-details">
+                                                                <h3 className="product-title">{item.title}</h3>
+                                                                <div className="product-variant">
+                                                                    <span className="color-badge" style={{ backgroundColor: item.color_code || '#ccc' }}></span>
+                                                                    <span className="variant-name">{item.color}</span>
                                                                 </div>
-                                                            </Col>
-                                                        </Row>
+                                                            </div>
+                                                        </div>
                                                     </td>
-                                                    <td>
-                                                        <Row className="subtotal-quantity">
-                                                            <span>&#163; {item.price * item.quantity}</span>
-                                                            <span className="remove-item" onClick={() => deleteItem(item)}>
+                                                    <td className="price-cell">
+                                                        <span className="price">£{item.price}</span>
+                                                    </td>
+                                                    <td className="quantity-cell">
+                                                        <div className="quantity-control">
+                                                            <button
+                                                                className="quantity-btn minus-btn"
+                                                                onClick={() => removeQuantity(item)}
+                                                            >
+                                                                <FaMinus />
+                                                            </button>
+                                                            <span className="quantity-value">{item.quantity}</span>
+                                                            <button
+                                                                className="quantity-btn plus-btn"
+                                                                onClick={() => addQuantity(item)}
+                                                            >
+                                                                <FaPlus />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                    <td className="subtotal-cell">
+                                                        <div className="subtotal-content">
+                                                            <span className="subtotal">£{(item.price * item.quantity).toFixed(2)}</span>
+                                                            <button
+                                                                className="remove-btn"
+                                                                onClick={() => deleteItem(item)}
+                                                            >
                                                                 <FaTrashAlt />
-                                                            </span>
-                                                        </Row>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </Table>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </div>
                             </Col>
-                            <Col sm={12} md={4} lg={4} className="cart-total-cnt">
-                                <Row>
-                                    <Col sm={12} md={12} lg={12} className="cart-total">
-                                        <h4>Cart totals</h4>
-                                        <div className="subtotal-cnt">
+
+                            <Col lg={4} className="ps-lg-4">
+                                <div className="cart-summary">
+                                    <div className="summary-header">
+                                        <h2>Order Summary</h2>
+                                    </div>
+                                    <div className="summary-content">
+                                        <div className="summary-row">
                                             <span>Subtotal</span>
-                                            <span>&#163; {subTotal}</span>
+                                            <span>£{subTotal?.toFixed(2)}</span>
                                         </div>
-                                        <div className="total-cnt">
-                                            <span>Vat (20%)</span>
-                                            <span>&#163; {totalWithVat}</span>
+                                        <div className="summary-row">
+                                            <span>VAT (20%)</span>
+                                            <span>£{totalWithVat}</span>
                                         </div>
-
-                                        <div className="total-cnt">
+                                        <div className="summary-row total-row">
                                             <span>Total</span>
-                                            <span>&#163; {totalPrice}</span>
+                                            <span className="total-price">£{totalPrice}</span>
                                         </div>
-
-                                        <Button variant="dark" className="checkout-btn">
-                                            <a href="/checkout">Proceed to checkout</a>
-                                        </Button>
-                                    </Col>
-                                </Row>
+                                    </div>
+                                    <Button
+                                        variant="primary"
+                                        className="checkout-btn"
+                                        href="/checkout"
+                                    >
+                                        Proceed to Checkout
+                                        <FaArrowRight className="ms-2" />
+                                    </Button>
+                                    <div className="continue-shopping">
+                                        <a href="/products">← Continue Shopping</a>
+                                    </div>
+                                </div>
                             </Col>
                         </Row>
                     </>

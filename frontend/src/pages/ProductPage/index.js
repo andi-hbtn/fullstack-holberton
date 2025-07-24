@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Button, Badge } from "react-bootstrap";
+import { Container, Row, Col, Badge } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import NotFount from "../../components/NotFount";

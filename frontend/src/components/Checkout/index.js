@@ -6,7 +6,9 @@ import EmptyCart from '../EmptyCart';
 import dateTime from "../../helpers/dateTime";
 import Header from '../Header/Header';
 import AlertMessage from "../AlertMessage";
-import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Badge } from 'react-bootstrap';
+import { FaArrowRight, FaLock, FaMapMarkerAlt, FaEnvelope, FaUser } from "react-icons/fa";
+import { PiShoppingCart } from "react-icons/pi";
 import "./index.css";
 
 const Checkout = () => {
@@ -29,13 +31,11 @@ const Checkout = () => {
     });
     const [errors, setError] = useState({ status: false, message: "" });
 
-    // Load items from cart when it is updated
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart")) || '{"items": []}';
         loadItems(storedCart);
     }, [finalCart]);
 
-    // Populate order items from cart data
     const loadItems = (items) => {
         const result = items.items.map((el, index) => {
             return {
@@ -46,12 +46,12 @@ const Checkout = () => {
                 main_image: el.main_image,
                 price: el.price,
                 quantity: el.quantity,
+                title: el.title
             };
         });
         setOrder(result);
     }
 
-    // Handle form input change
     const handleChange = (event) => {
         const { value, name } = event.target;
         setValues((prev) => {
@@ -59,12 +59,9 @@ const Checkout = () => {
         });
     }
 
-    // Handle form submission to create order
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log("phone:", values.phone);
-        console.log("phone", typeof values.phone);
         try {
             const total_price = order.reduce((total, item) => {
                 return total + (item.price * item.quantity);
@@ -105,17 +102,13 @@ const Checkout = () => {
         }
     }
 
-    // Check if any field is missing
     const isDisabled = (order.length === 0 ||
         (Object.entries(values).some(([key, value]) => {
-            // Për përdoruesin që është i loguar, fushat e disa të dhënave do të jenë 'readOnly'
-            if (key === "message" || key === "appartment") return false; // Mos kontrollo këto fusha
-            // Kontrollo fushat e tjera vetëm nëse përdoruesi nuk është i loguar
+            if (key === "message" || key === "appartment") return false;
             return !authUser && (value || "").toString().trim().length === 0;
         }))
     );
 
-    // Calculate subtotal, VAT, and total price
     const subtotal = order.reduce((acc, item) => {
         return acc + (Number(item.price) * Number(item.quantity))
     }, 0);
@@ -123,7 +116,6 @@ const Checkout = () => {
     const vat = +(subtotal * 0.20).toFixed(2);
     const totalWithVat = +(subtotal + vat).toFixed(2);
 
-    // Pre-fill form with user data if available
     useEffect(() => {
         if (authUser) {
             setValues((prev) => ({
@@ -145,257 +137,286 @@ const Checkout = () => {
     return (
         <>
             <Header />
-            <Container>
+            <Container className="checkout-page-container">
+                {errors.status && (
+                    <AlertMessage status={true} message={errors.message} />
+                )}
+                {orderSuccess ? (
+                    <OrderConfirmed />
+                ) : cart.items.length === 0 ? (
+                    <EmptyCart />
+                ) : (
+                    <>
+                        <Row className="checkout-header">
+                            <Col>
+                                <h1 className="page-title">
+                                    <PiShoppingCart className="me-2" />
+                                    Checkout
+                                    <Badge bg="primary" className="ms-3 item-count-badge">
+                                        {order.length} {order.length === 1 ? 'item' : 'items'}
+                                    </Badge>
+                                </h1>
+                            </Col>
+                        </Row>
 
-                {
-                    errors.status && (
-                        <AlertMessage status={true} message={errors.message} />
-                    )
-                }
-                {
-                    orderSuccess ?
-                        <OrderConfirmed />
-                        :
-                        cart.items.length === 0 ? < EmptyCart />
-                            :
-                            <>
-                                <Row className='ch-t-cnt'>
-                                    <Col>
-                                        <h2>Checkout</h2>
-                                        <h5>Billing details</h5>
-                                    </Col>
-                                </Row>
-                                <Row className='billing-detail-cnt'>
-                                    <Form onSubmit={handleSubmit}>
-                                        <Row>
-                                            <Col sm={12} md={6} lg={6} className='billing-detail'>
-                                                <Row>
-                                                    <Col md={6}>
-                                                        <Form.Group className="mb-3" controlId="firstname">
-                                                            <Form.Label>First name</Form.Label>
-                                                            <Form.Control
-                                                                name="firstname"
-                                                                value={values.firstname}
-                                                                onChange={handleChange}
-                                                                type="text"
-                                                                placeholder="Enter name"
-                                                                className='border-radius'
-                                                                required
-                                                                readOnly={!!authUser} // Make readonly if user is logged in
+                        <Row className="checkout-content">
+                            <Col lg={7} className="pe-lg-4">
+                                <Card className="shipping-form-card">
+                                    <Card.Body>
+                                        <h2 className="form-section-title">
+                                            <FaUser className="me-2" />
+                                            Contact Information
+                                        </h2>
+                                        <Form onSubmit={handleSubmit}>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="firstname">
+                                                        <Form.Label>First name</Form.Label>
+                                                        <Form.Control
+                                                            name="firstname"
+                                                            value={values.firstname}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter first name"
+                                                            className="form-input"
+                                                            required
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="lastname">
+                                                        <Form.Label>Last name</Form.Label>
+                                                        <Form.Control
+                                                            name="lastname"
+                                                            value={values.lastname}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter last name"
+                                                            className="form-input"
+                                                            required
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="email">
+                                                        <Form.Label>Email address</Form.Label>
+                                                        <Form.Control
+                                                            name="email"
+                                                            value={values.email}
+                                                            onChange={handleChange}
+                                                            type="email"
+                                                            placeholder="Enter email"
+                                                            className="form-input"
+                                                            required
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="phoneNumber">
+                                                        <Form.Label>Phone number</Form.Label>
+                                                        <Form.Control
+                                                            name="phone"
+                                                            value={values.phone}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Phone number"
+                                                            className="form-input"
+                                                            required
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+
+                                            <h2 className="form-section-title mt-5">
+                                                <FaMapMarkerAlt className="me-2" />
+                                                Shipping Address
+                                            </h2>
+
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="country">
+                                                        <Form.Label>Country / Region</Form.Label>
+                                                        <Form.Select
+                                                            name="country"
+                                                            value={values.country}
+                                                            onChange={handleChange}
+                                                            className="form-input"
+                                                            disabled={!!authUser}
+                                                        >
+                                                            <option value="united-kingdom">United Kingdom (UK)</option>
+                                                            <option value="united-states">United States (US)</option>
+                                                            <option value="canada">Canada</option>
+                                                            <option value="australia">Australia</option>
+                                                        </Form.Select>
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="town">
+                                                        <Form.Label>Town / City</Form.Label>
+                                                        <Form.Control
+                                                            name="town"
+                                                            value={values.town}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter town/city"
+                                                            className="form-input"
+                                                            required
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="zip">
+                                                        <Form.Label>Postal Code</Form.Label>
+                                                        <Form.Control
+                                                            name="zipCode"
+                                                            value={values.zipCode}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter postal code"
+                                                            className="form-input"
+                                                            required
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={12}>
+                                                    <Form.Group className="mb-4" controlId="street">
+                                                        <Form.Label>Street address</Form.Label>
+                                                        <Form.Control
+                                                            name="street_address"
+                                                            value={values.street_address}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter street address"
+                                                            className="form-input"
+                                                            required
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={12}>
+                                                    <Form.Group className="mb-4" controlId="appartment">
+                                                        <Form.Label>Apartment, suite, unit, etc. (optional)</Form.Label>
+                                                        <Form.Control
+                                                            name="appartment"
+                                                            value={values.appartment}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter apartment/suite/unit"
+                                                            className="form-input"
+                                                            readOnly={!!authUser}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+
+                                            <h2 className="form-section-title mt-5">
+                                                <FaEnvelope className="me-2" />
+                                                Additional Information
+                                            </h2>
+
+                                            <Form.Group className="mb-4" controlId="information">
+                                                <Form.Label>Order notes (optional)</Form.Label>
+                                                <Form.Control
+                                                    name="message"
+                                                    value={values.message}
+                                                    onChange={handleChange}
+                                                    as="textarea"
+                                                    placeholder="Notes about your order, e.g. special delivery instructions"
+                                                    style={{ height: '120px' }}
+                                                    className="form-input"
+                                                />
+                                            </Form.Group>
+                                        </Form>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+
+                            <Col lg={5} className="ps-lg-4">
+                                <div className="order-summary-container">
+                                    <Card className="order-summary-card">
+                                        <Card.Body>
+                                            <h2 className="summary-title">Order Summary</h2>
+
+                                            <div className="order-items">
+                                                {order.map((item, index) => (
+                                                    <div key={index} className="order-item">
+                                                        <div className="item-image">
+                                                            <img
+                                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item.main_image}`}
+                                                                alt={item.title}
+                                                                loading="lazy"
                                                             />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={6}>
-                                                        <Form.Group className="mb-3" controlId="lastname">
-                                                            <Form.Label>Last name</Form.Label>
-                                                            <Form.Control
-                                                                name="lastname"
-                                                                value={values.lastname}
-                                                                onChange={handleChange}
-                                                                type="text"
-                                                                placeholder="Enter lastname"
-                                                                className='border-radius'
-                                                                required
-                                                                readOnly={!!authUser}
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={4}>
-                                                        <Form.Group className="mb-3" controlId="email">
-                                                            <Form.Label>Email address</Form.Label>
-                                                            <Form.Control
-                                                                name="email"
-                                                                value={values.email}
-                                                                onChange={handleChange}
-                                                                type="email"
-                                                                placeholder="Enter email"
-                                                                className='border-radius'
-                                                                required
-                                                                readOnly={!!authUser}
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={4}>
-                                                        <Form.Group className="mb-3" controlId="phoneNumber">
-                                                            <Form.Label>Phone number</Form.Label>
-                                                            <Form.Control
-                                                                name="phone"
-                                                                value={values.phone}
-                                                                onChange={handleChange}
-                                                                type="text"
-                                                                placeholder="Phone number"
-                                                                className='border-radius'
-                                                                required
-                                                                readOnly={!!authUser}
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col md={4}>
-                                                        <Form.Group className="mb-3" controlId="country">
-                                                            <Form.Label>Country / Region</Form.Label>
-                                                            <Form.Select
-                                                                name="country"
-                                                                value={values.country}
-                                                                onChange={handleChange}
-                                                                className='border-radius'
-                                                                disabled={!!authUser}
-                                                            >
-                                                                <option value="united-kingdom">United Kingdom (UK)</option>
-                                                                <option value="united-states">United States (US)</option>
-                                                                <option value="canada">Canada</option>
-                                                                <option value="australia">Australia</option>
-                                                            </Form.Select>
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={4}>
-                                                        <Form.Group className="mb-3" controlId="town">
-                                                            <Form.Label>Town / City</Form.Label>
-                                                            <Form.Control
-                                                                name="town"
-                                                                value={values.town}
-                                                                onChange={handleChange}
-                                                                type="text"
-                                                                placeholder="Enter Town/City"
-                                                                className='border-radius'
-                                                                required
-                                                                readOnly={!!authUser}
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={4}>
-                                                        <Form.Group className="mb-3" controlId="zip">
-                                                            <Form.Label>Zip Code</Form.Label>
-                                                            <Form.Control
-                                                                name="zipCode"
-                                                                value={values.zipCode}
-                                                                onChange={handleChange}
-                                                                type="text"
-                                                                placeholder="Enter ZIP Code"
-                                                                className='border-radius'
-                                                                required
-                                                                readOnly={!!authUser}
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={6}>
-                                                        <Form.Group className="mb-3" controlId="street">
-                                                            <Form.Label>Street address</Form.Label>
-                                                            <Form.Control
-                                                                name="street_address"
-                                                                value={values.street_address}
-                                                                onChange={handleChange}
-                                                                type="text"
-                                                                placeholder="Enter street address"
-                                                                className='border-radius'
-                                                                required
-                                                                readOnly={!!authUser}
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col md={6}>
-                                                        <Form.Group className="mb-3" controlId="appartment">
-                                                            <Form.Label>Apartment, suite, unit, etc. (optional)</Form.Label>
-                                                            <Form.Control
-                                                                name="appartment"
-                                                                value={values.appartment}
-                                                                onChange={handleChange}
-                                                                type="text"
-                                                                placeholder="Enter appartment/suite/unit"
-                                                                className='border-radius'
-                                                                readOnly={!!authUser}
-                                                            />
-                                                        </Form.Group>
-                                                    </Col>
-
-                                                    <Col className='additional-cnt'>
-                                                        <h5>Additional information</h5>
-                                                        <Form.Group className="mb-3" controlId="information">
-                                                            <Form.Label>Order notes (optional)</Form.Label>
-                                                            <FloatingLabel controlId="information" label="Provide additional information">
-                                                                <Form.Control
-                                                                    name="message"
-                                                                    value={values.message}
-                                                                    onChange={handleChange}
-                                                                    as="textarea"
-                                                                    placeholder="Leave a comment here"
-                                                                    style={{ height: '100px' }}
-                                                                    className='border-radius'
-                                                                />
-                                                            </FloatingLabel>
-                                                        </Form.Group>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-
-                                            <Col sm={12} md={5} lg={5} className='order-cnt'>
-                                                <h5>Your order</h5>
-                                                <div className='subtotal-cnt'>
-                                                    <span>Product</span>
-                                                    <span>Subtotal</span>
-
-                                                    <div className='final-order'>
-                                                        {order.map((el, index) => (
-                                                            <Row key={index} className='each-order border-bottom'>
-                                                                <Col sm={12} md={5} lg={5} className='checkout-img-title'>
-                                                                    <img
-                                                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${el.main_image}`}
-                                                                        alt={el.title}
-                                                                    />
-                                                                    <span>{el.title}</span>
-                                                                </Col>
-                                                                <Col sm={12} md={2} lg={2} className='checkout-quantity'>
-                                                                    <span> x {el.quantity}</span>
-                                                                </Col>
-                                                                <Col sm={12} md={5} lg={5} className='checkout-quantity'>
-                                                                    <span>£{el.quantity * el.price}</span>
-                                                                </Col>
-                                                            </Row>
-                                                        ))}
+                                                            <span className="item-quantity">{item.quantity}</span>
+                                                        </div>
+                                                        <div className="item-details">
+                                                            <h4 className="item-title">{item.title}</h4>
+                                                            <div className="item-variant">
+                                                                <span className="color-dot" style={{ backgroundColor: item.color_code || '#ccc' }}></span>
+                                                                <span>{item.color}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="item-price">£{(item.price * item.quantity).toFixed(2)}</div>
                                                     </div>
-                                                </div>
+                                                ))}
+                                            </div>
 
-                                                <div className='checkout-total'>
+                                            <div className="order-totals">
+                                                <div className="total-row">
                                                     <span>Subtotal</span>
-                                                    <span>£{subtotal}</span>
+                                                    <span>£{subtotal.toFixed(2)}</span>
                                                 </div>
-
-                                                <div className='checkout-total'>
+                                                <div className="total-row">
                                                     <span>VAT (20%)</span>
                                                     <span>£{vat}</span>
                                                 </div>
-
-                                                <div className='checkout-total total-payable'>
-                                                    <span>
-                                                        <strong>Total</strong>
-                                                    </span>
-                                                    <span>
-                                                        <strong>£{totalWithVat}</strong>
-                                                    </span>
+                                                <div className="total-row grand-total">
+                                                    <span>Total</span>
+                                                    <span>£{totalWithVat}</span>
                                                 </div>
+                                            </div>
 
-                                                <Button
-                                                    variant="dark"
-                                                    className='place-order-btn'
-                                                    type="submit"
-                                                    disabled={order.length === 0 || isDisabled}
-                                                >
-                                                    Place Order
-                                                </Button>
-                                            </Col>
-                                        </Row>
-                                    </Form>
-                                </Row>
-                            </>
-                }
+                                            <div className="secure-checkout">
+                                                <FaLock className="me-2" />
+                                                <span>Secure checkout</span>
+                                            </div>
+
+                                            <Button
+                                                variant="primary"
+                                                className="place-order-btn"
+                                                type="submit"
+                                                onClick={handleSubmit}
+                                                disabled={order.length === 0 || isDisabled}
+                                            >
+                                                Place Order
+                                                <FaArrowRight className="ms-2" />
+                                            </Button>
+
+                                            <div className="payment-methods">
+                                                <div className="payment-icon visa"></div>
+                                                <div className="payment-icon mastercard"></div>
+                                                <div className="payment-icon amex"></div>
+                                                <div className="payment-icon paypal"></div>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                            </Col>
+                        </Row>
+                    </>
+                )}
             </Container>
         </>
     )
