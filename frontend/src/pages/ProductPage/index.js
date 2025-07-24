@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Button, Card, Badge } from "react-bootstrap";
+import { Container, Row, Col, Button, Badge } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import NotFount from "../../components/NotFount";
@@ -7,14 +7,16 @@ import {
     PiMinusLight,
     PiPlusLight,
     PiCaretLeftLight,
-    PiCaretRightLight
+    PiCaretRightLight,
+    PiShoppingCartFill,
+    PiCheckCircleFill,
+    PiSparkleFill
 } from "react-icons/pi";
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
 import "./index.css";
 
 const ProductPage = () => {
-
     const { id } = useParams();
     const { getProduct } = useProductContext();
     const { addQuantity, removeQuantity, cart, addToCart } = useCartContext();
@@ -23,6 +25,8 @@ const ProductPage = () => {
     const [error, setError] = useState({ message: "", status: 0 });
     const [selectedVariantId, setSelectedVariantId] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [buttonState, setButtonState] = useState("default"); // 'default', 'adding', 'added'
+    const [sparkles, setSparkles] = useState([]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -77,6 +81,37 @@ const ProductPage = () => {
         setSelectedVariantId(images[prevIndex].variantId);
     };
 
+    const createSparkle = () => {
+        const newSparkle = {
+            id: Date.now(),
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            size: Math.random() * 10 + 5,
+            opacity: Math.random() * 0.5 + 0.5,
+            delay: Math.random() * 0.5
+        };
+        return newSparkle;
+    };
+
+    const handleAddToCart = () => {
+        if (buttonState !== "default") return;
+
+        setButtonState("adding");
+        addToCart(product, selectedVariant);
+
+        // Create sparkles
+        const newSparkles = [];
+        for (let i = 0; i < 15; i++) {
+            newSparkles.push(createSparkle());
+        }
+        setSparkles(newSparkles);
+
+        setTimeout(() => {
+            setButtonState("added");
+            setTimeout(() => setButtonState("default"), 3000);
+        }, 800);
+    };
+
     if (error.message) {
         return (
             <>
@@ -92,73 +127,114 @@ const ProductPage = () => {
         );
     }
 
-    if (!product) return null;
+    if (!product) return (
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="spinner-grow text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    );
 
     return (
         <>
             <Header />
-            <Container className="py-5">
-                <Row className="prod-card-container g-5">
-                    <Col lg={6} className="d-flex justify-content-center">
-                        <Card className="product-image-card position-relative">
+            <Container className="product-page-container">
+                <Row className="g-5">
+                    {/* Product Images Column */}
+                    <Col lg={6} className="pe-lg-5">
+                        <div className="product-gallery">
+                            <div className="main-image-container">
+                                <div className="image-wrapper">
+                                    <img
+                                        src={images[currentImageIndex]?.src}
+                                        className="main-product-image"
+                                        alt={product.title}
+                                        loading="lazy"
+                                    />
+                                    <div className="image-overlay"></div>
+                                </div>
+
+                                {images.length > 1 && (
+                                    <>
+                                        <button
+                                            className="image-nav-btn prev-btn"
+                                            onClick={handlePrevImage}
+                                        >
+                                            <PiCaretLeftLight size={28} />
+                                        </button>
+                                        <button
+                                            className="image-nav-btn next-btn"
+                                            onClick={handleNextImage}
+                                        >
+                                            <PiCaretRightLight size={28} />
+                                        </button>
+                                    </>
+                                )}
+                            </div>
+
                             {images.length > 1 && (
-                                <>
-                                    <Button
-                                        variant="light"
-                                        className="position-absolute start-0 top-50 translate-middle-y rounded-circle p-2 image-nav-btn"
-                                        onClick={handlePrevImage}
-                                    >
-                                        <PiCaretLeftLight size={24} />
-                                    </Button>
-                                    <Button
-                                        variant="light"
-                                        className="position-absolute end-0 top-50 translate-middle-y rounded-circle p-2 image-nav-btn"
-                                        onClick={handleNextImage}
-                                    >
-                                        <PiCaretRightLight size={24} />
-                                    </Button>
-                                </>
+                                <div className="thumbnail-container">
+                                    {images.map((img, index) => (
+                                        <div
+                                            key={index}
+                                            className={`thumbnail ${currentImageIndex === index ? 'active' : ''}`}
+                                            onClick={() => {
+                                                setCurrentImageIndex(index);
+                                                setSelectedVariantId(img.variantId);
+                                            }}
+                                        >
+                                            <img
+                                                src={img.src}
+                                                alt={`Thumbnail ${index + 1}`}
+                                                loading="lazy"
+                                            />
+                                            <div className="thumbnail-overlay"></div>
+                                        </div>
+                                    ))}
+                                </div>
                             )}
-                            <Card.Img
-                                variant="top"
-                                src={images[currentImageIndex]?.src}
-                                className="product-image"
-                                alt={product.title}
-                            />
-                        </Card>
+                        </div>
                     </Col>
 
-                    <Col lg={6}>
-                        <div className="product-details">
-                            <h1 className="product-title mb-3">{product.title}</h1>
+                    {/* Product Details Column */}
+                    <Col lg={6} className="ps-lg-5">
+                        <div className="product-details-container">
+                            <div className="product-header">
+                                <h1 className="product-title">{product.title}</h1>
+                                <div className="product-meta">
+                                    <Badge bg={selectedVariant?.stock > 0 ? "success" : "danger"} className="stock-badge">
+                                        {selectedVariant?.stock > 0 ?
+                                            `${selectedVariant?.stock} available` :
+                                            'Out of stock'}
+                                    </Badge>
+                                    <span className="product-sku">SKU: {selectedVariant?.sku || 'N/A'}</span>
+                                </div>
+                            </div>
 
-                            <Badge
-                                bg={selectedVariant?.stock > 0 ? "success" : "secondary"}
-                                className="mb-3"
-                            >
-                                {selectedVariant?.stock > 0 ? `In Stock ${selectedVariant?.stock} pieces` : `Out of Stock`}
-                            </Badge>
-
-                            <div className="price-section mb-4">
-                                <h3 className="text-primary mb-0">
+                            <div className="price-section">
+                                <div className="current-price">
                                     £{selectedVariant?.price ?? "N/A"}
-                                </h3>
-                                <small className="text-muted">(Inc. VAT)</small>
+                                    <span className="price-tax">Inc. VAT</span>
+                                </div>
                             </div>
 
                             {/* Color Variants */}
-                            <div className="color-selector mb-4">
-                                <h5 className="fw-medium mb-3">Select Color:</h5>
-                                <div className="color-options-container">
+                            <div className="variant-section">
+                                <h3 className="section-title">
+                                    <span className="section-title-decoration"></span>
+                                    Color Options
+                                </h3>
+                                <div className="color-variants">
                                     {product.colorVariants.map((variant) => (
                                         <div
                                             key={variant.id}
-                                            className={`color-option ${selectedVariantId === variant.id ? "selected" : ""}`}
+                                            className={`color-variant ${selectedVariantId === variant.id ? "selected" : ""}`}
                                             onClick={() => {
                                                 setSelectedVariantId(variant.id);
                                                 const idx = images.findIndex(img => img.variantId === variant.id);
                                                 if (idx !== -1) setCurrentImageIndex(idx);
                                             }}
+                                            title={variant.color}
                                         >
                                             <div className="color-swatch-container">
                                                 <img
@@ -166,6 +242,11 @@ const ProductPage = () => {
                                                     src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.color_image}`}
                                                     alt={variant.color}
                                                 />
+                                                {selectedVariantId === variant.id && (
+                                                    <div className="selected-indicator">
+                                                        <PiCheckCircleFill size={16} />
+                                                    </div>
+                                                )}
                                             </div>
                                             <span className="color-name">{variant.color}</span>
                                         </div>
@@ -173,33 +254,90 @@ const ProductPage = () => {
                                 </div>
                             </div>
 
-                            <div className="quantity-controls mb-4">
-                                <div className="d-flex align-items-center gap-3">
-                                    <span className="fw-medium">Quantity:</span>
-                                    <div className="d-flex align-items-center border rounded-pill">
-                                        <Button variant="link" onClick={() => removeQuantity(selectedVariant)}>
-                                            <PiMinusLight />
-                                        </Button>
-                                        <span className="px-3 fs-5">{getQuantity(product.id, selectedVariantId)}</span>
-                                        <Button variant="link" onClick={() => addQuantity(selectedVariant)}>
-                                            <PiPlusLight />
-                                        </Button>
+                            {/* Quantity and Add to Cart */}
+                            <div className="cart-section">
+                                <div className="quantity-selector">
+                                    <h3 className="section-title">
+                                        <span className="section-title-decoration"></span>
+                                        Quantity
+                                    </h3>
+                                    <div className="quantity-control">
+                                        <button
+                                            className="quantity-btn"
+                                            onClick={() => removeQuantity(selectedVariant)}
+                                            disabled={getQuantity(product.id, selectedVariantId) <= 0}
+                                        >
+                                            <PiMinusLight size={20} />
+                                        </button>
+                                        <span className="quantity-value">
+                                            {getQuantity(product.id, selectedVariantId)}
+                                        </span>
+                                        <button
+                                            className="quantity-btn"
+                                            onClick={() => addQuantity(selectedVariant)}
+                                            disabled={selectedVariant?.stock <= getQuantity(product.id, selectedVariantId)}
+                                        >
+                                            <PiPlusLight size={20} />
+                                        </button>
                                     </div>
+                                </div>
+
+                                <div className="add-to-cart-container">
+                                    <button
+                                        className={`add-to-cart-btn ${buttonState}`}
+                                        onClick={handleAddToCart}
+                                        disabled={selectedVariant?.stock <= 0 || buttonState !== "default"}
+                                    >
+                                        <span className="btn-content">
+                                            {buttonState === "default" && (
+                                                <>
+                                                    <PiShoppingCartFill className="cart-icon" />
+                                                    <span>Add to Cart</span>
+                                                </>
+                                            )}
+                                            {buttonState === "adding" && (
+                                                <span className="adding-text">Adding...</span>
+                                            )}
+                                            {buttonState === "added" && (
+                                                <>
+                                                    <PiCheckCircleFill className="check-icon" />
+                                                    <span>Added to Cart!</span>
+                                                </>
+                                            )}
+                                        </span>
+                                        <span className="btn-background"></span>
+                                        <span className="btn-glow"></span>
+
+                                        {/* Sparkles */}
+                                        {sparkles.map(sparkle => (
+                                            <span
+                                                key={sparkle.id}
+                                                className="sparkle"
+                                                style={{
+                                                    left: `${sparkle.x}%`,
+                                                    top: `${sparkle.y}%`,
+                                                    width: `${sparkle.size}px`,
+                                                    height: `${sparkle.size}px`,
+                                                    opacity: sparkle.opacity,
+                                                    animationDelay: `${sparkle.delay}s`
+                                                }}
+                                            >
+                                                <PiSparkleFill />
+                                            </span>
+                                        ))}
+                                    </button>
                                 </div>
                             </div>
 
-                            <Button
-                                variant="primary"
-                                size="lg"
-                                className="w-100 mb-4"
-                                onClick={() => addToCart(product, selectedVariant)}
-                            >
-                                Add to Cart
-                            </Button>
-
-                            <div className="product-info">
-                                <h4 className="mb-3">Product Details</h4>
-                                <p className="product-description">{product.description}</p>
+                            {/* Product Description */}
+                            <div className="description-section">
+                                <h3 className="section-title">
+                                    <span className="section-title-decoration"></span>
+                                    Product Details
+                                </h3>
+                                <div className="description-content">
+                                    <p>{product.description}</p>
+                                </div>
                             </div>
                         </div>
                     </Col>
