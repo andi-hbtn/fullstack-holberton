@@ -94,7 +94,7 @@ const CategoryPage = () => {
                                         <Card.Img
                                             variant="top"
                                             src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-                                            className="product-image"
+                                            className="product-image-category"
                                             alt={product.title}
                                         />
                                         <div className="card-overlay">
