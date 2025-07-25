@@ -53,7 +53,7 @@ const Navigation = () => {
                 <Container>
                     {/* Logo */}
                     <Navbar.Brand as={Link} to="/" className="luxe-logo">
-                        <span className="logo-text">LUXE</span>
+                        <span className="logo-text">LONDON</span>
                         <span className="logo-subtext">GLASS</span>
                     </Navbar.Brand>
 

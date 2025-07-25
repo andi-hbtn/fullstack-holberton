@@ -12,7 +12,7 @@ const Footer = () => {
                     <Col lg={4} md={6}>
                         <div className="footer-brand">
                             <div className="footer-logo">
-                                <span className="logo-footer">LUXE</span>
+                                <span className="logo-footer">LONDON</span>
                                 <span className="logo-subtext">GLASS</span>
                             </div>
                             <p className="footer-description">
@@ -61,7 +61,7 @@ const Footer = () => {
                             </li>
                             <li>
                                 <FaEnvelope className="contact-icon" />
-                                <span>info@luxeglass.co.uk</span>
+                                <span>info@londonglassfittings.co.uk</span>
                             </li>
                             <li>
                                 <FaClock className="contact-icon" />
