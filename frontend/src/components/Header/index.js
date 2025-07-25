@@ -1,5 +1,5 @@
 import { Row, Col } from 'react-bootstrap';
-import "./Header.css";
+import "./index.css";
 import logo from "../../images/logo.png";
 import Navigation from "../Navigation";
 

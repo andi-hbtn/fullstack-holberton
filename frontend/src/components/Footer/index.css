@@ -1,16 +1,230 @@
-.footer-cnt {
-    width: 100%;
-    margin: 0px !important;
+/* index.css */
+.luxury-footer {
+    background: #0a1929;
+    color: #f8f9fa;
+    position: relative;
     overflow: hidden;
-    background-color: #e8edef;
-    margin-top: 40px !important;
-    padding: 25px;
+    padding-top: 60px;
+    margin-top: 80px;
 }
 
-.footer-cnt>div>p {
-    font: 13px 'Ubuntu', sans-serif;
+.footer-top {
+    padding-bottom: 40px;
+}
+
+.footer-logo {
+    font-family: 'Playfair Display', serif;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+
+.logo-footer {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+.logo-subtext {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #c19a6b;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    color: #012440;
-    text-align: center;
-    margin: 0px;
+    margin-top: -5px;
+    padding-left: 2px;
+}
+
+.footer-description {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #a3b1c6;
+    margin-bottom: 25px;
+    max-width: 300px;
+}
+
+.footer-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.footer-heading:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: #c19a6b;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links li a,
+.footer-links li {
+    color: #a3b1c6;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 0;
+}
+
+.footer-links li a:hover,
+.footer-links li:hover {
+    color: #c19a6b;
+    padding-left: 8px;
+}
+
+.footer-links li a:before,
+.footer-links li:before {
+    content: '›';
+    position: absolute;
+    left: -15px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.footer-links li a:hover:before,
+.footer-links li:hover:before {
+    left: -10px;
+    opacity: 1;
+}
+
+.contact-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-info li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    color: #a3b1c6;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.contact-icon {
+    color: #c19a6b;
+    margin-right: 12px;
+    margin-top: 4px;
+    min-width: 16px;
+}
+
+.footer-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.footer-bottom {
+    padding: 25px 0;
+}
+
+.copyright p {
+    color: #a3b1c6;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.footer-links-bottom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+}
+
+.footer-links-bottom a {
+    color: #a3b1c6;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-links-bottom a:hover {
+    color: #c19a6b;
+}
+
+.glass-decoration {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, rgba(193, 154, 107, 0.05) 0%, transparent 70%);
+    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    z-index: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .footer-top {
+        padding-bottom: 30px;
+    }
+
+    .footer-logo {
+        margin-bottom: 20px;
+    }
+
+    .footer-heading {
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+    }
+
+    .footer-links li,
+    .contact-info li {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 767px) {
+    .luxury-footer {
+        padding-top: 40px;
+        margin-top: 60px;
+    }
+
+    .footer-heading {
+        margin-top: 30px;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .copyright {
+        margin-bottom: 15px;
+    }
+
+    .footer-links-bottom {
+        justify-content: center;
+    }
+
+    .glass-decoration {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 575px) {
+    .footer-links-bottom {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

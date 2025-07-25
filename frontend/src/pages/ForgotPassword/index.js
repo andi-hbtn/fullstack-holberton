@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
-import Header from '../../components/Header/Header';
+import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './index.css'; // Make sure to use your existing CSS file
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useCartContext } from '../../context/CartContext';
-import Header from "../Header/Header";
+import Header from "../Header";
 import { Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
 import EmptyCart from '../EmptyCart';
 import { FaTrashAlt, FaMinus, FaPlus, FaArrowRight } from "react-icons/fa";

@@ -4,7 +4,7 @@ import { useCartContext } from '../../context/CartContext';
 import OrderConfirmed from '../OrderConfirmed';
 import EmptyCart from '../EmptyCart';
 import dateTime from "../../helpers/dateTime";
-import Header from '../Header/Header';
+import Header from '../Header';
 import AlertMessage from "../AlertMessage";
 import { Container, Row, Col, Form, Button, Card, Badge } from 'react-bootstrap';
 import { FaArrowRight, FaLock, FaMapMarkerAlt, FaEnvelope, FaUser } from "react-icons/fa";

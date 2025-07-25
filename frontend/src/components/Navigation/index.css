@@ -1,0 +1,341 @@
+/* Luxurious Navigation Styles */
+.announcement-bar {
+    background-color: #0a1929;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    padding: 8px 0;
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.luxe-navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 30px rgba(10, 25, 41, 0.08);
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(10, 25, 41, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.luxe-logo {
+    font-family: 'Playfair Display', serif;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+}
+
+.logo-text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0a1929;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+.logo-subtext {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #c19a6b;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: -5px;
+    padding-left: 2px;
+}
+
+.luxe-nav {
+    margin-right: auto;
+}
+
+.luxe-nav .nav-link {
+    color: #0a1929 !important;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin: 0 12px;
+    padding: 10px 5px !important;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.luxe-nav .nav-link:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #c19a6b;
+    transition: width 0.4s ease;
+}
+
+.luxe-nav .nav-link:hover:after {
+    width: 100%;
+}
+
+.luxe-nav .nav-link:hover {
+    color: #c19a6b !important;
+}
+
+.nav-right-elements {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.search-container {
+    position: relative;
+    border-bottom: 1px solid rgba(10, 25, 41, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.search-container>input {
+    border: 0px;
+}
+
+.search-container.focused {
+    border-color: #c19a6b;
+}
+
+.search-icon {
+    color: rgba(10, 25, 41, 0.4);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.search-container.focused .search-icon {
+    color: #c19a6b;
+}
+
+.luxe-search {
+    border: none;
+    background: transparent;
+    padding: 8px 10px 8px 30px;
+    font-size: 0.9rem;
+    width: 200px;
+    transition: all 0.3s ease;
+    color: #0a1929;
+}
+
+.luxe-search:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.auth-link {
+    color: #0a1929 !important;
+    padding: 5px 0 !important;
+    text-decoration: none !important;
+}
+
+.auth-link:hover,
+.register-btn:hover {
+    color: #c19a6b !important;
+}
+
+.user-icon {
+    font-size: 1rem;
+}
+
+
+.user-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-greeting {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #0a1929;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.user-greeting:hover {
+    color: #c19a6b;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    min-width: 180px;
+    box-shadow: 0 10px 30px rgba(10, 25, 41, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.user-profile:hover .profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-link {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #0a1929;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-link:hover {
+    background: #f8f9fa;
+    color: #c19a6b;
+}
+
+.luxe-cart {
+    position: relative;
+    color: #0a1929 !important;
+    padding: 5px 0 5px 15px !important;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+.cart-icon {
+    font-size: 1.2rem;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    font-size: 0.7rem;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+}
+
+/* Mobile Menu */
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #0a1929;
+    font-size: 1.5rem;
+    padding: 5px;
+}
+
+@media only screen and (min-width: 1400px) and (max-width: 2600px) {
+    .mobile-menu-toggle {
+        display: none !important;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1199px) {
+    .luxe-search {
+        width: 160px;
+    }
+}
+
+@media (max-width: 991px) {
+    .nav-right-elements {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .luxe-nav {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .luxe-nav .nav-link {
+        margin: 5px 0;
+        padding: 8px 0 !important;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .luxe-search {
+        width: 100%;
+    }
+
+    .user-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .luxe-navbar .navbar-collapse {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 320px;
+        height: 100vh;
+        background: white;
+        padding: 30px;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+        z-index: 1001;
+    }
+
+    .luxe-navbar .navbar-collapse.show {
+        transform: translateX(0);
+    }
+
+    .luxe-nav {
+        flex-direction: column;
+    }
+
+    .profile-dropdown {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        margin-top: 10px;
+        padding-left: 25px;
+    }
+}
+
+@media (max-width: 575px) {
+    .luxe-logo .logo-text {
+        font-size: 1.8rem;
+    }
+
+    .luxe-logo .logo-subtext {
+        font-size: 0.8rem;
+    }
+
+    .register-btn {
+        padding: 6px 15px;
+        font-size: 0.85rem;
+    }
+}

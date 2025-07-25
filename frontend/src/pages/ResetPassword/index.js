@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
-import Header from '../../components/Header/Header';
+import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './index.css';
 
@@ -27,7 +27,7 @@ const ResetPassword = () => {
         }
         setLoading(true);
         try {
-             await resetPassword(token, password);
+            await resetPassword(token, password);
             setVariant('success');
             setMessage('Password reset successfully! Redirecting to login...');
             setTimeout(() => navigate('/'), 2000);

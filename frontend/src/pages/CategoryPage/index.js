@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useCategoryContext } from "../../context/CategoryContext";
 import { Container, Row, Col, Card, Spinner, Button } from "react-bootstrap";
 import { FaSearchPlus } from "react-icons/fa";
-import Header from "../../components/Header/Header";
+import Header from "../../components/Header";
 import NotFound from "../../components/NotFount";
 import Footer from "../../components/Footer";
 import "./index.css";

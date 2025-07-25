@@ -3,7 +3,7 @@ import { useOrderContext } from "../../context/OrderContext";
 import dateUtils from "../../helpers/dateTime";
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Table, Badge } from 'react-bootstrap';
-import Header from "../../components/Header/Header";
+import Header from "../../components/Header";
 import "./index.css";
 
 const UserProfile = () => {

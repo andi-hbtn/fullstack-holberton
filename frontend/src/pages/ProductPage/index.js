@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Badge } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import Header from "../../components/Header/Header";
+import Header from "../../components/Header";
 import NotFount from "../../components/NotFount";
 import {
     PiMinusLight,
@@ -288,7 +288,7 @@ const ProductPage = () => {
                                         onClick={handleAddToCart}
                                         disabled={selectedVariant?.stock <= 0 || buttonState !== "default"}
                                     >
-                                        <span className="btn-content">
+                                        <span className="btn-content add-to-cart">
                                             {buttonState === "default" && (
                                                 <>
                                                     <PiShoppingCartFill className="cart-icon" />

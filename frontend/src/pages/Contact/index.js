@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { sendMessage } from "../../services/contact";
-import Header from '../../components/Header/Header';
+import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './index.css';
 
