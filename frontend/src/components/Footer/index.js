@@ -1,5 +1,5 @@
 import { Row, Col } from 'react-bootstrap';
-import {  FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa';
 import "./index.css";
 
 const Footer = () => {
@@ -79,7 +79,7 @@ const Footer = () => {
             <div className="footer-bottom">
                 <Row>
                     <Col md={6} className="copyright">
-                        <p>&copy; {new Date().getFullYear()} Luxe Glass Fittings. All rights reserved.</p>
+                        <p>&copy; {new Date().getFullYear()} London Glass Fittings. All rights reserved.</p>
                     </Col>
                     <Col md={6} className="footer-links-bottom">
                         <a href="/privacy">Privacy Policy</a>
