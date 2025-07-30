@@ -11,6 +11,10 @@
     padding-bottom: 40px;
 }
 
+.footer-brand {
+    margin-left: 90px;
+}
+
 .footer-logo {
     font-family: 'Playfair Display', serif;
     display: flex;
@@ -140,11 +144,12 @@
 .copyright p {
     color: #a3b1c6;
     font-size: 0.9rem;
-    margin: 0;
+    margin-left: 90px;
 }
 
 .footer-links-bottom {
     display: flex;
+    width: 45% !important;
     justify-content: flex-end;
     gap: 25px;
 }

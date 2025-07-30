@@ -117,6 +117,7 @@ const Checkout = () => {
     const vat = +(subtotal * 0.20).toFixed(2);
     const totalWithVat = +(subtotal + vat).toFixed(2);
 
+
     useEffect(() => {
         if (authUser) {
             setValues((prev) => ({
