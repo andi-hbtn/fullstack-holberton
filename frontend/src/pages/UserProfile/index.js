@@ -51,9 +51,6 @@ const UserProfile = () => {
     const tax = subtotal * 0.20;
     const deliveryFee = 4.99;
     const total = subtotal + tax + deliveryFee;
-
-    console.log("orders---", orders);
-
     return (
         <>
             <Header />

@@ -54,6 +54,7 @@ const Checkout = () => {
 
     const handleChange = (event) => {
         const { value, name } = event.target;
+        console.log("here----", name);
         setValues((prev) => {
             return { ...prev, [name]: value };
         });
@@ -134,6 +135,9 @@ const Checkout = () => {
         }
     }, [authUser]);
 
+
+    console.log("authUser----", authUser);
+
     return (
         <>
             <Header />
@@ -180,7 +184,6 @@ const Checkout = () => {
                                                             placeholder="Enter first name"
                                                             className="form-input"
                                                             required
-                                                            readOnly={!!authUser}
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -196,7 +199,7 @@ const Checkout = () => {
                                                             placeholder="Enter last name"
                                                             className="form-input"
                                                             required
-                                                            readOnly={!!authUser}
+
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -212,7 +215,6 @@ const Checkout = () => {
                                                             placeholder="Enter email"
                                                             className="form-input"
                                                             required
-                                                            readOnly={!!authUser}
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -228,7 +230,6 @@ const Checkout = () => {
                                                             placeholder="Phone number"
                                                             className="form-input"
                                                             required
-                                                            readOnly={!!authUser}
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -269,7 +270,6 @@ const Checkout = () => {
                                                             placeholder="Enter town/city"
                                                             className="form-input"
                                                             required
-                                                            readOnly={!!authUser}
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -285,7 +285,6 @@ const Checkout = () => {
                                                             placeholder="Enter postal code"
                                                             className="form-input"
                                                             required
-                                                            readOnly={!!authUser}
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -301,7 +300,6 @@ const Checkout = () => {
                                                             placeholder="Enter street address"
                                                             className="form-input"
                                                             required
-                                                            readOnly={!!authUser}
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -316,7 +314,6 @@ const Checkout = () => {
                                                             type="text"
                                                             placeholder="Enter apartment/suite/unit"
                                                             className="form-input"
-                                                            readOnly={!!authUser}
                                                         />
                                                     </Form.Group>
                                                 </Col>
