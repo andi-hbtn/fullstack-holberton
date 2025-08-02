@@ -5,6 +5,7 @@ import OrderConfirmed from '../OrderConfirmed';
 import EmptyCart from '../EmptyCart';
 import dateTime from "../../helpers/dateTime";
 import Header from '../Header';
+import Footer from '../Footer';
 import AlertMessage from "../AlertMessage";
 import { Container, Row, Col, Form, Button, Card, Badge } from 'react-bootstrap';
 import { FaArrowRight, FaLock, FaMapMarkerAlt, FaEnvelope, FaUser } from "react-icons/fa";
@@ -54,7 +55,6 @@ const Checkout = () => {
 
     const handleChange = (event) => {
         const { value, name } = event.target;
-        console.log("here----", name);
         setValues((prev) => {
             return { ...prev, [name]: value };
         });
@@ -135,9 +135,6 @@ const Checkout = () => {
             }));
         }
     }, [authUser]);
-
-
-    console.log("authUser----", authUser);
 
     return (
         <>
@@ -416,6 +413,7 @@ const Checkout = () => {
                     </>
                 )}
             </Container>
+            <Footer />
         </>
     )
 }

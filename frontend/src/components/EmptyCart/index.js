@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const EmptyCart = () => {
     return (
-        <Row className="justify-content-center" style={{ marginTop: "200px" }}>
+        <Row className="justify-content-center" style={{ margin: "50px" }}>
             <Col md={8} className="text-center">
                 <div className="empty-cart-icon">
                     <FaShoppingBag size={64} />

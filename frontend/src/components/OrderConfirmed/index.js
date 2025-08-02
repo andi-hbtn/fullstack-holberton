@@ -1,6 +1,7 @@
 import { Row, Col, Button } from "react-bootstrap";
 import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import "./index.css";
 const OrderConfirmed = ({ email }) => {
     return (
         <Row className="justify-content-center">
