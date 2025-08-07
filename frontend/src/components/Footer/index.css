@@ -11,43 +11,6 @@
     padding-bottom: 40px;
 }
 
-.footer-brand {
-    margin-left: 90px;
-}
-
-.footer-logo {
-    font-family: 'Playfair Display', serif;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 25px;
-}
-
-.logo-footer {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1;
-    letter-spacing: 1px;
-}
-
-.logo-subtext {
-    font-size: 1rem;
-    font-weight: 400;
-    color: #c19a6b;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: -5px;
-    padding-left: 2px;
-}
-
-.footer-description {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: #a3b1c6;
-    margin-bottom: 25px;
-    max-width: 300px;
-}
-
 .footer-heading {
     font-family: 'Playfair Display', serif;
     font-size: 1.3rem;

@@ -20,32 +20,6 @@
     z-index: 1000;
 }
 
-.luxe-logo {
-    font-family: 'Playfair Display', serif;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    margin-right: 40px;
-}
-
-.logo-text {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #0a1929;
-    line-height: 1;
-    letter-spacing: 1px;
-}
-
-.logo-subtext {
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: #c19a6b;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: -5px;
-    padding-left: 2px;
-}
-
 .luxe-nav {
     margin-right: auto;
 }

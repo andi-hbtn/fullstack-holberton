@@ -8,21 +8,8 @@ const Footer = () => {
             {/* Top Section */}
             <div className="footer-top">
                 <Row className="g-4">
-                    {/* Company Info */}
-                    <Col lg={4} md={6}>
-                        <div className="footer-brand">
-                            <div className="footer-logo">
-                                <span className="logo-footer">LONDON</span>
-                                <span className="logo-subtext">GLASS</span>
-                            </div>
-                            <p className="footer-description">
-                                Crafting exceptional glass solutions for discerning clients with precision, elegance, and unparalleled craftsmanship.
-                            </p>
-                        </div>
-                    </Col>
-
                     {/* Quick Links */}
-                    <Col lg={2} md={6}>
+                    <Col lg={4} md={6}>
                         <h4 className="footer-heading">Quick Links</h4>
                         <ul className="footer-links">
                             <li><a href="/">Home</a></li>
@@ -35,7 +22,7 @@ const Footer = () => {
                     </Col>
 
                     {/* Our Services */}
-                    <Col lg={3} md={6}>
+                    <Col lg={4} md={6}>
                         <h4 className="footer-heading">Our Services</h4>
                         <ul className="footer-links">
                             <li>Custom Glass Design</li>
@@ -48,24 +35,24 @@ const Footer = () => {
                     </Col>
 
                     {/* Contact Info */}
-                    <Col lg={3} md={6}>
+                    <Col lg={4} md={6}>
                         <h4 className="footer-heading">Contact Us</h4>
                         <ul className="contact-info">
                             <li>
                                 <FaMapMarkerAlt className="contact-icon" />
-                                <span>123 Design Avenue, London SW1A 1AA</span>
+                                <span>Premier Business Centre <br/>47-49 Park Royal Road <br/>London , NW10 7LQ <br/> United Kingdom </span>
                             </li>
                             <li>
                                 <FaPhone className="contact-icon" />
-                                <span>+44 20 7123 4567</span>
+                                <span>+44 123456</span>
                             </li>
                             <li>
                                 <FaEnvelope className="contact-icon" />
-                                <span>info@londonglassfittings.co.uk</span>
+                                <span>sales@londonglassfittings.co.uk</span>
                             </li>
                             <li>
                                 <FaClock className="contact-icon" />
-                                <span>Mon-Fri: 9am - 6pm</span>
+                                <span>Monday-Friday: 09:00 - 17:00 <br /> ( By Appointment Only )</span>
                             </li>
                         </ul>
                     </Col>
@@ -83,8 +70,7 @@ const Footer = () => {
                     </Col>
                     <Col md={6} className="footer-links-bottom">
                         <a href="/privacy">Privacy Policy</a>
-                        <a href="/terms">Terms of Service</a>
-                        <a href="/sitemap">Sitemap</a>
+                        <a href="/terms">Terms and Conditions</a>
                     </Col>
                 </Row>
             </div>
