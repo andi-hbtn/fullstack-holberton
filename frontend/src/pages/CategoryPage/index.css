@@ -56,8 +56,12 @@
     text-decoration: none;
 }
 
-.product-card:hover .card-overlay {
+/* .product-card:hover .card-overlay {
     opacity: 1;
+} */
+
+.card-overlay {
+    opacity: 0.5;
 }
 
 .quick-view {
@@ -88,6 +92,11 @@
     color: #012440;
 }
 
+.product-title a , .product-description a {
+    text-decoration: none;
+     color:#012440;
+}
+
 .product-description {
     color: #5a7d8a;
     font-size: 0.95rem;
@@ -111,6 +120,7 @@
     .card-image-container {
         height: 200px;
     }
+
     .category-title {
         font-size: 2rem;
     }

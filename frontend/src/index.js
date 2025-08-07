@@ -20,6 +20,8 @@ import AboutUs from './pages/AboutUs';
 import ProductPage from "./pages/ProductPage";
 import CategoryPage from "./pages/CategoryPage";
 import Faq from './pages/Faq';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/Terms/index.js';
 import Contact from './pages/Contact';
 
 import Cart from './components/Cart/'
@@ -79,6 +81,8 @@ root.render(
                 <Route path="/product/:id" element={<ProductPage />} />
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={< TermsAndConditions />} />
                 <Route path="/category/:id" element={<CategoryPage />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />

@@ -91,19 +91,28 @@ const CategoryPage = () => {
                                     className="product-card h-100"
                                 >
                                     <div className="card-image-container">
-                                        <Card.Img
-                                            variant="top"
-                                            src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-                                            className="product-image-category"
-                                            alt={product.title}
-                                        />
+                                        {hasVariants ?
+                                            <Link to={`/product/${product.id}`}>
+                                                <Card.Img
+                                                    variant="top"
+                                                    src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                                    className="product-image-category"
+                                                    alt={product.title}
+                                                />
+                                            </Link>
+                                            :
+                                            <Card.Img
+                                                variant="top"
+                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
+                                                className="product-image-category"
+                                                alt={product.title}
+                                            />
+                                        }
+
                                         <div className="card-overlay">
                                             {hasVariants ? (
                                                 <Link to={`/product/${product.id}`}>
-                                                    <div className="quick-view">
-                                                        <FaSearchPlus size={20} />
-                                                        <span>Quick View</span>
-                                                    </div>
+
                                                 </Link>
                                             ) : (
                                                 <div className="quick-view disabled-view">
@@ -116,13 +125,16 @@ const CategoryPage = () => {
                                     <Card.Body className="d-flex flex-column">
                                         <div className="d-flex justify-content-between align-items-start mb-2">
                                             <Card.Title className="product-title mb-0">
-                                                {product.title}
+                                                <Link to={`/product/${product.id}`}>
+                                                    {product.title}
+                                                </Link>
                                             </Card.Title>
                                         </div>
                                         <Card.Text className="product-description flex-grow-1">
                                             {product.description.length > 40
-                                                ? `${product.description.substring(0, 50)}...`
-                                                : product.description}
+                                                ? <Link to={`/product/${product.id}`}>{`${product.description.substring(0, 50)}...`}</Link>
+                                                : <Link to={`/product/${product.id}`}> {product.description} </Link>
+                                            }
                                         </Card.Text>
                                     </Card.Body>
                                 </Card>

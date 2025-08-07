@@ -26,8 +26,6 @@ const ProductPage = () => {
     const [error, setError] = useState({ message: "", status: 0 });
     const [selectedVariantId, setSelectedVariantId] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [buttonState, setButtonState] = useState("default"); // 'default', 'adding', 'added'
-    const [sparkles, setSparkles] = useState([]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -82,35 +80,9 @@ const ProductPage = () => {
         setSelectedVariantId(images[prevIndex].variantId);
     };
 
-    const createSparkle = () => {
-        const newSparkle = {
-            id: Date.now(),
-            x: Math.random() * 100,
-            y: Math.random() * 100,
-            size: Math.random() * 10 + 5,
-            opacity: Math.random() * 0.5 + 0.5,
-            delay: Math.random() * 0.5
-        };
-        return newSparkle;
-    };
-
     const handleAddToCart = () => {
-        if (buttonState !== "default") return;
-
-        setButtonState("adding");
         addToCart(product, selectedVariant);
 
-        // Create sparkles
-        const newSparkles = [];
-        for (let i = 0; i < 15; i++) {
-            newSparkles.push(createSparkle());
-        }
-        setSparkles(newSparkles);
-
-        setTimeout(() => {
-            setButtonState("added");
-            setTimeout(() => setButtonState("default"), 3000);
-        }, 800);
     };
 
     if (error.message) {
@@ -285,47 +257,11 @@ const ProductPage = () => {
 
                                 <div className="add-to-cart-container">
                                     <button
-                                        className={`add-to-cart-btn ${buttonState}`}
+                                        className="add-to-cart-btn"
                                         onClick={handleAddToCart}
-                                        disabled={selectedVariant?.stock <= 0 || buttonState !== "default"}
+                                        disabled={selectedVariant?.stock <= 0}
                                     >
-                                        <span className="btn-content add-to-cart">
-                                            {buttonState === "default" && (
-                                                <>
-                                                    <PiShoppingCartFill className="cart-icon" />
-                                                    <span>Add to Cart</span>
-                                                </>
-                                            )}
-                                            {buttonState === "adding" && (
-                                                <span className="adding-text">Adding...</span>
-                                            )}
-                                            {buttonState === "added" && (
-                                                <>
-                                                    <PiCheckCircleFill className="check-icon" />
-                                                    <span>Added to Cart!</span>
-                                                </>
-                                            )}
-                                        </span>
-                                        <span className="btn-background"></span>
-                                        <span className="btn-glow"></span>
-
-                                        {/* Sparkles */}
-                                        {sparkles.map(sparkle => (
-                                            <span
-                                                key={sparkle.id}
-                                                className="sparkle"
-                                                style={{
-                                                    left: `${sparkle.x}%`,
-                                                    top: `${sparkle.y}%`,
-                                                    width: `${sparkle.size}px`,
-                                                    height: `${sparkle.size}px`,
-                                                    opacity: sparkle.opacity,
-                                                    animationDelay: `${sparkle.delay}s`
-                                                }}
-                                            >
-                                                <PiSparkleFill />
-                                            </span>
-                                        ))}
+                                        Add to cart
                                     </button>
                                 </div>
                             </div>
