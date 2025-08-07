@@ -95,54 +95,10 @@
 }
 
 .card-body h3 {
-	font-size: 20px;
-	color: #0a1929;
-	margin-bottom: 20px;
+	font-size: 17px;
+	color: #012440;
 	font-weight: 500;
-	font-family: 'Playfair Display', serif;
-}
-
-.explore-link {
-	color: #0a1929;
-	text-decoration: none;
-	font-weight: 500;
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	transition: all 0.4s ease;
-	position: relative;
-	padding-bottom: 3px;
-}
-
-.explore-link:after {
-	content: '';
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 1px;
-	background: #c19a6b;
-	transform: scaleX(0);
-	transform-origin: right;
-	transition: transform 0.4s ease;
-}
-
-.explore-link:hover:after {
-	transform: scaleX(1);
-	transform-origin: left;
-}
-
-.explore-link:hover {
-	color: #c19a6b;
-	gap: 15px;
-}
-
-.arrow {
-	transition: transform 0.4s ease;
-}
-
-.explore-link:hover .arrow {
-	transform: translateX(5px);
+	font-family: 'Montserrat';
 }
 
 /* Responsive Design */

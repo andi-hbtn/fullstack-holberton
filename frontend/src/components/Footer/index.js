@@ -9,7 +9,7 @@ const Footer = () => {
             <div className="footer-top">
                 <Row className="g-4">
                     {/* Quick Links */}
-                    <Col lg={4} md={6}>
+                    <Col lg={6} md={6}>
                         <h4 className="footer-heading">Quick Links</h4>
                         <ul className="footer-links">
                             <li><a href="/">Home</a></li>
@@ -20,22 +20,8 @@ const Footer = () => {
                             <li><a href="/contact">Contact</a></li>
                         </ul>
                     </Col>
-
-                    {/* Our Services */}
-                    <Col lg={4} md={6}>
-                        <h4 className="footer-heading">Our Services</h4>
-                        <ul className="footer-links">
-                            <li>Custom Glass Design</li>
-                            <li>Architectural Glass Solutions</li>
-                            <li>Premium Shower Enclosures</li>
-                            <li>Glass Railings & Partitions</li>
-                            <li>Commercial Glass Installations</li>
-                            <li>Luxury Glass Tabletops</li>
-                        </ul>
-                    </Col>
-
                     {/* Contact Info */}
-                    <Col lg={4} md={6}>
+                    <Col lg={6} md={6}>
                         <h4 className="footer-heading">Contact Us</h4>
                         <ul className="contact-info">
                             <li>
@@ -69,7 +55,7 @@ const Footer = () => {
                     </Col>
                     <Col md={6} className="footer-links-bottom">
                         <a href="/privacy">Privacy Policy</a>
-                        <a href="/terms">Terms and Conditions</a>
+                        <a href="/terms">Terms & Conditions</a>
                     </Col>
                 </Row>
             </div>

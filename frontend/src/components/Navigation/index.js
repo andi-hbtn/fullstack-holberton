@@ -39,15 +39,6 @@ const Navigation = () => {
 
     return (
         <>
-            {/* Top Announcement Bar */}
-            <div className="announcement-bar">
-                <Container>
-                    <div className="announcement-text">
-                        Premium Glass Solutions | Free Consultation: (555) 123-4567
-                    </div>
-                </Container>
-            </div>
-
             {/* Main Navigation */}
             <Navbar expand="lg" className="luxe-navbar">
                 <Container>
