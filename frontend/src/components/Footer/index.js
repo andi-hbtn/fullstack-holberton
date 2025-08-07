@@ -58,7 +58,6 @@ const Footer = () => {
                     </Col>
                 </Row>
             </div>
-
             {/* Divider */}
             <div className="footer-divider"></div>
 
