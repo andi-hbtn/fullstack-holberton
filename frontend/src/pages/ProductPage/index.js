@@ -9,9 +9,7 @@ import {
     PiPlusLight,
     PiCaretLeftLight,
     PiCaretRightLight,
-    PiShoppingCartFill,
-    PiCheckCircleFill,
-    PiSparkleFill
+    PiCheckCircleFill
 } from "react-icons/pi";
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";

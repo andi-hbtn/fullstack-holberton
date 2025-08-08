@@ -1,51 +1,4 @@
 /* index.css */
-.luxe-glass-home {
-	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-	overflow-x: hidden;
-}
-
-/* Section Styling */
-.section-header {
-	text-align: center;
-	margin-bottom: 4rem;
-	padding-top: 5rem;
-}
-
-.section-header h2 {
-	font-size: 2.8rem;
-	color: #0a1929;
-	margin-bottom: 1rem;
-	font-weight: 400;
-	font-family: 'Playfair Display', serif;
-}
-
-.section-header p {
-	color: #5a6c80;
-	font-size: 1.2rem;
-	max-width: 700px;
-	margin: 0 auto;
-	font-weight: 300;
-}
-
-.divider {
-	height: 1px;
-	width: 100px;
-	background: #c19a6b;
-	margin: 25px auto;
-	position: relative;
-}
-
-.divider:after {
-	content: '';
-	position: absolute;
-	top: -3px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 6px;
-	height: 6px;
-	background: #c19a6b;
-	border-radius: 50%;
-}
 
 /* Luxe Cards */
 .luxe-card {
@@ -101,39 +54,8 @@
 	font-family: 'Montserrat';
 }
 
-/* Responsive Design */
-@media (max-width: 1199px) {
-	.section-header h2 {
-		font-size: 2.4rem;
-	}
-}
-
-@media (max-width: 991px) {
-	.section-header h2 {
-		font-size: 2.1rem;
-	}
-}
-
 @media (max-width: 767px) {
-	.section-header {
-		padding-top: 3rem;
-	}
-
-	.section-header h2 {
-		font-size: 1.9rem;
-	}
-
 	.feature-card {
 		padding: 30px 20px;
-	}
-}
-
-@media (max-width: 575px) {
-	.section-header h2 {
-		font-size: 1.7rem;
-	}
-
-	.divider {
-		margin: 20px auto;
 	}
 }

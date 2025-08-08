@@ -14,11 +14,6 @@ const Home = () => {
 			<div className="luxe-glass-home">
 				{/* Categories Section */}
 				<Container className="categories-section">
-					<div className="section-header">
-						<h2>Premium Glass Collections</h2>
-						<p>Discover our exquisite range of glass solutions</p>
-						<div className="divider"></div>
-					</div>
 
 					<Row className="justify-content-center">
 						{categories.map((category, index) => (

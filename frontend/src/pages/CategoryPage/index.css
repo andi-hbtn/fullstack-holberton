@@ -92,9 +92,10 @@
     color: #012440;
 }
 
-.product-title a , .product-description a {
+.product-title a,
+.product-description a {
     text-decoration: none;
-     color:#012440;
+    color: #012440;
 }
 
 .product-description {
@@ -106,13 +107,14 @@
 
 /* Empty State */
 .empty-category {
+    margin: 40px auto;
     padding: 50px 20px;
     text-align: center;
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     max-width: 600px;
-    margin: 0 auto;
+
 }
 
 /* Responsive */
