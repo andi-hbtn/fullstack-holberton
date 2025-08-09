@@ -11,6 +11,9 @@ import {
     PiCaretRightLight,
     PiCheckCircleFill
 } from "react-icons/pi";
+
+import ZoomVariant from "../../components/ZoomVariant";
+
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
 import "./index.css";
@@ -24,6 +27,10 @@ const ProductPage = () => {
     const [error, setError] = useState({ message: "", status: 0 });
     const [selectedVariantId, setSelectedVariantId] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+
+    const [showModal, setShowModal] = useState(false);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -83,6 +90,12 @@ const ProductPage = () => {
 
     };
 
+    // Image modal functions
+    const openModal = () => {
+        setShowModal(true);
+        setPosition({ x: 0, y: 0 });
+    };
+    
     if (error.message) {
         return (
             <>
@@ -120,6 +133,7 @@ const ProductPage = () => {
                                         src={images[currentImageIndex]?.src}
                                         className="main-product-image"
                                         alt={product.title}
+                                        onClick={openModal}
                                         loading="lazy"
                                     />
                                     <div className="image-overlay"></div>
@@ -278,6 +292,8 @@ const ProductPage = () => {
                     </Col>
                 </Row>
             </Container>
+
+            <ZoomVariant showModal={showModal} setShowModal={setShowModal} position={position} setPosition={setPosition} product={product} currentImageIndex={currentImageIndex} images={images} />
             <Footer />
         </>
     );

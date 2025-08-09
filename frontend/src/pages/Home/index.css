@@ -1,3 +1,12 @@
+@font-face {
+	font-family: 'Monserrat';
+	src: local('Monserrat'), url('../../fonts/Montserrat-VariableFont_wght.ttf');
+}
+
+.card-body h3 {
+	font-family: 'Monserrat' !important;
+}
+
 /* Card Styling */
 .luxe-card {
 	border: none;
