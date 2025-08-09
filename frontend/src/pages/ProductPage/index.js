@@ -95,7 +95,7 @@ const ProductPage = () => {
         setShowModal(true);
         setPosition({ x: 0, y: 0 });
     };
-    
+
     if (error.message) {
         return (
             <>
@@ -127,7 +127,12 @@ const ProductPage = () => {
                     {/* Product Images Column */}
                     <Col lg={6} className="pe-lg-5">
                         <div className="product-gallery">
-                            <div className="main-image-container">
+                            <div className="main-image-container"
+                                onMouseMove={(e) => {
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    e.currentTarget.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                                    e.currentTarget.style.setProperty('--y', `${e.clientY - rect.top}px`);
+                                }}>
                                 <div className="image-wrapper">
                                     <img
                                         src={images[currentImageIndex]?.src}

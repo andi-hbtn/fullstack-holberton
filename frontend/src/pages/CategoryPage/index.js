@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useCategoryContext } from "../../context/CategoryContext";
 import { Container, Row, Col, Card, Spinner, Button } from "react-bootstrap";
-import { FaSearchPlus } from "react-icons/fa";
 import Header from "../../components/Header";
 import NotFound from "../../components/NotFount";
 import Footer from "../../components/Footer";
@@ -84,60 +83,33 @@ const CategoryPage = () => {
             <Container className="category-page py-5">
                 <Row className="g-4">
                     {category.products.map((product) => {
-                        const hasVariants = product.colorVariants && product.colorVariants.length > 0;
                         return (
                             <Col xs={12} sm={6} lg={4} xl={3} key={product.id}>
-                                <Card
-                                    className="product-card h-100"
-                                >
-                                    <div className="card-image-container">
-                                        {hasVariants ?
-                                            <Link to={`/product/${product.id}`}>
-                                                <Card.Img
-                                                    variant="top"
-                                                    src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
-                                                    className="product-image-category"
-                                                    alt={product.title}
-                                                />
-                                            </Link>
-                                            :
+                                <Link to={`/product/${product.id}`} className="link-of-category">
+                                    <Card className="product-card h-100">
+                                        <div className="card-image-container">
                                             <Card.Img
                                                 variant="top"
                                                 src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`}
                                                 className="product-image-category"
                                                 alt={product.title}
                                             />
-                                        }
-
-                                        <div className="card-overlay">
-                                            {hasVariants ? (
-                                                <Link to={`/product/${product.id}`}>
-
-                                                </Link>
-                                            ) : (
-                                                <div className="quick-view disabled-view">
-                                                    <FaSearchPlus size={20} color="gray" />
-                                                    <span>No variants available</span>
-                                                </div>
-                                            )}
                                         </div>
-                                    </div>
-                                    <Card.Body className="d-flex flex-column">
-                                        <div className="d-flex justify-content-between align-items-start mb-2">
-                                            <Card.Title className="product-title mb-0">
-                                                <Link to={`/product/${product.id}`}>
+                                        <Card.Body className="d-flex flex-column">
+                                            <div className="d-flex justify-content-between align-items-start mb-2">
+                                                <Card.Title className="product-title mb-0">
                                                     {product.title}
-                                                </Link>
-                                            </Card.Title>
-                                        </div>
-                                        <Card.Text className="product-description flex-grow-1">
-                                            {product.description.length > 40
-                                                ? <Link to={`/product/${product.id}`}>{`${product.description.substring(0, 50)}...`}</Link>
-                                                : <Link to={`/product/${product.id}`}> {product.description} </Link>
-                                            }
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
+                                                </Card.Title>
+                                            </div>
+                                            <Card.Text className="product-description flex-grow-1">
+                                                {product.description.length > 40
+                                                    ? `${product.description.substring(0, 50)}...`
+                                                    : product.description}
+
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Link>
                             </Col>
                         )
                     })}
