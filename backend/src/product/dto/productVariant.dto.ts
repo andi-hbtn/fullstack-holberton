@@ -14,6 +14,9 @@ export class ProductVariantDto {
     @IsNumber()
     stock: number;
 
+    @IsString()
+    reference: string;
+
     @IsOptional() // Optional if not all variants have images
     @IsString()
     color_image?: string;

@@ -9,14 +9,14 @@ const ProductVariantModal = ({ show, close, productId }) => {
 
     const [data, setData] = useState({
         product_id: 0,
-        productVariants: [{ colorName: '', price: 0, stock: 0, color_image: null, main_image: null }]
+        productVariants: [{ colorName: '', price: 0, stock: 0, reference: '', color_image: null, main_image: null }]
     });
 
     useEffect(() => {
         if (show && productId) {
             setData({
                 product_id: productId,
-                productVariants: [{ colorName: '', price: 0, stock: 0, color_image: null, main_image: null }]
+                productVariants: [{ colorName: '', price: 0, stock: 0, reference: '', color_image: null, main_image: null }]
             });
         }
     }, [productId, show]);
@@ -46,7 +46,7 @@ const ProductVariantModal = ({ show, close, productId }) => {
     const addColorVariant = () => {
         setData({
             ...data,
-            productVariants: [...data.productVariants, { colorName: '', price: 0, stock: 0, color_image: null, main_image: null }]
+            productVariants: [...data.productVariants, { colorName: '', price: 0, stock: 0, reference: '', color_image: null, main_image: null }]
         });
     };
 
@@ -124,6 +124,17 @@ const ProductVariantModal = ({ show, close, productId }) => {
                                                 value={variant.stock || 0}
                                                 onChange={(e) => handleInputChange(e, index)}
                                                 min="0"
+                                                required
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-2">
+                                            <Form.Label>Reference</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                name="reference"
+                                                value={variant.reference}
+                                                onChange={(e) => handleInputChange(e, index)}
                                                 required
                                             />
                                         </Form.Group>

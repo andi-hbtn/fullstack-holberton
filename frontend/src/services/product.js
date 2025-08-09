@@ -48,6 +48,7 @@ const update_product_variants_service = async (data) => {
 	formData.append('color', data.color);
 	formData.append('price', data.price);
 	formData.append('stock', data.stock);
+	formData.append('reference', data.reference);
 	formData.append('color_image', data.color_image);
 	formData.append('main_image', data.main_image);
 	const result = await axios.put(`${url}/product-variants/${data.id}`, formData, {

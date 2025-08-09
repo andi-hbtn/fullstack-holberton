@@ -173,6 +173,7 @@ export class ProductService {
 
 			existingVariant.price = variant.price;
 			existingVariant.stock = variant.stock;
+			existingVariant.reference = variant.reference;
 			existingVariant.color = variant.color;
 
 			const color_image = files.color_image?.[0];
@@ -192,7 +193,6 @@ export class ProductService {
 				}
 				existingVariant.main_image = main_image.filename;
 			}
-
 
 			const updateProductVariant = this.ProductVariant.create(existingVariant);
 			const newProductVariant = await this.ProductVariant.save(updateProductVariant);

@@ -80,6 +80,17 @@ const EditProductVariants = ({ show, close, product }) => {
                                         />
                                     </Form.Group>
 
+                                    <Form.Group className="mb-2">
+                                        <Form.Label>Reference</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="reference"
+                                            value={productVarian.reference}
+                                            required
+                                            onChange={(e) => handleChange(e)}
+                                        />
+                                    </Form.Group>
+
                                     <Form.Group>
                                         <Form.Control
                                             type="file"

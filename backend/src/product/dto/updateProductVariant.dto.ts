@@ -14,6 +14,9 @@ export class UpdateProductVariantDto {
     @IsNumber()
     stock: number;
 
+    @IsString()
+    reference: string;
+
     @IsOptional()
     @IsString()
     color_image?: string;

@@ -14,6 +14,9 @@ export class ProductColorVariant {
     stock: number;
 
     @Column()
+    reference: string;
+
+    @Column()
     color: string;
 
     @Column()
