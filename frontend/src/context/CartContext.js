@@ -41,6 +41,7 @@ const CartProvider = (props) => {
 					productId: variant.product_id,
 					variantId: variant.id,
 					color: variant.color,
+					reference: variant.reference,
 					color_image: variant.color_image,
 					main_image: variant.main_image,
 					price: variant.price,
@@ -105,6 +106,8 @@ const CartProvider = (props) => {
 	const addToCart = (product, variant) => {
 		setCart((prevState) => {
 			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
+
+			console.log("newItems---", newItems);
 
 			// Check if the variant is already in the cart
 			const existingIndex = newItems.findIndex(item => item.variantId === variant.id);

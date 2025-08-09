@@ -138,6 +138,7 @@ const Cart = () => {
                                         <thead>
                                             <tr className="table-header">
                                                 <th className="product-col">Product</th>
+                                                <th className="product-col">Reference</th>
                                                 <th className="price-col">Price</th>
                                                 <th className="quantity-col">Quantity</th>
                                                 <th className="subtotal-col">Subtotal</th>
@@ -166,6 +167,9 @@ const Cart = () => {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </td>
+                                                    <td className="reference-cell">
+                                                        {item.reference}
                                                     </td>
                                                     <td className="price-cell">
                                                         <span className="price">£{item.price}</span>
