@@ -93,30 +93,7 @@
     text-decoration: underline;
 }
 
-/* Order Summary */
-.order-summary {
-    margin-top: 2rem;
-}
-
-.summary-card {
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.summary-header {
-    background-color: #f8f9fa;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.summary-header h5 {
-    color: #333;
-    font-weight: 600;
-    margin: 0;
-}
-
-.summary-card .card-body {
+.card-body {
     padding: 1.5rem;
 }
 
@@ -203,15 +180,7 @@
         font-size: 28px;
     }
 
-    .summary-card {
-        border-radius: 6px;
-    }
-
-    .summary-header {
-        padding: 0.75rem 1rem;
-    }
-
-    .summary-card .card-body {
+    .card-body {
         padding: 1rem;
     }
 
