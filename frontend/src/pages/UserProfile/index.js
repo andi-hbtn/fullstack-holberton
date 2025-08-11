@@ -2,23 +2,29 @@ import { useAuthenticateContext } from '../../context/AuthenticateContext';
 import { useOrderContext } from "../../context/OrderContext";
 import dateUtils from "../../helpers/dateTime";
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Table, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Table, Badge, Button } from 'react-bootstrap';
 import Header from "../../components/Header";
+import { FiEye } from "react-icons/fi";
+import ItemsModal from './ItemsModal';
+
 import "./index.css";
 
 const UserProfile = () => {
     const { authUser } = useAuthenticateContext();
-    const { getOrderById, getUserOrders } = useOrderContext();
+    const { getUserOrderItems } = useOrderContext();
     const [orders, setOrders] = useState([]);
+    const [selectedOrderItems, setSelectedOrderItems] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const result = await getUserOrders(authUser.id);
+                const result = await getUserOrderItems(authUser.id);
                 if (result.statusCode === 200) {
-                    setOrders(result.orders);
+                    setOrders(result.result);
                 }
                 return result;
             } catch (error) {
@@ -42,6 +48,16 @@ const UserProfile = () => {
         }
     };
 
+    const handleOpen = (id) => {
+        const order = orders.find(o => o.id === id);
+        setSelectedOrderItems(order?.orderItems || []);
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(!open)
+        setSelectedOrderItems([]);
+    }
 
     return (
         <>
@@ -75,36 +91,37 @@ const UserProfile = () => {
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Product</th>
-                                                    <th>Color</th>
-                                                    <th>Quantity</th>
                                                     <th>Price</th>
-                                                    <th>Subtotal</th>
                                                     <th>Status</th>
                                                     <th>Order Date</th>
+                                                    <th>Check Order</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {orders?.map((order, index) => (
-                                                    order.orderItems.map((orderItem, itemIndex) => {
+                                                {
+                                                    orders.map((order, index) => {
                                                         return (
-                                                            <tr key={itemIndex}>
+                                                            <tr key={index}>
                                                                 <td>
-                                                                    <a href={`/order/${orderItem.id}`} className="order-link">
-                                                                        #{orderItem.id}
-                                                                    </a>
+                                                                    #{order.id}
                                                                 </td>
-                                                                <td>{orderItem.variant?.product?.title || "No product"}</td>
-                                                                <td>{orderItem.variant?.color || "N/A"}</td>
-                                                                <td>{orderItem.quantity}</td>
-                                                                <td>${orderItem.price}</td>
-                                                                <td>${(orderItem.price * orderItem.quantity).toFixed(2)}</td>
-                                                                <td>{getStatusBadge(order.status)}</td>
-                                                                <td>{dateUtils.formatIsoDateTime(order.created_at)}</td>
+                                                                <td>{order?.total_price || "No product"}</td>
+                                                                <td>{order?.status || "N/A"}</td>
+                                                                <td>{dateUtils.formatIsoDateTime(order?.created_at)}</td>
+                                                                <td>
+                                                                    <Button
+                                                                        variant="outline-primary"
+                                                                        size="sm"
+                                                                        className="me-2 action-btn"
+                                                                        onClick={() => { return handleOpen(order.id) }}
+                                                                    >
+                                                                        <FiEye />
+                                                                    </Button>
+                                                                </td>
                                                             </tr>
                                                         )
                                                     })
-                                                ))}
+                                                }
                                             </tbody>
                                         </Table>
 
@@ -123,6 +140,7 @@ const UserProfile = () => {
                     </Col>
                 </Row>
             </Container>
+            <ItemsModal open={open} close={handleClose} selectedOrderItems={selectedOrderItems} />
         </>
     );
 }

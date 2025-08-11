@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { get_orders_service, get_order_service, get_user_orders_service, update_orderStatus_service } from "../services/cart";
+import { get_orders_service, get_order_service, get_user_order_items_service, update_orderStatus_service } from "../services/cart";
 const OrderContext = createContext({});
 const OrderProvider = (props) => {
     const [orders, setOrders] = useState([]);
@@ -30,9 +30,9 @@ const OrderProvider = (props) => {
         }
     }
 
-    const getUserOrders = async (userId) => {
+    const getUserOrderItems = async (userId) => {
         try {
-            const result = await get_user_orders_service(userId);
+            const result = await get_user_order_items_service(userId);
             if (result.status === 200) {
                 return result.data;
             }
@@ -53,7 +53,7 @@ const OrderProvider = (props) => {
         }
     }
 
-    const values = { orders, getOrderById, getUserOrders, updateOrderStatus };
+    const values = { orders, getOrderById, getUserOrderItems, updateOrderStatus };
 
     return (
         <OrderContext.Provider value={values}>

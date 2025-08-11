@@ -14,9 +14,7 @@ const Home = () => {
 		<>
 			<Header />
 			<div className="luxe-glass-home">
-
 				<Slider />
-
 				{/* Categories Section */}
 				<Container className="categories-section">
 					<Row className="justify-content-center">

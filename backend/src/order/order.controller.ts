@@ -34,6 +34,15 @@ export class OrderController {
     }
   }
 
+  @Get('user_order_items/:userId')
+  public async getOrderItemsByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    try {
+      return this.orderService.getOrderItemsByUserId(userId);
+    } catch (error) {
+      throw new ServiceHandler(error.message, error.status);
+    }
+  }
+
   @Post('create')
   public async create(@Body() orderData: OrderDto): Promise<any> {
     return await this.orderService.create(orderData);

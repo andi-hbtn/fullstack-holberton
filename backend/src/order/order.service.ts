@@ -234,6 +234,23 @@ export class OrderService {
     }
   }
 
+  public async getOrderItemsByUserId(userId: number): Promise<any> {
+    try {
+      const result = await this.ordersRepository.find({
+        where: { user: { id: userId } },
+        relations: ["orderItems", "orderItems.variant"]
+      });
+      return {
+        statusCode: 200,
+        result
+      };
+
+    } catch (error) {
+      console.log("error--in get all orders of auth user---", error);
+      throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   public async findAll(): Promise<OrderEntity[]> {
     return this.ordersRepository.find({ relations: ['orderItems'] });
   }

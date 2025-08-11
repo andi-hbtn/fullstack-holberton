@@ -82,17 +82,6 @@
     background-color: rgba(0, 0, 0, 0.02);
 }
 
-.order-link {
-    color: #012440;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.order-link:hover {
-    color: #475e68;
-    text-decoration: underline;
-}
-
 .card-body {
     padding: 1.5rem;
 }

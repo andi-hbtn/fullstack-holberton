@@ -20,8 +20,8 @@ const get_order_service = async (id) => {
 	return result;
 }
 
-const get_user_orders_service = async (id) => {
-	const result = await axios.get(`${url}/user_order/${id}`);
+const get_user_order_items_service = async (id) => {
+	const result = await axios.get(`${url}/user_order_items/${id}`);
 	return result;
 }
 
@@ -30,4 +30,4 @@ const update_orderStatus_service = async (id, status) => {
 	return result;
 }
 
-export { get_orders_service, create_order_service, get_order_service, get_user_orders_service, update_orderStatus_service }
+export { get_orders_service, create_order_service, get_order_service, get_user_order_items_service, update_orderStatus_service }
