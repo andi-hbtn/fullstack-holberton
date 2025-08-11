@@ -18,7 +18,7 @@ const ForgotPassword = () => {
         setLoading(true);
 
         try {
-            await axios.post('http://localhost:3000/api/auth/forgot-password', { email });
+            await axios.post(`${process.env.REACT_APP_API_URL}api/auth/forgot-password`, { email });
             setVariant('success');
             setMessage(`Password reset link sent to ${email}. Please check your inbox.`);
             setTimeout(() => navigate('/'), 3000);
@@ -26,7 +26,6 @@ const ForgotPassword = () => {
             setVariant('danger');
             setMessage(error.response?.data?.message || 'Error sending reset link');
         }
-
         setLoading(false);
     };
 

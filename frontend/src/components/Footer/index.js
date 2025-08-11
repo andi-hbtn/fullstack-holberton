@@ -1,5 +1,5 @@
 import { Row, Col } from 'react-bootstrap';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock,   } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, } from 'react-icons/fa';
 import "./index.css";
 
 const Footer = () => {
@@ -9,7 +9,7 @@ const Footer = () => {
             <div className="footer-top">
                 <Row className="g-4 justify-content-center">
                     {/* Quick Links */}
-                    <Col lg={5} md={6} className="text-center text-md-start">
+                    <Col lg={4} md={4} className="text-center text-md-start">
                         <div className="footer-column">
                             <h4 className="footer-heading">Quick Links</h4>
                             <ul className="footer-links">
@@ -23,11 +23,11 @@ const Footer = () => {
                         </div>
                     </Col>
 
-                    {/* Contact Info */}
-                    <Col lg={5} md={6} className="text-center text-md-start">
+                    {/* Address */}
+                    <Col lg={4} md={4} className="text-center text-md-start">
                         <div className="footer-column">
-                            <h4 className="footer-heading">Contact Us</h4>
-                            <ul className="contact-info">
+                            <h4 className="footer-heading">Address</h4>
+                            <ul className="contact-info list-unstyled mb-0">
                                 <li className="d-flex">
                                     <FaMapMarkerAlt className="contact-icon mt-1" />
                                     <span>
@@ -37,6 +37,15 @@ const Footer = () => {
                                         United Kingdom
                                     </span>
                                 </li>
+                            </ul>
+                        </div>
+                    </Col>
+
+                    {/* Contact Details */}
+                    <Col lg={4} md={4} className="text-center text-md-start">
+                        <div className="footer-column">
+                            <h4 className="footer-heading">Contact Details</h4>
+                            <ul className="contact-info list-unstyled mb-0">
                                 <li className="d-flex">
                                     <FaPhone className="contact-icon mt-1" />
                                     <span>+44 123456</span>
@@ -57,6 +66,7 @@ const Footer = () => {
                     </Col>
                 </Row>
             </div>
+
 
             {/* Divider */}
             <div className="footer-divider"></div>
