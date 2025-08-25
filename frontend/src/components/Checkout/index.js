@@ -136,6 +136,9 @@ const Checkout = () => {
         }
     }, [authUser]);
 
+
+    console.log("authUser-----", authUser);
+
     return (
         <>
             <Header />
@@ -216,6 +219,22 @@ const Checkout = () => {
                                                         />
                                                     </Form.Group>
                                                 </Col>
+
+                                                {!authUser?.id && <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="firstname">
+                                                        <Form.Label>Password</Form.Label>
+                                                        <Form.Control
+                                                            name="password"
+                                                            value={values.password}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter password"
+                                                            className="form-input"
+                                                            required
+                                                        />
+                                                    </Form.Group>
+                                                </Col>}
+
 
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="phoneNumber">

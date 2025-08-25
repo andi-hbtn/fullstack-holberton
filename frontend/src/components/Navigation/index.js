@@ -124,7 +124,7 @@ const Navigation = () => {
                                 <Nav.Link as={Link} to="/cart" className="luxe-cart">
                                     <FaShoppingCart className="cart-icon" />
                                     <Badge pill className="cart-badge">
-                                        {finalCart}
+                                        {finalCart === 0 ? "" : finalCart}
                                     </Badge>
                                 </Nav.Link>
                             </div>
