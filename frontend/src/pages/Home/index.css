@@ -5,6 +5,8 @@
 
 .card-body h3 {
 	font-family: 'Monserrat' !important;
+	font-size: 18px;
+	color: #0a1929;
 }
 
 /* Card Styling */
@@ -56,14 +58,6 @@
 	background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7));
 }
 
-.card-body {
-	padding: 25px;
-}
-
-.card-body h3 {
-	font-size: 1.5rem;
-	color: #0a1929;
-	margin-bottom: 15px;
-	font-weight: 500;
-	font-family: 'Playfair Display', serif;
+.category-card {
+	padding: 10px !important;
 }

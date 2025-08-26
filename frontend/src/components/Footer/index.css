@@ -4,11 +4,7 @@
     color: #f8f9fa;
     position: relative;
     overflow: hidden;
-    padding-top: 60px;
-}
-
-.footer-top {
-    padding-bottom: 40px;
+    padding-top: 10px;
 }
 
 .footer-column {

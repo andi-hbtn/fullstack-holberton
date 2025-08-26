@@ -9,7 +9,6 @@ import './index.css';
 const Home = () => {
 	const { categories } = useCategoryContext();
 
-
 	return (
 		<>
 			<Header />
@@ -31,7 +30,7 @@ const Home = () => {
 											/>
 											<div className="image-overlay"></div>
 										</div>
-										<Card.Body className="text-center">
+										<Card.Body className="text-center category-card">
 											<Card.Title>
 												<h3>{category.title}</h3>
 											</Card.Title>
