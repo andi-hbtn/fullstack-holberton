@@ -204,7 +204,6 @@ const ProductPage = () => {
                             <div className="price-section">
                                 <div className="current-price">
                                     £{selectedVariant?.price ?? "N/A"}
-                                    <span className="price-tax">Inc. VAT</span>
                                 </div>
                             </div>
 
@@ -212,7 +211,7 @@ const ProductPage = () => {
                             <div className="variant-section">
                                 <h3 className="section-title">
                                     <span className="section-title-decoration"></span>
-                                    Color Options
+                                    Colour Options
                                 </h3>
                                 <div className="color-variants">
                                     {product.colorVariants.map((variant) => (
