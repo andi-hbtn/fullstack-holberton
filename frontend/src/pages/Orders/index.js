@@ -101,14 +101,6 @@ const Orders = () => {
 									</Nav.Link>
 								</Nav>
 								<div className="sidebar-stats mt-5 px-3">
-									<div className="stat-item mb-3">
-										<small className="text-muted">Total Products</small>
-										<h3 className="text-primary">hello</h3>
-									</div>
-									<div className="stat-item">
-										<small className="text-muted">Active Orders</small>
-										<h3 className="text-success">24</h3>
-									</div>
 								</div>
 							</div>
 						</Col>

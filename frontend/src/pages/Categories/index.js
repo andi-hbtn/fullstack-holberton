@@ -112,10 +112,6 @@ const Categories = () => {
 								</Nav.Link>
 							</Nav>
 							<div className="sidebar-stats mt-5 px-3">
-								<div className="stat-item">
-									<small className="text-muted">Active Categories</small>
-									<h3 className="text-success">{categories.filter(c => c.status === 'active').length}</h3>
-								</div>
 							</div>
 						</div>
 					</Col>
