@@ -197,7 +197,7 @@ const ProductPage = () => {
                                             `${selectedVariant?.stock} available` :
                                             'Out of stock'}
                                     </Badge>
-                                    <span className="product-sku">SKU: {selectedVariant?.sku || 'N/A'}</span>
+                                    <span className="product-sku">Reference Number: {selectedVariant?.reference}</span>
                                 </div>
                             </div>
 

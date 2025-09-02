@@ -139,7 +139,7 @@ export class ProductService {
 						color: variant.colorName,
 						price: +variant.price,
 						stock: +variant.stock,
-						reference:variant.reference,
+						reference: variant.reference,
 						color_image,
 						main_image
 					};

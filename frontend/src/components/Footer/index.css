@@ -2,15 +2,11 @@
 .luxury-footer {
     background: #0a1929;
     color: #f8f9fa;
-    position: relative;
-    overflow: hidden;
-    padding-top: 10px;
 }
 
 .footer-column {
     width: 320px;
     margin: 0 auto;
-    padding: 1.5rem;
 }
 
 .footer-heading {

@@ -160,7 +160,7 @@ const OrdersModal = ({ open, close, id }) => {
                                         <Col xs={6} md={7}>
                                             <h6 className="mb-1">{item.variant?.product?.title}</h6>
                                             <div className="text-muted small">
-                                                <div>SKU: #{item.variant?.product?.id.toString().padStart(4, '0')}</div>
+                                                <div>Reference: #{item.variant?.reference}</div>
                                                 <div>Category: {item.variant?.product?.category?.title}</div>
                                                 <div>Stock: {item.product?.stock} available</div>
                                             </div>

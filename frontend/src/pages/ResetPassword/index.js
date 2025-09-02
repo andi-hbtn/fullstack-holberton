@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import Header from '../../components/Header';
@@ -14,8 +14,6 @@ const ResetPassword = () => {
     const [message, setMessage] = useState('');
     const [variant, setVariant] = useState('success');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,7 +28,6 @@ const ResetPassword = () => {
             await resetPassword(token, password);
             setVariant('success');
             setMessage('Password reset successfully! Redirecting to login...');
-            setTimeout(() => navigate('/'), 2000);
         } catch (error) {
             setVariant('danger');
             setMessage(error.response?.data?.message || 'Error resetting password');

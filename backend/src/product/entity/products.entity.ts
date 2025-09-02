@@ -10,7 +10,7 @@ export class ProductEntity {
 	@Column()
 	title: string;
 
-	@Column()
+	@Column({ length: 500 })
 	description: string;
 
 	@Column({ default: true })
