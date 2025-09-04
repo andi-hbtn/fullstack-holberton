@@ -107,8 +107,6 @@ const CartProvider = (props) => {
 		setCart((prevState) => {
 			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
 
-			console.log("newItems---", newItems);
-
 			// Check if the variant is already in the cart
 			const existingIndex = newItems.findIndex(item => item.variantId === variant.id);
 

@@ -24,7 +24,6 @@ export class UserEntity {
 	@Column()
 	password: string;
 
-	//****************here**************** 
 	@Column({ nullable: true })
 	country: string | null;
 
@@ -42,7 +41,6 @@ export class UserEntity {
 
 	@Column({ nullable: true })
 	message: string | null;
-	//****************here**************** 
 
 	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
 	createdAt: Date;

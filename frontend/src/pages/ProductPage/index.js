@@ -58,7 +58,7 @@ const ProductPage = () => {
         const item = cart.items?.find(
             (el) => el.productId === productId && el.variantId === variantId
         );
-        return item?.quantity || 0;
+        return item?.quantity || 1;
     };
 
     const getVariantImages = () => {
