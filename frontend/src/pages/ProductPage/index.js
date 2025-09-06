@@ -87,7 +87,6 @@ const ProductPage = () => {
 
     const handleAddToCart = () => {
         addToCart(product, selectedVariant);
-
     };
 
     // Image modal functions

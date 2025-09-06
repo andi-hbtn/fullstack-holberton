@@ -15,6 +15,9 @@ export class RegisterDto {
     email: string;
 
     @IsOptional()
+    vat_number: string;
+
+    @IsOptional()
     phone: string;
 
     @IsOptional()

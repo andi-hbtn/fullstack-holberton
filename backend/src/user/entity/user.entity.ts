@@ -18,6 +18,9 @@ export class UserEntity {
 	@Column()
 	email: string;
 
+	@Column()
+	vat_number: string;
+
 	@Column({ default: 'user' })
 	roles: string;
 

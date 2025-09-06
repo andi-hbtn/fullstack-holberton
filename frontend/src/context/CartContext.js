@@ -13,13 +13,14 @@ const CartProvider = (props) => {
 	});
 
 	const [finalCart, setFinalCart] = useState(0);
+	const [render, setRender] = useState(false);
 
 	useEffect(() => {
 		const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
 		const items = Array.isArray(cartFromStorage.items) ? cartFromStorage.items : [];
 		const newQtu = items.reduce((total, item) => total + item.quantity, 0);
 		setFinalCart(newQtu);
-	}, [cart]);
+	}, [cart, render]);
 
 
 	const addQuantity = (variant) => {
@@ -60,7 +61,6 @@ const CartProvider = (props) => {
 				items: newItems,
 				total_price: newTotalPrice,
 			};
-			localStorage.setItem("cart", JSON.stringify(updatedCart));
 			return updatedCart;
 		});
 	};
@@ -98,56 +98,13 @@ const CartProvider = (props) => {
 				items: updatedItems,
 				total_price: newTotalPrice,
 			};
-			localStorage.setItem("cart", JSON.stringify(updatedCart));
 			return updatedCart;
 		});
 	};
 
 	const addToCart = (product, variant) => {
-		setCart((prevState) => {
-			const newItems = Array.isArray(prevState.items) ? prevState.items : [];
-
-			// Check if the variant is already in the cart
-			const existingIndex = newItems.findIndex(item => item.variantId === variant.id);
-
-			if (existingIndex === -1) {
-				// If the variant is not in the cart, add it with all necessary properties
-				newItems.push({
-					variantId: variant.id,
-					productId: product.id,
-					title: product.title,
-					color: variant.color, // Added color
-					image: product.image, // Added product image
-					variantColorImage: variant.color_image, // Added color image
-					variantMainImage: variant.main_image, // Added main image
-					price: variant.price,
-					quantity: 1,
-				});
-			} else {
-				// If the variant already exists, just update the quantity
-				newItems[existingIndex] = {
-					...newItems[existingIndex],
-					quantity: newItems[existingIndex].quantity + 1,
-				};
-			}
-			// Recalculate the total price
-			const newTotalPrice = newItems.reduce(
-				(total, item) => total + item.price * item.quantity,
-				0
-			);
-
-			// Create the updated cart state
-			const updatedCart = {
-				...prevState,
-				items: newItems,
-				total_price: newTotalPrice,
-			};
-
-			// Save the updated cart to localStorage
-			localStorage.setItem("cart", JSON.stringify(updatedCart));
-
-			return updatedCart;
-		});
+		localStorage.setItem("cart", JSON.stringify(cart));
+		setRender(!render);
 	};
 
 	const createOrder = async (order, userInfo) => {

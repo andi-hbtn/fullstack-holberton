@@ -15,6 +15,9 @@ export class UserAddress {
     email: string;
 
     @Column()
+    vat_number: string;
+
+    @Column()
     phone: string;
 
     @Column()

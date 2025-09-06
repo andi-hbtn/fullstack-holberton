@@ -21,6 +21,7 @@ const Checkout = () => {
         firstname: "",
         lastname: "",
         email: "",
+        vat_number: "",
         password: "",
         phone: "",
         country: "united-kingdom",
@@ -62,7 +63,6 @@ const Checkout = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         try {
             const total_price = order.reduce((total, item) => {
                 return total + (item.price * item.quantity);
@@ -125,6 +125,7 @@ const Checkout = () => {
                 firstname: authUser.firstname || "",
                 lastname: authUser.lastname || "",
                 email: authUser.email || "",
+                vat_number: authUser.vat_number || "",
                 phone: authUser.phone || "",
                 country: authUser.country || "united-kingdom",
                 town: authUser.town || "",
@@ -135,9 +136,6 @@ const Checkout = () => {
             }));
         }
     }, [authUser]);
-
-
-    console.log("authUser-----", authUser);
 
     return (
         <>
@@ -284,6 +282,21 @@ const Checkout = () => {
                                                             onChange={handleChange}
                                                             type="text"
                                                             placeholder="Enter postal code"
+                                                            className="form-input"
+                                                            required
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="zip">
+                                                        <Form.Label>VAT number</Form.Label>
+                                                        <Form.Control
+                                                            name="vat_number"
+                                                            value={values.vat_number}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter vat number"
                                                             className="form-input"
                                                             required
                                                         />

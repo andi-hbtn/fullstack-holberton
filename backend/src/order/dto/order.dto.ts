@@ -38,6 +38,9 @@ export class OrderDto {
 	@IsEmail()
 	email: string;
 
+	@IsOptional()
+	vat_number: string;
+
 	@IsString()
 	password: string;
 

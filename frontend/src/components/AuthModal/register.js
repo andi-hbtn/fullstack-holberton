@@ -6,7 +6,7 @@ const Register = ({ openRegister, closeRegister }) => {
 
   const { register } = useAuthenticateContext();
   const [registerResponse, setRegisterResponse] = useState({ error: false, message: "", status: 0 });
-  const [values, setValues] = useState({ firstname: "", lastname: "", phone: "", email: "", password: "" });
+  const [values, setValues] = useState({ firstname: "", lastname: "", phone: "", email: "", vat_number: "", password: "" });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,7 +55,7 @@ const Register = ({ openRegister, closeRegister }) => {
                     onChange={handleChange}
                     type="text"
                     name="firstname"
-                    placeholder="first name..."
+                    placeholder="First name..."
                     autoFocus
                     className='border-radius'
                   />
@@ -69,7 +69,7 @@ const Register = ({ openRegister, closeRegister }) => {
                     onChange={handleChange}
                     type="text"
                     name="lastname"
-                    placeholder="last name..."
+                    placeholder="Last name..."
                     autoFocus
                     className='border-radius'
                   />
@@ -83,7 +83,7 @@ const Register = ({ openRegister, closeRegister }) => {
                     onChange={handleChange}
                     type="number"
                     name="phone"
-                    placeholder="phone..."
+                    placeholder="Phone..."
                     autoFocus
                     className='border-radius'
                   />
@@ -104,6 +104,20 @@ const Register = ({ openRegister, closeRegister }) => {
                 </Form.Group>
               </Col>
               <Col xs={12} md={12}>
+                <Form.Group className="mb-3" controlId="email">
+                  <Form.Label>VAT number</Form.Label>
+                  <Form.Control
+                    value={values.vat_number}
+                    onChange={handleChange}
+                    type="text"
+                    name="text"
+                    placeholder="VAT number"
+                    autoFocus
+                    className='border-radius'
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="password">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
@@ -111,7 +125,7 @@ const Register = ({ openRegister, closeRegister }) => {
                     onChange={handleChange}
                     type="password"
                     name="password"
-                    placeholder="password"
+                    placeholder="Password"
                     autoFocus
                     className='border-radius'
                   />
