@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCartContext } from '../../context/CartContext';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useCategoryContext } from '../../context/CategoryContext';
+import { useProductContext } from '../../context/ProductContext';
 import Login from '../AuthModal/login';
 import Register from '../AuthModal/register';
 import { Link } from 'react-router-dom';
@@ -10,10 +11,11 @@ import { FaShoppingCart, FaSearch, FaUser, FaBars } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import "./index.css";
 
-const Navigation = () => {
+const Navigation = ({ onSearchChange }) => {
     const { finalCart } = useCartContext();
     const { authUser, logout } = useAuthenticateContext();
-    const { categories, allCategories, setCategories } = useCategoryContext();
+    const { allCategories } = useCategoryContext();
+    const { allProducts } = useProductContext();
     const [loginModal, setLoginModal] = useState(false);
     const [registerModal, setRegisterModal] = useState(false);
     const [search, setSearch] = useState("");
@@ -23,14 +25,17 @@ const Navigation = () => {
     const handleChange = (event) => {
         const value = event.target.value.trim().toLowerCase();
         setSearch(value);
-        if (value.length === 0) {
-            setCategories(allCategories);
-        } else {
-            const result = categories.filter((category) => {
-                return category.title.includes(value)
-            });
-            setCategories(result);
-        }
+
+        const matchedCategories = allCategories.filter(c => c.title.toLowerCase().includes(value));
+        const matchedProducts = allProducts.filter(p => {
+            const inTitle = p.title.toLowerCase().includes(value);
+            const inReference = p.colorVariants?.some(variant =>
+                variant.reference.toLowerCase().includes(value)
+            );
+            return inTitle || inReference;
+        });
+
+        onSearchChange({ categories: matchedCategories, products: matchedProducts });
     }
 
     const handleLogout = async () => {

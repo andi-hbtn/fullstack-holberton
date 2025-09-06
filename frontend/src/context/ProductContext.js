@@ -13,6 +13,7 @@ const ProductContext = createContext({});
 
 const ProductProvider = (props) => {
 	const [products, setProducts] = useState([]);
+	const [allProducts, setAllProducts] = useState([]);
 	useEffect(() => {
 		getProducts();
 	}, []);
@@ -74,6 +75,7 @@ const ProductProvider = (props) => {
 			const result = await get_products_service();
 			if (result.status === 200) {
 				setProducts(result.data);
+				setAllProducts(result.data);
 			}
 		} catch (error) {
 			throw error.response.data;
@@ -117,7 +119,18 @@ const ProductProvider = (props) => {
 		}
 	}
 
-	const values = { createProduct, createProductVariants, updateProductVariants, deleteProductVariant, updateProduct, getProduct, products, deleteProduct };
+	const values = { 
+		createProduct, 
+		createProductVariants, 
+		updateProductVariants, 
+		deleteProductVariant, 
+		updateProduct, 
+		getProduct, 
+		products, 
+		deleteProduct,
+		allProducts, 
+		setAllProducts
+	 };
 	return (
 		<ProductContext.Provider value={values}>
 			{props.children}

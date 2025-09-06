@@ -3,7 +3,7 @@ import "./index.css";
 import logo from "../../images/logo.png";
 import Navigation from "../Navigation";
 
-const Header = () => {
+const Header = ({ onSearchChange }) => {
     return (
         <>
             <div className='main-cnt'>
@@ -20,7 +20,7 @@ const Header = () => {
                     </a>
                 </Col>
             </Row >
-            <Navigation />
+            <Navigation onSearchChange={onSearchChange} />
         </>
     );
 }

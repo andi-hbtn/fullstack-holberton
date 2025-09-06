@@ -38,8 +38,7 @@ export class OrderService {
 
         // Updata users data
         if (user) {
-
-          await this.usersRepository.merge(user, {
+          this.usersRepository.merge(user, {
             country,
             town,
             zipCode,
@@ -55,24 +54,34 @@ export class OrderService {
       // Nëse përdoruesi nuk është i regjistruar, e krijoni një të ri
       // If user is not registered create a new one
       if (!user) {
-        const savedUser = await this.authService.registerUser({
+        user = this.usersRepository.create({
           firstname,
           lastname,
           phone,
           email,
           vat_number,
-          password,
           country,
           town,
           zipCode,
           street_address,
           appartment,
           message,
+          password: Math.random().toString(36).slice(-8), // random, nuk përdoret për login
+          roles: 'guest',
           createdAt: new Date(),
         });
-
-        // Përdorni të dhënat e përdoruesit të regjistruar për të krijuar një instancë të përdoruesit të plotë
-        user = savedUser.user;
+        await this.usersRepository.save(user);
+      } else {
+        this.usersRepository.merge(user, {
+          country,
+          town,
+          zipCode,
+          vat_number,
+          street_address,
+          appartment,
+          message,
+        });
+        await this.usersRepository.save(user);
       }
 
       // Krijo një instancë të porosisë
@@ -93,17 +102,10 @@ export class OrderService {
           const variant = await this.productColorRepository.findOne({ where: { id: item.variantId }, relations: ['product'] });
 
           // Kontrollo nëse ekzistojnë produktet dhe variacionet
-          if (!product) {
-            throw new Error(`Product with ID ${item.product_id} not found`);
-          }
-          if (!variant) {
-            throw new Error(`Product with this color and with ID ${item.variantId} not found`);
-          }
-
+          if (!product) throw new Error(`Product with ID ${item.product_id} not found`);
+          if (!variant) throw new Error(`Product with this color and with ID ${item.variantId} not found`);
           // Kontrollo nëse ka mjaftueshëm stok
-          if (item.quantity > variant.stock) {
-            throw new Error(`Not enough stock.`);
-          }
+          if (item.quantity > variant.stock) throw new Error(`Not enough stock.`);
 
           // Përditëso stoku i produktit
           variant.stock -= item.quantity;
@@ -129,6 +131,7 @@ export class OrderService {
       await this.sendOrderWithEmail(savedOrder, orderItem, {
         phone,
         email,
+        vat_number,
         firstname,
         lastname,
         country,

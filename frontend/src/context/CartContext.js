@@ -46,7 +46,7 @@ const CartProvider = (props) => {
 					color_image: variant.color_image,
 					main_image: variant.main_image,
 					price: variant.price,
-					quantity: 1,
+					quantity: 2,
 				});
 			}
 
