@@ -35,7 +35,9 @@ const Navigation = ({ onSearchChange }) => {
             return inTitle || inReference;
         });
 
-        onSearchChange({ categories: matchedCategories, products: matchedProducts });
+        if (typeof onSearchChange === "function") {
+            onSearchChange({ categories: matchedCategories, products: matchedProducts });
+        }
     }
 
     const handleLogout = async () => {
