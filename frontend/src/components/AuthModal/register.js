@@ -104,13 +104,13 @@ const Register = ({ openRegister, closeRegister }) => {
                 </Form.Group>
               </Col>
               <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="email">
+                <Form.Group className="mb-3" controlId="vat_number">
                   <Form.Label>VAT number</Form.Label>
                   <Form.Control
                     value={values.vat_number}
                     onChange={handleChange}
                     type="text"
-                    name="text"
+                    name="vat_number"
                     placeholder="VAT number"
                     autoFocus
                     className='border-radius'
