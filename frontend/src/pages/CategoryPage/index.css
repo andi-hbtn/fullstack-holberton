@@ -20,13 +20,6 @@
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.card-image-container {
-    position: relative;
-    overflow: hidden;
-    height: 300px;
-    background-color: #f1f5f9;
-}
-
 .product-image {
     object-fit: contain;
     transition: transform 0.5s ease;

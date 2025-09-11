@@ -38,6 +38,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 			setResMsg({ error: true, message: error.message, status: error.statusCode })
 		}
 	}
+
 	return (
 		<>
 			<Modal

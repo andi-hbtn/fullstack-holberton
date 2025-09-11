@@ -7,7 +7,7 @@
 	font-family: 'Monserrat' !important;
 	font-size: 18px;
 	color: #0a1929;
-	font-weight:550;
+	font-weight: 550;
 }
 
 /* Card Styling */
@@ -34,16 +34,12 @@
 }
 
 .card-image-container {
-	position: relative;
-	overflow: hidden;
 	height: 300px;
 }
 
 .card-image {
-	height: 100%;
-	width: 100%;
-	object-fit: cover;
 	transition: transform 0.8s ease;
+	object-fit: cover;
 }
 
 .card-link:hover .card-image {
