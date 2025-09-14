@@ -1,8 +1,12 @@
+import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { Row, Col, Button } from "react-bootstrap";
 import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./index.css";
 const OrderConfirmed = ({ email }) => {
+
+    const { authUser } = useAuthenticateContext();
+
     return (
         <Row className="justify-content-center">
             <Col md={8} className="text-center">
@@ -25,11 +29,11 @@ const OrderConfirmed = ({ email }) => {
                     </Button>
                     <Button
                         as={Link}
-                        to="/orders"
+                        to={authUser.id ? "/profile" : ""}
                         variant="outline-dark"
                         className="view-orders-btn"
                     >
-                        View Your Orders
+                        {authUser.id ? "View your orders" : "Log in / Register to view your orders"}
                     </Button>
                 </div>
             </Col>

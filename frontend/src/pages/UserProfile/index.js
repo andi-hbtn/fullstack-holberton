@@ -129,7 +129,7 @@ const UserProfile = () => {
                                 ) : (
                                     <div className="no-orders">
                                         <p>You haven't placed any orders yet.</p>
-                                        <a href="/products" className="btn btn-primary">
+                                        <a href="/" className="btn btn-primary">
                                             Browse Products
                                         </a>
                                     </div>
