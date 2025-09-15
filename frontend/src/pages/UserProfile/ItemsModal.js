@@ -69,11 +69,12 @@ const ItemsModal = ({ open, close, selectedOrderItems }) => {
                                             />
                                         </Col>
                                         <Col xs={6} md={4}>
-                                            <h6 className="mb-1">
-                                                {item?.variant?.reference || 'Unnamed Product'}
-                                            </h6>
                                             <div className="text-muted small">
-                                                <div>SKU: #{item?.variant?.product_id?.toString().padStart(4, '0')}</div>
+                                                <div>
+                                                    <strong>
+                                                        Reference Number:
+                                                    </strong>
+                                                    {item?.variant?.reference || 'Unnamed Product'}</div>
                                                 <div>Stock: {item?.variant?.stock ?? 'N/A'} available</div>
                                                 <div>Color: {item?.color || item?.variant?.color || 'N/A'}</div>
                                             </div>

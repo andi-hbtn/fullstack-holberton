@@ -23,7 +23,8 @@ const CartProvider = (props) => {
 	}, [cart, render]);
 
 
-	const addQuantity = (variant) => {
+	const addQuantity = (productTitle, variant) => {
+		console.log("variant---", variant)
 		setCart((prevState) => {
 			const newItems = [...prevState.items];
 			const existingIndex = newItems.findIndex(
@@ -40,6 +41,7 @@ const CartProvider = (props) => {
 				// Add new item if it doesn't exist in the cart
 				newItems.push({
 					productId: variant.product_id,
+					productTitle: productTitle,
 					variantId: variant.id,
 					color: variant.color,
 					reference: variant.reference,
@@ -102,7 +104,7 @@ const CartProvider = (props) => {
 		});
 	};
 
-	const addToCart = (product, variant) => {
+	const addToCart = () => {
 		localStorage.setItem("cart", JSON.stringify(cart));
 		setRender(!render);
 	};

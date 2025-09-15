@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, Form, Badge } from 'react-bootstrap';
 import { FaShoppingCart, FaSearch, FaUser, FaBars } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
+import OrderConfirmed from '../OrderConfirmed';
 import "./index.css";
 
 const Navigation = ({ onSearchChange }) => {
@@ -49,7 +50,6 @@ const Navigation = ({ onSearchChange }) => {
             {/* Main Navigation */}
             <Navbar expand="lg" className="luxe-navbar">
                 <Container>
-
                     {/* Mobile Menu Toggle */}
                     <Button
                         className="mobile-menu-toggle"
@@ -139,7 +139,6 @@ const Navigation = ({ onSearchChange }) => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-
             {/* Modal Components */}
             <Login openLogin={loginModal} closeLogin={() => setLoginModal(false)} />
             <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} />

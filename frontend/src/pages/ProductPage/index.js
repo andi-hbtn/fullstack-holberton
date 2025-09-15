@@ -262,7 +262,7 @@ const ProductPage = () => {
                                         </span>
                                         <button
                                             className="quantity-btn"
-                                            onClick={() => addQuantity(selectedVariant)}
+                                            onClick={() => addQuantity(product.title,selectedVariant)}
                                             disabled={selectedVariant?.stock <= getQuantity(product.id, selectedVariantId)}
                                         >
                                             <PiPlusLight size={20} />

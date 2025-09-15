@@ -153,6 +153,7 @@ const Cart = () => {
                                                     <td className="product-cell">
                                                         <div className="product-info">
                                                             <div className="product-image">
+                                                                {console.log("item---", item)}
                                                                 <img
                                                                     src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item.main_image}`}
                                                                     alt={item.title}
@@ -160,7 +161,7 @@ const Cart = () => {
                                                                 />
                                                             </div>
                                                             <div className="product-details">
-                                                                <h3 className="product-title">{item.title}</h3>
+                                                                <h3 className="product-title">{item.productTitle}</h3>
                                                                 <div className="product-variant">
                                                                     <span className="color-badge" style={{ backgroundColor: item.color_code || '#ccc' }}></span>
                                                                     <span className="variant-name">{item.color}</span>
