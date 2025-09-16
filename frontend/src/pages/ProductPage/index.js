@@ -28,7 +28,6 @@ const ProductPage = () => {
     const [selectedVariantId, setSelectedVariantId] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-
     const [showModal, setShowModal] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -262,7 +261,7 @@ const ProductPage = () => {
                                         </span>
                                         <button
                                             className="quantity-btn"
-                                            onClick={() => addQuantity(product.title,selectedVariant)}
+                                            onClick={() => addQuantity(product.title, selectedVariant)}
                                             disabled={selectedVariant?.stock <= getQuantity(product.id, selectedVariantId)}
                                         >
                                             <PiPlusLight size={20} />

@@ -24,7 +24,6 @@ const CartProvider = (props) => {
 
 
 	const addQuantity = (productTitle, variant) => {
-		console.log("variant---", variant)
 		setCart((prevState) => {
 			const newItems = [...prevState.items];
 			const existingIndex = newItems.findIndex(
@@ -104,10 +103,47 @@ const CartProvider = (props) => {
 		});
 	};
 
-	const addToCart = () => {
-		localStorage.setItem("cart", JSON.stringify(cart));
-		setRender(!render);
+	const addToCart = (productTitle, variant, quantity = 1) => {
+		setCart((prevState) => {
+			const newItems = [...prevState.items];
+			const existingIndex = newItems.findIndex(
+				(item) => item.variantId === variant.id
+			);
+
+			// Nëse produkti nuk ekziston dhe quantity === 1 → fut në shportë me quantity = 2
+			if (existingIndex === -1 && quantity === 1) {
+				newItems.push({
+					productId: variant.product_id,
+					productTitle: productTitle?.title,
+					variantId: variant.id,
+					color: variant.color,
+					reference: variant.reference,
+					color_image: variant.color_image,
+					main_image: variant.main_image,
+					price: variant.price,
+					quantity: 1,
+				});
+			}
+
+			const newTotalPrice = newItems.reduce(
+				(total, item) => total + item.price * item.quantity,
+				0
+			);
+
+			const updatedCart = {
+				...prevState,
+				items: newItems,
+				total_price: newTotalPrice,
+			};
+
+			// Ruaj gjithmonë në localStorage
+			localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+			return updatedCart;
+		});
 	};
+
+
 
 	const createOrder = async (order, userInfo) => {
 		try {

@@ -153,7 +153,6 @@ const Cart = () => {
                                                     <td className="product-cell">
                                                         <div className="product-info">
                                                             <div className="product-image">
-                                                                {console.log("item---", item)}
                                                                 <img
                                                                     src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item.main_image}`}
                                                                     alt={item.title}
