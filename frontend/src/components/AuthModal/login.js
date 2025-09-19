@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
-import { Modal, Container, Row, Col, Form, Nav, Button } from 'react-bootstrap';
+import { Modal, Container, Row, Col, Form, Nav, Button, InputGroup } from 'react-bootstrap';
+import { FaEye, FaRegEyeSlash } from "react-icons/fa";
 import AlertMessage from '../AlertMessage';
+import Register from './register';
 import "./login.css"
 
 const Login = ({ openLogin, closeLogin }) => {
   const { login } = useAuthenticateContext();
   const [loginResponse, setLoginResponse] = useState({ error: false, message: "", status: 0 });
   const [values, setValues] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const [registerModal, setRegisterModal] = useState(false);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -27,7 +31,10 @@ const Login = ({ openLogin, closeLogin }) => {
     setValues((prevState) => {
       return { ...prevState, [name]: value }
     })
+  }
 
+  const handleOpenRegister = () => {
+    setRegisterModal(!registerModal);
   }
 
   const isDisabled = Object.values(values).some(value => value.trim().length === 0);
@@ -64,15 +71,23 @@ const Login = ({ openLogin, closeLogin }) => {
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="password">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    value={values.password}
-                    onChange={handleChange}
-                    type="password"
-                    name="password"
-                    placeholder="password"
-                    autoFocus
-                    className='border-radius'
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      value={values.password}
+                      onChange={handleChange}
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      placeholder="password"
+                      className='border-radius'
+                    />
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => setShowPassword(!showPassword)}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <FaRegEyeSlash /> : <FaEye />}
+                    </Button>
+                  </InputGroup>
                 </Form.Group>
               </Col>
             </Row>
@@ -90,6 +105,12 @@ const Login = ({ openLogin, closeLogin }) => {
       </Form>
       <div className='forgot-pass'>
         <Nav.Link href="/forgot-password" className="">Forgot Password ?</Nav.Link>
+      </div>
+      <div className="register-section">
+        Don’t have an account?
+        <Nav.Link className="d-inline p-0" onClick={handleOpenRegister}>Click here to register.</Nav.Link>
+
+        <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} />
       </div>
     </Modal>
   )

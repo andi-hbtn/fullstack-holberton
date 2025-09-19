@@ -18,3 +18,28 @@ input:-webkit-autofill {
 .forgot-pass {
     text-align: center;
 }
+
+.forgot-pass a {
+    width: 20%;
+    margin: 0 auto;
+}
+
+.register-section {
+    text-align: center;
+    margin: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.register-section a {
+    color: #000000;
+    ;
+    /* ngjyra e butonit kryesor/brand */
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.register-section a:hover {
+    text-decoration: underline;
+}

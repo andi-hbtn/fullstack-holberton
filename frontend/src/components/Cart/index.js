@@ -160,7 +160,7 @@ const Cart = () => {
                                                                 />
                                                             </div>
                                                             <div className="product-details">
-                                                                <h3 className="product-title">{item.title}</h3>
+                                                                <h3 className="product-title">{item.productTitle}</h3>
                                                                 <div className="product-variant">
                                                                     <span className="color-badge" style={{ backgroundColor: item.color_code || '#ccc' }}></span>
                                                                     <span className="variant-name">{item.color}</span>
