@@ -21,8 +21,11 @@ export class UserEntity {
 	@Column()
 	vat_number: string;
 
-	@Column({ default: 'user' })
+	@Column({ default: 'guest' })
 	roles: string;
+
+	@Column({ default: true })
+	is_guest: boolean;
 
 	@Column()
 	password: string;

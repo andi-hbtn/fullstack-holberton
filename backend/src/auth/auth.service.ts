@@ -24,6 +24,17 @@ export class AuthService {
         try {
             const checkUser = await this.userService.findByEmail(bodyParam.email);
             if (checkUser) {
+                //nese po ben regjistrim user guest, ai user qe mund te kete bere blerjen pa krijuar account
+                if (checkUser.roles === 'guest') {
+                    checkUser.roles = 'user';
+                    checkUser.password = await bcrypt.hash(bodyParam.password, 10);
+                    checkUser.firstname = bodyParam.firstname;
+                    checkUser.lastname = bodyParam.lastname;
+                    await this.userService.saveUser(checkUser);
+
+                    const token = await this.jwtService.signAsync({ id: checkUser.id });
+                    return { user: checkUser, token };
+                }
                 throw new ServiceHandler("You are already registered", HttpStatus.FOUND);
             }
 

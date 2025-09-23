@@ -17,6 +17,14 @@ export class UserService {
 		}
 	}
 
+	public async saveUser(user: UserEntity): Promise<UserEntity> {
+		try {
+			return await this.usersRepository.save(user);
+		} catch (error) {
+			throw new ServiceHandler(error.message, HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	public async registerUser(data: UserDto): Promise<UserEntity> {
 		try {
 			const result = await this.usersRepository.save(data);
