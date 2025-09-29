@@ -47,71 +47,79 @@ const Login = ({ openLogin, closeLogin }) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Form onSubmit={handleLogin}>
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">Login</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Container>
-            <Row className='login-form'>
-              <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="email">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control
-                    value={values.email}
-                    onChange={handleChange}
-                    type="email"
-                    name="email"
-                    placeholder="name@example.com"
-                    autoFocus
-                    className='border-radius'
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="password">
-                  <Form.Label>Password</Form.Label>
-                  <InputGroup>
-                    <Form.Control
-                      value={values.password}
-                      onChange={handleChange}
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      placeholder="password"
-                      className='border-radius'
-                    />
-                    <Button
-                      variant="outline-secondary"
-                      onClick={() => setShowPassword(!showPassword)}
-                      tabIndex={-1}
-                    >
-                      {showPassword ? <FaRegEyeSlash /> : <FaEye />}
-                    </Button>
-                  </InputGroup>
-                </Form.Group>
-              </Col>
-            </Row>
-          </Container>
-        </Modal.Body>
-        <Modal.Footer>
-          {
-            loginResponse.error ?
-              <AlertMessage status={loginResponse.status} message={loginResponse.message} />
-              :
-              ""
-          }
-          <Button type="submit" variant="dark" disabled={isDisabled} className='login-btn'>Login</Button>
-        </Modal.Footer>
-      </Form>
-      <div className='forgot-pass'>
-        <Nav.Link href="/forgot-password" className="">Forgot Password ?</Nav.Link>
-      </div>
-      <div className="register-section">
-        Don’t have an account?
-        <Nav.Link className="d-inline p-0" onClick={handleOpenRegister}>Click here to register.</Nav.Link>
+      {
+        registerModal == false
+          ?
+          <>
+            <Form onSubmit={handleLogin}>
+              <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">Login</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Container>
+                  <Row className='login-form'>
+                    <Col xs={12} md={12}>
+                      <Form.Group className="mb-3" controlId="email">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control
+                          value={values.email}
+                          onChange={handleChange}
+                          type="email"
+                          name="email"
+                          placeholder="name@example.com"
+                          autoFocus
+                          className='border-radius'
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col xs={12} md={12}>
+                      <Form.Group className="mb-3" controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <InputGroup>
+                          <Form.Control
+                            value={values.password}
+                            onChange={handleChange}
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="password"
+                            className='border-radius'
+                          />
+                          <Button
+                            variant="outline-secondary"
+                            onClick={() => setShowPassword(!showPassword)}
+                            tabIndex={-1}
+                          >
+                            {showPassword ? <FaRegEyeSlash /> : <FaEye />}
+                          </Button>
+                        </InputGroup>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Container>
+              </Modal.Body>
+              <Modal.Footer>
+                {
+                  loginResponse.error ?
+                    <AlertMessage status={loginResponse.status} message={loginResponse.message} />
+                    :
+                    ""
+                }
+                <Button type="submit" variant="dark" disabled={isDisabled} className='login-btn'>Login</Button>
+              </Modal.Footer>
+            </Form>
+            <div className='forgot-pass'>
+              <Nav.Link href="/forgot-password" className="">Forgot Password ?</Nav.Link>
+            </div>
+            <div className="register-section">
+              Don’t have an account?
+              <Nav.Link className="d-inline p-0" onClick={handleOpenRegister}>Click here to register.</Nav.Link>
 
-        <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} />
-      </div>
+              <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} />
+            </div>
+          </>
+          :
+          <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} closeLogin={closeLogin} />
+      }
     </Modal>
   )
 }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { Modal, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import AlertMessage from '../AlertMessage';
-const Register = ({ openRegister, closeRegister }) => {
+const Register = ({ openRegister, closeRegister, closeLogin }) => {
 
   const { register } = useAuthenticateContext();
   const [registerResponse, setRegisterResponse] = useState({ error: false, message: "", status: 0 });
@@ -14,7 +14,8 @@ const Register = ({ openRegister, closeRegister }) => {
     try {
       const result = await register(values);
       if (result.status === 201) {
-        closeRegister()
+        closeRegister();
+        closeLogin();
       }
     } catch (error) {
       setRegisterResponse({ error: true, message: error.message, status: error.statusCode })
@@ -35,7 +36,10 @@ const Register = ({ openRegister, closeRegister }) => {
   return (
     <Modal
       show={openRegister}
-      onHide={closeRegister}
+      onHide={() => {
+        closeRegister();
+        closeLogin();
+      }}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered

@@ -29,6 +29,7 @@ const EditProductVariants = ({ show, close, product }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await updateProductVariants(productVarian);
+        close();
         return result;
     }
 

@@ -9,7 +9,6 @@ const OrderConfirmed = ({ email }) => {
 
     const { authUser } = useAuthenticateContext();
     const [loginModal, setLoginModal] = useState(false);
-    const [registerModal, setRegisterModal] = useState(false);
 
     return (
         <>
