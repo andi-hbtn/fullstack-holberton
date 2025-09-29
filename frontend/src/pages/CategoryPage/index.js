@@ -83,40 +83,41 @@ const CategoryPage = () => {
             <Container className="category-page py-5">
                 <Row className="g-4">
                     {
-                        category.products
-                            .filter((product, index) => { return product.is_active === true })
-                            .map((el, i) => {
-                                return (
-                                    <Col xs={12} sm={6} lg={4} xl={3} key={el.id}>
-                                        <Link to={`/product/${el.id}`} className="link-of-category">
-                                            <Card className="product-card h-100">
-                                                <div className="card-image-container">
-                                                    <Card.Img
-                                                        variant="top"
-                                                        src={`${process.env.REACT_APP_API_URL}api/product/uploads/${el.image}`}
-                                                        className="product-image-category"
-                                                        alt={el.title}
-                                                    />
+                        category.products.map((el) => (
+                            <Col xs={12} sm={6} lg={4} xl={3} key={el.id}>
+                                <Link to={el.is_active ? `/product/${el.id}` : "#"} className={`link-of-category ${!el.is_active ? "disabled-link" : ""}`}>
+                                    <Card className={`product-card h-100 ${!el.is_active ? 'out-of-stock' : ''}`}>
+                                        <div className="card-image-container">
+                                            <Card.Img
+                                                variant="top"
+                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/${el.image}`}
+                                                className="product-image-category"
+                                                alt={el.title}
+                                            />
+                                            {!el.is_active && (
+                                                <div className="overlay">
+                                                    <span>Out of Stock</span>
                                                 </div>
-                                                <Card.Body className="d-flex flex-column">
-                                                    <div className="d-flex justify-content-between align-items-start mb-2">
-                                                        <Card.Title className="product-title mb-0">
-                                                            {el.title}
-                                                        </Card.Title>
-                                                    </div>
-                                                    <Card.Text className="product-description flex-grow-1">
-                                                        {el.description.length > 40
-                                                            ? `${el.description.substring(0, 50)}...`
-                                                            : el.description}
-
-                                                    </Card.Text>
-                                                </Card.Body>
-                                            </Card>
-                                        </Link>
-                                    </Col>
-                                )
-                            })
+                                            )}
+                                        </div>
+                                        <Card.Body className="d-flex flex-column">
+                                            <div className="d-flex justify-content-between align-items-start mb-2">
+                                                <Card.Title className="product-title mb-0">
+                                                    {el.title}
+                                                </Card.Title>
+                                            </div>
+                                            <Card.Text className="product-description flex-grow-1">
+                                                {el.description.length > 40
+                                                    ? `${el.description.substring(0, 50)}...`
+                                                    : el.description}
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Link>
+                            </Col>
+                        ))
                     }
+
                 </Row>
             </Container>
             <Footer />
