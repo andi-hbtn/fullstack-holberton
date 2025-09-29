@@ -23,7 +23,7 @@ export class CategoryController {
 	@IsPublic()
 	@Get('all')
 	public async getAll(): Promise<CategoryEntity[]> {
-		return await this.categoryService.getAllCategory();
+		return (await this.categoryService.getAllCategory());
 	}
 
 	@Roles('admin')
