@@ -12,10 +12,16 @@ export class UserAddress {
     lastname: string;
 
     @Column()
-    email: string;
+    company_number: string;
 
     @Column()
-    vat_number: string;
+    company_name: string;
+
+    @Column()
+    company_address: string;
+
+    @Column()
+    email: string;
 
     @Column()
     phone: string;
@@ -28,9 +34,6 @@ export class UserAddress {
 
     @Column()
     zipCode: string;
-
-    @Column()
-    street_address: string;
 
     @Column()
     appartment: string;

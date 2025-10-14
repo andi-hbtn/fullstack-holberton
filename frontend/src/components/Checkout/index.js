@@ -20,14 +20,15 @@ const Checkout = () => {
     const [values, setValues] = useState({
         firstname: "",
         lastname: "",
+        company_number: "",
+        company_name: "",
+        company_address: "",
         email: "",
-        vat_number: "",
         password: "",
         phone: "",
         country: "united-kingdom",
         town: "",
         zipCode: "",
-        street_address: "",
         appartment: "",
         message: ""
     });
@@ -124,13 +125,14 @@ const Checkout = () => {
                 ...prev,
                 firstname: authUser.firstname || "",
                 lastname: authUser.lastname || "",
+                company_number: authUser.company_number || "",
+                company_name: authUser.company_name || "",
+                company_address: authUser.company_address || "",
                 email: authUser.email || "",
-                vat_number: authUser.vat_number || "",
                 phone: authUser.phone || "",
                 country: authUser.country || "united-kingdom",
                 town: authUser.town || "",
                 zipCode: authUser.zipCode || "",
-                street_address: authUser.street_address || "",
                 appartment: authUser.appartment || "",
                 message: authUser.message || ""
             }));
@@ -161,14 +163,13 @@ const Checkout = () => {
                                 </h1>
                             </Col>
                         </Row>
-
                         <Row className="checkout-content">
                             <Col lg={7} className="pe-lg-4">
                                 <Card className="shipping-form-card">
                                     <Card.Body>
                                         <h2 className="form-section-title">
                                             <FaUser className="me-2" />
-                                            Contact Information
+                                            Billing address
                                         </h2>
                                         <Form onSubmit={handleSubmit}>
                                             <Row>
@@ -199,6 +200,51 @@ const Checkout = () => {
                                                             className="form-input"
                                                             required
 
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="company_number">
+                                                        <Form.Label>Company number</Form.Label>
+                                                        <Form.Control
+                                                            name="company_number"
+                                                            value={values.company_number}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter Company number"
+                                                            className="form-input"
+                                                            required
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="company_name">
+                                                        <Form.Label>Company name</Form.Label>
+                                                        <Form.Control
+                                                            name="company_number"
+                                                            value={values.company_name}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter Company name"
+                                                            className="form-input"
+                                                            required
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-4" controlId="company_address">
+                                                        <Form.Label>Company address</Form.Label>
+                                                        <Form.Control
+                                                            name="company_number"
+                                                            value={values.company_address}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter Company address"
+                                                            className="form-input"
+                                                            required
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -289,33 +335,7 @@ const Checkout = () => {
                                                 </Col>
 
                                                 <Col md={6}>
-                                                    <Form.Group className="mb-4" controlId="zip">
-                                                        <Form.Label>VAT number</Form.Label>
-                                                        <Form.Control
-                                                            name="vat_number"
-                                                            value={values.vat_number}
-                                                            onChange={handleChange}
-                                                            type="text"
-                                                            placeholder="Enter vat number"
-                                                            className="form-input"
-                                                            required
-                                                        />
-                                                    </Form.Group>
-                                                </Col>
 
-                                                <Col md={12}>
-                                                    <Form.Group className="mb-4" controlId="street">
-                                                        <Form.Label>Street address</Form.Label>
-                                                        <Form.Control
-                                                            name="street_address"
-                                                            value={values.street_address}
-                                                            onChange={handleChange}
-                                                            type="text"
-                                                            placeholder="Enter street address"
-                                                            className="form-input"
-                                                            required
-                                                        />
-                                                    </Form.Group>
                                                 </Col>
 
                                                 <Col md={12}>

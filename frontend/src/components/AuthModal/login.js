@@ -113,8 +113,7 @@ const Login = ({ openLogin, closeLogin }) => {
             <div className="register-section">
               Don’t have an account?
               <Nav.Link className="d-inline p-0" onClick={handleOpenRegister}>Click here to register.</Nav.Link>
-
-              <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} />
+              <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} closeLogin={closeLogin} />
             </div>
           </>
           :

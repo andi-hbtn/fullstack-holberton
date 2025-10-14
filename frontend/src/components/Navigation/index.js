@@ -141,7 +141,7 @@ const Navigation = ({ onSearchChange }) => {
             </Navbar>
             {/* Modal Components */}
             <Login openLogin={loginModal} closeLogin={() => setLoginModal(false)} />
-            <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} />
+            <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} closeLogin={() => setLoginModal(false)} />
         </>
     )
 }

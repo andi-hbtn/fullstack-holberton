@@ -15,9 +15,6 @@ export class RegisterDto {
     email: string;
 
     @IsOptional()
-    vat_number: string;
-
-    @IsOptional()
     phone: string;
 
     @IsOptional()
@@ -28,9 +25,6 @@ export class RegisterDto {
 
     @IsOptional()
     zipCode: string;
-
-    @IsOptional()
-    street_address: string;
 
     @IsOptional()
     appartment: string;

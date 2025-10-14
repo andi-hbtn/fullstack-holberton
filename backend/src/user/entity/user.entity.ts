@@ -13,13 +13,19 @@ export class UserEntity {
 	lastname: string;
 
 	@Column()
+	company_number: string;
+
+	@Column()
+	company_name: string;
+
+	@Column()
+	company_address: string;
+
+	@Column()
 	phone: string;
 
 	@Column()
 	email: string;
-
-	@Column()
-	vat_number: string;
 
 	@Column({ default: 'guest' })
 	roles: string;
@@ -38,9 +44,6 @@ export class UserEntity {
 
 	@Column({ nullable: true })
 	zipCode: string | null;
-
-	@Column({ nullable: true })
-	street_address: string | null;
 
 	@Column({ nullable: true })
 	appartment: string | null;

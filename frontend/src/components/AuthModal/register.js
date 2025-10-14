@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
-import { Modal, Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Modal, Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
+import { FaEye, FaRegEyeSlash } from "react-icons/fa";
 import AlertMessage from '../AlertMessage';
 const Register = ({ openRegister, closeRegister, closeLogin }) => {
 
   const { register } = useAuthenticateContext();
   const [registerResponse, setRegisterResponse] = useState({ error: false, message: "", status: 0 });
-  const [values, setValues] = useState({ firstname: "", lastname: "", phone: "", email: "", vat_number: "", password: "" });
+  const [values, setValues] = useState({ firstname: "", lastname: "", company_number: "", company_name: "", company_address: "", phone: "", email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,8 +32,8 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
     })
   }
 
-  const isDisabled = Object.values(values).some(value => value.trim().length === 0);
-
+  const requiredFields = ['firstname', 'lastname', 'email', 'password'];
+  const isDisabled = requiredFields.some(value => value.trim().length === 0);
 
   return (
     <Modal
@@ -52,71 +54,82 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
           <Container>
             <Row className='login-form'>
               <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="firstname">
+                <Form.Group className="mb-3" controlId="first_name">
                   <Form.Label>First name</Form.Label>
                   <Form.Control
                     value={values.firstname}
+                    required
                     onChange={handleChange}
                     type="text"
                     name="firstname"
-                    placeholder="First name..."
-                    autoFocus
+                    placeholder="First name"
                     className='border-radius'
                   />
                 </Form.Group>
               </Col>
               <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="lastname">
+                <Form.Group className="mb-3" controlId="last_name">
                   <Form.Label>Last name</Form.Label>
                   <Form.Control
                     value={values.lastname}
+                    required
                     onChange={handleChange}
                     type="text"
                     name="lastname"
-                    placeholder="Last name..."
-                    autoFocus
+                    placeholder="Last name"
                     className='border-radius'
                   />
                 </Form.Group>
               </Col>
               <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="lastname">
-                  <Form.Label>Phone number</Form.Label>
+                <Form.Group className="mb-3" controlId="company_number">
+                  <Form.Label>Company number</Form.Label>
                   <Form.Control
-                    value={values.phone}
+                    value={values.company_number}
                     onChange={handleChange}
-                    type="number"
-                    name="phone"
-                    placeholder="Phone..."
-                    autoFocus
+                    type="text"
+                    name="company_number"
+                    placeholder="Company number"
                     className='border-radius'
                   />
                 </Form.Group>
               </Col>
               <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="email">
+                <Form.Group className="mb-3" controlId="company_name">
+                  <Form.Label>Company name</Form.Label>
+                  <Form.Control
+                    value={values.company_name}
+                    onChange={handleChange}
+                    type="text"
+                    name="company_name"
+                    placeholder="Company name"
+                    className='border-radius'
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={12}>
+                <Form.Group className="mb-3" controlId="company_address">
+                  <Form.Label>Company address</Form.Label>
+                  <Form.Control
+                    value={values.company_address}
+                    onChange={handleChange}
+                    type="text"
+                    name="company_address"
+                    placeholder="Company address"
+                    className='border-radius'
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={12}>
+                <Form.Group className="mb-3" controlId="email_address">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
                     value={values.email}
+                    required
                     onChange={handleChange}
                     type="email"
                     name="email"
                     placeholder="name@example.com"
-                    autoFocus
-                    className='border-radius'
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={12}>
-                <Form.Group className="mb-3" controlId="vat_number">
-                  <Form.Label>VAT number</Form.Label>
-                  <Form.Control
-                    value={values.vat_number}
-                    onChange={handleChange}
-                    type="text"
-                    name="vat_number"
-                    placeholder="VAT number"
-                    autoFocus
                     className='border-radius'
                   />
                 </Form.Group>
@@ -124,15 +137,24 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="password">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    value={values.password}
-                    onChange={handleChange}
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    autoFocus
-                    className='border-radius'
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      value={values.password}
+                      required
+                      onChange={handleChange}
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      placeholder="password"
+                      className='border-radius'
+                    />
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => setShowPassword(!showPassword)}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <FaRegEyeSlash /> : <FaEye />}
+                    </Button>
+                  </InputGroup>
                 </Form.Group>
               </Col>
             </Row>

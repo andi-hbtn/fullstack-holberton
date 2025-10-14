@@ -114,7 +114,6 @@ const OrdersModal = ({ open, close, id }) => {
                                                     </li>
                                                     <li>
                                                         <small>
-                                                            <strong>Street:</strong> {orders.user.street_address}
                                                             {orders.user.appartment && `, ${orders.user.appartment}`}
                                                         </small>
                                                     </li>

@@ -35,11 +35,17 @@ export class OrderDto {
 	@IsString()
 	lastname?: string;
 
-	@IsEmail()
-	email: string;
+	@IsOptional()
+	company_number?: string;
 
 	@IsOptional()
-	vat_number: string;
+	company_name?: string;
+
+	@IsOptional()
+	company_address?: string;
+
+	@IsEmail()
+	email: string;
 
 	@IsString()
 	password: string;
@@ -59,10 +65,6 @@ export class OrderDto {
 	@IsOptional()
 	@IsString()
 	zipCode?: string;
-
-	@IsOptional()
-	@IsString()
-	street_address?: string;
 
 	@IsOptional()
 	@IsString()

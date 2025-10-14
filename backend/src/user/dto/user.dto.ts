@@ -20,9 +20,6 @@ export class UserDto {
 	@IsEmail()
 	email: string;
 
-	@IsOptional()
-	vat_number: string;
-
 	@IsString()
 	@IsNotEmpty()
 	password: string;

@@ -29,7 +29,7 @@ export class OrderService {
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      const { user_id, items, total_price, status, created_at, firstname, lastname, phone, email, vat_number, password, country, town, zipCode, street_address, appartment, message } = orderData;
+      const { user_id, items, total_price, status, created_at, firstname, lastname, company_number, company_name, company_address, phone, email, country, town, zipCode, appartment, message } = orderData;
       let user: UserEntity | null = null;
 
       // Check if user is auth and gethis data from DB
@@ -39,11 +39,12 @@ export class OrderService {
         // Updata users data
         if (user) {
           this.usersRepository.merge(user, {
+            company_number,
+            company_name,
+            company_address,
             country,
             town,
             zipCode,
-            vat_number,
-            street_address,
             appartment,
             message,
           });
@@ -52,34 +53,23 @@ export class OrderService {
       }
 
       // Nëse përdoruesi nuk është i regjistruar, e krijoni një të ri
-      // If user is not registered create a new one
       if (!user) {
         user = this.usersRepository.create({
           firstname,
           lastname,
+          company_number,
+          company_name,
+          company_address,
           phone,
           email,
-          vat_number,
           country,
           town,
           zipCode,
-          street_address,
           appartment,
           message,
           password: Math.random().toString(36).slice(-8), // random, nuk përdoret për login
           roles: 'guest',
           createdAt: new Date(),
-        });
-        await this.usersRepository.save(user);
-      } else {
-        this.usersRepository.merge(user, {
-          country,
-          town,
-          zipCode,
-          vat_number,
-          street_address,
-          appartment,
-          message,
         });
         await this.usersRepository.save(user);
       }
@@ -131,13 +121,11 @@ export class OrderService {
       await this.sendOrderWithEmail(savedOrder, orderItem, {
         phone,
         email,
-        vat_number,
         firstname,
         lastname,
         country,
         town,
         zipCode,
-        street_address,
         appartment,
         message,
       });
@@ -226,7 +214,7 @@ export class OrderService {
 
       const user = await this.usersRepository.findOne({
         where: { id: userId },
-        select: ['id', 'firstname', 'lastname', 'email', 'phone', 'country', 'town', 'zipCode', 'street_address', 'appartment', 'message', 'createdAt', 'roles'] // mos merr password
+        select: ['id', 'firstname', 'lastname', 'email', 'phone', 'country', 'town', 'zipCode', 'appartment', 'message', 'createdAt', 'roles'] // mos merr password
       });
 
       return {
@@ -307,7 +295,6 @@ export class OrderService {
               text: [
                 { text: `Customer Name:${userAddress.firstname} ${userAddress.lastname}\n`, bold: true },
                 { text: `Customer Email: ${userAddress.email}\n` },
-                { text: `Customer Email: ${userAddress.vat_number}\n` },
                 { text: `Customer Phone: ${userAddress.phone}\n` },
               ]
             },
@@ -318,7 +305,6 @@ export class OrderService {
                 { text: `Country: ${userAddress.country}\n` },
                 { text: `Town: ${userAddress.town}\n` },
                 { text: `Zipcode: ${userAddress.zipCode}\n` },
-                { text: `Street: ${userAddress.street_address}\n` },
                 { text: `Unit: ${userAddress.appartment}\n` }
               ]
             },

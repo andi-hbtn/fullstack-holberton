@@ -22,7 +22,6 @@ const CartProvider = (props) => {
 		setFinalCart(newQtu);
 	}, [cart, render]);
 
-
 	const addQuantity = (productTitle, variant) => {
 		setCart((prevState) => {
 			const newItems = [...prevState.items];
@@ -142,8 +141,6 @@ const CartProvider = (props) => {
 			return updatedCart;
 		});
 	};
-
-
 
 	const createOrder = async (order, userInfo) => {
 		try {
