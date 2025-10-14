@@ -53,8 +53,13 @@ export class OrderController {
     return await this.orderService.updateStatus(id, status);
   }
 
+  @Get('status/:status')
+  public async getOrdersByStatus(@Param('status') status: string) {
+    return await this.orderService.getOrdersByStatus(status);
+  }
+
   @Get('uploads/:path')
-  public getImage(@Param() path: any, @Res() res: Response) {
+  public getImage(@Param('status') path: any, @Res() res: Response) {
     res.sendFile(path.path, { root: 'uploads' });
   }
 

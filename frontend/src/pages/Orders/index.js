@@ -3,15 +3,18 @@ import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useOrderContext } from "../../context/OrderContext";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container, Row, Col, Table, Button, Badge, Form } from "react-bootstrap";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEye } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiEye } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
+import helpers from "../../helpers/index.js";
+import AdminSideBar from "../../components/AdminSideBar";
 import OrderModal from "./OrderModal";
 
 const Orders = () => {
 	const { authUser, logout } = useAuthenticateContext();
-	const { orders, updateOrderStatus } = useOrderContext();
+	const { orders, updateOrderStatus, filteredOrders } = useOrderContext();
 	const [orderId, setOrderId] = useState(0);
 	const navigate = useNavigate();
+
 	const [open, setOpen] = useState(false);
 
 	const handleLogout = async () => {
@@ -36,6 +39,9 @@ const Orders = () => {
 			return error
 		}
 	};
+
+	console.log("filteredOrders----", filteredOrders);
+	console.log("orders----", orders);
 
 	return (
 		<>
@@ -88,21 +94,7 @@ const Orders = () => {
 				<Container fluid className="main-content">
 					<Row>
 						<Col md={3} xl={2} className="sidebar bg-dark text-light">
-							<div className="sidebar-sticky pt-4">
-								<h4 className="px-3 mb-4">Quick Actions</h4>
-								<Nav className="flex-column">
-									<Nav.Link as={Link} to="/reports" className="nav-link text-light">
-										<FiSettings className="me-2" />
-										Reports
-									</Nav.Link>
-									<Nav.Link as={Link} to="/settings" className="nav-link text-light">
-										<FiSettings className="me-2" />
-										Settings
-									</Nav.Link>
-								</Nav>
-								<div className="sidebar-stats mt-5 px-3">
-								</div>
-							</div>
+							<AdminSideBar />
 						</Col>
 
 						<Col md={9} xl={10} className="p-4 main-content-area">
@@ -115,6 +107,7 @@ const Orders = () => {
 									<thead className="table-header">
 										<tr>
 											<th>ID</th>
+											<th>Order Number</th>
 											<th>Product</th>
 											<th>Price</th>
 											<th>Created at</th>
@@ -125,12 +118,15 @@ const Orders = () => {
 									</thead>
 									<tbody>
 										{
-											orders.map((order, index) => {
+											filteredOrders.map((order, index) => {
 												return (
 													<tr key={index} className="table-row">
-														<td className="text-muted">#{order.id}</td>
+														<td className="text-muted justify-content-center">#{order.id}</td>
 														<td>
-															<div className="d-flex align-items-center">
+															<div className="d-flex justify-content-center">{helpers.generateSKU(order.id)}</div>
+														</td>
+														<td>
+															<div className="d-flex justify-content-center">
 																{
 																	order.orderItems.map((product, pkey) => {
 																		return (
@@ -151,48 +147,54 @@ const Orders = () => {
 															</div>
 														</td>
 														<td>
-															<div className="color-options">
+															<div className="d-flex justify-content-center">
 																<h6 className="mb-0">{order.total_price}</h6>
 															</div>
 														</td>
 														<td>
-															<div className="color-options">
+															<div className="d-flex justify-content-center">
 																<h6 className="mb-0">
 																	{new Date(order.created_at).toLocaleDateString()}
 																</h6>
 															</div>
 														</td>
 														<td>
-															<Badge bg='success'>
-																{order.status}
-															</Badge>
+															<div className="d-flex justify-content-center">
+																<Badge bg='success'>
+																	{order.status}
+																</Badge>
+															</div>
 														</td>
 														<td>
-															<Button
-																variant="outline-primary"
-																size="sm"
-																className="me-2 action-btn"
-																onClick={() => { return handleOpen(order.id) }}
-															>
-																<FiEye />
-															</Button>
+															<div className="d-flex justify-content-center">
+																<Button
+																	variant="outline-primary"
+																	size="sm"
+																	className="me-2 action-btn"
+																	onClick={() => { return handleOpen(order.id) }}
+																>
+																	<FiEye />
+																</Button>
+															</div>
 														</td>
 														<td>
-															<Form.Select
-																value={order.status}
-																onChange={(e) => handleStatusChange(order.id, e.target.value)}
-																style={{
-																	cursor: 'pointer',
-																	width: 'fit-content',
-																	appearance: 'none',
-																	padding: '0.25rem 1.5rem 0.25rem 0.75rem'
-																}}
-															>
-																<option value="pending">Pending</option>
-																<option value="shipped">Shipped</option>
-																<option value="delivered">Delivered</option>
-																<option value="cancelled">Cancelled</option>
-															</Form.Select>
+															<div className="d-flex justify-content-center">
+																<Form.Select
+																	value={order.status}
+																	onChange={(e) => handleStatusChange(order.id, e.target.value)}
+																	style={{
+																		cursor: 'pointer',
+																		width: 'fit-content',
+																		appearance: 'none',
+																		padding: '0.25rem 1.5rem 0.25rem 0.75rem'
+																	}}
+																>
+																	<option value="pending">Pending</option>
+																	<option value="shipped">Shipped</option>
+																	<option value="delivered">Delivered</option>
+																	<option value="cancelled">Cancelled</option>
+																</Form.Select>
+															</div>
 														</td>
 													</tr>
 												)
@@ -204,7 +206,7 @@ const Orders = () => {
 						</Col>
 					</Row>
 				</Container>
-			</div>
+			</div >
 			<OrderModal open={open} close={handleClose} orders={orders} id={orderId} />
 		</>
 	)

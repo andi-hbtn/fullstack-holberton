@@ -68,12 +68,6 @@
     object-fit: cover;
 }
 
-.color-options {
-    display: flex;
-    gap: 8px;
-}
-
-
 .category-badge {
     font-weight: 500;
     padding: 6px 12px;

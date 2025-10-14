@@ -1,6 +1,6 @@
 import { useAuthenticateContext } from '../../context/AuthenticateContext';
 import { useOrderContext } from "../../context/OrderContext";
-import dateUtils from "../../helpers/dateTime";
+import helpers from "../../helpers/index.js";
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Table, Badge, Button } from 'react-bootstrap';
 import Header from "../../components/Header";
@@ -75,7 +75,7 @@ const UserProfile = () => {
                                 </div>
                                 <h3 className="profile-name">{authUser.firstname} {authUser.lastname}</h3>
                                 <p className="profile-email">{authUser.email}</p>
-                                <p className="profile-meta">Member since {dateUtils.formatIsoDateTime(authUser.createdAt)}</p>
+                                <p className="profile-meta">Member since {helpers.formatIsoDateTime(authUser.createdAt)}</p>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -107,7 +107,7 @@ const UserProfile = () => {
                                                                 </td>
                                                                 <td>{order?.total_price || "No product"}</td>
                                                                 <td>{order?.status || "N/A"}</td>
-                                                                <td>{dateUtils.formatIsoDateTime(order?.created_at)}</td>
+                                                                <td>{helpers.formatIsoDateTime(order?.created_at)}</td>
                                                                 <td>
                                                                     <Button
                                                                         variant="outline-primary"

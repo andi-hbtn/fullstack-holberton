@@ -3,7 +3,7 @@ import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useCartContext } from '../../context/CartContext';
 import OrderConfirmed from '../OrderConfirmed';
 import EmptyCart from '../EmptyCart';
-import dateTime from "../../helpers/dateTime";
+import dateTime from "../../helpers";
 import Header from '../Header';
 import Footer from '../Footer';
 import AlertMessage from "../AlertMessage";

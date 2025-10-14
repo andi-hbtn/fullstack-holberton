@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Modal, Row, Col, ListGroup, Badge, Button } from 'react-bootstrap';
-import { FiPackage } from 'react-icons/fi';
+import { FiPackage, FiPrinter } from 'react-icons/fi';
 import { FaPoundSign } from "react-icons/fa";
 import { AiOutlinePercentage } from "react-icons/ai";
 
@@ -104,11 +104,16 @@ const ItemsModal = ({ open, close, selectedOrderItems }) => {
                 )}
             </Modal.Body>
 
-            <Modal.Footer className="border-top-0">
+            <Modal.Footer className="border-top-0 d-flex justify-content-between">
                 <Button variant="outline-secondary" onClick={close}>
                     Close
                 </Button>
-            </Modal.Footer>
+
+                <Button variant="outline-secondary" onClick={() => window.print()}>
+                    <FiPrinter />
+                    Print
+                </Button>
+            </Modal.Footer >
         </Modal>
     );
 };

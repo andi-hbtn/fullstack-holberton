@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button, Collapse } from "react-bootstrap";
 import { useProductContext } from "../../context/ProductContext.js";
 import { useAuthenticateContext } from "../../context/AuthenticateContext.js";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiPlus, FiEdit, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiPlus, FiEdit, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { FaTrash } from 'react-icons/fa';
 import { CiLock } from "react-icons/ci";
+import AdminSideBar from "../../components/AdminSideBar";
 
 import ProductVariantsModal from "./ProductVariantsModal.js";
 import EditProductVariants from "./EditProductVariants.js";
@@ -104,21 +105,7 @@ const ProductVariants = () => {
             <Container fluid className="main-content">
                 <Row>
                     <Col md={3} xl={2} className="sidebar bg-dark text-light">
-                        <div className="sidebar-sticky pt-4">
-                            <h4 className="px-3 mb-4">Quick Actions</h4>
-                            <Nav className="flex-column">
-                                <Nav.Link as={Link} to="/reports" className="nav-link text-light">
-                                    <FiSettings className="me-2" />
-                                    Reports
-                                </Nav.Link>
-                                <Nav.Link as={Link} to="/settings" className="nav-link text-light">
-                                    <FiSettings className="me-2" />
-                                    Settings
-                                </Nav.Link>
-                            </Nav>
-                            <div className="sidebar-stats mt-5 px-3">
-                            </div>
-                        </div>
+                        <AdminSideBar />
                     </Col>
 
                     <Col md={9} xl={10} className="p-4 main-content-area">

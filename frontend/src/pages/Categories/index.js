@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiSettings, FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
 import { useCategoryContext } from "../../context/CategoryContext";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
-import dateUtils from "../../helpers/dateTime.js";
+import AdminSideBar from "../../components/AdminSideBar";
+import helpers from "../../helpers/index.js";
 import "./index.css";
 
 const Categories = () => {
@@ -99,21 +100,7 @@ const Categories = () => {
 			<Container fluid className="main-content">
 				<Row>
 					<Col md={3} xl={2} className="sidebar bg-dark text-light">
-						<div className="sidebar-sticky pt-4">
-							<h4 className="px-3 mb-4">Quick Actions</h4>
-							<Nav className="flex-column">
-								<Nav.Link as={Link} to="/reports" className="nav-link text-light">
-									<FiSettings className="me-2" />
-									Reports
-								</Nav.Link>
-								<Nav.Link as={Link} to="/settings" className="nav-link text-light">
-									<FiSettings className="me-2" />
-									Settings
-								</Nav.Link>
-							</Nav>
-							<div className="sidebar-stats mt-5 px-3">
-							</div>
-						</div>
+						<AdminSideBar />
 					</Col>
 
 					<Col md={9} xl={10} className="p-4 main-content-area">
@@ -151,7 +138,7 @@ const Categories = () => {
 											</td>
 											<td>
 												<Badge bg="secondary">
-													{dateUtils.formatIsoDateTime(category.created)}
+													{helpers.formatIsoDateTime(category.created)}
 												</Badge>
 											</td>
 											<td>
