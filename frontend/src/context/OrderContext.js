@@ -7,6 +7,7 @@ const OrderProvider = (props) => {
 
     useEffect(() => {
         getAllOrders();
+        getOrdersByStatus("all");
     }, []);
 
     const getAllOrders = async () => {
@@ -63,7 +64,10 @@ const OrderProvider = (props) => {
                 return result.data;
             }
         } catch (error) {
-            throw error
+            if (error.response?.status === 404) {
+                setFilteredOrders([]);
+                return [];
+            }
         }
     }
 

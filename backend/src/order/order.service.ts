@@ -231,10 +231,19 @@ export class OrderService {
 
   public async getOrdersByStatus(status: string): Promise<OrderEntity[]> {
     try {
-      const result = await this.ordersRepository.find({ where: { status }, relations: ['orderItems'], order: { created_at: 'DESC' } });
-      if (!result) {
-        throw new ServiceHandler("This order was not found", HttpStatus.NOT_FOUND);
+
+      let result: OrderEntity[];
+
+      if (status === 'all') {
+        result = await this.ordersRepository.find({ relations: ['orderItems'], order: { created_at: 'DESC' } });
+      } else {
+        result = await this.ordersRepository.find({ where: { status }, relations: ['orderItems'], order: { created_at: 'DESC' } });
       }
+
+      if (!result || result.length === 0) {
+        throw new ServiceHandler("No orders found", HttpStatus.NOT_FOUND);
+      }
+
       return result;
     } catch (error) {
       console.log("error--in get all orders of auth user---", error);

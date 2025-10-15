@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useOrderContext } from "../../context/OrderContext";
 import { useNavigate, Link } from "react-router-dom";
-import { Navbar, Nav, Container, Row, Col, Table, Button, Badge, Form } from "react-bootstrap";
+import { Navbar, Nav, Container, Row, Col, Table, Button, Badge, Form, Alert } from "react-bootstrap";
 import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiEye } from "react-icons/fi";
 import { CiLock } from "react-icons/ci";
 import helpers from "../../helpers/index.js";
@@ -39,9 +39,6 @@ const Orders = () => {
 			return error
 		}
 	};
-
-	console.log("filteredOrders----", filteredOrders);
-	console.log("orders----", orders);
 
 	return (
 		<>
@@ -117,89 +114,87 @@ const Orders = () => {
 										</tr>
 									</thead>
 									<tbody>
-										{
-											filteredOrders.map((order, index) => {
-												return (
-													<tr key={index} className="table-row">
-														<td className="text-muted justify-content-center">#{order.id}</td>
-														<td>
-															<div className="d-flex justify-content-center">{helpers.generateSKU(order.id)}</div>
-														</td>
-														<td>
-															<div className="d-flex justify-content-center">
-																{
-																	order.orderItems.map((product, pkey) => {
-																		return (
-																			<div key={pkey}>
-																				<img
-																					src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${product?.main_image}`}
-																					alt="product"
-																					className="product-img rounded-circle me-3"
-																				/>
-																				<div>
-																					<h6 className="mb-0">{product.color}</h6>
-																				</div>
-
-																			</div>
-																		)
-																	})
-																}
-															</div>
-														</td>
-														<td>
-															<div className="d-flex justify-content-center">
-																<h6 className="mb-0">{order.total_price}</h6>
-															</div>
-														</td>
-														<td>
-															<div className="d-flex justify-content-center">
-																<h6 className="mb-0">
-																	{new Date(order.created_at).toLocaleDateString()}
-																</h6>
-															</div>
-														</td>
-														<td>
-															<div className="d-flex justify-content-center">
-																<Badge bg='success'>
-																	{order.status}
-																</Badge>
-															</div>
-														</td>
-														<td>
-															<div className="d-flex justify-content-center">
-																<Button
-																	variant="outline-primary"
-																	size="sm"
-																	className="me-2 action-btn"
-																	onClick={() => { return handleOpen(order.id) }}
-																>
-																	<FiEye />
-																</Button>
-															</div>
-														</td>
-														<td>
-															<div className="d-flex justify-content-center">
-																<Form.Select
-																	value={order.status}
-																	onChange={(e) => handleStatusChange(order.id, e.target.value)}
-																	style={{
-																		cursor: 'pointer',
-																		width: 'fit-content',
-																		appearance: 'none',
-																		padding: '0.25rem 1.5rem 0.25rem 0.75rem'
-																	}}
-																>
-																	<option value="pending">Pending</option>
-																	<option value="shipped">Shipped</option>
-																	<option value="delivered">Delivered</option>
-																	<option value="cancelled">Cancelled</option>
-																</Form.Select>
-															</div>
-														</td>
-													</tr>
-												)
-											})
-										}
+										{filteredOrders.length > 0 ? (
+											filteredOrders.map((order, index) => (
+												<tr key={index} className="table-row">
+													<td className="text-muted justify-content-center">#{order.id}</td>
+													<td>
+														<div className="d-flex justify-content-center">{helpers.generateSKU(order.id)}</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															{order.orderItems.map((product, pkey) => (
+																<div key={pkey} className="d-flex align-items-center me-2">
+																	<img
+																		src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${product?.main_image}`}
+																		alt="product"
+																		className="product-img rounded-circle me-2"
+																		style={{ width: "40px", height: "40px" }}
+																	/>
+																	<h6 className="mb-0">{product.color}</h6>
+																</div>
+															))}
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<h6 className="mb-0">{order.total_price}</h6>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<h6 className="mb-0">{new Date(order.created_at).toLocaleDateString()}</h6>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<Badge bg="success">{order.status}</Badge>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<Button
+																variant="outline-primary"
+																size="sm"
+																className="me-2 action-btn"
+																onClick={() => handleOpen(order.id)}
+															>
+																<FiEye />
+															</Button>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<Form.Select
+																value={order.status}
+																onChange={(e) => handleStatusChange(order.id, e.target.value)}
+																style={{
+																	cursor: "pointer",
+																	width: "fit-content",
+																	appearance: "none",
+																	padding: "0.25rem 1.5rem 0.25rem 0.75rem",
+																}}
+															>
+																<option value="pending">Pending</option>
+																<option value="shipped">Shipped</option>
+																<option value="delivered">Delivered</option>
+																<option value="cancelled">Cancelled</option>
+															</Form.Select>
+														</div>
+													</td>
+												</tr>
+											))
+										) : (
+											<tr>
+												<td colSpan="8">
+													<div className="d-flex justify-content-center py-4">
+														<Alert variant="secondary" className="mb-0 text-center w-75">
+															No orders found for this status.
+														</Alert>
+													</div>
+												</td>
+											</tr>
+										)}
 									</tbody>
 								</Table>
 							</div>
