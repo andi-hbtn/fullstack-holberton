@@ -7,7 +7,7 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
 
   const { register } = useAuthenticateContext();
   const [registerResponse, setRegisterResponse] = useState({ error: false, message: "", status: 0 });
-  const [values, setValues] = useState({ firstname: "", lastname: "", company_number: "", company_name: "", company_address: "", phone: "", email: "", password: "" });
+  const [values, setValues] = useState({ firstname:"", lastname:"", company_number:"", company_name:"", company_address:"", phone:"", email:"", password:"" });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (event) => {
