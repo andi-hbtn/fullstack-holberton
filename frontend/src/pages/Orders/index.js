@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
 import { useOrderContext } from "../../context/OrderContext";
 import { useNavigate, Link } from "react-router-dom";
@@ -13,9 +13,14 @@ const Orders = () => {
 	const { authUser, logout } = useAuthenticateContext();
 	const { orders, updateOrderStatus, filteredOrders } = useOrderContext();
 	const [orderId, setOrderId] = useState(0);
+	const [searchResults, setSearchResults] = useState(filteredOrders);
 	const navigate = useNavigate();
 
 	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		setSearchResults(filteredOrders);
+	}, [filteredOrders]);
 
 	const handleLogout = async () => {
 		await logout();
@@ -39,6 +44,23 @@ const Orders = () => {
 			return error
 		}
 	};
+
+
+	const handleSearch = (event) => {
+		const term = event.target.value.toLowerCase();
+
+		if (term === "") {
+			setSearchResults(filteredOrders);
+			return;
+		}
+
+		const results = orders.filter((order) => {
+			const sku = helpers.generateSKU(order.id).toLowerCase();
+			return sku.includes(term);
+		});
+
+		setSearchResults(results);
+	}
 
 	return (
 		<>
@@ -97,6 +119,19 @@ const Orders = () => {
 						<Col md={9} xl={10} className="p-4 main-content-area">
 							<div className="d-flex justify-content-between align-items-center mb-4">
 								<h2 className="page-title">Order Management</h2>
+
+
+								<Col md={4}>
+									<Form.Group className="mb-4" controlId="appartment">
+										<Form.Label>Search Order by order-number</Form.Label>
+										<Form.Control
+											type="text"
+											name="orderNumber"
+											onChange={handleSearch}
+											className="form-input"
+										/>
+									</Form.Group>
+								</Col>
 							</div>
 
 							<div className="custom-card p-4 shadow-sm">
@@ -114,8 +149,8 @@ const Orders = () => {
 										</tr>
 									</thead>
 									<tbody>
-										{filteredOrders.length > 0 ? (
-											filteredOrders.map((order, index) => (
+										{searchResults.length > 0 ? (
+											searchResults.map((order, index) => (
 												<tr key={index} className="table-row">
 													<td className="text-muted justify-content-center">#{order.id}</td>
 													<td>

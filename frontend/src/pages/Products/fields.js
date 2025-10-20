@@ -11,6 +11,13 @@ const fields = [
         label: "Description",
         placeholder: "Insert description..."
     },
+
+    {
+        type: "text",
+        name: "reference_number",
+        label: "Reference number",
+        placeholder: "Insert reference number..."
+    },
     {
         type: "options",
         name: "category_id",

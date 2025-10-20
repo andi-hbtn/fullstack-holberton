@@ -107,9 +107,7 @@ const CategoryPage = () => {
                                                 </Card.Title>
                                             </div>
                                             <Card.Text className="product-description flex-grow-1">
-                                                {el.description.length > 40
-                                                    ? `${el.description.substring(0, 50)}...`
-                                                    : el.description}
+                                                Ref: {el.reference_number}
                                             </Card.Text>
                                         </Card.Body>
                                     </Card>

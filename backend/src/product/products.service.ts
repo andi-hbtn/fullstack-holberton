@@ -50,6 +50,7 @@ export class ProductService {
 			const product = {
 				title: data.title,
 				description: data.description,
+				reference_number: data.reference_number,
 				is_active: data.is_active,
 				category_id: data.category_id,
 				image: image

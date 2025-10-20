@@ -20,7 +20,6 @@ const Checkout = () => {
     const [values, setValues] = useState({
         firstname: "",
         lastname: "",
-        company_number: "",
         company_name: "",
         company_address: "",
         email: "",
@@ -29,6 +28,7 @@ const Checkout = () => {
         country: "united-kingdom",
         town: "",
         zipCode: "",
+        address: "",
         appartment: "",
         message: ""
     });
@@ -125,7 +125,6 @@ const Checkout = () => {
                 ...prev,
                 firstname: authUser.firstname || "",
                 lastname: authUser.lastname || "",
-                company_number: authUser.company_number || "",
                 company_name: authUser.company_name || "",
                 company_address: authUser.company_address || "",
                 email: authUser.email || "",
@@ -175,7 +174,7 @@ const Checkout = () => {
                                             <Row>
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="firstname">
-                                                        <Form.Label>First name</Form.Label>
+                                                        <Form.Label>First name *</Form.Label>
                                                         <Form.Control
                                                             name="firstname"
                                                             value={values.firstname}
@@ -190,7 +189,7 @@ const Checkout = () => {
 
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="lastname">
-                                                        <Form.Label>Last name</Form.Label>
+                                                        <Form.Label>Last name *</Form.Label>
                                                         <Form.Control
                                                             name="lastname"
                                                             value={values.lastname}
@@ -205,31 +204,15 @@ const Checkout = () => {
                                                 </Col>
 
                                                 <Col md={6}>
-                                                    <Form.Group className="mb-4" controlId="company_number">
-                                                        <Form.Label>Company number</Form.Label>
-                                                        <Form.Control
-                                                            name="company_number"
-                                                            value={values.company_number}
-                                                            onChange={handleChange}
-                                                            type="text"
-                                                            placeholder="Enter Company number"
-                                                            className="form-input"
-                                                            required
-                                                        />
-                                                    </Form.Group>
-                                                </Col>
-
-                                                <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="company_name">
                                                         <Form.Label>Company name</Form.Label>
                                                         <Form.Control
-                                                            name="company_number"
+                                                            name="company_name"
                                                             value={values.company_name}
                                                             onChange={handleChange}
                                                             type="text"
                                                             placeholder="Enter Company name"
                                                             className="form-input"
-                                                            required
                                                         />
                                                     </Form.Group>
                                                 </Col>
@@ -238,20 +221,19 @@ const Checkout = () => {
                                                     <Form.Group className="mb-4" controlId="company_address">
                                                         <Form.Label>Company address</Form.Label>
                                                         <Form.Control
-                                                            name="company_number"
+                                                            name="company_address"
                                                             value={values.company_address}
                                                             onChange={handleChange}
                                                             type="text"
                                                             placeholder="Enter Company address"
                                                             className="form-input"
-                                                            required
                                                         />
                                                     </Form.Group>
                                                 </Col>
 
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="email">
-                                                        <Form.Label>Email address</Form.Label>
+                                                        <Form.Label>Email address *</Form.Label>
                                                         <Form.Control
                                                             name="email"
                                                             value={values.email}
@@ -266,7 +248,7 @@ const Checkout = () => {
 
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="phoneNumber">
-                                                        <Form.Label>Phone number</Form.Label>
+                                                        <Form.Label>Phone number *</Form.Label>
                                                         <Form.Control
                                                             name="phone"
                                                             value={values.phone}
@@ -288,7 +270,7 @@ const Checkout = () => {
                                             <Row>
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="country">
-                                                        <Form.Label>Country / Region</Form.Label>
+                                                        <Form.Label>Country / Region *</Form.Label>
                                                         <Form.Select
                                                             name="country"
                                                             value={values.country}
@@ -297,16 +279,13 @@ const Checkout = () => {
                                                             disabled={!!authUser}
                                                         >
                                                             <option value="united-kingdom">United Kingdom (UK)</option>
-                                                            <option value="united-states">United States (US)</option>
-                                                            <option value="canada">Canada</option>
-                                                            <option value="australia">Australia</option>
                                                         </Form.Select>
                                                     </Form.Group>
                                                 </Col>
 
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="town">
-                                                        <Form.Label>Town / City</Form.Label>
+                                                        <Form.Label>Town/City *</Form.Label>
                                                         <Form.Control
                                                             name="town"
                                                             value={values.town}
@@ -321,7 +300,7 @@ const Checkout = () => {
 
                                                 <Col md={6}>
                                                     <Form.Group className="mb-4" controlId="zip">
-                                                        <Form.Label>Postal Code</Form.Label>
+                                                        <Form.Label>Postal Code *</Form.Label>
                                                         <Form.Control
                                                             name="zipCode"
                                                             value={values.zipCode}
@@ -334,13 +313,24 @@ const Checkout = () => {
                                                     </Form.Group>
                                                 </Col>
 
-                                                <Col md={6}>
-
+                                                <Col md={12}>
+                                                    <Form.Group className="mb-4" controlId="appartment">
+                                                        <Form.Label>Address *</Form.Label>
+                                                        <Form.Control
+                                                            name="address"
+                                                            value={values.address}
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            placeholder="Enter address"
+                                                            className="form-input"
+                                                            required
+                                                        />
+                                                    </Form.Group>
                                                 </Col>
 
                                                 <Col md={12}>
                                                     <Form.Group className="mb-4" controlId="appartment">
-                                                        <Form.Label>Apartment, suite, unit, etc. (optional)</Form.Label>
+                                                        <Form.Label>Apartment, suite, unit, etc.</Form.Label>
                                                         <Form.Control
                                                             name="appartment"
                                                             value={values.appartment}

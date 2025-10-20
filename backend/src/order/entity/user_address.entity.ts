@@ -12,9 +12,6 @@ export class UserAddress {
     lastname: string;
 
     @Column()
-    company_number: string;
-
-    @Column()
     company_name: string;
 
     @Column()

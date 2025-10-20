@@ -36,9 +36,6 @@ export class OrderDto {
 	lastname?: string;
 
 	@IsOptional()
-	company_number?: string;
-
-	@IsOptional()
 	company_name?: string;
 
 	@IsOptional()

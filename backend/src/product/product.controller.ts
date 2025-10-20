@@ -49,6 +49,7 @@ export class ProductController {
 			const product = {
 				title: bodyParam.title,
 				description: bodyParam.description,
+				reference_number: bodyParam.reference_number,
 				is_active: bodyParam.is_active,
 				category_id: bodyParam.category_id,
 				image: file.filename

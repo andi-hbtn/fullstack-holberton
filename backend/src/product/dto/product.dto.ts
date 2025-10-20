@@ -12,6 +12,10 @@ export class ProductDto {
 	description: string;
 
 	@IsNotEmpty()
+	@IsString()
+	reference_number: string;
+
+	@IsNotEmpty()
 	@IsBoolean()
 	@Transform(({ value }) => {
 		if (typeof value === 'string') {

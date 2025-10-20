@@ -29,7 +29,7 @@ export class OrderService {
 
   public async create(orderData: OrderDto): Promise<any> {
     try {
-      const { user_id, items, total_price, status, created_at, firstname, lastname, company_number, company_name, company_address, phone, email, country, town, zipCode, appartment, message } = orderData;
+      const { user_id, items, total_price, status, created_at, firstname, lastname, company_name, company_address, phone, email, country, town, zipCode, appartment, message } = orderData;
       let user: UserEntity | null = null;
 
       // Check if user is auth and gethis data from DB
@@ -39,7 +39,6 @@ export class OrderService {
         // Updata users data
         if (user) {
           this.usersRepository.merge(user, {
-            company_number,
             company_name,
             company_address,
             country,
@@ -57,7 +56,6 @@ export class OrderService {
         user = this.usersRepository.create({
           firstname,
           lastname,
-          company_number,
           company_name,
           company_address,
           phone,

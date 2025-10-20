@@ -62,6 +62,7 @@ const ProductModal = () => {
 				id: product.id,
 				title: product.title,
 				description: product.description,
+				reference_number: product.reference_number,
 				category_id: product.category_id,
 				is_active: product.is_active
 			}
@@ -148,6 +149,7 @@ const ProductModal = () => {
 										<tr>
 											<th>ID</th>
 											<th>Product</th>
+											<th>Reference</th>
 											<th>Category</th>
 											<th>Status</th>
 											<th>Image</th>
@@ -168,6 +170,7 @@ const ProductModal = () => {
 														</div>
 													</div>
 												</td>
+												<td>{product?.reference_number}</td>
 												<td>
 													<Badge bg="secondary" className="category-badge">
 														{product.category.title}

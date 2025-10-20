@@ -13,6 +13,9 @@ export class ProductEntity {
 	@Column({ length: 500 })
 	description: string;
 
+	@Column()
+	reference_number: string;
+
 	@Column({ default: true })
 	is_active: boolean;
 

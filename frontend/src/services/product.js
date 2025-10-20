@@ -5,6 +5,7 @@ const create_product_service = async (data) => {
 	const formData = new FormData();
 	formData.append("title", data.title);
 	formData.append("description", data.description);
+	formData.append("reference_number", data.reference_number);
 	formData.append("category_id", data.category_id);
 	formData.append("image", data.image);
 	formData.append("is_active", data.is_active);
@@ -79,6 +80,7 @@ const update_product = async (data) => {
 	const formData = new FormData();
 	formData.append("title", data.title);
 	formData.append("description", data.description);
+	formData.append("reference_number", data.reference_number);
 	formData.append("category_id", data.category_id);
 	formData.append("image", data.image);
 	formData.append("is_active", data.is_active);
