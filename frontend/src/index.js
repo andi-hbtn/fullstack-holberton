@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 
 import { CartProvider } from "./context/CartContext.js";
 import { AuthenticateProvider } from './context/AuthenticateContext';
+import { CustomerProvider } from "./context/CustomerContext.js"
 import { CategoryProvider } from "./context/CategoryContext";
 import { ProductProvider } from './context/ProductContext';
 import { OrderProvider } from './context/OrderContext.js';
@@ -12,6 +13,7 @@ import { OrderProvider } from './context/OrderContext.js';
 import Categories from "./pages/Categories";
 import Products from "./pages/Products";
 import Orders from './pages/Orders/';
+import Customers from './pages/Customers';
 import ProductWithColorOptions from "./pages/ProductVariants/index.js";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from './pages/ResetPassword';
@@ -36,64 +38,73 @@ axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthenticateProvider>
-    <CartProvider>
-      <CategoryProvider>
-        <ProductProvider>
-          <OrderProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/admin-category" element={
-                  <AdminRoute>
-                    <Categories />
-                  </AdminRoute>
-                }
-                />
-                <Route path="/admin-products" element={
-                  <AdminRoute>
-                    <Products />
-                  </AdminRoute>
-                }
-                />
+    <CustomerProvider>
+      <CartProvider>
+        <CategoryProvider>
+          <ProductProvider>
+            <OrderProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/admin-category" element={
+                    <AdminRoute>
+                      <Categories />
+                    </AdminRoute>
+                  }
+                  />
+                  <Route path="/admin-products" element={
+                    <AdminRoute>
+                      <Products />
+                    </AdminRoute>
+                  }
+                  />
 
-                <Route path="/admin-product-with-colors" element={
-                  <AdminRoute>
-                    <ProductWithColorOptions />
-                  </AdminRoute>
-                }
-                />
+                  <Route path="/admin-product-with-colors" element={
+                    <AdminRoute>
+                      <ProductWithColorOptions />
+                    </AdminRoute>
+                  }
+                  />
 
-                <Route path="/admin-orders" element={
-                  <AdminRoute>
-                    <Orders />
-                  </AdminRoute>
-                }
-                />
+                  <Route path="/admin-orders" element={
+                    <AdminRoute>
+                      <Orders />
+                    </AdminRoute>
+                  }
+                  />
 
-                <Route path="/profile" element={
-                  <AuthUserRoute>
-                    <UserProfile />
-                  </AuthUserRoute>
-                }
-                />
+                  <Route path="/admin-customers" element={
+                    <AdminRoute>
+                      <Customers />
+                    </AdminRoute>
+                  }
+                  />
 
-                <Route path="/" element={<Home />} />
-                <Route path="/about-us" element={<AboutUs />} />
-                <Route path="/product/:id" element={<ProductPage />} />
-                <Route path="/faq" element={<Faq />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/privacy" element={<PrivacyPolicy />} />
-                <Route path="/terms" element={< TermsAndConditions />} />
-                <Route path="/category/:id" element={<CategoryPage />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password/:token" element={<ResetPassword />} />
-              </Routes>
-            </BrowserRouter>
-          </OrderProvider>
-        </ProductProvider>
-      </CategoryProvider>
-    </CartProvider>
+                  <Route path="/profile" element={
+                    <AuthUserRoute>
+                      <UserProfile />
+                    </AuthUserRoute>
+                  }
+                  />
+
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about-us" element={<AboutUs />} />
+                  <Route path="/product/:id" element={<ProductPage />} />
+                  <Route path="/faq" element={<Faq />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={< TermsAndConditions />} />
+                  <Route path="/category/:id" element={<CategoryPage />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password/:token" element={<ResetPassword />} />
+                </Routes>
+              </BrowserRouter>
+            </OrderProvider>
+          </ProductProvider>
+        </CategoryProvider>
+      </CartProvider>
+    </CustomerProvider>
   </AuthenticateProvider>
 );
 

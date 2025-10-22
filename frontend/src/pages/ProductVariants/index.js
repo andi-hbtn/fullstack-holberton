@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Row, Col, Table, Button, Collapse } from "react-bootstrap";
+import { Container, Row, Col, Table, Button, Collapse } from "react-bootstrap";
 import { useProductContext } from "../../context/ProductContext.js";
-import { useAuthenticateContext } from "../../context/AuthenticateContext.js";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiPlus, FiEdit, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import NavAdmin from "../../components/NavAdmin";
+import { FiPlus, FiEdit, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { FaTrash } from 'react-icons/fa';
-import { CiLock } from "react-icons/ci";
+
 import AdminSideBar from "../../components/AdminSideBar";
 
 import ProductVariantsModal from "./ProductVariantsModal.js";
@@ -17,18 +15,11 @@ const ProductVariants = () => {
     const { deleteProductVariant } = useProductContext();
     const [open, setOpen] = useState(false);
     const { products } = useProductContext();
-    const { authUser, logout } = useAuthenticateContext();
     const [id, setId] = useState(0);
     const [expandedRows, setExpandedRows] = useState([]);
 
     const [openEdit, setOpenEdit] = useState(false);
     const [productVariant, setProductVariant] = useState(null);
-    const navigate = useNavigate();
-
-    const handleLogout = async () => {
-        await logout();
-        navigate("/");
-    }
 
     const handleCreate = (data) => {
         setId(data.id);
@@ -55,53 +46,7 @@ const ProductVariants = () => {
 
     return (
         <div className="admin-dashboard">
-            <Navbar bg="dark" variant="dark" expand="lg" className="admin-navbar">
-                <Container fluid>
-                    <Navbar.Brand as={Link} to="/products" className="d-flex align-items-center">
-                        <FiBox className="me-2" />
-                        <span className="brand-text">Admin Panel</span>
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link as={Link} to="/admin-category" className="nav-link">
-                                <FiList className="me-1" />
-                                Categories
-                            </Nav.Link>
-                            <Nav.Link as={Link} to="/admin-products" className="nav-link">
-                                <FiShoppingBag className="me-1" />
-                                Products
-                            </Nav.Link>
-                            <Nav.Link as={Link} to="/admin-product-with-colors" className="nav-link active">
-                                <FiBox className="me-1" />
-                                Product Colors
-                            </Nav.Link>
-                            <Nav.Link as={Link} to="/admin-orders" className="nav-link active">
-                                <FiBox className="me-1" />
-                                Orders
-                            </Nav.Link>
-                            <Nav.Link as={Link} to="/" className="nav-link">
-                                <FiHome className="me-1" />
-                                Home
-                            </Nav.Link>
-
-                            <Nav.Link as={Link} to="/forgot-password" className="nav-link">
-                                <CiLock className="me-1" />
-                                Forgot password
-                            </Nav.Link>
-                        </Nav>
-                        <Nav>
-                            {authUser && (
-                                <Button variant="outline-light" onClick={handleLogout} className="logout-btn">
-                                    <FiLogOut className="me-2" />
-                                    Logout
-                                </Button>
-                            )}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-
+            <NavAdmin />
             <Container fluid className="main-content">
                 <Row>
                     <Col md={3} xl={2} className="sidebar bg-dark text-light">

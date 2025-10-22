@@ -75,7 +75,6 @@ const AuthenticateProvider = (props) => {
 	}
 
 	const values = { authUser, register, login, logout, checkAuthUser, isAuthChecked, resetPassword };
-
 	return (
 		<AuthenticateContext.Provider value={values}>
 			{props.children}

@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { Navbar, Nav, Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
-import { FiLogOut, FiBox, FiList, FiShoppingBag, FiHome, FiEdit, FiTrash, FiPlus } from "react-icons/fi";
-import { CiLock } from "react-icons/ci";
+import { Container, Row, Col, Table, Button, Badge } from "react-bootstrap";
+import { FiEdit, FiTrash, FiPlus } from "react-icons/fi";
 import { useProductContext } from "../../context/ProductContext";
 import { useCategoryContext } from "../../context/CategoryContext";
-import { useAuthenticateContext } from "../../context/AuthenticateContext";
+import NavAdmin from "../../components/NavAdmin";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
 import AdminSideBar from "../../components/AdminSideBar";
@@ -13,8 +11,6 @@ import AdminSideBar from "../../components/AdminSideBar";
 const ProductModal = () => {
 	const { products, createProduct, updateProduct, deleteProduct } = useProductContext();
 	const { categories } = useCategoryContext();
-	const { authUser, logout } = useAuthenticateContext();
-	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
 
@@ -75,59 +71,10 @@ const ProductModal = () => {
 		await deleteProduct(id);
 	}
 
-	const handleLogout = async () => {
-		await logout();
-		navigate("/");
-	}
-
 	return (
 		<>
 			<div className="admin-dashboard">
-				<Navbar bg="dark" variant="dark" expand="lg" className="admin-navbar">
-					<Container fluid>
-						<Navbar.Brand as={Link} to="/products" className="d-flex align-items-center">
-							<FiBox className="me-2" />
-							<span className="brand-text">Admin Panel</span>
-						</Navbar.Brand>
-						<Navbar.Toggle aria-controls="basic-navbar-nav" />
-						<Navbar.Collapse id="basic-navbar-nav">
-							<Nav className="me-auto">
-								<Nav.Link as={Link} to="/admin-category" className="nav-link">
-									<FiList className="me-1" />
-									Categories
-								</Nav.Link>
-								<Nav.Link as={Link} to="/admin-products" className="nav-link active">
-									<FiShoppingBag className="me-1" />
-									Products
-								</Nav.Link>
-								<Nav.Link as={Link} to="/admin-product-with-colors" className="nav-link">
-									<FiBox className="me-1" />
-									Product Colors
-								</Nav.Link>
-								<Nav.Link as={Link} to="/admin-orders" className="nav-link active">
-									<FiBox className="me-1" />
-									Orders
-								</Nav.Link>
-								<Nav.Link as={Link} to="/" className="nav-link">
-									<FiHome className="me-1" />
-									Home
-								</Nav.Link>
-								<Nav.Link as={Link} to="/forgot-password" className="nav-link">
-									<CiLock className="me-1" />
-									Forgot password
-								</Nav.Link>
-							</Nav>
-							<Nav>
-								{authUser && (
-									<Button variant="outline-light" onClick={handleLogout} className="logout-btn">
-										<FiLogOut className="me-2" />
-										Logout
-									</Button>
-								)}
-							</Nav>
-						</Navbar.Collapse>
-					</Container>
-				</Navbar>
+				<NavAdmin />
 				<Container fluid className="main-content">
 					<Row>
 						<Col md={3} xl={2} className="sidebar bg-dark text-light">

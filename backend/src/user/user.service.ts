@@ -8,6 +8,15 @@ import { ServiceHandler } from 'src/errorHandler/service.error';
 export class UserService {
 	constructor(@InjectRepository(UserEntity) private readonly usersRepository: Repository<UserEntity>) { }
 
+	public async getAllUsers(): Promise<UserEntity[]> {
+		try {
+			const result = await this.usersRepository.find()
+			return result;
+		} catch (error) {
+			throw new ServiceHandler(error.message, HttpStatus.NOT_FOUND);
+		}
+	}
+
 	public async findByEmail(email: string): Promise<UserEntity> {
 		try {
 			const result = await this.usersRepository.findOneBy({ email })
