@@ -1,4 +1,5 @@
-import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Badge, Container, Row, Col, Table, Form, Button } from "react-bootstrap";
 import { useCustomerContext } from "../../context/CustomerContext";
 import NavAdmin from "../../components/NavAdmin";
 import AdminSideBar from "../../components/AdminSideBar";
@@ -6,12 +7,42 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 const Customers = () => {
     const { customers } = useCustomerContext();
+    const [filteredCustomers, setFilteredCustomers] = useState(customers);
+
+
+    useEffect(() => {
+        setFilteredCustomers(customers)
+    }, [customers]);
 
     const handleEdit = () => {
 
     }
 
     const handleDelete = () => {
+
+    }
+
+    const handleSearch = (event) => {
+        const value = event.target.value.toLowerCase().trim();
+        if (value.length <= 3) {
+            setFilteredCustomers(customers);
+            return
+        }
+        const result = customers.filter((el, index) => el.email.toLowerCase().includes(value));
+        setFilteredCustomers(result);
+    }
+
+
+    const customerRolesBadge = (role) => {
+        let variant = "";
+
+        if (role === "admin") variant = "primary";
+        else if (role === "user") variant = "success";
+        else if (role === "guest") variant = "warning";
+
+        return (
+            <Badge bg={variant} className="me-1">{role}</Badge>
+        )
 
     }
 
@@ -28,6 +59,18 @@ const Customers = () => {
                         <Col md={9} xl={10} className="p-4 main-content-area">
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h2 className="page-title">Customers Section</h2>
+
+                                <Col md={4}>
+                                    <Form.Group className="mb-4" controlId="appartment">
+                                        <Form.Label>Search Order by email</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="customer"
+                                            onChange={handleSearch}
+                                            className="form-input"
+                                        />
+                                    </Form.Group>
+                                </Col>
                             </div>
 
                             <div className="custom-card p-4 shadow-sm">
@@ -36,8 +79,8 @@ const Customers = () => {
                                         <tr>
                                             <th>#</th>
                                             <th>Full Name</th>
-                                            <th>Company Name</th>
-                                            <th>Company Address</th>
+                                            <th>C.Name</th>
+                                            <th>C.Address</th>
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>Country</th>
@@ -46,14 +89,13 @@ const Customers = () => {
                                             <th>Appartment</th>
                                             <th>Message</th>
                                             <th>Role</th>
-                                            <th>Guest?</th>
-                                            <th>Created At</th>
+                                            <th>Registered</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {customers?.length > 0 ? (
-                                            customers.map((customer, index) => (
+                                        {filteredCustomers?.length > 0 ? (
+                                            filteredCustomers.map((customer, index) => (
                                                 <tr key={customer.id}>
                                                     <td>{index + 1}</td>
                                                     <td>{customer.firstname} {customer.lastname}</td>
@@ -69,14 +111,7 @@ const Customers = () => {
                                                         {customer.message || '-'}
                                                     </td>
                                                     <td>
-                                                        <span className="badge bg-info text-dark">{customer.roles}</span>
-                                                    </td>
-                                                    <td>
-                                                        {customer.is_guest ? (
-                                                            <span className="badge bg-secondary">Yes</span>
-                                                        ) : (
-                                                            <span className="badge bg-success">No</span>
-                                                        )}
+                                                        {customerRolesBadge(customer.roles)}
                                                     </td>
                                                     <td>{new Date(customer.createdAt).toLocaleDateString()}</td>
                                                     <td>
