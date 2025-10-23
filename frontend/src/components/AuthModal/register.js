@@ -55,7 +55,7 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
             <Row className='login-form'>
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="first_name">
-                  <Form.Label>First name</Form.Label>
+                  <Form.Label>First name *</Form.Label>
                   <Form.Control
                     value={values.firstname}
                     required
@@ -69,7 +69,7 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
               </Col>
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="last_name">
-                  <Form.Label>Last name</Form.Label>
+                  <Form.Label>Last name *</Form.Label>
                   <Form.Control
                     value={values.lastname}
                     required
@@ -109,7 +109,7 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
               </Col>
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="email_address">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Email address *</Form.Label>
                   <Form.Control
                     value={values.email}
                     required
@@ -123,7 +123,7 @@ const Register = ({ openRegister, closeRegister, closeLogin }) => {
               </Col>
               <Col xs={12} md={12}>
                 <Form.Group className="mb-3" controlId="password">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>Password *</Form.Label>
                   <InputGroup>
                     <Form.Control
                       value={values.password}
