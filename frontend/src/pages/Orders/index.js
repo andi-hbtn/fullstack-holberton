@@ -18,8 +18,6 @@ const Orders = () => {
 		setSearchResults(filteredOrders);
 	}, [filteredOrders]);
 
-
-
 	const handleOpen = (id) => {
 		setOrderId(id);
 		setOpen(!open);
@@ -38,21 +36,29 @@ const Orders = () => {
 		}
 	};
 
-
 	const handleSearch = (event) => {
 		const term = event.target.value.toLowerCase();
-
 		if (term === "") {
 			setSearchResults(filteredOrders);
 			return;
 		}
-
 		const results = orders.filter((order) => {
 			const sku = helpers.generateSKU(order.id).toLowerCase();
 			return sku.includes(term);
 		});
-
 		setSearchResults(results);
+	}
+
+	const statusBadge = (status) => {
+		let variant = "";
+
+		if (status === "pending") variant = "warning";
+		else if (status === "shipped") variant = "info";
+		else if (status === "delivered") variant = "success";
+		else if (status === "cancelled") variant = "danger";
+		return (
+			<Badge bg={variant} className="me-1">{status}</Badge>
+		)
 	}
 
 	return (
@@ -61,11 +67,11 @@ const Orders = () => {
 				<NavAdmin />
 				<Container fluid className="main-content">
 					<Row>
-						<Col md={3} xl={2} className="sidebar bg-dark text-light">
+						<Col md={3} xl={1} className="sidebar bg-dark text-light">
 							<AdminSideBar />
 						</Col>
 
-						<Col md={9} xl={10} className="p-4 main-content-area">
+						<Col md={9} xl={11} className="p-4 main-content-area">
 							<div className="d-flex justify-content-between align-items-center mb-4">
 								<h2 className="page-title">Order Management</h2>
 
@@ -89,7 +95,11 @@ const Orders = () => {
 										<tr>
 											<th>ID</th>
 											<th>Order Number</th>
-											<th>Product</th>
+											<th>Fullname</th>
+											<th>Email</th>
+											<th>Phone</th>
+											<th>Zip Code</th>
+											<th>Appartment</th>
 											<th>Price</th>
 											<th>Created at</th>
 											<th>Status</th>
@@ -107,17 +117,27 @@ const Orders = () => {
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															{order.orderItems.map((product, pkey) => (
-																<div key={pkey} className="d-flex align-items-center me-2">
-																	<img
-																		src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${product?.main_image}`}
-																		alt="product"
-																		className="product-img rounded-circle me-2"
-																		style={{ width: "40px", height: "40px" }}
-																	/>
-																	<h6 className="mb-0">{product.color}</h6>
-																</div>
-															))}
+															<h6 className="mb-0">{order.user.firstname} {order.user.lastname}</h6>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<h6 className="mb-0">{order.user.email}</h6>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<h6 className="mb-0">{order.user.phone}</h6>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<h6 className="mb-0">{order.user.zipCode}</h6>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															<h6 className="mb-0">{order.user.appartment}</h6>
 														</div>
 													</td>
 													<td>
@@ -132,7 +152,7 @@ const Orders = () => {
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<Badge bg="success">{order.status}</Badge>
+															{statusBadge(order.status)}
 														</div>
 													</td>
 													<td>

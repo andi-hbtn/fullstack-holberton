@@ -39,11 +39,9 @@ const Customers = () => {
         if (role === "admin") variant = "primary";
         else if (role === "user") variant = "success";
         else if (role === "guest") variant = "warning";
-
         return (
             <Badge bg={variant} className="me-1">{role}</Badge>
         )
-
     }
 
     return (

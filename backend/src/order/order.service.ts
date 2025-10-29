@@ -233,9 +233,9 @@ export class OrderService {
       let result: OrderEntity[];
 
       if (status === 'all') {
-        result = await this.ordersRepository.find({ relations: ['orderItems'], order: { created_at: 'DESC' } });
+        result = await this.ordersRepository.find({ relations: ['user', 'orderItems'], order: { created_at: 'DESC' } });
       } else {
-        result = await this.ordersRepository.find({ where: { status }, relations: ['orderItems'], order: { created_at: 'DESC' } });
+        result = await this.ordersRepository.find({ where: { status }, relations: ['user', 'orderItems'], order: { created_at: 'DESC' } });
       }
 
       if (!result || result.length === 0) {
