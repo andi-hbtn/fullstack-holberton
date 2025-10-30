@@ -100,6 +100,7 @@ const Orders = () => {
 											<th>Phone</th>
 											<th>Zip Code</th>
 											<th>Appartment</th>
+											<th>Address</th>
 											<th>Price</th>
 											<th>Created at</th>
 											<th>Status</th>
@@ -117,37 +118,42 @@ const Orders = () => {
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<h6 className="mb-0">{order.user.firstname} {order.user.lastname}</h6>
+															{order.user.firstname} {order.user.lastname}
 														</div>
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<h6 className="mb-0">{order.user.email}</h6>
+															{order.user.email}
 														</div>
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<h6 className="mb-0">{order.user.phone}</h6>
+															{order.user.phone}
 														</div>
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<h6 className="mb-0">{order.user.zipCode}</h6>
+															{order.user.zipCode}
 														</div>
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<h6 className="mb-0">{order.user.appartment}</h6>
+															{order.user.appartment}
 														</div>
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<h6 className="mb-0">{order.total_price}</h6>
+															{order.user.address}
 														</div>
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															<h6 className="mb-0">{new Date(order.created_at).toLocaleDateString()}</h6>
+															{order.total_price}
+														</div>
+													</td>
+													<td>
+														<div className="d-flex justify-content-center">
+															{new Date(order.created_at).toLocaleDateString()}
 														</div>
 													</td>
 													<td>

@@ -45,6 +45,9 @@ export class UserEntity {
 	@Column({ nullable: true })
 	appartment: string | null;
 
+	@Column()
+	address: string;
+
 	@Column({ nullable: true })
 	message: string | null;
 

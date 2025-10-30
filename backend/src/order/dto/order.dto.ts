@@ -67,6 +67,9 @@ export class OrderDto {
 	@IsString()
 	appartment?: string;
 
+	@IsString()
+	address: string;
+
 	@IsOptional()
 	@IsString()
 	message?: string;
