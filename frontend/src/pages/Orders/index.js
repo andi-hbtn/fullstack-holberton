@@ -75,7 +75,6 @@ const Orders = () => {
 							<div className="d-flex justify-content-between align-items-center mb-4">
 								<h2 className="page-title">Order Management</h2>
 
-
 								<Col md={4}>
 									<Form.Group className="mb-4" controlId="appartment">
 										<Form.Label>Search Order by order-number</Form.Label>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { sendMessage } from "../../services/contact";
 import Header from '../../components/Header';
@@ -9,8 +9,11 @@ const Contact = () => {
     const [formData, setFormData] = useState({
         fullname: '',
         email: '',
+        phone: '',
+        postal_code: '',
         subject: '',
-        message: ''
+        message: '',
+        attachment_file: []
     });
     const [message, setMessage] = useState('');
     const [variant, setVariant] = useState('success');
@@ -21,7 +24,6 @@ const Contact = () => {
         setLoading(true);
 
         try {
-
             const result = await sendMessage(formData);
 
             if (!result.data.status === 200) {
@@ -31,7 +33,7 @@ const Contact = () => {
 
             setVariant('success');
             setMessage('Your message has been sent successfully!');
-            setFormData({ fullname: '', email: '', subject: '', message: '' });
+            setFormData({ fullname: '', email: '', phone: '', postal_code: '', subject: '', message: '', attachment_file: [] });
         } catch (error) {
             setVariant('danger');
             setMessage('Error sending message. Please try again.');
@@ -40,9 +42,10 @@ const Contact = () => {
     };
 
     const handleChange = (e) => {
+        const { name, files, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: files ? files[0] : value
         });
     };
 
@@ -68,7 +71,7 @@ const Contact = () => {
                                     <Row className="g-3">
                                         <Col md={6}>
                                             <Form.Group controlId="formName">
-                                                <Form.Label>Fullname</Form.Label>
+                                                <Form.Label>Fullname *</Form.Label>
                                                 <Form.Control
                                                     type="text"
                                                     name="fullname"
@@ -82,7 +85,7 @@ const Contact = () => {
 
                                         <Col md={6}>
                                             <Form.Group controlId="formEmail">
-                                                <Form.Label>Email</Form.Label>
+                                                <Form.Label>Email *</Form.Label>
                                                 <Form.Control
                                                     type="email"
                                                     name="email"
@@ -94,9 +97,37 @@ const Contact = () => {
                                             </Form.Group>
                                         </Col>
 
+                                        <Col xs={6}>
+                                            <Form.Group controlId="formPhone">
+                                                <Form.Label>Phone *</Form.Label>
+                                                <Form.Control
+                                                    type="string"
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleChange}
+                                                    required
+                                                    style={{ borderColor: '#d5dee3' }}
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
+                                        <Col xs={6}>
+                                            <Form.Group controlId="formPostalCode">
+                                                <Form.Label>Postal Code *</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="postal_code"
+                                                    value={formData.postal_code}
+                                                    onChange={handleChange}
+                                                    required
+                                                    style={{ borderColor: '#d5dee3' }}
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
                                         <Col xs={12}>
                                             <Form.Group controlId="formSubject">
-                                                <Form.Label>Subject</Form.Label>
+                                                <Form.Label>Subject *</Form.Label>
                                                 <Form.Control
                                                     type="text"
                                                     name="subject"
@@ -110,7 +141,7 @@ const Contact = () => {
 
                                         <Col xs={12}>
                                             <Form.Group controlId="formMessage">
-                                                <Form.Label>Message</Form.Label>
+                                                <Form.Label>Message *</Form.Label>
                                                 <Form.Control
                                                     as="textarea"
                                                     rows={4}
@@ -119,6 +150,19 @@ const Contact = () => {
                                                     onChange={handleChange}
                                                     required
                                                     style={{ borderColor: '#d5dee3' }}
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
+                                        <Col xs={12}>
+                                            <Form.Group controlId="formAttachmentFile">
+                                                <Form.Label>Attach File *</Form.Label>
+                                                <Form.Control
+                                                    type="file"
+                                                    accept="image/*"
+                                                    name="attachment_file"
+                                                    onChange={handleChange}
+                                                    required
                                                 />
                                             </Form.Group>
                                         </Col>

@@ -6,14 +6,22 @@ export class ContactDto {
     @Length(2, 50)
     fullname: string;
 
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+
+    @IsString()
+    @IsNotEmpty()
+    phone: string;
+
+    @IsString()
+    @IsNotEmpty()
+    postal_code: string;
+
     @IsString()
     @IsNotEmpty()
     @Length(2, 50)
     subject: string;
-
-    @IsEmail()
-    @IsNotEmpty()
-    email: string;
 
     @IsString()
     @IsNotEmpty()
