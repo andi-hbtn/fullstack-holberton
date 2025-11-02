@@ -267,7 +267,7 @@ export class OrderService {
   }
 
   public async findAll(): Promise<OrderEntity[]> {
-    return this.ordersRepository.find({ relations: ['orderItems'], order: { created_at: 'DESC' } });
+    return this.ordersRepository.find({ relations: ['user','orderItems'], order: { created_at: 'DESC' } });
   }
 
   public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: any): Promise<any> {

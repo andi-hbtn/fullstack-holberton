@@ -37,15 +37,19 @@ const Orders = () => {
 	};
 
 	const handleSearch = (event) => {
-		const term = event.target.value.toLowerCase();
-		if (term === "") {
+		const term = event.target.value.toLowerCase().trim();
+
+		if (term === "" || term.length <= 2) {
 			setSearchResults(filteredOrders);
 			return;
 		}
+
 		const results = orders.filter((order) => {
 			const sku = helpers.generateSKU(order.id).toLowerCase();
-			return sku.includes(term);
+			const email = order.user?.email?.toLowerCase() || "";
+			return sku.includes(term) || email.includes(term);
 		});
+
 		setSearchResults(results);
 	}
 
@@ -117,7 +121,7 @@ const Orders = () => {
 													</td>
 													<td>
 														<div className="d-flex justify-content-center">
-															{order.user.firstname} {order.user.lastname}
+															{order.user.firstname} {order.user?.lastname}
 														</div>
 													</td>
 													<td>
