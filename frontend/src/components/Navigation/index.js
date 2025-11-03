@@ -76,7 +76,7 @@ const Navigation = ({ onSearchChange }) => {
                                 <FaSearch className="search-icon" />
                                 <Form.Control
                                     type="search"
-                                    placeholder="Search collections..."
+                                    placeholder="Search products..."
                                     className="luxe-search"
                                     onChange={handleChange}
                                     value={search}

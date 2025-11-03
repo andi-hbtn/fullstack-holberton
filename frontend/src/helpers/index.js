@@ -15,13 +15,12 @@ const formatIsoDateTime = (dateParam) => {
     return date.toLocaleString();
 }
 
-const generateSKU = (id) => {
-    const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-    return `SKU-${datePart}-${id.toString().padStart(5, '0')}`;
+const generateId = (id) => {
+    return `12-${id.toString().padStart(3, '0')}`;
 }
 
 export default {
     formatDate,
     formatIsoDateTime,
-    generateSKU
+    generateId
 };
