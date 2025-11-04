@@ -10,6 +10,10 @@
 	font-weight: 550;
 }
 
+.card-link-contaier {
+	width: 17% !important;
+}
+
 /* Card Styling */
 .luxe-card {
 	border: none;

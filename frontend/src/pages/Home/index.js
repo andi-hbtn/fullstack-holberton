@@ -23,7 +23,7 @@ const Home = () => {
 				<Container className="categories-section">
 					<Row className="justify-content-center">
 						{resultsToShow.map((item, index) => (
-							<Col key={index} xl={2} lg={4} md={6} className="mb-5">
+							<Col key={index} lg={4} md={6} className="mb-5 card-link-contaier">
 								<Link to={item?.products ? `/category/${item.id}` : `/product/${item.id}`} className="card-link">
 									<Card className="luxe-card">
 										<div className="card-image-container">
