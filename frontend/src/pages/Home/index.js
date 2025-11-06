@@ -20,7 +20,7 @@ const Home = () => {
 			<Header onSearchChange={setSearchResults} />
 			<div className="luxe-glass-home">
 				<Slider />
-				<Row className="justify-content-evenly">
+				<Row className="justify-content-evenly g-1">
 					{resultsToShow.map((item, index) => (
 						<Col key={index} lg={4} md={6} className="mb-5 card-link-contaier">
 							<Link to={item?.products ? `/category/${item.id}` : `/product/${item.id}`} className="card-link">

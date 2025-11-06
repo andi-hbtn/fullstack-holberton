@@ -1,10 +1,11 @@
 /* index.css */
 .collection-slider {
+    width: 95%;
     height: 400px;
     position: relative;
     overflow: hidden;
     background: #0a1929;
-    margin-bottom: 60px;
+    margin: 0 auto 60px auto;
 }
 
 .slider-inner {
