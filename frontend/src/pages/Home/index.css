@@ -3,6 +3,11 @@
 	src: local('Monserrat'), url('../../fonts/Montserrat-VariableFont_wght.ttf');
 }
 
+.category-container {
+	max-width: 94% !important;
+	margin: 0 auto;
+}
+
 .card-body h3 {
 	font-family: 'Monserrat' !important;
 	font-size: 16px;
@@ -11,7 +16,7 @@
 }
 
 .card-link-contaier {
-	width: 18% !important;
+	width: 20% !important;
 }
 
 /* Card Styling */
@@ -35,10 +40,6 @@
 .card-link:hover .luxe-card {
 	transform: translateY(-15px);
 	box-shadow: 0 25px 70px rgba(50, 100, 255, 0.15);
-}
-
-.card-image-container {
-	height: 300px;
 }
 
 .card-image {
