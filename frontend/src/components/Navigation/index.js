@@ -48,8 +48,8 @@ const Navigation = ({ onSearchChange }) => {
     return (
         <>
             {/* Main Navigation */}
-            <Navbar expand="lg" className="luxe-navbar">
-                <Container>
+            <Navbar expand="lg" className="navbar-container">
+                <Container className="nav-cnt">
                     {/* Mobile Menu Toggle */}
                     <Button
                         className="mobile-menu-toggle"
@@ -60,7 +60,7 @@ const Navigation = ({ onSearchChange }) => {
 
                     {/* Desktop Navigation */}
                     <Navbar.Collapse id="navbarScroll" className={`${mobileMenuOpen ? 'show' : ''}`}>
-                        <Nav className="luxe-nav">
+                        <Nav className="nav-menu">
                             <Nav.Link as={Link} to="/">Home</Nav.Link>
                             <Nav.Link as={Link} to="/about-us">About Us</Nav.Link>
                             <Nav.Link as={Link} to="/products">Products</Nav.Link>

@@ -66,6 +66,7 @@ export class OrderService {
           zipCode,
           appartment,
           message,
+          address,
           password: Math.random().toString(36).slice(-8), // random, nuk përdoret për login
           roles: 'guest',
           createdAt: new Date(),

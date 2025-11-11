@@ -26,7 +26,8 @@ const Cart = () => {
     }, 0);
 
     const totalWithVat = +(subTotal * 0.20).toFixed(2);
-    const totalPrice = +(subTotal + totalWithVat).toFixed(2);
+    const delivery = 4.99;
+    const totalPrice = +(subTotal + totalWithVat + delivery).toFixed(2);
 
     const addQuantity = (item) => {
         setCart((prevState) => {
@@ -222,6 +223,10 @@ const Cart = () => {
                                         <div className="summary-row">
                                             <span>VAT (20%)</span>
                                             <span>£{totalWithVat}</span>
+                                        </div>
+                                        <div className="summary-row">
+                                            <span>Delivery 4.99</span>
+                                            <span>£{delivery}</span>
                                         </div>
                                         <div className="summary-row total-row">
                                             <span>Total</span>

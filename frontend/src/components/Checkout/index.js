@@ -116,7 +116,8 @@ const Checkout = () => {
     }, 0);
 
     const vat = +(subtotal * 0.20).toFixed(2);
-    const totalWithVat = +(subtotal + vat).toFixed(2);
+    const delivery = 4.99;
+    const totalWithVat = +(subtotal + vat + delivery).toFixed(2);
 
 
     useEffect(() => {
@@ -133,6 +134,7 @@ const Checkout = () => {
                 town: authUser.town || "",
                 zipCode: authUser.zipCode || "",
                 appartment: authUser.appartment || "",
+                address: authUser.address || "",
                 message: authUser.message || ""
             }));
         }
@@ -402,6 +404,10 @@ const Checkout = () => {
                                                 <div className="total-row">
                                                     <span>VAT (20%)</span>
                                                     <span>£{vat}</span>
+                                                </div>
+                                                <div className="total-row">
+                                                    <span>Delivery</span>
+                                                    <span>£{delivery}</span>
                                                 </div>
                                                 <div className="total-row grand-total">
                                                     <span>Total</span>
