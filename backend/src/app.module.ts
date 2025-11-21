@@ -12,6 +12,7 @@ import { OrderModule } from './order/order.module';
 import { OrderItemEntity } from './order/entity/order_item.entity';
 import { ProductColorVariant } from './product/entity/productColorVariants.entity';
 import { ContactModule } from './contact/contact.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { ContactModule } from './contact/contact.module';
 
       })
     })
-    , CategoryModule, ProductModule, UserModule, AuthModule, OrderModule, ContactModule],
+    , CategoryModule, ProductModule, UserModule, AuthModule, OrderModule, ContactModule, StripeModule],
   controllers: [],
   providers: [],
 })

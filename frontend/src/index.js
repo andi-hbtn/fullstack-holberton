@@ -27,7 +27,7 @@ import TermsAndConditions from './pages/Terms/index.js';
 import Contact from './pages/Contact';
 
 import Cart from './components/Cart/'
-import Checkout from './components/Checkout/';
+import CheckoutWrapper from "./Wrapper/CheckoutWrapper.js"
 import AdminRoute from "./components/AdminRoute";
 import AuthUserRoute from './components/AuthUserRoute';
 import UserProfile from './pages/UserProfile';
@@ -95,7 +95,7 @@ root.render(
                   <Route path="/terms" element={< TermsAndConditions />} />
                   <Route path="/category/:id" element={<CategoryPage />} />
                   <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/checkout" element={<CheckoutWrapper />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password/:token" element={<ResetPassword />} />
                 </Routes>

@@ -7,13 +7,13 @@ import { ProductEntity } from 'src/product/entity/products.entity';
 import { ProductColorVariant } from 'src/product/entity/productColorVariants.entity';
 import { OrderItemEntity } from './entity/order_item.entity';
 import { OrderDto } from './dto/order.dto';
-import { AuthService } from '../auth/auth.service';
 import { ServiceHandler } from 'src/errorHandler/service.error';
 import { OrderByIdResposne } from './responseType/response.interface';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import * as PdfPrinter from 'pdfmake/src/printer';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class OrderService {
@@ -24,7 +24,7 @@ export class OrderService {
     @InjectRepository(OrderEntity) private readonly ordersRepository: Repository<OrderEntity>,
     @InjectRepository(OrderItemEntity) private readonly orderItemsRepository: Repository<OrderItemEntity>,
     private configService: ConfigService,
-    private authService: AuthService
+    private stripeService: StripeService
   ) { }
 
   public async create(orderData: OrderDto): Promise<any> {
@@ -268,7 +268,7 @@ export class OrderService {
   }
 
   public async findAll(): Promise<OrderEntity[]> {
-    return this.ordersRepository.find({ relations: ['user','orderItems'], order: { created_at: 'DESC' } });
+    return this.ordersRepository.find({ relations: ['user', 'orderItems'], order: { created_at: 'DESC' } });
   }
 
   public async sendOrderWithEmail(order: OrderEntity, items: OrderItemEntity[], userAddress: any): Promise<any> {

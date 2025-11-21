@@ -6,8 +6,8 @@ import { UserEntity } from '../user/entity/user.entity';
 import { OrderEntity } from "./entity/order.entity";
 import { ProductEntity } from '../product/entity/products.entity';
 import { OrderItemEntity } from './entity/order_item.entity';
-import { AuthModule } from '../auth/auth.module';
 import { ProductColorVariant } from '../product/entity/productColorVariants.entity';
+import { StripeModule } from 'src/stripe/stripe.module';
 
 @Module({
   imports: [
@@ -18,7 +18,8 @@ import { ProductColorVariant } from '../product/entity/productColorVariants.enti
       OrderEntity,
       OrderItemEntity
     ]),
-    AuthModule],
+    StripeModule
+  ],
   controllers: [OrderController],
   providers: [OrderService],
   exports: [OrderService]
