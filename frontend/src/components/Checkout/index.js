@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-    CardElement,
     useStripe,
     useElements,
     CardNumberElement,
@@ -8,8 +7,8 @@ import {
     CardCvcElement
 } from "@stripe/react-stripe-js";
 import { useAuthenticateContext } from "../../context/AuthenticateContext";
-import { useCartContext } from '../../context/CartContext';
 import { createPaymentIntent, confirmStripePayment } from "../../services/stripe";
+import { useCartContext } from '../../context/CartContext';
 import OrderConfirmed from '../OrderConfirmed';
 import EmptyCart from '../EmptyCart';
 import dateTime from "../../helpers";
@@ -41,7 +40,7 @@ const Checkout = () => {
         email: "",
         password: "",
         phone: "",
-        country: "united-kingdom",
+        country: "GB",
         town: "",
         zipCode: "",
         address: "",
@@ -80,6 +79,21 @@ const Checkout = () => {
         });
     }
 
+    const isDisabled = (order.length === 0 ||
+        (Object.entries(values).some(([key, value]) => {
+            if (key === "message" || key === "appartment") return false;
+            return !authUser && (value || "").toString().trim().length === 0;
+        }))
+    );
+
+    const subtotal = order.reduce((acc, item) => {
+        return acc + (Number(item.price) * Number(item.quantity))
+    }, 0);
+
+    const vat = +(subtotal * 0.20).toFixed(2);
+    const delivery = 4.99;
+    const total_price = +(subtotal + vat + delivery).toFixed(2);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -97,10 +111,6 @@ const Checkout = () => {
         }
 
         setLoading(true);
-
-        const total_price = order.reduce((total, item) => {
-            return total + (item.price * item.quantity);
-        }, 0);
 
         const items = order.map(el => ({
             product_id: el.product_id,
@@ -120,46 +130,47 @@ const Checkout = () => {
             created_at: dateTime.formatDate()
         }
 
+        setLoading(true);
+        setError({ status: false, message: "" });
 
         try {
-            setError({ status: false, message: "" });
+            //1 Merr elementet e kartës
+            const cardNumberElement = elements.getElement(CardNumberElement);
+
+            //2 CKrijo PaymentIntent në backend dhe merr clientSecret
             const clientSecret = await createPaymentIntent(total_price);
-            await confirmStripePayment(stripe, cardNumberElement, values, clientSecret);
-            await createOrder(order_product, values);
-            setOrderSuccess(true);
-            setFinalCart(0);
-            setCart({
-                items: [],
-                total_price: 0,
-                user_id: authUser.id || null
-            });
-            localStorage.setItem("cart", JSON.stringify({
-                items: [],
-                total_price: 0,
-                user_id: authUser.id || null
-            }));
+
+            //3 Prit përdoruesin të konfirmojë pagesën
+            const paymentResult = await confirmStripePayment(stripe, cardNumberElement, values, clientSecret);
+            console.log("paymentResult-----", paymentResult);
+
+            if (paymentResult.error) {
+                setError({ status: true, message: paymentResult.error.message });
+                return;
+            }
+
+            if (paymentResult.status === "succeeded") {
+                await createOrder(order_product, values);
+                // setOrderSuccess(true);
+                // setFinalCart(0);
+
+                // setCart({
+                //     items: [],
+                //     total_price: 0,
+                //     user_id: authUser.id || null
+                // });
+                // localStorage.setItem("cart", JSON.stringify({
+                //     items: [],
+                //     total_price: 0,
+                //     user_id: authUser.id || null
+                // }));
+            }
         } catch (error) {
             setError({ status: true, message: error.message });
         } finally {
             setLoading(false);
         }
     }
-
-    const isDisabled = (order.length === 0 ||
-        (Object.entries(values).some(([key, value]) => {
-            if (key === "message" || key === "appartment") return false;
-            return !authUser && (value || "").toString().trim().length === 0;
-        }))
-    );
-
-    const subtotal = order.reduce((acc, item) => {
-        return acc + (Number(item.price) * Number(item.quantity))
-    }, 0);
-
-    const vat = +(subtotal * 0.20).toFixed(2);
-    const delivery = 4.99;
-    const totalWithVat = +(subtotal + vat + delivery).toFixed(2);
-
 
     useEffect(() => {
         if (authUser) {
@@ -205,6 +216,16 @@ const Checkout = () => {
                                 </h1>
                             </Col>
                         </Row>
+
+                        {loading && (
+                            <div className="loading-overlay">
+                                <div className="spinner-border text-primary" role="status">
+                                    <span className="visually-hidden">Processing...</span>
+                                </div>
+                                <p>Processing your payment, please wait...</p>
+                            </div>
+                        )}
+
                         <Form onSubmit={handleSubmit}>
                             <Row className="checkout-content">
                                 <Col lg={7} className="pe-lg-4">
@@ -322,7 +343,7 @@ const Checkout = () => {
                                                             className="form-input"
                                                             disabled={!!authUser}
                                                         >
-                                                            <option value="united-kingdom">United Kingdom (UK)</option>
+                                                            <option value={values.country}>United Kingdom (UK)</option>
                                                         </Form.Select>
                                                     </Form.Group>
                                                 </Col>
@@ -452,7 +473,7 @@ const Checkout = () => {
                                                     </div>
                                                     <div className="total-row grand-total">
                                                         <span>Total</span>
-                                                        <span>£{totalWithVat}</span>
+                                                        <span>£{total_price}</span>
                                                     </div>
                                                 </div>
 
@@ -496,8 +517,8 @@ const Checkout = () => {
                                                     type="submit"
                                                     disabled={order.length === 0 || isDisabled || !stripe || loading}
                                                 >
-                                                    Place Order
-                                                    <FaArrowRight className="ms-2" />
+                                                    {loading ? "Processing..." : "Place Order"}
+                                                    {!loading && <FaArrowRight className="ms-2" />}
                                                 </Button>
                                             </Card.Body>
                                         </Card>

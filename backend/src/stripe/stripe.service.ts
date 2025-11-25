@@ -9,16 +9,18 @@ export class StripeService {
     private stripe: Stripe;
     constructor(private configService: ConfigService) {
         this.stripe = new Stripe(
-            this.configService.get<string>("STRIPE_SECRET_KEY"), { apiVersion: '2025-11-17.clover' }
+            this.configService.get<string>("STRIPE_SECRET_KEY"),{}
         )
     }
 
     public async createPaymentIntent(amount: number) {
         const paymentIntent = await this.stripe.paymentIntents.create({
-            amount: amount * 100,
+            amount,
             currency: 'gbp',
             automatic_payment_methods: { enabled: true }
         });
-        return { clientSercret: paymentIntent.client_secret }
+
+        return { clientSecret: paymentIntent.client_secret }
+
     }
 }

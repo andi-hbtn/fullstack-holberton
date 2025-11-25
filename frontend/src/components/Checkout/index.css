@@ -298,6 +298,38 @@
 
 /**************************************************Stripe Cards**************************************************/
 
+
+
+/**************************************************On submit stripe**************************************************/
+
+.loading-overlay {
+    position: absolute;
+    /* vendos overlay mbi containerin */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* sfond i bardhë me transparencë */
+    backdrop-filter: blur(3px);
+    /* blur i lehtë i sfondit */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* mbi çdo gjë tjetër */
+    text-align: center;
+}
+
+.loading-overlay p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/**************************************************On submit stripe**************************************************/
+
 /* Responsive Styles */
 @media (max-width: 992px) {
     .checkout-content {

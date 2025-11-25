@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { create_order_service } from "../services/cart";
-
 const CartContext = createContext({});
 
 const CartProvider = (props) => {
@@ -145,10 +144,12 @@ const CartProvider = (props) => {
 	const createOrder = async (order, userInfo) => {
 		try {
 			const result = await create_order_service(order, userInfo);
-			if (result.status === 201) {
-				return result.data;
+			if (result.status !== 201 && !result.data) {
+				throw new Error("Order creation failed");
 			}
+			return result.data;
 		} catch (error) {
+			console.log("error---", error);
 			throw error.response.data;
 		}
 	};

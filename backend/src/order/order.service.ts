@@ -13,7 +13,6 @@ import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import * as PdfPrinter from 'pdfmake/src/printer';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class OrderService {
@@ -24,7 +23,6 @@ export class OrderService {
     @InjectRepository(OrderEntity) private readonly ordersRepository: Repository<OrderEntity>,
     @InjectRepository(OrderItemEntity) private readonly orderItemsRepository: Repository<OrderItemEntity>,
     private configService: ConfigService,
-    private stripeService: StripeService
   ) { }
 
   public async create(orderData: OrderDto): Promise<any> {

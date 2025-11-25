@@ -1,17 +1,29 @@
 import axios from "axios";
+const url = `${process.env.REACT_APP_API_URL}api/stripe`;
 
 export const createPaymentIntent = async (amount) => {
-    const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}api/order/create-payment-intent`,
-        { amount: amount * 100 } // Stripe merr pennies
-    );
-    if (!data?.clientSecret) {
-        throw new Error("Unable to initiate payment. Please try again.");
+
+    if (!amount || amount <= 0) {
+        throw new Error("Invalid amount for payment.");
     }
-    return data.clientSecret;
+
+    try {
+        // POST tek backend service pa controller
+        const amountInCents = Math.round(amount * 100);
+
+        const { data } = await axios.post(`${url}/create-payment-intent`, { amount: amountInCents });
+        if (!data?.clientSecret) {
+            throw new Error("Unable to initiate payment. Stripe client secret missing.");
+        }
+        return data.clientSecret;
+    } catch (err) {
+        console.error("Stripe PaymentIntent creation failed:", err);
+        throw new Error(err?.response?.data?.message || err.message || "PaymentIntent creation failed.");
+    }
 };
 
 export const confirmStripePayment = async (stripe, cardNumberElement, values, clientSecret) => {
+
     const paymentResult = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
             card: cardNumberElement,
@@ -24,7 +36,7 @@ export const confirmStripePayment = async (stripe, cardNumberElement, values, cl
                     line2: values.appartment,
                     postal_code: values.zipCode,
                     city: values.town,
-                    country: values.country.toUpperCase()
+                    country: 'GB'
                 }
             }
         }
