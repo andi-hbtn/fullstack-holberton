@@ -19,3 +19,8 @@ Amex → 1234
 
 Name on Card
 John Doe
+
+
+Delete from stripe the transaction
+It will delete ALL your products as well
+Developer > Overview > Review Test Data > Delete

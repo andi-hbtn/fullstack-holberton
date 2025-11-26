@@ -16,7 +16,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import AlertMessage from "../AlertMessage";
 import { Container, Row, Col, Form, Button, Card, Badge } from 'react-bootstrap';
-import { FaArrowRight, FaLock, FaMapMarkerAlt, FaEnvelope, FaUser } from "react-icons/fa";
+import { FaLock, FaMapMarkerAlt, FaEnvelope, FaUser } from "react-icons/fa";
 import { PiShoppingCart } from "react-icons/pi";
 import amex from "../../images/card-amex.svg";
 import discover from "../../images/card-discover.svg";
@@ -379,7 +379,7 @@ const Checkout = () => {
                                                 </Col>
 
                                                 <Col md={12}>
-                                                    <Form.Group className="mb-4" controlId="appartment">
+                                                    <Form.Group className="mb-4" controlId="address">
                                                         <Form.Label>Address *</Form.Label>
                                                         <Form.Control
                                                             name="address"
@@ -518,7 +518,7 @@ const Checkout = () => {
                                                     disabled={order.length === 0 || isDisabled || !stripe || loading}
                                                 >
                                                     {loading ? "Processing..." : "Place Order"}
-                                                    {!loading && <FaArrowRight className="ms-2" />}
+
                                                 </Button>
                                             </Card.Body>
                                         </Card>
