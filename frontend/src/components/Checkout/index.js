@@ -142,28 +142,25 @@ const Checkout = () => {
 
             //3 Prit përdoruesin të konfirmojë pagesën
             const paymentResult = await confirmStripePayment(stripe, cardNumberElement, values, clientSecret);
-            console.log("paymentResult-----", paymentResult);
-
             if (paymentResult.error) {
                 setError({ status: true, message: paymentResult.error.message });
                 return;
             }
-
             if (paymentResult.status === "succeeded") {
                 await createOrder(order_product, values);
-                // setOrderSuccess(true);
-                // setFinalCart(0);
+                setOrderSuccess(true);
+                setFinalCart(0);
 
-                // setCart({
-                //     items: [],
-                //     total_price: 0,
-                //     user_id: authUser.id || null
-                // });
-                // localStorage.setItem("cart", JSON.stringify({
-                //     items: [],
-                //     total_price: 0,
-                //     user_id: authUser.id || null
-                // }));
+                setCart({
+                    items: [],
+                    total_price: 0,
+                    user_id: authUser.id || null
+                });
+                localStorage.setItem("cart", JSON.stringify({
+                    items: [],
+                    total_price: 0,
+                    user_id: authUser.id || null
+                }));
             }
         } catch (error) {
             setError({ status: true, message: error.message });
@@ -494,7 +491,7 @@ const Checkout = () => {
                                                     </ul>
                                                 </div>
 
-                                                <div className="card-number-wrapper">
+                                                <div className="card-number-wrapper mb-3">
                                                     <CardNumberElement className="stripe-input" />
                                                 </div>
 
