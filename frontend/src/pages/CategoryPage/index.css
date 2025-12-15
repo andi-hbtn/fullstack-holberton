@@ -74,6 +74,155 @@
     cursor: not-allowed;
 }
 
+
+/****************************************************************** quick buy ***************************************************************/
+/* ---------- CONTAINER ---------- */
+
+/* ---------- PRICE + SWATCHES HORIZONTAL ---------- */
+.premium-variant-header.horizontal {
+    display: flex;
+    justify-content: space-between;
+    /* Price majtas, swatches djathtas */
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Cmimi */
+.premium-price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111;
+}
+
+/* Container për topat/swatches */
+.premium-swatches {
+    display: flex;
+    gap: 8px;
+}
+
+/* Secili swatch item */
+.premium-swatch-item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/***** Swatch colors *****/
+.swatch-dot {
+    width: 25px;
+    height: 25px;
+    border-radius: 50% !important;
+    border: 1px solid #cccccc !important;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease !important;
+}
+
+.mate-black {
+    background-color: #1C1C1C !important;
+}
+
+.brown {
+    background-color: #8B5A2B !important;
+}
+
+.brushed-brass {
+    background-color: #C9A24D !important;
+}
+
+.brushed-nickel {
+    background-color: #B5B8B1 !important;
+}
+
+
+
+/* ---------- CART SECTION HORIZONTAL ---------- */
+.premium-cart-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Quantity Selector */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Quantity Value */
+.quantity-value {
+    min-width: 25px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+/* Quantity Buttons */
+.quantity-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+    background-color: #f5f5f5;
+}
+
+/* ---------- ADD TO CART BUTTON ---------- */
+add-to-cart-btn {
+    flex: 1;
+    /* merr hapësirën e mbetur */
+    padding: 12px 0;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #000;
+    /* butoni i zi */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-to-cart-btn:disabled {
+    background-color: #555;
+    /* gri për disabled */
+    cursor: not-allowed;
+}
+
+.add-to-cart-btn:not(:disabled):hover {
+    background-color: #222;
+    /* pak më i hapur ose i errët kur hover */
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 480px) {
+    .premium-variant-header.horizontal {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .premium-cart-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .add-to-cart-btn {
+        width: 100%;
+    }
+}
+
+/****************************************************************** quick buy ***************************************************************/
+
 /* Responsive */
 @media (max-width: 768px) {
     .card-image-container {
