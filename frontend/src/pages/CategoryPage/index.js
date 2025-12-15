@@ -22,8 +22,9 @@ const CategoryPage = () => {
     const { getCategory } = useCategoryContext();
     const { addQuantity, removeQuantity, cart, addToCart } = useCartContext();
 
-    const [category, setCategory] = useState(null);
+    const [currentImages, setCurrentImages] = useState({});
     const [selectedVariants, setSelectedVariants] = useState({});
+    const [category, setCategory] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -37,18 +38,36 @@ const CategoryPage = () => {
                 const result = await getCategory(id);
 
                 if (result.statusCode === 200) {
-                    setCategory(result.data);
+                    const fetchedCategory = result.data;
+                    setCategory(fetchedCategory);
 
-                    // default variant per product
-                    const defaults = {};
-                    result.data.products.forEach((p) => {
-                        if (p.colorVariants?.length > 0) {
-                            defaults[p.id] = p.colorVariants[0].id;
+                    const defaultVariants = {};
+                    const defaultImages = {};
+
+                    fetchedCategory.products.forEach((product) => {
+                        if (product.colorVariants?.length > 0) {
+                            const firstVariant = product.colorVariants[0];
+
+                            // default variant per product
+                            defaultVariants[product.id] = firstVariant.id;
+
+                            // default image per product (variant image)
+                            defaultImages[product.id] =
+                                `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${firstVariant.main_image}`;
+                        } else {
+                            // fallback image from product.image
+                            defaultImages[product.id] =
+                                `${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`;
                         }
                     });
-                    setSelectedVariants(defaults);
+
+                    setSelectedVariants(defaultVariants);
+                    setCurrentImages(defaultImages);
                 } else {
-                    setError({ message: "Category not found", status: result.statusCode });
+                    setError({
+                        message: "Category not found",
+                        status: result.statusCode
+                    });
                 }
             } catch (err) {
                 setError({
@@ -63,9 +82,11 @@ const CategoryPage = () => {
         fetchCategory();
     }, [id, getCategory]);
 
+
     /* ---------------- HELPERS ---------------- */
     const getSelectedVariant = (product) => {
         const variantId = selectedVariants[product.id];
+        if (!variantId) return null; // Default image selected
         return product.colorVariants.find(v => v.id === variantId);
     };
 
@@ -85,12 +106,17 @@ const CategoryPage = () => {
             <button
                 type="button"
                 className={`swatch-dot ${variant.color} ${isActive ? "active" : ""}`}
-                onClick={() =>
+                onClick={() => {
                     setSelectedVariants(prev => ({
                         ...prev,
                         [productId]: variant.id
-                    }))
-                }
+                    }));
+
+                    setCurrentImages(prev => ({
+                        ...prev,
+                        [productId]: `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.main_image}`
+                    }));
+                }}
             />
         </OverlayTrigger>
     );
@@ -148,7 +174,13 @@ const CategoryPage = () => {
                                     <Link to={`/product/${el.id}`} className="link-of-category">
                                         <div className="card-image-container">
                                             <Card.Img
-                                                src={`${process.env.REACT_APP_API_URL}api/product/uploads/${el.image}`}
+                                                src={
+                                                    currentImages[el.id] ||
+                                                    (el.colorVariants?.[0]
+                                                        ? `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${el.colorVariants[0].main_image}`
+                                                        : `${process.env.REACT_APP_API_URL}api/product/uploads/${el.image}`
+                                                    )
+                                                }
                                                 alt={el.title}
                                             />
                                         </div>
@@ -170,6 +202,28 @@ const CategoryPage = () => {
                                                     </span>
 
                                                     <div className="premium-swatches">
+                                                        {/* Default button */}
+                                                        <OverlayTrigger
+                                                            placement="top"
+                                                            overlay={<Tooltip>Default</Tooltip>}
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                className={`swatch-dot default ${!selectedVariants[el.id] ? "active" : ""}`}
+                                                                onClick={() => {
+                                                                    setSelectedVariants(prev => ({
+                                                                        ...prev,
+                                                                        [el.id]: null
+                                                                    }));
+                                                                    setCurrentImages(prev => ({
+                                                                        ...prev,
+                                                                        [el.id]: `${process.env.REACT_APP_API_URL}api/product/uploads/${el.image}`
+                                                                    }));
+                                                                }}
+                                                            />
+                                                        </OverlayTrigger>
+
+                                                        {/* Color swatches */}
                                                         {el.colorVariants.map(variant =>
                                                             colorSwatchButton(
                                                                 el.id,
@@ -186,7 +240,7 @@ const CategoryPage = () => {
                                                         <button
                                                             className="quantity-btn"
                                                             onClick={() => removeQuantity(selectedVariant)}
-                                                            disabled={!selectedVariant}
+                                                            disabled={!selectedVariant} // Disabled if default
                                                         >
                                                             <PiMinusLight size={20} />
                                                         </button>
@@ -199,8 +253,8 @@ const CategoryPage = () => {
                                                             className="quantity-btn"
                                                             onClick={() => addQuantity(el.title, selectedVariant)}
                                                             disabled={
-                                                                selectedVariant?.stock <=
-                                                                getQuantity(el.id, selectedVariants[el.id])
+                                                                !selectedVariant ||
+                                                                selectedVariant?.stock <= getQuantity(el.id, selectedVariants[el.id])
                                                             }
                                                         >
                                                             <PiPlusLight size={20} />
@@ -210,12 +264,11 @@ const CategoryPage = () => {
                                                     <button
                                                         className="add-to-cart-btn p-2"
                                                         onClick={() => addToCart(el, selectedVariant)}
-                                                        disabled={!selectedVariant || selectedVariant.stock <= 0}
+                                                        disabled={!selectedVariant || selectedVariant.stock <= 0} // Disabled if default
                                                     >
                                                         Add to cart
                                                     </button>
                                                 </div>
-
                                             </div>
                                         )}
                                     </Card.Body>

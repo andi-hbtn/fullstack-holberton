@@ -134,7 +134,12 @@
     background-color: #B5B8B1 !important;
 }
 
-
+.active {
+    border-color: #0a1929 !important;
+    box-shadow: 0 8px 24px rgba(var(--bs-primary-rgb), 0.2);
+    transform: scale(1.05);
+    border: 2px solid #000000 !important;
+}
 
 /* ---------- CART SECTION HORIZONTAL ---------- */
 .premium-cart-section {
