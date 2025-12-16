@@ -82,9 +82,8 @@
 .premium-variant-header.horizontal {
     display: flex;
     justify-content: space-between;
-    /* Price majtas, swatches djathtas */
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 /* Cmimi */
@@ -146,7 +145,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 /* Quantity Selector */

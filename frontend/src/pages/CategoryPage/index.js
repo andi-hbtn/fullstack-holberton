@@ -97,6 +97,16 @@ const CategoryPage = () => {
         return item?.quantity || 1;
     };
 
+
+
+    const colorToClass = (color) => {
+        return color
+            ?.toLowerCase()
+            .trim()
+            .replace(/\s+/g, "-");
+    };
+
+
     const colorSwatchButton = (productId, variant, isActive) => (
         <OverlayTrigger
             key={variant.id}
@@ -105,7 +115,7 @@ const CategoryPage = () => {
         >
             <button
                 type="button"
-                className={`swatch-dot ${variant.color} ${isActive ? "active" : ""}`}
+                className={`swatch-dot ${colorToClass(variant.color)}  ${isActive ? "active" : ""}`}
                 onClick={() => {
                     setSelectedVariants(prev => ({
                         ...prev,
@@ -119,7 +129,8 @@ const CategoryPage = () => {
                 }}
             />
         </OverlayTrigger>
-    );
+    )
+
 
     /* ---------------- STATES ---------------- */
     if (loading) {
