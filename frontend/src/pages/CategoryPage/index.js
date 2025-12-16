@@ -115,7 +115,7 @@ const CategoryPage = () => {
         >
             <button
                 type="button"
-                className={`swatch-dot ${colorToClass(variant.color)}  ${isActive ? "active" : ""}`}
+                className={`variant-image-btn ${isActive ? "active" : ""}`}
                 onClick={() => {
                     setSelectedVariants(prev => ({
                         ...prev,
@@ -124,13 +124,18 @@ const CategoryPage = () => {
 
                     setCurrentImages(prev => ({
                         ...prev,
-                        [productId]: `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.main_image}`
+                        [productId]:
+                            `${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.main_image}`
                     }));
                 }}
-            />
+            >
+                <img
+                    src={`${process.env.REACT_APP_API_URL}api/product/uploads/colors/${variant.color_image}`}
+                    alt={variant.color}
+                />
+            </button>
         </OverlayTrigger>
-    )
-
+    );
 
     /* ---------------- STATES ---------------- */
     if (loading) {

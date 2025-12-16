@@ -1,7 +1,12 @@
-/* Category Page Styles */
+/******************************************************************
+ CATEGORY PAGE STYLES
+******************************************************************/
+
 .category-page {
     padding-bottom: 50px;
 }
+
+/* ---------------- PRODUCT CARD ---------------- */
 
 .product-card {
     border: none;
@@ -9,7 +14,7 @@
     overflow: hidden;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    background-color: white;
+    background-color: #fff;
     height: 100%;
     cursor: pointer;
     position: relative;
@@ -18,6 +23,10 @@
 .product-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-image-container {
+    position: relative;
 }
 
 .product-image {
@@ -34,6 +43,8 @@
     color: #0a1929;
 }
 
+/* ---------------- PRODUCT DESCRIPTION ---------------- */
+
 .product-description {
     color: #5a7d8a;
     font-size: 0.95rem;
@@ -41,12 +52,13 @@
     margin-bottom: 15px;
 }
 
-/* Empty State */
+/* ---------------- EMPTY STATE ---------------- */
+
 .empty-category {
     margin: 40px auto;
     padding: 50px 20px;
     text-align: center;
-    background: white;
+    background: #fff;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     max-width: 600px;
@@ -54,7 +66,6 @@
 
 .product-card.out-of-stock {
     opacity: 0.6;
-    position: relative;
 }
 
 .card-image-container .overlay {
@@ -63,7 +74,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: #fff;
     padding: 8px 16px;
     border-radius: 4px;
     font-weight: bold;
@@ -74,11 +85,12 @@
     cursor: not-allowed;
 }
 
+/******************************************************************
+ QUICK BUY SECTION
+******************************************************************/
 
-/****************************************************************** quick buy ***************************************************************/
-/* ---------- CONTAINER ---------- */
+/* ---------- HEADER (PRICE + VARIANTS) ---------- */
 
-/* ---------- PRICE + SWATCHES HORIZONTAL ---------- */
 .premium-variant-header.horizontal {
     display: flex;
     justify-content: space-between;
@@ -86,61 +98,58 @@
     margin-bottom: 5px;
 }
 
-/* Cmimi */
 .premium-price {
     font-size: 1.25rem;
     font-weight: 600;
     color: #111;
 }
 
-/* Container për topat/swatches */
+/* ---------- VARIANT THUMBNAILS ---------- */
+
 .premium-swatches {
     display: flex;
     gap: 8px;
 }
 
-/* Secili swatch item */
-.premium-swatch-item {
+/* Variant image button */
+.variant-image-btn,
+.default {
+    width: 34px;
+    height: 34px;
+    padding: 2px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #fff;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
 }
 
-/***** Swatch colors *****/
-.swatch-dot {
-    width: 25px;
-    height: 25px;
-    border-radius: 50% !important;
-    border: 1px solid #cccccc !important;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s ease !important;
+.variant-image-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
-.mate-black {
-    background-color: #1C1C1C !important;
-}
-
-.brown {
-    background-color: #8B5A2B !important;
-}
-
-.brushed-brass {
-    background-color: #C9A24D !important;
-}
-
-.brushed-nickel {
-    background-color: #B5B8B1 !important;
-}
-
-.active {
-    border-color: #0a1929 !important;
-    box-shadow: 0 8px 24px rgba(var(--bs-primary-rgb), 0.2);
+/* Active variant */
+.variant-image-btn.active {
+    border: 2px solid #0a1929;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transform: scale(1.05);
-    border: 2px solid #000000 !important;
 }
 
-/* ---------- CART SECTION HORIZONTAL ---------- */
+/* Hover */
+.variant-image-btn:hover {
+    border-color: #999;
+}
+
+/******************************************************************
+ CART SECTION
+******************************************************************/
+
 .premium-cart-section {
     display: flex;
     align-items: center;
@@ -148,14 +157,14 @@
     margin-top: 10px;
 }
 
-/* Quantity Selector */
+/* Quantity selector */
+
 .quantity-selector {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Quantity Value */
 .quantity-value {
     min-width: 25px;
     text-align: center;
@@ -163,7 +172,6 @@
     font-size: 1rem;
 }
 
-/* Quantity Buttons */
 .quantity-btn {
     display: flex;
     align-items: center;
@@ -180,17 +188,16 @@
     background-color: #f5f5f5;
 }
 
-/* ---------- ADD TO CART BUTTON ---------- */
-add-to-cart-btn {
+/* ---------- ADD TO CART ---------- */
+
+.add-to-cart-btn {
     flex: 1;
-    /* merr hapësirën e mbetur */
     padding: 12px 0;
     font-weight: 600;
     font-size: 1rem;
     border-radius: 6px;
     border: none;
     background-color: #000;
-    /* butoni i zi */
     color: #fff;
     cursor: pointer;
     transition: background-color 0.2s ease;
@@ -198,16 +205,17 @@ add-to-cart-btn {
 
 .add-to-cart-btn:disabled {
     background-color: #555;
-    /* gri për disabled */
     cursor: not-allowed;
 }
 
 .add-to-cart-btn:not(:disabled):hover {
     background-color: #222;
-    /* pak më i hapur ose i errët kur hover */
 }
 
-/* ---------- RESPONSIVE ---------- */
+/******************************************************************
+ RESPONSIVE
+******************************************************************/
+
 @media (max-width: 480px) {
     .premium-variant-header.horizontal {
         flex-direction: column;
@@ -225,9 +233,6 @@ add-to-cart-btn {
     }
 }
 
-/****************************************************************** quick buy ***************************************************************/
-
-/* Responsive */
 @media (max-width: 768px) {
     .card-image-container {
         height: 200px;
@@ -246,14 +251,5 @@ add-to-cart-btn {
 
     .category-description {
         font-size: 1rem;
-    }
-
-    .category-stats {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .stat-item {
-        padding: 10px 0;
     }
 }
