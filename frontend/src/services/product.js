@@ -8,6 +8,7 @@ const create_product_service = async (data) => {
 	formData.append("reference_number", data.reference_number);
 	formData.append("category_id", data.category_id);
 	formData.append("image", data.image);
+	formData.append("pdf_file", data.pdf_file);
 	formData.append("is_active", data.is_active);
 	const result = await axios.post(`${url}/create`, formData, {
 		headers: {
@@ -83,6 +84,7 @@ const update_product = async (data) => {
 	formData.append("reference_number", data.reference_number);
 	formData.append("category_id", data.category_id);
 	formData.append("image", data.image);
+	formData.append("pdf_file", data.pdf_file);
 	formData.append("is_active", data.is_active);
 	const result = await axios.put(`${url}/update/${data.id}`, formData, {
 		headers: {

@@ -31,9 +31,15 @@ export class ProductService {
 		}
 	}
 
-	public async createProduct(data: ProductDto): Promise<ProductResponse> {
+	public async createProduct(data: ProductDto & { image: string; pdf_file?: string }): Promise<ProductResponse> {
 		try {
-			const result = await this.ProductEntity.save(data);
+			const productData = {
+				...data,
+				pdf_file: data.pdf_file || null
+			};
+
+			const result = await this.ProductEntity.save(productData);
+
 			return {
 				status: HttpStatus.OK,
 				message: 'Product created successfully',
@@ -103,6 +109,13 @@ export class ProductService {
 			if (result.image) {
 				if (fs.existsSync(`uploads/${result.image}`)) {
 					fs.unlinkSync(`uploads/${result.image}`);
+				}
+			}
+
+			if (result.pdf_file) {
+				const pdfPath = `uploads/${result.pdf_file}`;
+				if (fs.existsSync(pdfPath)) {
+					fs.unlinkSync(pdfPath);
 				}
 			}
 

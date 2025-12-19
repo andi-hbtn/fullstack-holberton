@@ -11,7 +11,6 @@ const fields = [
         label: "Description",
         placeholder: "Insert description..."
     },
-
     {
         type: "text",
         name: "reference_number",
@@ -23,11 +22,15 @@ const fields = [
         name: "category_id",
         label: "Category",
     },
-    ,
     {
         type: "file",
         name: "image",
         label: "Upload Image"
+    },
+    {
+        type: "file",
+        name: "pdf_file",
+        label: "Upload PDF",
     },
     {
         type: "switch",

@@ -10,6 +10,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 		description: "",
 		category_id: 0,
 		image: "",
+		pdf_file: "", // PDF field
 		is_active: true
 	};
 
@@ -58,16 +59,19 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 									<Form.Group key={index} className="mb-3">
 										{
 											field.name === "category_id" ?
-												<Form.Select name={field.name} onChange={(e) => setData({ ...data, [field.name]: Number(e.target.value) })} aria-label="Default select example">
+												<Form.Select
+													name={field.name}
+													onChange={(e) => setData({ ...data, [field.name]: Number(e.target.value) })}
+													value={data[field.name]}
+													aria-label="Default select example"
+												>
 													{
-														categories.map((category, i) => {
-															return (
-																<option key={i} value={category.id}>{category.title}</option>
-															)
-														})
+														categories.map((category, i) => (
+															<option key={i} value={category.id}>{category.title}</option>
+														))
 													}
 												</Form.Select>
-												: field.name === "image" ?
+												: field.name === "image" || field.name === "pdf_file" ?
 													<>
 														<Form.Label>{field.label}</Form.Label>
 														<Form.Control
@@ -77,15 +81,13 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 														/>
 													</>
 													: field.name === "is_active" ?
-														<>
-															<Form.Check
-																name={field.name}
-																type={field.type}
-																label={field.label}
-																checked={data[field.name]}
-																onChange={(e) => setData({ ...data, [field.name]: e.target.checked })}
-															/>
-														</>
+														<Form.Check
+															name={field.name}
+															type={field.type}
+															label={field.label}
+															checked={data[field.name]}
+															onChange={(e) => setData({ ...data, [field.name]: e.target.checked })}
+														/>
 														:
 														<>
 															<Form.Label>{field.label}</Form.Label>
@@ -100,8 +102,8 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 										}
 									</Form.Group>
 								)
-							}
-							)}
+							})
+						}
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={close}>
@@ -116,7 +118,7 @@ const ModalManager = ({ open, categories, close, case_modal, fields, create, upd
 						status={resMsg.status}
 					/>
 				}
-			</Modal >
+			</Modal>
 		</>
 	);
 }

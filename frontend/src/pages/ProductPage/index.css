@@ -336,10 +336,6 @@
     border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.quantity-selector {
-    margin-bottom: 2rem;
-}
-
 .quantity-control {
     display: flex;
     align-items: center;
@@ -391,15 +387,10 @@
     background-color: #0a1929;
     width: 100%;
     padding: 15px;
-    font-weight: 600;
-    border-radius: 12px;
     overflow: hidden;
-    border: none;
-    font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     box-shadow: 0 8px 24px rgba(var(--bs-primary-rgb), 0.2);
 }
 
@@ -436,6 +427,27 @@
     line-height: 1.8;
     color: #555;
     font-size: 1.05rem;
+}
+
+.description-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pdf-btn {
+    background-color: #0a1929 !important;
+    color: #ffffff !important;
+}
+
+.pdf-icon {
+    font-size: 22px;
+    color: #e63946;
+    cursor: pointer;
+}
+
+.pdf-icon:hover {
+    transform: scale(1.15);
 }
 
 /* Responsive Adjustments */

@@ -11,6 +11,7 @@ import {
     PiCaretRightLight,
     PiCheckCircleFill
 } from "react-icons/pi";
+import { FaFilePdf } from "react-icons/fa";
 
 import ZoomVariant from "../../components/ZoomVariant";
 
@@ -38,7 +39,6 @@ const ProductPage = () => {
                 if (result.status === 200) {
                     const fetchedProduct = result.data;
                     setProduct(fetchedProduct);
-
                     if (fetchedProduct.colorVariants?.length > 0) {
                         setSelectedVariantId(fetchedProduct.colorVariants[0].id);
                     }
@@ -47,7 +47,6 @@ const ProductPage = () => {
                 setError({ message: err.message, status: err.statusCode || 500 });
             }
         };
-
         fetchProduct();
     }, [id]);
 
@@ -282,14 +281,31 @@ const ProductPage = () => {
 
                             {/* Product Description */}
                             <div className="description-section">
-                                <h3 className="section-title">
-                                    <span className="section-title-decoration"></span>
-                                    Product Details
-                                </h3>
-                                <div className="description-content">
+                                <div className="description-header d-flex align-items-center justify-content-between">
+                                    <h3 className="section-title mb-0">
+                                        <span className="section-title-decoration"></span>
+                                        Product Details
+                                    </h3>
+
+                                    {product.pdf_file ? (
+                                        <a
+                                            href={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.pdf_file}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="btn btn-sm btn-primary pdf-btn"
+                                        >
+                                            <FaFilePdf />  View PDF
+                                        </a>
+                                    ) : (
+                                        <span className="text-muted">No PDF</span>
+                                    )}
+                                </div>
+
+                                <div className="description-content mt-3">
                                     <p>{product.description}</p>
                                 </div>
                             </div>
+
                         </div>
                     </Col>
                 </Row>

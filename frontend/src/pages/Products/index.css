@@ -10,11 +10,6 @@
     object-fit: contain;
 }
 
-.add-to-cart-btn {
-    padding: 1rem 2rem;
-    font-size: 1.25rem;
-}
-
 .quantity-controls .btn-link {
     color: var(--bs-primary);
 }

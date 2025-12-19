@@ -32,4 +32,7 @@ export class ProductEntity {
 	@Column()
 	image: string;
 
+	@Column()
+	pdf_file: string;
+
 }

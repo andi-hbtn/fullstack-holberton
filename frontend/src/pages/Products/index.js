@@ -21,6 +21,7 @@ const ProductModal = () => {
 		price: 0,
 		stock: 0,
 		image: "",
+		pdf_fiile: "",
 		is_active: true
 	};
 
@@ -37,6 +38,7 @@ const ProductModal = () => {
 			description: "",
 			category_id: 0,
 			image: "",
+			pdf_fiile: "",
 			is_active: true
 		}
 	);
@@ -100,6 +102,7 @@ const ProductModal = () => {
 											<th>Category</th>
 											<th>Status</th>
 											<th>Image</th>
+											<th>Pdf</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -130,6 +133,20 @@ const ProductModal = () => {
 												</td>
 												<td>
 													<img src={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.image}`} alt="figure" width={"100px"} height={"100px"} />
+												</td>
+												<td>
+													{product.pdf_file ? (
+														<a
+															href={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.pdf_file}`}
+															target="_blank"
+															rel="noopener noreferrer"
+															className="btn btn-sm btn-outline-primary"
+														>
+															View PDF
+														</a>
+													) : (
+														<span className="text-muted">No PDF</span>
+													)}
 												</td>
 												<td>
 													<Button

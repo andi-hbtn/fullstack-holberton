@@ -8,6 +8,7 @@ import { ProductDto } from './dto/product.dto';
 import { ProductResponse, DeleteProductResponse, DeleteProductVariantResponse } from './responseType/response.interface';
 import { diskStorage } from 'multer';
 import { ImageNameHelper } from '../helpers/imageName.helper';
+import { PdfNameHelper } from 'src/helpers/PdfNameHelper';
 import { Response } from 'express';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from "fs";
@@ -32,18 +33,30 @@ export class ProductController {
 
 	@Roles('admin')
 	@Post('create')
-	@UseInterceptors(FileInterceptor('image', {
-		storage: diskStorage({
-			destination: './uploads',
-			filename: (req, image, cb) => {
-				const imageName = new ImageNameHelper(image.originalname).getImageName();
-				cb(null, imageName);
-			}
-		}),
-	}))
-	public async cretePost(@Body() bodyParam: ProductDto, @UploadedFile() file: Express.Multer.File) {
+		@UseInterceptors(FileFieldsInterceptor([
+			{ name: 'image', maxCount: 1 },
+			{ name: 'pdf_file', maxCount: 1 }
+		], {
+			storage: diskStorage({
+				destination: './uploads',
+				filename: (req, file, cb) => {
+					if (file.fieldname === 'image') {
+						const imageName = new ImageNameHelper(file.originalname).getImageName();
+						cb(null, imageName);
+					} else if (file.fieldname === 'pdf_file') {
+						const pdfName = new PdfNameHelper(file.originalname).getPdfName();
+						cb(null, pdfName);
+					} else {
+						cb(null, file.originalname);
+					}
+				}
+			})
+		}))
+	public async cretePost(
+		@Body() bodyParam: ProductDto,
+		@UploadedFiles() files: { image?: Express.Multer.File[], pdf_file?: Express.Multer.File[] }) {
 		try {
-			if (!file || !file.filename) {
+			if (!files.image || !files.image[0]) {
 				throw new ServiceHandler('Image file is required', HttpStatus.BAD_REQUEST);
 			}
 			const product = {
@@ -52,8 +65,10 @@ export class ProductController {
 				reference_number: bodyParam.reference_number,
 				is_active: bodyParam.is_active,
 				category_id: bodyParam.category_id,
-				image: file.filename
-			}
+				image: files.image[0].filename,
+				pdf_file: files.pdf_file && files.pdf_file[0] ? files.pdf_file[0].filename : null
+			};
+
 			return await this.productService.createProduct(product);
 		} catch (error) {
 			throw new ServiceHandler(error.response, error.status);
