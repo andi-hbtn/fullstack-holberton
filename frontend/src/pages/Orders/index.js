@@ -9,7 +9,6 @@ import { LuPackageCheck } from "react-icons/lu";
 import { MdOutlineLocalShipping } from "react-icons/md";
 import { FaRegTrashCan } from "react-icons/fa6";
 import helpers from "../../helpers/index.js";
-import AdminSideBar from "../../components/AdminSideBar";
 import OrderModal from "./OrderModal";
 
 // ✅ Komponenti për filtrat e statusit
@@ -113,9 +112,6 @@ const Orders = () => {
 				<NavAdmin />
 				<Container fluid className="main-content">
 					<Row>
-						{/* Sidebar */}
-						<AdminSideBar />
-
 						{/* Pjesa kryesore */}
 						<Col md={12} xl={12} className="p-4 main-content-area">
 							{/* Titulli */}

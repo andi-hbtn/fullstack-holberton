@@ -5,7 +5,6 @@ import { useCategoryContext } from "../../context/CategoryContext";
 import NavAdmin from "../../components/NavAdmin";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
-import AdminSideBar from "../../components/AdminSideBar";
 import helpers from "../../helpers/index.js";
 
 import "./index.css";
@@ -45,11 +44,7 @@ const Categories = () => {
 			<NavAdmin />
 			<Container fluid className="main-content">
 				<Row>
-					<Col md={3} xl={2} className="sidebar bg-dark text-light">
-						<AdminSideBar />
-					</Col>
-
-					<Col md={9} xl={10} className="p-4 main-content-area">
+					<Col md={12} xl={12} className="p-4 main-content-area">
 						<div className="d-flex justify-content-between align-items-center mb-4">
 							<h2 className="page-title">Category Management</h2>
 							<Button variant="primary" className="rounded-pill" onClick={handleCreate}>

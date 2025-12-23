@@ -181,6 +181,33 @@ const ProductPage = () => {
                                 </div>
                             )}
                         </div>
+
+                        {/* Product Description */}
+                        <div className="description-section">
+                            <div className="description-header d-flex align-items-center justify-content-between">
+                                <h3 className="section-title mb-0">
+                                    <span className="section-title-decoration"></span>
+                                    Product Details
+                                </h3>
+
+                                {product.pdf_file ? (
+                                    <a
+                                        href={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.pdf_file}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="btn btn-sm btn-primary pdf-btn"
+                                    >
+                                        <FaFilePdf />  View PDF
+                                    </a>
+                                ) : (
+                                    <span className="text-muted">No PDF</span>
+                                )}
+                            </div>
+
+                            <div className="description-content mt-3">
+                                <p>{product.description}</p>
+                            </div>
+                        </div>
                     </Col>
 
                     {/* Product Details Column */}
@@ -278,34 +305,6 @@ const ProductPage = () => {
                                     </button>
                                 </div>
                             </div>
-
-                            {/* Product Description */}
-                            <div className="description-section">
-                                <div className="description-header d-flex align-items-center justify-content-between">
-                                    <h3 className="section-title mb-0">
-                                        <span className="section-title-decoration"></span>
-                                        Product Details
-                                    </h3>
-
-                                    {product.pdf_file ? (
-                                        <a
-                                            href={`${process.env.REACT_APP_API_URL}api/product/uploads/${product.pdf_file}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="btn btn-sm btn-primary pdf-btn"
-                                        >
-                                            <FaFilePdf />  View PDF
-                                        </a>
-                                    ) : (
-                                        <span className="text-muted">No PDF</span>
-                                    )}
-                                </div>
-
-                                <div className="description-content mt-3">
-                                    <p>{product.description}</p>
-                                </div>
-                            </div>
-
                         </div>
                     </Col>
                 </Row>

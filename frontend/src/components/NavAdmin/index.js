@@ -17,7 +17,7 @@ const NavAdmin = () => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="admin-navbar">
             <Container fluid>
-                <Navbar.Brand as={Link} to="/products" className="d-flex align-items-center">
+                <Navbar.Brand as={Link} to="/admin-products" className="d-flex align-items-center">
                     <FiBox className="me-2" />
                     <span className="brand-text">Admin Panel</span>
                 </Navbar.Brand>

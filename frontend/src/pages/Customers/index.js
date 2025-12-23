@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Badge, Container, Row, Col, Table, Form, Button } from "react-bootstrap";
 import { useCustomerContext } from "../../context/CustomerContext";
 import NavAdmin from "../../components/NavAdmin";
-import AdminSideBar from "../../components/AdminSideBar";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 const Customers = () => {
@@ -50,11 +49,7 @@ const Customers = () => {
                 <NavAdmin />
                 <Container fluid className="main-content">
                     <Row>
-                        <Col md={3} xl={2} className="sidebar bg-dark text-light">
-                            <AdminSideBar />
-                        </Col>
-
-                        <Col md={9} xl={10} className="p-4 main-content-area">
+                        <Col md={12} xl={12} className="p-4 main-content-area">
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h2 className="page-title">Customers Section</h2>
 

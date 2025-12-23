@@ -51,7 +51,12 @@ export class ProductService {
 		}
 	}
 
-	public async updateProduct(data: ProductDto, id: number, image: string): Promise<any> {
+	public async updateProduct(
+		data: ProductDto,
+		id: number,
+		image: string,
+		pdf_file?: string,
+	): Promise<any> {
 		try {
 			const product = {
 				title: data.title,
@@ -59,17 +64,21 @@ export class ProductService {
 				reference_number: data.reference_number,
 				is_active: data.is_active,
 				category_id: data.category_id,
-				image: image
-			}
+				image: image,
+				pdf_file: pdf_file ?? null,
+			};
+
 			await this.ProductEntity.update(id, product);
+
 			const result = await this.ProductEntity.findOne({ where: { id } });
+
 			return {
 				status: HttpStatus.OK,
 				message: 'Product updated successfully',
-				data: result
+				data: result,
 			};
 		} catch (error) {
-			console.log("error-in update--", error);
+			console.log('error-in update--', error);
 			throw new ServiceHandler(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

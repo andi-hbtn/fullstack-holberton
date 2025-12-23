@@ -4,9 +4,6 @@ import { useProductContext } from "../../context/ProductContext.js";
 import NavAdmin from "../../components/NavAdmin";
 import { FiPlus, FiEdit, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { FaTrash } from 'react-icons/fa';
-
-import AdminSideBar from "../../components/AdminSideBar";
-
 import ProductVariantsModal from "./ProductVariantsModal.js";
 import EditProductVariants from "./EditProductVariants.js";
 import "./index.css";
@@ -49,11 +46,7 @@ const ProductVariants = () => {
             <NavAdmin />
             <Container fluid className="main-content">
                 <Row>
-                    <Col md={3} xl={2} className="sidebar bg-dark text-light">
-                        <AdminSideBar />
-                    </Col>
-
-                    <Col md={9} xl={10} className="p-4 main-content-area">
+                    <Col md={12} xl={12} className="p-4 main-content-area">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h2 className="page-title">Product Color Management</h2>
                         </div>

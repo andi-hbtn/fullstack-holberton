@@ -33,25 +33,25 @@ export class ProductController {
 
 	@Roles('admin')
 	@Post('create')
-		@UseInterceptors(FileFieldsInterceptor([
-			{ name: 'image', maxCount: 1 },
-			{ name: 'pdf_file', maxCount: 1 }
-		], {
-			storage: diskStorage({
-				destination: './uploads',
-				filename: (req, file, cb) => {
-					if (file.fieldname === 'image') {
-						const imageName = new ImageNameHelper(file.originalname).getImageName();
-						cb(null, imageName);
-					} else if (file.fieldname === 'pdf_file') {
-						const pdfName = new PdfNameHelper(file.originalname).getPdfName();
-						cb(null, pdfName);
-					} else {
-						cb(null, file.originalname);
-					}
+	@UseInterceptors(FileFieldsInterceptor([
+		{ name: 'image', maxCount: 1 },
+		{ name: 'pdf_file', maxCount: 1 }
+	], {
+		storage: diskStorage({
+			destination: './uploads',
+			filename: (req, file, cb) => {
+				if (file.fieldname === 'image') {
+					const imageName = new ImageNameHelper(file.originalname).getImageName();
+					cb(null, imageName);
+				} else if (file.fieldname === 'pdf_file') {
+					const pdfName = new PdfNameHelper(file.originalname).getPdfName();
+					cb(null, pdfName);
+				} else {
+					cb(null, file.originalname);
 				}
-			})
-		}))
+			}
+		})
+	}))
 	public async cretePost(
 		@Body() bodyParam: ProductDto,
 		@UploadedFiles() files: { image?: Express.Multer.File[], pdf_file?: Express.Multer.File[] }) {
@@ -77,34 +77,73 @@ export class ProductController {
 
 	@Roles('admin')
 	@Put('update/:id')
-	@UseInterceptors(FileInterceptor('image', {
-		storage: diskStorage({
-			destination: './uploads',
-			filename: (req, image, cb) => {
-				const imageName = new ImageNameHelper(image.originalname).getImageName();
-				cb(null, imageName);
-			}
-		})
-	}))
-	public async update(@Body() bodyParam: ProductDto, @Param('id', ParseIntPipe) id: number, @UploadedFile() file: Express.Multer.File): Promise<ProductResponse> {
+	@UseInterceptors(
+		FileFieldsInterceptor(
+			[
+				{ name: 'image', maxCount: 1 },
+				{ name: 'pdf_file', maxCount: 1 },
+			],
+			{
+				storage: diskStorage({
+					destination: './uploads',
+					filename: (req, file, cb) => {
+						if (file.fieldname === 'image') {
+							const imageName = new ImageNameHelper(file.originalname).getImageName();
+							cb(null, imageName);
+						} else if (file.fieldname === 'pdf_file') {
+							const pdfName = new PdfNameHelper(file.originalname).getPdfName();
+							cb(null, pdfName);
+						} else {
+							cb(null, file.originalname);
+						}
+					},
+				}),
+			},
+		),
+	)
+	public async update(
+		@Param('id', ParseIntPipe) id: number,
+		@Body() bodyParam: ProductDto,
+		@UploadedFiles()
+		files: {
+			image?: Express.Multer.File[];
+			pdf_file?: Express.Multer.File[];
+		},
+	) {
 		try {
 			const productResponse = await this.productService.getProductById(id);
 			const product = productResponse.data;
 
-			if (!file || !file?.filename) {
-				const imagePath = path.basename(product.image);
-				return await this.productService.updateProduct(bodyParam, id, imagePath);
-			} else {
-				// Delete the old image
-				const imagePath = path.basename(product.image);
-				fs.unlinkSync('uploads/' + imagePath);
-				// Proceed with the update
-				return await this.productService.updateProduct(bodyParam, id, file.filename);
+			let image = product.image;
+			let pdfFile = product.pdf_file;
+
+			// 🖼️ Image update (optional)
+			if (files?.image?.[0]) {
+				if (product.image && fs.existsSync(`uploads/${product.image}`)) {
+					fs.unlinkSync(`uploads/${product.image}`);
+				}
+				image = files.image[0].filename;
 			}
+
+			// 📄 PDF update (optional)
+			if (files?.pdf_file?.[0]) {
+				if (product.pdf_file && fs.existsSync(`uploads/${product.pdf_file}`)) {
+					fs.unlinkSync(`uploads/${product.pdf_file}`);
+				}
+				pdfFile = files.pdf_file[0].filename;
+			}
+
+			return await this.productService.updateProduct(
+				bodyParam,
+				id,
+				image,
+				pdfFile,
+			);
 		} catch (error) {
-			throw new ServiceHandler(error.response, error.status);
+			throw new ServiceHandler(error.response || error.message, error.status);
 		}
 	}
+
 
 	@IsPublic()
 	@Get(':id')
