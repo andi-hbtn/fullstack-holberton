@@ -27,7 +27,7 @@ const ResetPassword = () => {
         try {
             await resetPassword(token, password);
             setVariant('success');
-            setMessage('Password reset successfully! Redirecting to login...');
+            setMessage('Password reset successfully! Please try to login now!.');
         } catch (error) {
             setVariant('danger');
             setMessage(error.response?.data?.message || 'Error resetting password');

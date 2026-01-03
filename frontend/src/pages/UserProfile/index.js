@@ -35,17 +35,13 @@ const UserProfile = () => {
         loadData();
     }, []);
 
-    const getStatusBadge = (status) => {
-        switch (status.toLowerCase()) {
-            case 'delivered':
-                return <Badge bg="success">{status}</Badge>;
-            case 'shipped':
-                return <Badge bg="primary">{status}</Badge>;
-            case 'cancelled':
-                return <Badge bg="danger">{status}</Badge>;
-            default:
-                return <Badge bg="secondary">{status}</Badge>;
-        }
+    const statusBadge = (status) => {
+        let variant = "";
+        if (status === "pending") variant = "warning";
+        else if (status === "shipped") variant = "info";
+        else if (status === "delivered") variant = "success";
+        else if (status === "cancelled") variant = "danger";
+        return <Badge bg={variant} className="me-1">{status}</Badge>;
     };
 
     const handleOpen = (id) => {
@@ -106,7 +102,7 @@ const UserProfile = () => {
                                                                     #{order.id}
                                                                 </td>
                                                                 <td>{order?.total_price || "No product"}</td>
-                                                                <td>{order?.status || "N/A"}</td>
+                                                                <td>{statusBadge(order.status)}</td>
                                                                 <td>{helpers.formatIsoDateTime(order?.created_at)}</td>
                                                                 <td>
                                                                     <Button

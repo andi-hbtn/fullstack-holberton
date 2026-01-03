@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Badge } from "react-bootstrap";
+import { Container, Row, Col, Badge, Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -230,7 +230,6 @@ const ProductPage = () => {
                                     £{selectedVariant?.price ?? "N/A"}
                                 </div>
                             </div>
-
                             {/* Color Variants */}
                             <div className="variant-section">
                                 <h3 className="section-title">
@@ -296,19 +295,19 @@ const ProductPage = () => {
                                 </div>
 
                                 <div className="add-to-cart-container">
-                                    <button
+                                    <Button
                                         className="add-to-cart-btn"
                                         onClick={handleAddToCart}
                                         disabled={selectedVariant?.stock <= 0}
                                     >
                                         Add to cart
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
+                        </div >
+                    </Col >
+                </Row >
+            </Container >
 
             <ZoomVariant showModal={showModal} setShowModal={setShowModal} position={position} setPosition={setPosition} product={product} currentImageIndex={currentImageIndex} images={images} />
             <Footer />

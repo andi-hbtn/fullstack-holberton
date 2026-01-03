@@ -197,28 +197,16 @@
 
 .add-to-cart-btn {
     flex: 1;
+    background-color: #0a1929 !important;
     border-radius: 8px;
     border: 1px solid #111;
-    background: #111;
     color: #fff;
     font-size: 13px;
     font-weight: 500;
-    cursor: pointer;
-    padding: 8px;
     transition: background 0.25s ease, color 0.25s ease;
 }
 
-.add-to-cart-btn:hover:not(:disabled) {
-    background: #fff;
-    color: #111;
-}
 
-.add-to-cart-btn:disabled {
-    background: #ccc;
-    border-color: #ccc;
-    color: #666;
-    cursor: not-allowed;
-}
 
 /* =====================================================
    RESPONSIVE

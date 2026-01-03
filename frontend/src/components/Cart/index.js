@@ -25,7 +25,7 @@ const Cart = () => {
         return total + (item.price * item.quantity);
     }, 0);
 
-    const totalWithVat = +(subTotal * 0.20).toFixed(2);
+    const totalWithVat = +(subTotal * 0.20);
     const delivery = 4.99;
     const totalPrice = +(subTotal + totalWithVat + delivery).toFixed(2);
 
@@ -162,10 +162,6 @@ const Cart = () => {
                                                             </div>
                                                             <div className="product-details">
                                                                 <h3 className="product-title">{item.productTitle}</h3>
-                                                                <div className="product-variant">
-                                                                    <span className="color-badge" style={{ backgroundColor: item.color_code || '#ccc' }}></span>
-                                                                    <span className="variant-name">{item.color}</span>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -222,10 +218,10 @@ const Cart = () => {
                                         </div>
                                         <div className="summary-row">
                                             <span>VAT (20%)</span>
-                                            <span>£{totalWithVat}</span>
+                                            <span>£{totalWithVat.toFixed(2)}</span>
                                         </div>
                                         <div className="summary-row">
-                                            <span>Delivery 4.99</span>
+                                            <span>Delivery</span>
                                             <span>£{delivery}</span>
                                         </div>
                                         <div className="summary-row total-row">

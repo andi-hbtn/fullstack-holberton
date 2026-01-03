@@ -9,6 +9,7 @@ import {
     Card,
     Spinner,
     Tooltip,
+    Button,
     OverlayTrigger
 } from "react-bootstrap";
 import { PiMinusLight, PiPlusLight, PiCheckCircleFill } from "react-icons/pi";
@@ -228,7 +229,7 @@ const CategoryPage = () => {
                                                         </button>
                                                     </div>
 
-                                                    <button
+                                                    <Button
                                                         className="add-to-cart-btn p-2"
                                                         onClick={() =>
                                                             addToCart(product, selectedVariant)
@@ -239,7 +240,7 @@ const CategoryPage = () => {
                                                         }
                                                     >
                                                         Add to cart
-                                                    </button>
+                                                    </Button>
                                                 </div>
                                             </div>
                                         )}

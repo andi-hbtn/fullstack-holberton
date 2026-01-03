@@ -4,11 +4,12 @@ const OrderContext = createContext({});
 const OrderProvider = (props) => {
     const [orders, setOrders] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);
+    const [status, statusOrder] = useState(false);
 
     useEffect(() => {
         getAllOrders();
         getOrdersByStatus("all");
-    }, []);
+    }, [status]);
 
     const getAllOrders = async () => {
         try {
@@ -71,7 +72,7 @@ const OrderProvider = (props) => {
         }
     }
 
-    const values = { orders, getOrderById, getUserOrderItems, updateOrderStatus, getOrdersByStatus, filteredOrders };
+    const values = { orders, getOrderById, getUserOrderItems, updateOrderStatus, getOrdersByStatus, filteredOrders, statusOrder, status };
 
     return (
         <OrderContext.Provider value={values}>

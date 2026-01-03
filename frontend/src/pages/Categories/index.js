@@ -5,8 +5,8 @@ import { useCategoryContext } from "../../context/CategoryContext";
 import NavAdmin from "../../components/NavAdmin";
 import ModalManager from "../../components/modals/ModalManager";
 import { fields } from "./fields";
+import ConfirmDeleteModal from "./DeleteModal.js";
 import helpers from "../../helpers/index.js";
-
 import "./index.css";
 
 const Categories = () => {
@@ -14,6 +14,9 @@ const Categories = () => {
 	const [open, setOpen] = useState(false);
 	const [caseModal, setCaseModal] = useState({ title: "", create: false, button: "" });
 	const [formData, setFormData] = useState({ id: 0, title: "", description: "", image: "" });
+	const [deleteModal, setDeleteModal] = useState(false);
+	const [categoryId, setCategoryId] = useState(0);
+
 	const close = () => setOpen(!open);
 
 	const handleCreate = () => {
@@ -29,15 +32,24 @@ const Categories = () => {
 		setCaseModal({ title: "Edit Category", create: false, button: "Update" })
 		setOpen(!open);
 	}
-
 	const handleDelete = async (id) => {
 		try {
-			const result = await deleteCategorie(id);
-			return result;
+			setCategoryId(id);
+			setDeleteModal(true);
 		} catch (error) {
 			console.log("error----", error);
 		}
+	};
+
+	const confirmDeleteModal = async () => {
+		if (categoryId !== null) {
+			const result = await deleteCategorie(categoryId);
+			setDeleteModal(false);
+			return result;
+		}
 	}
+
+
 
 	return (
 		<div className="admin-dashboard">
@@ -129,6 +141,11 @@ const Categories = () => {
 			>
 				<FiPlus size={24} />
 			</Button>
+
+			<ConfirmDeleteModal
+				open={deleteModal}
+				close={() => { return setDeleteModal(false) }}
+				onConfirm={confirmDeleteModal} />
 		</div>
 	)
 }

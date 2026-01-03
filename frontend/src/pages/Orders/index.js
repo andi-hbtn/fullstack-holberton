@@ -55,10 +55,11 @@ const StatusNav = ({ getOrdersByStatus }) => {
 };
 
 const Orders = () => {
-	const { orders, updateOrderStatus, filteredOrders, getOrdersByStatus } = useOrderContext();
+	const { orders, updateOrderStatus, getOrdersByStatus, filteredOrders, statusOrder, status } = useOrderContext();
 	const [orderId, setOrderId] = useState(0);
 	const [searchResults, setSearchResults] = useState(filteredOrders);
 	const [open, setOpen] = useState(false);
+
 
 	useEffect(() => {
 		setSearchResults(filteredOrders);
@@ -74,6 +75,7 @@ const Orders = () => {
 	const handleStatusChange = async (orderId, newStatus) => {
 		try {
 			await updateOrderStatus(orderId, newStatus);
+			statusOrder(!status);
 		} catch (error) {
 			console.error("Error updating order status:", error);
 			return error;
@@ -158,7 +160,7 @@ const Orders = () => {
 									<tbody>
 										{searchResults.length > 0 ? (
 											searchResults.map((order, index) => (
-												<tr key={index}>
+												<tr key={order.id}>
 													<td className="text-muted text-center">#{order.id}</td>
 													<td className="text-center">{helpers.generateId(order.id)}</td>
 													<td className="text-center">

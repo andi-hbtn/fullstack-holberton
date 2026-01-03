@@ -17,6 +17,12 @@ const ItemsModal = ({ open, close, selectedOrderItems }) => {
     const vatRate = 0.20;
     const vatAmount = totalPrice * vatRate;
     const totalWithVat = totalPrice + vatAmount;
+    const handlePrint = () => {
+        close();
+        setTimeout(() => {
+            window.print();
+        }, 300);
+    };
 
     return (
         <Modal show={open} onHide={close} backdrop="static" keyboard={false} size="lg">
@@ -109,7 +115,7 @@ const ItemsModal = ({ open, close, selectedOrderItems }) => {
                     Close
                 </Button>
 
-                <Button variant="outline-secondary" onClick={() => window.print()}>
+                <Button variant="outline-secondary" onClick={handlePrint}>
                     <FiPrinter />
                     Print
                 </Button>
