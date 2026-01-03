@@ -296,11 +296,11 @@ const ProductPage = () => {
 
                                 <div className="add-to-cart-container">
                                     <Button
-                                        className="add-to-cart-btn"
+                                        className="add-to-cart-btn c-w-b"
                                         onClick={handleAddToCart}
                                         disabled={selectedVariant?.stock <= 0}
                                     >
-                                        Add to cart
+                                        Add to Cart
                                     </Button>
                                 </div>
                             </div>

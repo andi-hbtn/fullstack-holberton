@@ -90,7 +90,7 @@ const Checkout = () => {
         return acc + (Number(item.price) * Number(item.quantity))
     }, 0);
 
-    const vat = +(subtotal * 0.20).toFixed(2);
+    const vat = +(subtotal * 0.20);
     const delivery = 4.99;
     const total_price = +(subtotal + vat + delivery).toFixed(2);
 
@@ -446,7 +446,6 @@ const Checkout = () => {
                                                             <div className="item-details">
                                                                 <h4 className="item-title">{item.title}</h4>
                                                                 <div className="item-variant">
-                                                                    <span className="color-dot" style={{ backgroundColor: item.color_code || '#ccc' }}></span>
                                                                     <span>{item.color}</span>
                                                                 </div>
                                                             </div>
@@ -462,7 +461,7 @@ const Checkout = () => {
                                                     </div>
                                                     <div className="total-row">
                                                         <span>VAT (20%)</span>
-                                                        <span>£{vat}</span>
+                                                        <span>£{vat.toFixed(2)}</span>
                                                     </div>
                                                     <div className="total-row">
                                                         <span>Delivery</span>
