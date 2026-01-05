@@ -9,6 +9,89 @@
     z-index: 1000;
 }
 
+/************************************************** product-dropdown **************************************************/
+
+.products-hover-zone {
+    position: relative;
+}
+
+/* Dropdown si modal */
+.products-dropdown {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 300px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.05);
+    z-index: 999;
+    overflow: hidden;
+    animation: dropdownFade 0.15s ease;
+}
+
+/* Header si modal */
+.products-dropdown-header {
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    background: #fafafa;
+}
+
+/* Lista */
+.categories-list-vertical {
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Item */
+.category-item-li-vertical {
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.category-item-li-vertical:hover {
+    background: #f5f5f5;
+}
+
+/* Link */
+.category-link-vertical {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Tekst */
+.category-title-vertical {
+    line-height: 1.2;
+}
+
+/* Animacion i lehtë */
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/************************************************** product-dropdown **************************************************/
+
+
 .nav-cnt {
     max-width: 95% !important;
 }
@@ -16,6 +99,10 @@
 .nav-menu {
     width: 50%;
     margin-right: auto;
+}
+
+.nav__products {
+    position: relative;
 }
 
 .nav-menu .nav-link {
@@ -48,6 +135,8 @@
 .nav-menu .nav-link:hover {
     color: #c19a6b !important;
 }
+
+
 
 .nav-right-elements {
     width: 50%;
@@ -117,7 +206,6 @@
 .user-icon {
     font-size: 1rem;
 }
-
 
 .user-profile {
     position: relative;

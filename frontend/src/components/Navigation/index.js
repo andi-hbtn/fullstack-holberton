@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, Form, Badge } from 'react-bootstrap';
 import { FaShoppingCart, FaSearch, FaUser, FaBars } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
-import OrderConfirmed from '../OrderConfirmed';
+import ProductsModal from "./ProductsModal";
 import "./index.css";
 
 const Navigation = ({ onSearchChange }) => {
@@ -44,6 +44,7 @@ const Navigation = ({ onSearchChange }) => {
     const handleLogout = async () => {
         return await logout();
     }
+    const [productsOpen, setProductsOpen] = useState(false);
 
     return (
         <>
@@ -63,7 +64,39 @@ const Navigation = ({ onSearchChange }) => {
                         <Nav className="nav-menu">
                             <Nav.Link as={Link} to="/">Home</Nav.Link>
                             <Nav.Link as={Link} to="/about-us">About Us</Nav.Link>
-                            <Nav.Link as={Link} to="/products">Products</Nav.Link>
+                            <div
+                                className="products-hover-zone"
+                                onMouseEnter={() => setProductsOpen(true)}
+                                onMouseLeave={() => setProductsOpen(false)}
+                            >
+                                <Nav.Link className="products-link">Products</Nav.Link>
+
+                                {productsOpen && (
+                                    <div className="products-dropdown">
+                                        <div className="products-dropdown-header">
+                                            Products
+                                        </div>
+
+                                        <ul className="categories-list-vertical">
+                                            {allCategories.map(category => (
+                                                <li
+                                                    key={category.id}
+                                                    className="category-item-li-vertical"
+                                                >
+                                                    <Link
+                                                        to={`/category/${category.id}`}
+                                                        className="category-link-vertical"
+                                                    >
+                                                        <span className="category-title-vertical">
+                                                            {category.title}
+                                                        </span>
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
                             <Nav.Link as={Link} to="/gallery">Gallery</Nav.Link>
                             <Nav.Link as={Link} to="/faq">FAQ</Nav.Link>
                             <Nav.Link as={Link} to="/contact">Contact</Nav.Link>

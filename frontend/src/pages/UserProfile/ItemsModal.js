@@ -18,10 +18,74 @@ const ItemsModal = ({ open, close, selectedOrderItems }) => {
     const vatAmount = totalPrice * vatRate;
     const totalWithVat = totalPrice + vatAmount;
     const handlePrint = () => {
-        close();
-        setTimeout(() => {
-            window.print();
-        }, 300);
+        if (!items.length) return;
+
+        const width = 800;
+        const height = 600;
+        // Llogarisim pozicionin për ta vendosur në qendër të ekranit
+        const left = (window.screen.width / 2) - (width / 2);
+        const top = (window.screen.height / 2) - (height / 2);
+
+        const printWindow = window.open(
+            '',
+            '_blank',
+            `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`
+        );
+
+        if (!printWindow) return;
+
+        const htmlContent = `
+        <html>
+        <head>
+            <title>Order Items</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                h2 { margin-bottom: 20px; text-align: center; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                th { background: #f5f5f5; }
+                img { max-width: 100px; display: block; margin: auto; }
+                h3 { text-align: right; }
+            </style>
+        </head>
+        <body>
+            <h2>Order Items (${items.length})</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Reference</th>
+                        <th>Color</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${items.map(item => `
+                        <tr>
+                            <td><img src="${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item?.main_image}" /></td>
+                            <td>${item?.variant?.reference || 'Unnamed'}</td>
+                            <td>${item?.color || item?.variant?.color || 'N/A'}</td>
+                            <td>${item.quantity}</td>
+                            <td>£${parseFloat(item.price).toFixed(2)}</td>
+                            <td>£${(parseFloat(item.price) * item.quantity).toFixed(2)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <h3>Total: £${totalWithVat.toFixed(2)}</h3>
+        </body>
+        </html>
+    `;
+
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+
+        close(); // mbyll modal
     };
 
     return (

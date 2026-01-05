@@ -147,6 +147,7 @@ const Cart = () => {
                                         </thead>
                                         <tbody>
                                             {cart.items?.map((item, index) => (
+
                                                 <tr
                                                     key={index}
                                                     className={`cart-item ${isRemoving ? 'removing' : ''}`}
@@ -162,6 +163,7 @@ const Cart = () => {
                                                             </div>
                                                             <div className="product-details">
                                                                 <h3 className="product-title">{item.productTitle}</h3>
+                                                                <spna className="product-title">{item.color}</spna>
                                                             </div>
                                                         </div>
                                                     </td>

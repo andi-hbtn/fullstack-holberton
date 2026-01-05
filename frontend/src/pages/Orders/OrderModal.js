@@ -30,10 +30,82 @@ const OrdersModal = ({ open, close, id }) => {
     const totalWithVat = totalPrice + vat_price;
 
     const handlePrint = () => {
-        close();
-        setTimeout(() => {
-            window.print();
-        }, 300);
+        if (!orders || !orders.orderItems?.length) return;
+
+        const width = 800;
+        const height = 600;
+        const left = (window.screen.width / 2) - (width / 2);
+        const top = (window.screen.height / 2) - (height / 2);
+
+        const printWindow = window.open(
+            '',
+            '_blank',
+            `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`
+        );
+
+        if (!printWindow) return;
+
+        // Gjenerojmë HTML për printim
+        const htmlContent = `
+        <html>
+        <head>
+            <title>Order #${orders.id}</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                h2, h3, h4 { margin: 0 0 10px 0; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                th { background: #f5f5f5; }
+                img { max-width: 60px; display: block; margin: auto; }
+                .total { text-align: right; font-weight: bold; }
+            </style>
+        </head>
+        <body>
+            <h2>Order #${orders.id}</h2>
+            <p><strong>Customer:</strong> ${orders.user ? orders.user.firstname + ' ' + orders.user.lastname : 'Guest'}</p>
+            <p><strong>Order Date:</strong> ${new Date(orders.created_at).toLocaleDateString()}</p>
+            <p><strong>Status:</strong> ${orders.status?.toUpperCase()}</p>
+
+            <h3>Items (${orders.orderItems.length})</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Reference</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${orders.orderItems.map(item => `
+                        <tr>
+                            <td><img src="${process.env.REACT_APP_API_URL}api/product/uploads/colors/${item?.main_image}" /></td>
+                            <td>${item.variant?.reference || 'N/A'}</td>
+                            <td>${item.variant?.product?.category?.title || 'N/A'}</td>
+                            <td>${item.product?.stock || 'N/A'}</td>
+                            <td>${item.quantity}</td>
+                            <td>£${parseFloat(item.price).toFixed(2)}</td>
+                            <td>£${(item.quantity * parseFloat(item.price)).toFixed(2)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+
+            <h4 class="total">Total + 20% VAT: £${totalWithVat.toFixed(2)}</h4>
+        </body>
+        </html>
+    `;
+
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+
+        close(); // mbyll modal
     };
 
     return (

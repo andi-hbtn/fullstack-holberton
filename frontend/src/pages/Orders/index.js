@@ -11,7 +11,6 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import helpers from "../../helpers/index.js";
 import OrderModal from "./OrderModal";
 
-// ✅ Komponenti për filtrat e statusit
 const StatusNav = ({ getOrdersByStatus }) => {
 	const [activeStatus, setActiveStatus] = useState("all");
 
@@ -59,7 +58,6 @@ const Orders = () => {
 	const [orderId, setOrderId] = useState(0);
 	const [searchResults, setSearchResults] = useState(filteredOrders);
 	const [open, setOpen] = useState(false);
-
 
 	useEffect(() => {
 		setSearchResults(filteredOrders);

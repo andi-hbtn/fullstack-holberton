@@ -115,7 +115,6 @@ const ProductPage = () => {
             </div>
         </div>
     );
-
     return (
         <>
             <Header />
@@ -205,7 +204,11 @@ const ProductPage = () => {
                             </div>
 
                             <div className="description-content mt-3">
-                                <p>{product.description}</p>
+                                <ul>
+                                    {product.description.split('. ').map((line, index) => (
+                                        <li key={index}>{line}</li>
+                                    ))}
+                                </ul>
                             </div>
                         </div>
                     </Col>
