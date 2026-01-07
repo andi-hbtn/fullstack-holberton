@@ -43,7 +43,7 @@ const Navigation = ({ onSearchChange }) => {
     const handleLogout = async () => {
         return await logout();
     }
-    const [productsOpen, setProductsOpen] = useState(true);
+    const [productsOpen, setProductsOpen] = useState(false);
 
     return (
         <>
@@ -82,8 +82,8 @@ const Navigation = ({ onSearchChange }) => {
                                                         className="category-link-vertical"
                                                     >
                                                         <span className="category-title-vertical">
-                                                            <img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`}/>
-                                                                {category.title}
+                                                            <img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} />
+                                                            {category.title}
                                                         </span>
                                                     </Link>
                                                 </li>
