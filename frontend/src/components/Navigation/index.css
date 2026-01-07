@@ -21,23 +21,17 @@
     top: 30px;
     left: 0;
     width: 300px;
+    max-height: 360px;
+    /* 👈 kufizon lartësinë */
     background: #fff;
     border-radius: 14px;
     box-shadow:
         0 10px 40px rgba(0, 0, 0, 0.15),
         0 2px 6px rgba(0, 0, 0, 0.05);
     z-index: 999;
-    overflow: hidden;
-    animation: dropdownFade 0.15s ease;
-}
-
-/* Header si modal */
-.products-dropdown-header {
-    padding: 10px 14px;
-    font-weight: 600;
-    font-size: 14px;
-    border-bottom: 1px solid #eee;
-    background: #fafafa;
+    overflow-y: auto;
+    /* 👈 ashensori */
+    overflow-x: hidden;
 }
 
 /* Lista */
@@ -74,6 +68,11 @@
 /* Tekst */
 .category-title-vertical {
     line-height: 1.2;
+}
+
+.category-title-vertical>img {
+    width: 50px;
+    height: 50px;
 }
 
 /* Animacion i lehtë */

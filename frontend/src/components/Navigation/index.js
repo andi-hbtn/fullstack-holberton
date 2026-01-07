@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, Form, Badge } from 'react-bootstrap';
 import { FaShoppingCart, FaSearch, FaUser, FaBars } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
-import ProductsModal from "./ProductsModal";
 import "./index.css";
 
 const Navigation = ({ onSearchChange }) => {
@@ -44,7 +43,7 @@ const Navigation = ({ onSearchChange }) => {
     const handleLogout = async () => {
         return await logout();
     }
-    const [productsOpen, setProductsOpen] = useState(false);
+    const [productsOpen, setProductsOpen] = useState(true);
 
     return (
         <>
@@ -70,13 +69,8 @@ const Navigation = ({ onSearchChange }) => {
                                 onMouseLeave={() => setProductsOpen(false)}
                             >
                                 <Nav.Link className="products-link">Products</Nav.Link>
-
                                 {productsOpen && (
                                     <div className="products-dropdown">
-                                        <div className="products-dropdown-header">
-                                            Products
-                                        </div>
-
                                         <ul className="categories-list-vertical">
                                             {allCategories.map(category => (
                                                 <li
@@ -88,7 +82,8 @@ const Navigation = ({ onSearchChange }) => {
                                                         className="category-link-vertical"
                                                     >
                                                         <span className="category-title-vertical">
-                                                            {category.title}
+                                                            <img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`}/>
+                                                                {category.title}
                                                         </span>
                                                     </Link>
                                                 </li>

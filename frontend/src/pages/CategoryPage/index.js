@@ -12,7 +12,7 @@ import {
     Button,
     OverlayTrigger
 } from "react-bootstrap";
-import { PiMinusLight, PiPlusLight, PiCheckCircleFill } from "react-icons/pi";
+import { PiMinusLight, PiPlusLight } from "react-icons/pi";
 import Header from "../../components/Header";
 import NotFound from "../../components/NotFount";
 import Footer from "../../components/Footer";
