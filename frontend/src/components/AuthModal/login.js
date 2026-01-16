@@ -111,7 +111,7 @@ const Login = ({ openLogin, closeLogin }) => {
               <Nav.Link href="/forgot-password" className="">Forgot Password ?</Nav.Link>
             </div>
             <div className="register-section">
-              Don’t have an account?
+              <span>  Don’t have an account?</span>
               <Nav.Link className="d-inline p-0" onClick={handleOpenRegister}>Click here to register.</Nav.Link>
               <Register openRegister={registerModal} closeRegister={() => setRegisterModal(false)} closeLogin={closeLogin} />
             </div>

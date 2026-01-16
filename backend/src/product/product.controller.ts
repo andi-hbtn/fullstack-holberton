@@ -144,7 +144,6 @@ export class ProductController {
 		}
 	}
 
-
 	@IsPublic()
 	@Get(':id')
 	public async getById(@Param('id', ParseIntPipe) id: number): Promise<ProductResponse> {
@@ -154,7 +153,6 @@ export class ProductController {
 			throw new ServiceHandler(error.response, error.status);
 		}
 	}
-
 	@Roles('admin')
 	@Delete('delete/:id')
 	public async delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteProductResponse> {
@@ -164,7 +162,6 @@ export class ProductController {
 			throw new ServiceHandler(error.response, error.status);
 		}
 	}
-
 	@Roles('admin')
 	@Post('product-variants/:productId')
 	@UseInterceptors(FilesInterceptor('images', 10, {

@@ -23,7 +23,7 @@ const Home = () => {
 				<Container className="category-container">
 					<Row>
 						{resultsToShow.map((item, index) => (
-							<Col key={index} lg={4} md={6} className="mb-5 card-link-contaier">
+							<Col key={index} lg={4} md={6} className="card-link-contaier">
 								<Link to={item?.products ? `/category/${item.id}` : `/product/${item.id}`} className="card-link">
 									<Card className="luxe-card">
 										<div>

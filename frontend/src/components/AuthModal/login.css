@@ -43,3 +43,19 @@ input:-webkit-autofill {
 .register-section a:hover {
     text-decoration: underline;
 }
+
+
+@media screen and (min-device-width: 320px) and (max-device-width: 768px) {
+
+    .forgot-pass>a {
+        width: auto;
+    }
+}
+
+@media screen and (min-device-width: 320px) and (max-device-width: 375px) {
+
+    .register-section>span,
+    .register-section>a {
+        display: inline-block !important;
+    }
+}
