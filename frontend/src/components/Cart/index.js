@@ -133,7 +133,7 @@ const Cart = () => {
                         </Row>
 
                         <Row className="cart-content">
-                            <Col lg={8} className="pe-lg-4">
+                            <Col xs={12} lg={8}>
                                 <div className="cart-items-container">
                                     <Table borderless className="cart-table">
                                         <thead>
@@ -208,7 +208,7 @@ const Cart = () => {
                                 </div>
                             </Col>
 
-                            <Col lg={4} className="ps-lg-4">
+                            <Col xs={12} lg={4}>
                                 <div className="cart-summary">
                                     <div className="summary-header">
                                         <h2>Order Summary</h2>
