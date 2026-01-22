@@ -135,8 +135,6 @@
     color: #c19a6b !important;
 }
 
-
-
 .nav-right-elements {
     width: 50%;
     display: flex;
@@ -322,8 +320,6 @@
 
     .nav-menu {
         margin-right: 0;
-        margin-bottom: 20px;
-        width: 100%;
     }
 
     .nav-menu .nav-link {
@@ -332,7 +328,7 @@
     }
 
     .search-container {
-        width: 100%;
+        width: 40%;
     }
 
     .luxe-search {
@@ -349,23 +345,18 @@
     }
 
     .navbar-container .navbar-collapse {
-        position: fixed;
+        /* position: fixed;
         top: 0;
-        right: 0;
-        background: white;
+        right: 0; */
+        background: #ffffff;
         padding: 10px;
         box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
-        transform: translateX(100%);
         transition: transform 0.4s ease;
         z-index: 1001;
     }
 
     .navbar-container .navbar-collapse.show {
         transform: translateX(0);
-    }
-
-    .nav-menu {
-        flex-direction: column;
     }
 
     .profile-dropdown {
@@ -401,5 +392,26 @@
     .nav-right-elements {
         margin-top: 10px;
         gap: 10px;
+    }
+}
+
+@media screen and (min-device-width: 320px) and (max-device-width: 550px) {
+    .nav-cnt {
+        width: 100% !important;
+        padding: 0px !important;
+        margin: 10px !important;
+    }
+
+    .luxe-search {
+        padding: 0px !important;
+    }
+
+    .search-container {
+        width: 55%;
+    }
+
+    .luxe-cart {
+        padding: 0px !important;
+        margin: 0px !important;
     }
 }

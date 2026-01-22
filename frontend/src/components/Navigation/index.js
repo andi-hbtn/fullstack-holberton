@@ -58,6 +58,30 @@ const Navigation = ({ onSearchChange }) => {
                         {mobileMenuOpen ? <IoMdClose /> : <FaBars />}
                     </Button>
 
+                    {!mobileMenuOpen || mobileMenuOpen ?
+                        <>
+                            <div className={`search-container ${searchFocused ? 'focused' : ''}`}>
+                                <FaSearch className="search-icon" />
+                                <Form.Control
+                                    type="search"
+                                    placeholder="Search products..."
+                                    className="luxe-search"
+                                    onChange={handleChange}
+                                    value={search}
+                                    onFocus={() => setSearchFocused(true)}
+                                    onBlur={() => setSearchFocused(false)}
+                                />
+                            </div>
+
+                            <Nav.Link as={Link} to="/cart" className="luxe-cart">
+                                <FaShoppingCart className="cart-icon" />
+                                <Badge pill className="cart-badge">
+                                    {finalCart === 0 ? "" : finalCart}
+                                </Badge>
+                            </Nav.Link>
+                        </>
+                        : "desktop"}
+
                     {/* Desktop Navigation */}
                     <Navbar.Collapse id="navbarScroll" className={`${mobileMenuOpen ? 'show' : ''}`}>
                         <Nav className="nav-menu">
@@ -100,19 +124,21 @@ const Navigation = ({ onSearchChange }) => {
                         {/* Right Side Elements */}
                         <div className="nav-right-elements">
                             {/* Search Bar */}
-                            <div className={`search-container ${searchFocused ? 'focused' : ''}`}>
-                                <FaSearch className="search-icon" />
-                                <Form.Control
-                                    type="search"
-                                    placeholder="Search products..."
-                                    className="luxe-search"
-                                    onChange={handleChange}
-                                    value={search}
-                                    onFocus={() => setSearchFocused(true)}
-                                    onBlur={() => setSearchFocused(false)}
-                                />
-                            </div>
 
+                            {!mobileMenuOpen ?
+                                <div className={`search-container ${searchFocused ? 'focused' : ''}`}>
+                                    <FaSearch className="search-icon" />
+                                    <Form.Control
+                                        type="search"
+                                        placeholder="Search products..."
+                                        className="luxe-search"
+                                        onChange={handleChange}
+                                        value={search}
+                                        onFocus={() => setSearchFocused(true)}
+                                        onBlur={() => setSearchFocused(false)}
+                                    />
+                                </div>
+                                : ""}
                             {/* User Actions */}
                             <div className="user-actions">
                                 {!authUser?.id ? (
@@ -155,13 +181,16 @@ const Navigation = ({ onSearchChange }) => {
                                     </div>
                                 )}
 
-                                {/* Cart */}
-                                <Nav.Link as={Link} to="/cart" className="luxe-cart">
-                                    <FaShoppingCart className="cart-icon" />
-                                    <Badge pill className="cart-badge">
-                                        {finalCart === 0 ? "" : finalCart}
-                                    </Badge>
-                                </Nav.Link>
+                                {
+                                    !mobileMenuOpen ?
+                                        <Nav.Link as={Link} to="/cart" className="luxe-cart">
+                                            <FaShoppingCart className="cart-icon" />
+                                            <Badge pill className="cart-badge">
+                                                {finalCart === 0 ? "" : finalCart}
+                                            </Badge>
+                                        </Nav.Link>
+                                        : ""}
+
                             </div>
                         </div>
                     </Navbar.Collapse>

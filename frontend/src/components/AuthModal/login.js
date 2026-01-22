@@ -48,7 +48,7 @@ const Login = ({ openLogin, closeLogin }) => {
       centered
     >
       {
-        registerModal == false
+        registerModal === false
           ?
           <>
             <Form onSubmit={handleLogin}>
