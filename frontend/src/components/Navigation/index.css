@@ -296,122 +296,20 @@
     padding: 5px;
 }
 
-@media only screen and (min-width: 1400px) and (max-width: 2600px) {
-    .mobile-menu-toggle {
-        display: none !important;
-    }
+
+
+
+
+.mobile-menu-container {
+    display: none;
 }
 
-/* Responsive Design */
-@media (max-width: 1199px) {
-    .luxe-search {
-        width: 160px;
-    }
-}
+
 
 @media (max-width: 991px) {
-    .nav-right-elements {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .nav-menu {
-        margin-right: 0;
-    }
-
-    .nav-menu .nav-link {
-        margin: 5px 0;
-        padding: 8px 0 !important;
-    }
-
-    .search-container {
-        width: 40%;
-    }
-
-    .luxe-search {
-        width: 100%;
-    }
-
-    .user-actions {
+    .mobile-menu-container {
+        display: flex !important;
         width: 100%;
         justify-content: space-between;
-    }
-
-    .mobile-menu-toggle {
-        display: block;
-    }
-
-    .navbar-container .navbar-collapse {
-        /* position: fixed;
-        top: 0;
-        right: 0; */
-        background: #ffffff;
-        padding: 10px;
-        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
-        transition: transform 0.4s ease;
-        z-index: 1001;
-    }
-
-    .navbar-container .navbar-collapse.show {
-        transform: translateX(0);
-    }
-
-    .profile-dropdown {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        margin-top: 10px;
-        padding-left: 25px;
-    }
-}
-
-@media (max-width: 575px) {
-    .luxe-logo .logo-text {
-        font-size: 1.8rem;
-    }
-
-    .luxe-logo .logo-subtext {
-        font-size: 0.8rem;
-    }
-
-    .register-btn {
-        padding: 6px 15px;
-        font-size: 0.85rem;
-    }
-}
-
-
-
-
-@media screen and (min-device-width: 320px) and (max-device-width: 425px) {
-    .nav-right-elements {
-        margin-top: 10px;
-        gap: 10px;
-    }
-}
-
-@media screen and (min-device-width: 320px) and (max-device-width: 550px) {
-    .nav-cnt {
-        width: 100% !important;
-        padding: 0px !important;
-        margin: 10px !important;
-    }
-
-    .luxe-search {
-        padding: 0px !important;
-    }
-
-    .search-container {
-        width: 55%;
-    }
-
-    .luxe-cart {
-        padding: 0px !important;
-        margin: 0px !important;
     }
 }

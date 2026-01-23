@@ -2,13 +2,18 @@
 FROM node:18-slim AS build
 
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm install
+RUN npm ci
+
+# 👇 FIX KRITIK
+RUN npx update-browserslist-db@latest
+
 COPY . .
 RUN npm run build
 
 # production stage
-FROM nginx:stable as production
+FROM nginx:stable AS production
 COPY --from=build /app/build /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

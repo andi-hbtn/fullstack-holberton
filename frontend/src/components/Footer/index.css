@@ -1,5 +1,6 @@
 /* index.css */
 .luxury-footer {
+    overflow: hidden;
     background: #0a1929;
     color: #f8f9fa;
 }

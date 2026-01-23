@@ -51,14 +51,15 @@ const Navigation = ({ onSearchChange }) => {
             <Navbar expand="lg" className="navbar-container">
                 <Container className="nav-cnt">
                     {/* Mobile Menu Toggle */}
-                    <Button
-                        className="mobile-menu-toggle"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    >
-                        {mobileMenuOpen ? <IoMdClose /> : <FaBars />}
-                    </Button>
 
-                    {!mobileMenuOpen || mobileMenuOpen ?
+
+                    <div className='mobile-menu-container'>
+                        <Button
+                            className="mobile-menu-toggle"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        >
+                            {mobileMenuOpen ? <IoMdClose /> : <FaBars />}
+                        </Button>
                         <>
                             <div className={`search-container ${searchFocused ? 'focused' : ''}`}>
                                 <FaSearch className="search-icon" />
@@ -80,7 +81,9 @@ const Navigation = ({ onSearchChange }) => {
                                 </Badge>
                             </Nav.Link>
                         </>
-                        : "desktop"}
+
+                    </div>
+
 
                     {/* Desktop Navigation */}
                     <Navbar.Collapse id="navbarScroll" className={`${mobileMenuOpen ? 'show' : ''}`}>
@@ -106,7 +109,7 @@ const Navigation = ({ onSearchChange }) => {
                                                         className="category-link-vertical"
                                                     >
                                                         <span className="category-title-vertical">
-                                                            <img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} />
+                                                            <img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} z />
                                                             {category.title}
                                                         </span>
                                                     </Link>
