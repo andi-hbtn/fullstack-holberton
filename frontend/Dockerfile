@@ -10,7 +10,7 @@ RUN npm ci
 RUN npx update-browserslist-db@latest
 
 COPY . .
-RUN npm run build || tail -n 50 /app/build.log
+RUN npm run build > build-output.log 2>&1 || (cat build-output.log && exit 1)
 
 # production stage
 FROM nginx:stable AS production
