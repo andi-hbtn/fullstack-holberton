@@ -296,15 +296,9 @@
     padding: 5px;
 }
 
-
-
-
-
 .mobile-menu-container {
     display: none;
 }
-
-
 
 @media (max-width: 991px) {
     .mobile-menu-container {

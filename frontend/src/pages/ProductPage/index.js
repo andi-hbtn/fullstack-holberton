@@ -17,6 +17,7 @@ import ZoomVariant from "../../components/ZoomVariant";
 
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
+import useWindowWidth from "../../helpers/windowWidth";
 import "./index.css";
 
 const ProductPage = () => {
@@ -31,6 +32,8 @@ const ProductPage = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
+
+    const width = useWindowWidth();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -115,13 +118,14 @@ const ProductPage = () => {
             </div>
         </div>
     );
+
     return (
         <>
             <Header />
             <Container className="product-page-container">
                 <Row className="g-5">
                     {/* Product Images Column */}
-                    <Col lg={6} className="pe-lg-5">
+                    <Col md={6} lg={6} className="pe-lg-5">
                         <div className="product-gallery">
                             <div className="main-image-container"
                                 onMouseMove={(e) => {
@@ -159,25 +163,42 @@ const ProductPage = () => {
                             </div>
 
                             {images.length > 1 && (
-                                <div className="thumbnail-container">
-                                    {images.map((img, index) => (
-                                        <div
-                                            key={index}
-                                            className={`thumbnail ${currentImageIndex === index ? 'active' : ''}`}
-                                            onClick={() => {
-                                                setCurrentImageIndex(index);
-                                                setSelectedVariantId(img.variantId);
-                                            }}
-                                        >
-                                            <img
-                                                src={img.src}
-                                                alt={`Thumbnail ${index + 1}`}
-                                                loading="lazy"
-                                            />
-                                            <div className="thumbnail-overlay"></div>
-                                        </div>
-                                    ))}
-                                </div>
+                                <>
+                                    <div className="thumbnail-container">
+                                        {images.map((img, index) => (
+                                            <div
+                                                key={index}
+                                                className={`thumbnail ${currentImageIndex === index ? 'active' : ''}`}
+                                                onClick={() => {
+                                                    setCurrentImageIndex(index);
+                                                    setSelectedVariantId(img.variantId);
+                                                }}
+                                            >
+                                                <img
+                                                    src={img.src}
+                                                    alt={`Thumbnail ${index + 1}`}
+                                                    loading="lazy"
+                                                />
+                                                <div className="thumbnail-overlay"></div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {
+                                        width <= 425 ?
+                                            <div className="product-header">
+                                                <h1 className="product-title">{product.title}</h1>
+                                                <div className="product-meta">
+                                                    <Badge bg={selectedVariant?.stock > 0 ? "success" : "danger"} className="stock-badge">
+                                                        {selectedVariant?.stock > 0 ?
+                                                            `${selectedVariant?.stock} available` :
+                                                            'Out of stock'}
+                                                    </Badge>
+                                                    <span className="product-sku">Reference Number: {selectedVariant?.reference}</span>
+                                                </div>
+                                            </div>
+                                            : ""
+                                    }
+                                </>
                             )}
                         </div>
 
@@ -214,19 +235,24 @@ const ProductPage = () => {
                     </Col>
 
                     {/* Product Details Column */}
-                    <Col lg={6} className="ps-lg-5">
+                    <Col md={6} lg={6} className="ps-lg-5 pdc">
                         <div className="product-details-container">
-                            <div className="product-header">
-                                <h1 className="product-title">{product.title}</h1>
-                                <div className="product-meta">
-                                    <Badge bg={selectedVariant?.stock > 0 ? "success" : "danger"} className="stock-badge">
-                                        {selectedVariant?.stock > 0 ?
-                                            `${selectedVariant?.stock} available` :
-                                            'Out of stock'}
-                                    </Badge>
-                                    <span className="product-sku">Reference Number: {selectedVariant?.reference}</span>
-                                </div>
-                            </div>
+                            {
+                                width <= 425 ?
+                                    ""
+                                    :
+                                    <div className="product-header">
+                                        <h1 className="product-title">{product.title}</h1>
+                                        <div className="product-meta">
+                                            <Badge bg={selectedVariant?.stock > 0 ? "success" : "danger"} className="stock-badge">
+                                                {selectedVariant?.stock > 0 ?
+                                                    `${selectedVariant?.stock} available` :
+                                                    'Out of stock'}
+                                            </Badge>
+                                            <span className="product-sku">Reference Number: {selectedVariant?.reference}</span>
+                                        </div>
+                                    </div>
+                            }
 
                             <div className="price-section">
                                 <div className="current-price">
@@ -308,10 +334,9 @@ const ProductPage = () => {
                                 </div>
                             </div>
                         </div >
-                    </Col >
-                </Row >
-            </Container >
-
+                    </Col>
+                </Row>
+            </Container>
             <ZoomVariant showModal={showModal} setShowModal={setShowModal} position={position} setPosition={setPosition} product={product} currentImageIndex={currentImageIndex} images={images} />
             <Footer />
         </>
