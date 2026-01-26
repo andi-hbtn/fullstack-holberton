@@ -7,7 +7,8 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build > build-output.log 2>&1 || (cat build-output.log && exit 1)
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+RUN npm run build
 # RUN node --max-old-space-size=2048 node_modules/.bin/react-scripts build
 
 # production stage
