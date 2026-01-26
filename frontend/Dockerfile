@@ -6,9 +6,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# 👇 FIX KRITIK
-RUN npx update-browserslist-db@latest
-
 COPY . .
 RUN npm run build > build-output.log 2>&1 || (cat build-output.log && exit 1)
 RUN node --max-old-space-size=2048 node_modules/.bin/react-scripts build
