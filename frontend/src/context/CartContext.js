@@ -10,16 +10,13 @@ const CartProvider = (props) => {
 			? JSON.parse(savedCart)
 			: { user_id: null, items: [], total_price: 0 };
 	});
-
 	const [finalCart, setFinalCart] = useState(0);
-	const [render, setRender] = useState(false);
-
 	useEffect(() => {
 		const cartFromStorage = JSON.parse(localStorage.getItem("cart") || '{"items": []}');
 		const items = Array.isArray(cartFromStorage.items) ? cartFromStorage.items : [];
 		const newQtu = items.reduce((total, item) => total + item.quantity, 0);
 		setFinalCart(newQtu);
-	}, [cart, render]);
+	}, [cart]);
 
 	const addQuantity = (productTitle, variant) => {
 		setCart((prevState) => {

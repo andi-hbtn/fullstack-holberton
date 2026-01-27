@@ -7,8 +7,7 @@ const CustomerContext = createContext({});
 const CustomerProvider = ({ children }) => {
     const { authUser } = useAuthenticateContext();
     const [customers, setCustomers] = useState([]);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
-
+    
     useEffect(() => {
         if (authUser?.roles === 'admin') getCustomers();
     }, [authUser]);
@@ -18,17 +17,7 @@ const CustomerProvider = ({ children }) => {
         if (res.status === 200) setCustomers(res.data);
     };
 
-    // const getCustomer = async (id) => {
-    //     const res = await get_customer_service(id);
-    //     if (res.status === 200) setSelectedCustomer(res.data);
-    // };
-
-    // const updateCustomer = async (data) => {
-    //     const res = await update_customer_service(data);
-    //     if (res.status === 200) await getCustomers();
-    // };
-
-    const values = { customers, selectedCustomer, getCustomers };
+    const values = { customers, getCustomers };
     return (
         <CustomerContext.Provider value={values}>
             {children}

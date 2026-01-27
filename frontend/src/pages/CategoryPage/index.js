@@ -25,7 +25,6 @@ const CategoryPage = () => {
 
     const [category, setCategory] = useState(null);
     const [selectedVariants, setSelectedVariants] = useState({});
-    const [currentImageIndex, setCurrentImageIndex] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -53,7 +52,6 @@ const CategoryPage = () => {
                         }
                     });
                     setSelectedVariants(defaults);
-                    setCurrentImageIndex(defaultsIndex);
                 } else {
                     setError({ message: "Category not found", status: result.statusCode });
                 }
@@ -86,7 +84,6 @@ const CategoryPage = () => {
 
     const handleThumbnailClick = (productId, variant, index) => {
         setSelectedVariants(prev => ({ ...prev, [productId]: variant.id }));
-        setCurrentImageIndex(prev => ({ ...prev, [productId]: index }));
     };
 
     const renderVariantImage = (productId, variant, isActive, index) => {

@@ -51,7 +51,7 @@ const ProductPage = () => {
             }
         };
         fetchProduct();
-    }, [id]);
+    }, [id, getProduct]);
 
     const selectedVariant = product?.colorVariants.find(v => v.id === selectedVariantId);
 

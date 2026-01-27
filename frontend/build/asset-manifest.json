@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.36cc8023.css",
+    "main.js": "/static/js/main.aeff2ad6.js",
+    "static/js/453.20359781.chunk.js": "/static/js/453.20359781.chunk.js",
+    "static/media/Montserrat-VariableFont_wght.ttf": "/static/media/Montserrat-VariableFont_wght.4df14eb5e72bf55c4497.ttf",
+    "static/media/hs2.avif": "/static/media/hs2.9d0f7c06af707a0d46de.avif",
+    "static/media/hs3.avif": "/static/media/hs3.c9fd357abbda4522e44e.avif",
+    "static/media/hs1.avif": "/static/media/hs1.f19cda940a0093f9b340.avif",
+    "static/media/privacy-policy.avif": "/static/media/privacy-policy.f19cda940a0093f9b340.avif",
+    "static/media/logo.png": "/static/media/logo.a6d010ac40120c6c46a7.png",
+    "static/media/card-jcb.svg": "/static/media/card-jcb.8f451b0ef70cd7e1518ed681eb380707.svg",
+    "static/media/card-discover.svg": "/static/media/card-discover.9639e42e6b4fb44a1bb58d1b9995578d.svg",
+    "static/media/card-visa.svg": "/static/media/card-visa.6c39a7a0cf19293f722f18403d15f694.svg",
+    "index.html": "/index.html",
+    "static/media/card-amex.svg": "/static/media/card-amex.49f750773d39d45e8be5ac919ce15547.svg",
+    "static/media/card-mastercard.svg": "/static/media/card-mastercard.1c9c144993623189001e8ff2325e9908.svg",
+    "main.36cc8023.css.map": "/static/css/main.36cc8023.css.map",
+    "main.aeff2ad6.js.map": "/static/js/main.aeff2ad6.js.map",
+    "453.20359781.chunk.js.map": "/static/js/453.20359781.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.36cc8023.css",
+    "static/js/main.aeff2ad6.js"
+  ]
+}

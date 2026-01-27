@@ -19,8 +19,10 @@ const generateId = (id) => {
     return `12-${id.toString().padStart(3, '0')}`;
 }
 
-export default {
+const helpers = {
     formatDate,
     formatIsoDateTime,
     generateId
 };
+
+export default helpers;

@@ -5,13 +5,11 @@ import { FaPoundSign } from "react-icons/fa";
 import { AiOutlinePercentage } from "react-icons/ai";
 
 const ItemsModal = ({ open, close, selectedOrderItems }) => {
-    const items = selectedOrderItems || [];
+    const items = useMemo(() => selectedOrderItems || [], [selectedOrderItems]);
     const formatPrice = (price) => `£${parseFloat(price || 0).toFixed(2)}`;
 
     const totalPrice = useMemo(() => {
-        return items.reduce((sum, item) => {
-            return sum + (parseFloat(item.price) * item.quantity);
-        }, 0);
+        return items.reduce((sum, item) => sum + (parseFloat(item.price || 0) * item.quantity), 0);
     }, [items]);
 
     const vatRate = 0.20;

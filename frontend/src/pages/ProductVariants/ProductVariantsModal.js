@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Modal, Button, Form, Row, Col, Image } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, Image, Alert } from 'react-bootstrap';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useProductContext } from "../../context/ProductContext";
 
@@ -68,6 +68,11 @@ const ProductVariantModal = ({ show, close, productId }) => {
 
     return (
         <Modal show={show} onHide={close} size="lg">
+            {resMsg.message && (
+                <Alert variant={resMsg.error ? "danger" : "success"}>
+                    {resMsg.message}
+                </Alert>
+            )}
             <Modal.Header closeButton>
                 <Modal.Title>Add products with colors</Modal.Title>
             </Modal.Header>

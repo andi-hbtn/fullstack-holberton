@@ -109,7 +109,7 @@ const Navigation = ({ onSearchChange }) => {
                                                         className="category-link-vertical"
                                                     >
                                                         <span className="category-title-vertical">
-                                                            <img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} z />
+                                                            <img src={`${process.env.REACT_APP_API_URL}api/category/uploads/${category.image}`} alt='category-title'/>
                                                             {category.title}
                                                         </span>
                                                     </Link>

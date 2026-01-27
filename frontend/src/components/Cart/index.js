@@ -19,7 +19,7 @@ const Cart = () => {
         const items = Array.isArray(cartFromStorage.items) ? cartFromStorage.items : [];
         const newQtu = items.reduce((total, item) => total + item.quantity, 0);
         setFinalCart(newQtu);
-    }, [cart]);
+    }, [cart, setFinalCart]);
 
     const subTotal = cart.items?.reduce((total, item) => {
         return total + (item.price * item.quantity);

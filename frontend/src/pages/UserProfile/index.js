@@ -2,7 +2,7 @@ import { useAuthenticateContext } from '../../context/AuthenticateContext';
 import { useOrderContext } from "../../context/OrderContext";
 import helpers from "../../helpers/index.js";
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Table, Badge, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Table, Badge, Button, Spinner, Alert } from 'react-bootstrap';
 import Header from "../../components/Header";
 import { FiEye } from "react-icons/fi";
 import ItemsModal from './ItemsModal';
@@ -12,10 +12,12 @@ import "./index.css";
 const UserProfile = () => {
     const { authUser } = useAuthenticateContext();
     const { getUserOrderItems } = useOrderContext();
+
     const [orders, setOrders] = useState([]);
     const [selectedOrderItems, setSelectedOrderItems] = useState([]);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+
+    const [error, setError] = useState(null); // used now
+    const [loading, setLoading] = useState(true); // used now
 
     const [open, setOpen] = useState(false);
 
@@ -25,15 +27,17 @@ const UserProfile = () => {
                 const result = await getUserOrderItems(authUser.id);
                 if (result.statusCode === 200) {
                     setOrders(result.result);
+                } else {
+                    setError(result.message || 'Failed to load orders');
                 }
-                return result;
-            } catch (error) {
-                setError(error.message || 'Failed to load data');
+            } catch (err) {
+                setError(err.message || 'Failed to load orders');
+            } finally {
                 setLoading(false);
             }
-        }
+        };
         loadData();
-    }, []);
+    }, [authUser.id, getUserOrderItems]); // dependencies fixed
 
     const statusBadge = (status) => {
         let variant = "";
@@ -51,7 +55,7 @@ const UserProfile = () => {
     }
 
     const handleClose = () => {
-        setOpen(!open)
+        setOpen(false)
         setSelectedOrderItems([]);
     }
 
@@ -81,7 +85,15 @@ const UserProfile = () => {
                                 <h3>Your Orders</h3>
                             </Card.Header>
                             <Card.Body>
-                                {orders?.length > 0 ? (
+                                {loading ? (
+                                    <div className="text-center my-4">
+                                        <Spinner animation="border" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </Spinner>
+                                    </div>
+                                ) : error ? (
+                                    <Alert variant="danger">{error}</Alert>
+                                ) : orders?.length > 0 ? (
                                     <div className="orders-table-container">
                                         <Table hover responsive>
                                             <thead>
@@ -94,33 +106,26 @@ const UserProfile = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {
-                                                    orders.map((order, index) => {
-                                                        return (
-                                                            <tr key={index}>
-                                                                <td>
-                                                                    #{order.id}
-                                                                </td>
-                                                                <td>{order?.total_price || "No product"}</td>
-                                                                <td>{statusBadge(order.status)}</td>
-                                                                <td>{helpers.formatIsoDateTime(order?.created_at)}</td>
-                                                                <td>
-                                                                    <Button
-                                                                        variant="outline-primary"
-                                                                        size="sm"
-                                                                        className="me-2 action-btn"
-                                                                        onClick={() => { return handleOpen(order.id) }}
-                                                                    >
-                                                                        <FiEye />
-                                                                    </Button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
+                                                {orders.map((order, index) => (
+                                                    <tr key={index}>
+                                                        <td>#{order.id}</td>
+                                                        <td>{order?.total_price || "No product"}</td>
+                                                        <td>{statusBadge(order.status)}</td>
+                                                        <td>{helpers.formatIsoDateTime(order?.created_at)}</td>
+                                                        <td>
+                                                            <Button
+                                                                variant="outline-primary"
+                                                                size="sm"
+                                                                className="me-2 action-btn"
+                                                                onClick={() => handleOpen(order.id)}
+                                                            >
+                                                                <FiEye />
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </Table>
-
                                     </div>
                                 ) : (
                                     <div className="no-orders">
@@ -131,7 +136,6 @@ const UserProfile = () => {
                                     </div>
                                 )}
                             </Card.Body>
-
                         </Card>
                     </Col>
                 </Row>
