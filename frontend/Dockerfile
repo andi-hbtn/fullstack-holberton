@@ -8,8 +8,8 @@ RUN npm ci
 
 COPY . .
 ENV NODE_OPTIONS="--max-old-space-size=2048"
+ENV CI=false
 RUN npm run build
-# RUN node --max-old-space-size=2048 node_modules/.bin/react-scripts build
 
 # production stage
 FROM nginx:stable AS production
